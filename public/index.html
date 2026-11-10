@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f1e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="description" content="سياج، رفيقك الذكي لمتابعة أداء الألواح الشمسية وحمايتها.">
+  <title>سياج | رفيق الطاقة الشمسية</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script defer src="/app.js"></script>
+  <style>
+    .public-about { max-width: 560px; margin: 0 auto 18px; color: var(--muted); font-size: 13px; line-height: 1.9; text-align: center; }
+    .public-privacy { display: inline-block; margin-top: 8px; color: var(--orange, #eb5b24); }
+    html[lang="ar"] .public-copy-en, html[lang="en"] .public-copy-ar { display: none; }
+  </style>
+</head>
+<body>
+  <div class="app-progress" id="app-progress" role="progressbar" aria-label="جارٍ الاتصال بالخادم" aria-hidden="true"><span></span></div>
+  <div class="app-loading" id="app-loading" hidden role="status" aria-live="polite">
+    <div class="app-loading-card">
+      <span class="app-loading-logo"><img src="/assets/logo.png" alt="شعار سياج"></span>
+      <div class="app-loading-spinner" aria-hidden="true"></div>
+      <p class="app-loading-title" id="app-loading-title">جارٍ تجهيز سياج…</p>
+      <p class="app-loading-note" id="app-loading-note">يتم الاتصال بالخادم وتحميل بياناتك، لحظات من فضلك.</p>
+      <button class="button button-primary" id="app-loading-retry" type="button" hidden>إعادة المحاولة</button>
+    </div>
+  </div>
+  <div class="intro" id="intro" aria-label="مرحباً بك في سياج">
+    <div class="intro-wind wind-one"></div><div class="intro-wind wind-two"></div><div class="intro-wind wind-three"></div>
+    <img class="intro-logo" src="/assets/logo.png" alt="شعار سياج">
+    <p class="intro-tagline">رفيقك الذكي للطاقة الشمسية</p>
+    <span class="intro-caption">نحمي إنتاجك، خطوة بخطوة</span>
+  </div>
+
+  <div class="app-shell" id="app-shell" hidden>
+    <header class="topbar">
+      <button class="brand" data-page="dashboard" aria-label="العودة للرئيسية"><img src="/assets/logo.png" alt=""><span>سياج</span></button>
+      <div class="topbar-location"><span class="live-dot"></span><span id="header-location">حدّد موقع النظام</span><span class="location-pin" aria-hidden="true">⌖</span></div>
+      <nav class="main-nav" aria-label="التنقل الرئيسي">
+        <button class="nav-link active" data-page="dashboard">الرئيسية</button>
+        <button class="nav-link" data-page="history">السجل</button>
+        <button class="nav-link" data-page="reports">البلاغات والشكاوى</button>
+        <button class="nav-link" data-page="report">تقرير النظام</button>
+        <button class="nav-link" data-page="settings">الإعدادات</button>
+      </nav>
+      <button class="nav-link auth-nav" id="auth-nav" data-page="auth">تسجيل الدخول</button>
+      <button class="language-toggle" id="language-toggle" type="button" aria-label="Change language">EN</button>
+      <button class="icon-button mobile-menu" id="mobile-menu" aria-label="القائمة">☰</button>
+    </header>
+
+    <main class="page-wrap">
+      <section class="page dashboard-page" id="page-dashboard">
+        <div class="welcome-row"><div><p class="eyebrow" id="today-date"></p><h1>صباح الطاقة، <span id="user-name">يا صديق الشمس</span> <span class="sun-emoji">☀</span></h1><p class="muted">هذه لمحة سريعة عن أداء نظامك اليوم.</p></div><button class="button button-outline" id="edit-data">تحديث بيانات النظام <span>↻</span></button></div>
+        <div id="weather-alert" class="weather-alert" hidden></div>
+        <div class="dashboard-grid">
+          <article class="panel status-panel">
+            <div class="panel-heading"><div><p class="eyebrow">حالة اليوم</p><h2 id="status-title">بانتظار بيانات نظامك</h2></div><span class="status-pill" id="status-pill"><i></i> ابدأ التحليل</span></div>
+            <div class="status-content">
+              <div class="gauge-wrap"><svg class="gauge" viewBox="0 0 240 150" role="img" aria-label="مؤشر الفقد التقديري"><path class="gauge-track" d="M 24 126 A 96 96 0 0 1 216 126"/><path class="gauge-value" id="gauge-value" d="M 24 126 A 96 96 0 0 1 216 126"/></svg><div class="gauge-label"><strong id="loss-percent">—%</strong><span>فقد تقديري</span></div><span class="gauge-temp" id="gauge-temp">—°</span></div>
+              <div class="status-copy"><span class="sun-disc">☀</span><h3 id="status-summary">نحتاج بعض التفاصيل أولاً</h3><p id="status-description">أدخل بيانات النظام وأرفق صورة أو مقطعاً للألواح للحصول على قراءة أوضح.</p><button class="button button-primary" id="start-setup">إعداد النظام <span>←</span></button></div>
+            </div>
+            <div class="loss-breakdown" id="loss-breakdown" hidden>
+              <b id="loss-breakdown-title">تفصيل الخسارة التقديرية</b>
+              <div class="loss-components" id="loss-components"></div>
+              <div class="loss-split">
+                <div class="loss-split-card" id="loss-instant"></div>
+                <div class="loss-split-card" id="loss-monthly"></div>
+              </div>
+              <p class="loss-breakdown-note" id="loss-breakdown-note"></p>
+            </div>
+            <div class="panel-foot"><span class="weather-icon" id="weather-icon">☼</span><span id="weather-summary">الطقس —</span><span class="foot-divider"></span><span>آخر تحديث <b id="last-updated">—</b></span></div>
+          </article>
+          <article class="panel metrics-panel"><div class="panel-heading"><div><p class="eyebrow">ملخص النظام</p><h2>نظرة على الألواح</h2></div><span class="small-spark">✳</span></div>
+            <div class="metric-grid">
+              <div class="metric-card ivory-card"><span class="metric-icon">♨</span><span class="metric-label">درجة الحرارة</span><strong id="metric-temp">—°</strong><small>حرارة الجو الحالية</small></div>
+              <div class="metric-card peach-card"><span class="metric-icon">≈</span><span class="metric-label">الرطوبة</span><strong id="metric-humidity">—%</strong><small>الرطوبة النسبية</small></div>
+              <div class="metric-card cream-card"><span class="metric-icon">✧</span><span class="metric-label">مستوى الغبار</span><strong id="metric-dust">—%</strong><small id="dust-caption">تقدير أولي</small></div>
+              <div class="metric-card sand-card"><span class="metric-icon">↘</span><span class="metric-label">الخسارة اليومية</span><strong id="metric-loss">—</strong><small id="loss-caption">طاقة تقديرية</small></div>
+            </div>
+            <button class="text-button" id="refresh-weather">تحديث الطقس والموقع <span>↻</span></button>
+            <p class="weather-status" id="weather-status" role="status" aria-live="polite"></p>
+            <small class="data-attribution">توقعات الغبار الجوي: Open-Meteo وCAMS.</small>
+          </article>
+          <article class="panel recommendation-panel"><div class="recommendation-icon">✦</div><div class="recommendation-copy"><p class="eyebrow">توصية سياج</p><h2 id="recommendation-title">ابدأ بفحص ألواحك</h2><p id="recommendation-text">أضف بيانات نظامك وصورة للألواح لتظهر لك توصية مناسبة لحالتها.</p></div><button class="button button-light" id="cleaned-button">تم التنظيف <span>✓</span></button></article>
+          <article class="panel maintenance-panel" id="maintenance-panel"><div class="maintenance-head"><div class="maintenance-icon">🛠</div><div class="maintenance-head-copy"><p class="eyebrow">صيانة الألواح</p><h2 id="maintenance-title">دورة الصيانة كل 6 أشهر</h2></div><span class="maintenance-pill" id="maintenance-state-pill" hidden><i></i><span></span></span><button class="button button-outline" type="button" id="maintenance-done">تمت الصيانة اليوم ✓</button></div><div id="maintenance-content" class="maintenance-content" aria-live="polite"></div></article>
+          <article class="panel panel-visual-panel" id="panel-visual-panel"><div class="panel-heading"><div><p class="eyebrow">ميل الألواح والغبار</p><h2>زاوية اللوح وتراكم الغبار</h2></div><span class="small-spark">☀</span></div><p class="panel-visual-hint">يتغيّر المشهد حسب ميل اللوح المدخل في صفحة التسجيل، وأدنى ميل يعني غباراً أكثر.</p><div id="panel-visual-mount"></div></article>
+          <article class="panel assessment-panel" id="claude-assessment"><div class="panel-heading"><div><p class="eyebrow">تحليل الألواح باستخدام Claude</p><h2>الظل والغبار واتجاه الشمس</h2></div><span class="small-spark">✦</span></div><p class="helper-text" id="claude-send-notice">عند ضغط هذا الزر، تُرسل صور الألواح ولقطات موزعة من الفيديو إلى Anthropic، حتى 8 صور في الطلب. لا يُحلل الصوت أو كل الإطارات.</p><button type="button" class="button button-primary" id="analyze-panels">تحليل الألواح باستخدام Claude</button><div id="visual-assessment-content"></div><div id="solar-assessment-content"></div></article>
+          <article class="panel monthly-assessment-panel"><div class="panel-heading"><div><p class="eyebrow">الخسارة في الشهر المحدد</p><h2 id="monthly-loss-title">خسارة الطاقة وقيمتها</h2></div></div><div class="monthly-controls"><label for="dashboard-bill-month">الشهر</label><input id="dashboard-bill-month" type="month"><button type="button" class="button button-outline" id="update-monthly-loss">تحديث تحليل الشهر</button></div><div id="monthly-assessment-content" aria-live="polite"></div></article>
+          <article class="panel trend-panel"><div class="panel-heading"><div><p class="eyebrow">متابعة الأداء</p><h2>قراءة الأسبوع</h2></div><span class="chart-legend"><i></i> الإنتاج المتوقع</span></div><div class="chart" id="weekly-chart" aria-label="مخطط الإنتاج المتوقع خلال الأيام السبعة القادمة"></div><div class="chart-footer"><span>الأيام السبعة القادمة</span><span id="chart-caption">تقديرات أولية تتحدث مع الطقس</span></div></article>
+          <article class="panel system-panel"><div class="panel-heading"><div><p class="eyebrow">نظامك</p><h2>بيانات مختصرة</h2></div><button class="icon-button" id="system-edit" aria-label="تعديل البيانات">↗</button></div><div id="system-summary" class="system-summary"><p>لم تتم إضافة بيانات بعد.</p></div><div class="analysis-note"><span>ⓘ</span> النتائج التقديرية لا تستبدل فحص فني مختص.</div></article>
+        </div>
+      </section>
+
+      <section class="page wizard-page" id="page-wizard" hidden>
+        <div class="wizard-intro"><p class="eyebrow">خطوة بسيطة نحو طاقة أفضل</p><h1>لنتعرّف على نظامك <span class="sun-emoji">☀</span></h1><p class="muted">أجب عن هذه الخطوات لتحصل سياج على صورة متكاملة عن ألواحك.</p></div>
+        <div class="wizard-layout">
+          <aside class="step-sidebar"><div class="step-rail" id="step-rail"></div><div class="sidebar-note"><span>✦</span><p>بياناتك تحفظ على حسابك وتظهر عند تسجيل الدخول من أجهزتك.</p></div></aside>
+          <article class="panel form-panel"><div class="form-top"><span class="step-kicker" id="step-kicker">الخطوة ١ من ٤</span><span class="save-indicator"><i></i> حفظ تلقائي</span></div>
+            <div class="wizard-progress" aria-hidden="true"><span id="wizard-progress-fill"></span></div>
+            <div class="form-alert" id="form-alert" role="alert" hidden></div>
+            <div class="step-content" id="step-content"></div>
+            <div class="form-actions"><button class="button button-outline" id="step-back">السابق</button><span class="form-hint" id="form-hint">تستغرق أقل من دقيقتين</span><button class="button button-primary" id="step-next">التالي <span>←</span></button></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page history-page" id="page-history" hidden><div class="page-heading"><div><p class="eyebrow">رحلتك مع الشمس</p><h1>سجل الفحوصات</h1><p class="muted">كل عمليات الفحص المحفوظة في حسابك.</p></div><button class="button button-primary" id="history-new">فحص جديد <span>＋</span></button></div><div class="panel history-panel" id="history-list"></div></section>
+
+      <section class="page settings-page" id="page-settings" hidden><div class="page-heading"><div><p class="eyebrow">تفضيلاتك</p><h1>الإعدادات</h1><p class="muted">خصّص تجربة سياج بما يناسبك.</p></div></div><div class="settings-layout"><div class="panel settings-panel"><h2>التنبيهات والعرض</h2><label class="setting-row"><span><b>تنبيهات الغبار والرياح</b><small id="notification-hint">تنبيهات الغبار والرياح عبر الإشعارات</small></span><input type="checkbox" id="setting-notifications" class="toggle"></label><label class="setting-row"><span><b>الوضع الليلي</b><small>ألوان أهدأ عند الاستخدام مساءً</small></span><input type="checkbox" id="setting-dark" class="toggle"></label><label class="setting-row"><span><b>التنبيه الصوتي</b><small>صوت عند التنبيهات المهمة</small></span><input type="checkbox" id="setting-sound" class="toggle"></label><div class="setting-row"><span><b>اللغة</b><small>لغة واجهة الموقع</small></span><select id="setting-language"><option value="ar">العربية</option><option value="en">English</option></select></div></div><div class="panel settings-panel"><h2>بياناتك وخصوصيتك</h2><p class="settings-copy">يحفظ سياج بيانات حسابك وإعداداتك وسجل الفحوصات ومرفقاتك في التخزين السحابي، وتظهر البيانات التي تمت مزامنتها على أجهزتك عند تسجيل الدخول بالحساب نفسه. عند طلب التحليل فقط، تُرسل صور الألواح ولقطات موزعة من الفيديو أو صورة الفاتورة إلى Anthropic لتحليلها باستخدام Claude. يمكنك مراجعة قراءة الفاتورة قبل استخدامها. إحداثيات GPS تُستخدم لحساب اتجاه الشمس والطقس والتنبيهات عند تفعيلها.</p><button class="button button-outline" id="export-data">تنزيل نسخة من بياناتي</button><hr><button class="button button-danger" id="reset-data">مسح بيانات حسابي</button></div><div class="panel settings-panel about-panel"><span class="about-logo"><img src="/assets/logo.png" alt=""></span><div><h2>سياج</h2><p class="muted">رفيقك الذكي للطاقة الشمسية · إصدار تجريبي</p></div></div></div></section>
+      <section class="page reports-page" id="page-reports" hidden>
+        <div class="page-heading"><div><p class="eyebrow">تواصل مباشر مع فريق الصيانة</p><h1>البلاغات والشكاوى</h1><p class="muted">أرسل بلاغاً عن أي مشكلة في نظامك الشمسي، وسيرسل مباشرة إلى فريق الصيانة.</p></div></div>
+        <div class="reports-layout">
+          <article class="panel complaint-panel">
+            <div class="panel-heading"><div><p class="eyebrow">بلاغ جديد</p><h2>اكتب بلاغك</h2></div><span class="small-spark">✎</span></div>
+            <p class="helper-text" id="complaint-email-note">سيُرسل البلاغ إلى فريق الصيانة مباشرة.</p>
+            <div class="form-alert" id="complaint-alert" role="alert" hidden></div>
+            <div class="complaint-success" id="complaint-success" role="status" aria-live="polite" hidden></div>
+            <div class="complaint-form">
+              <label class="complaint-field"><span>الاسم (اختياري)</span><input id="complaint-name" type="text" maxlength="120" autocomplete="name" placeholder="مثال: مريم"></label>
+              <label class="complaint-field"><span>وسيلة التواصل (بريد أو هاتف)</span><input id="complaint-contact" type="text" maxlength="200" required autocomplete="email" placeholder="name@example.com أو رقم الهاتف"></label>
+              <label class="complaint-field"><span>نوع البلاغ</span>
+                <select id="complaint-category">
+                  <option value="performance">ضعف في الإنتاج</option>
+                  <option value="dust">غبار على الألواح</option>
+                  <option value="heat">حرارة مرتفعة</option>
+                  <option value="shade">تظليل على الألواح</option>
+                  <option value="electrical">مشكلة كهربائية</option>
+                  <option value="service">طلب صيانة</option>
+                  <option value="other">أخرى</option>
+                </select>
+              </label>
+              <label class="complaint-field"><span>الموضوع (اختياري)</span><input id="complaint-subject" type="text" maxlength="200" placeholder="مثال: تنظيف الألواح في الشتاء"></label>
+              <label class="complaint-field complaint-field-full"><span>تفاصيل البلاغ</span><textarea id="complaint-message" rows="6" maxlength="4000" placeholder="صف المشكلة ومتى لاحظتها…"></textarea></label>
+            </div>
+            <div class="complaint-actions">
+              <button class="button button-primary" id="complaint-submit" type="button">إرسال البلاغ <span>➤</span></button>
+              <button class="button button-outline" id="complaint-share" type="button">مشاركة / نسخ البلاغ</button>
+            </div>
+          </article>
+          <article class="panel complaint-history-panel">
+            <div class="panel-heading"><div><p class="eyebrow">سجلك</p><h2>بلاغاتي السابقة</h2></div><span class="small-spark">▤</span></div>
+            <div id="complaint-history"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page report-page" id="page-report" hidden>
+        <div class="page-heading"><div><p class="eyebrow">ملخص جاهز للمشاركة</p><h1>تقرير النظام</h1><p class="muted">تقرير شامل يشرح انخفاض الأداء وسببه، ويمكن تنزيله PDF أو مشاركته مع شركة الصيانة.</p></div>
+          <div class="report-actions">
+            <button class="button button-primary" id="report-download" type="button">تنزيل PDF</button>
+            <button class="button button-outline" id="report-share" type="button">مشاركة</button>
+            <button class="button button-outline" id="report-print" type="button">طباعة</button>
+          </div>
+        </div>
+        <article class="panel report-sheet" id="system-report">
+          <div id="system-report-body"></div>
+        </article>
+      </section>
+
+      <section class="page auth-page" id="page-auth" hidden>
+        <div class="auth-layout">
+          <div class="auth-heading"><p class="eyebrow">حسابك في سياج</p><h1>أهلاً</h1><p class="muted">سجّل الدخول لمتابعة نظامك الشمسي.</p></div>
+          <div class="public-about">
+            <p class="public-copy-ar">سياج يساعدك على متابعة نظامك الشمسي: أدخل بيانات الألواح وموقعها لعرض الطقس، وتقدير أثر الحرارة والغبار والخسارة في الطاقة، وحفظ سجل الفحوصات. النتائج تقديرية. تُحفظ بيانات الحساب والمرفقات في التخزين السحابي، وتظهر البيانات التي تمت مزامنتها على أجهزتك عند تسجيل الدخول بالحساب نفسه.</p>
+            <p class="public-copy-en" lang="en">Siyaj helps you monitor your solar system. Enter panel details and a location to view weather, estimate the effect of heat and dust on energy losses, and keep inspection records. Results are estimates. Account data and attachments are saved in cloud storage. Synced data appears on your devices when you sign in with the same account.</p>
+            <a class="public-privacy" href="/privacy.html"><span class="public-copy-ar">سياسة الخصوصية</span><span class="public-copy-en" lang="en">Privacy Policy</span></a>
+          </div>
+          <article class="panel auth-card">
+            <div class="auth-tabs" id="auth-tabs"><button class="auth-tab active" id="auth-tab-login" type="button">تسجيل الدخول</button><button class="auth-tab" id="auth-tab-signup" type="button">إنشاء حساب</button></div>
+            <div id="auth-profile" class="auth-profile" hidden><div class="profile-mark">☼</div><h2 id="profile-name"></h2><p id="profile-email" class="muted"></p><button class="button button-outline" id="logout-button" type="button">تسجيل الخروج</button></div>
+            <form id="login-form" class="auth-form">
+              <h2>تسجيل الدخول</h2><p class="muted">استخدم بريدك الإلكتروني أو رقم هاتفك.</p>
+              <label class="auth-field"><span>اسم المستخدم أو البريد الإلكتروني أو رقم الهاتف</span><input id="login-identifier" required autocomplete="username" placeholder="name@example.com أو رقم الهاتف"></label>
+              <label class="auth-field"><span>كلمة المرور</span><input id="login-password" type="password" required autocomplete="current-password" placeholder="أدخل كلمة المرور"></label>
+              <button class="button button-primary auth-submit" type="submit">دخول <span>←</span></button>
+              <p class="auth-switch">ليس لديك حساب؟ <button id="show-signup" type="button">إنشاء حساب جديد</button></p>
+              <div class="auth-separator"><span>أو</span></div>
+              <div class="google-button" data-google-signin role="button" tabindex="0" aria-label="المتابعة باستخدام Google"><span class="google-fallback"><span class="google-mark">G</span> المتابعة باستخدام Google</span></div>
+            </form>
+            <form id="signup-form" class="auth-form" hidden>
+              <h2>إنشاء حساب</h2><p class="muted">سجّل بياناتك للبدء مع سياج.</p>
+              <label class="auth-field"><span>اسم المستخدم</span><input id="signup-username" required minlength="3" maxlength="24" autocomplete="username" placeholder="مثال: maryam_1"></label>
+              <label class="auth-field"><span>البريد الإلكتروني</span><input id="signup-email" type="email" required autocomplete="email" placeholder="name@example.com"></label>
+              <label class="auth-field"><span>رقم الهاتف</span><input id="signup-phone" type="tel" required autocomplete="tel" placeholder="+968 9XXX XXXX"></label>
+              <label class="auth-field"><span>كلمة المرور</span><input id="signup-password" type="password" required minlength="8" autocomplete="new-password" placeholder="8 أحرف على الأقل"></label>
+              <label class="auth-field"><span>تأكيد كلمة المرور</span><input id="signup-confirm" type="password" required minlength="8" autocomplete="new-password" placeholder="أعد كتابة كلمة المرور"></label>
+              <button class="button button-primary auth-submit" type="submit">إنشاء الحساب <span>←</span></button>
+              <p class="auth-switch">لديك حساب؟ <button id="show-login" type="button">تسجيل الدخول</button></p>
+              <div class="auth-separator"><span>أو</span></div>
+              <div class="google-button" data-google-signin role="button" tabindex="0" aria-label="إنشاء حساب باستخدام Google"><span class="google-fallback"><span class="google-mark">G</span> إنشاء حساب باستخدام Google</span></div>
+            </form>
+            <p class="auth-local-note">يُحفظ الحساب والبيانات والمرفقات على الخادم وتظهر عند تسجيل الدخول من أجهزتك.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span>صُنع بعناية لنعطي الشمس حقها</span><a href="/privacy.html"><span class="public-copy-ar">سياسة الخصوصية</span><span class="public-copy-en" lang="en">Privacy Policy</span></a><span>© سياج <span id="footer-year"></span></span></footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "siyaj-weather-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone weather/geocoding microservice for Siyaj.",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

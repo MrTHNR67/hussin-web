@@ -1,0 +1,13 @@
+node_modules
+data
+.env
+.env.*
+!.env.example
+.git
+.gitignore
+.run
+*.zip
+*.log
+*.err.log
+nginx/logs
+peek-temp.mjs

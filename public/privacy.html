@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f2e9">
+  <meta name="description" content="سياسة خصوصية سياج، رفيق الطاقة الشمسية.">
+  <title>سياسة الخصوصية | سياج</title>
+  <style>
+    :root { color-scheme: light; --paper: #f5f2e9; --card: #fffdf8; --ink: #44413a; --muted: #756f65; --line: #ddd4c5; --orange: #eb5b24; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.9 system-ui, "Segoe UI", sans-serif; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem max(1.25rem, calc((100vw - 920px) / 2)); border-bottom: 1px solid var(--line); background: var(--card); }
+    .brand { color: inherit; font-size: 1.2rem; font-weight: 800; text-decoration: none; }
+    .brand span { color: var(--orange); }
+    .languages { display: flex; gap: .5rem; }
+    button { border: 1px solid var(--line); border-radius: 999px; padding: .4rem .9rem; background: transparent; color: var(--ink); font: inherit; cursor: pointer; }
+    button[aria-pressed="true"] { border-color: var(--orange); background: var(--orange); color: white; }
+    main { width: min(920px, calc(100% - 2rem)); margin: 2.5rem auto; }
+    article { padding: clamp(1.25rem, 4vw, 3rem); border: 1px solid var(--line); border-radius: 1.5rem; background: var(--card); box-shadow: 0 12px 32px #40321b0c; }
+    h1 { margin: 0 0 .2rem; font-size: clamp(1.7rem, 4vw, 2.3rem); }
+    h2 { margin: 1.7rem 0 .4rem; font-size: 1.18rem; }
+    p, li { color: var(--muted); }
+    a { color: #a93d16; }
+    .updated { margin-top: 0; font-size: .9rem; }
+    .notice { margin: 1rem 0; padding: .85rem 1rem; border-inline-start: 4px solid var(--orange); border-radius: .6rem; background: #f7eee2; color: var(--ink); }
+    .contact { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+    [hidden] { display: none !important; }
+    footer { padding: 0 1rem 2rem; color: var(--muted); text-align: center; font-size: .9rem; }
+    @media (max-width: 520px) { header { padding: .8rem 1rem; } main { margin: 1rem auto; } article { border-radius: 1rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">سياج <span>☀</span></a>
+    <nav class="languages" aria-label="Language / اللغة">
+      <button type="button" data-language="ar" aria-pressed="true">العربية</button>
+      <button type="button" data-language="en" aria-pressed="false">English</button>
+    </nav>
+  </header>
+  <main>
+    <article id="policy-ar" lang="ar" dir="rtl">
+      <h1>سياسة الخصوصية</h1>
+      <p class="updated">سياج | رفيق الطاقة الشمسية — آخر تحديث: 10 أكتوبر 2026</p>
+      <p>توضح هذه الصفحة البيانات التي يتعامل معها سياج عند استخدام الموقع وتسجيل الدخول. تصف هذه السياسة إعدادات النسخة المنشورة على Render بتاريخ التحديث المذكور.</p>
+
+      <h2>البيانات التي نتعامل معها</h2>
+      <ul>
+        <li>الحساب: اسم المستخدم والبريد الإلكتروني ورقم الهاتف للحسابات المنشأة بكلمة مرور. تُحفظ كلمة المرور بصيغة مشتقة ومملحة، لا كنص مكشوف. عند تسجيل الدخول عبر Google، يتلقى سياج معرّف الحساب والبريد الموثق والاسم وصورة الملف الشخصي التي يتيحها Google.</li>
+        <li>بيانات النظام: اسم الموقع وإحداثياته عند تحديده، وبيانات الألواح وإعداداتها واتجاهها، والطقس والغبار، ووقت التصوير الذي تؤكده، وبيانات الفاتورة والتعرفة وقراءات الإنتاج التي تدخلها أو تراجعها، وسجل الفحوصات والحسابات والتوصيات. تُحفظ نتائج التحليل التي تختار استخدامها مع بيانات حسابك.</li>
+        <li>المرفقات: صور أو مقاطع الألواح وصورة الفاتورة إذا اخترت إضافتها. تُرسل الملفات، بما فيها الفيديو الكامل، عبر خادم سياج إلى حاوية خاصة في Supabase Storage عند نجاح المزامنة، وتحفظ نسخة محلية في المتصفح. قد تتضمن صورة الفاتورة اسم العميل وعنوانه ورقم الحساب؛ يمكنك حجب هذه البيانات قبل طلب قراءتها.</li>
+        <li>طلبات التحليل: عند تفعيل Claude وطلب التحليل، تُستخدم أعداد الطلبات للحساب وللموقع لفرض حدود الاستخدام ومنع الطلبات المتزامنة الزائدة.</li>
+        <li>بيانات المتصفح: حالة الاستخدام المحفوظة محلياً في المتصفح، وبيانات المرفقات في مخزن المتصفح، وملف ارتباط جلسة الدخول. عند تفعيل الإشعارات على جهازك تُحفظ بيانات اشتراك Push اللازمة لإرسال تنبيهات الغبار وتحذير الحرارة المرتبط بالتنظيف. يُلغى اشتراك الجهاز عند إيقافه أو تسجيل الخروج منه.</li>
+      </ul>
+
+      <h2>كيف تُستخدم البيانات وتُشارك</h2>
+      <ul>
+        <li>Google: يستخدم لتسجيل الدخول والتحقق من حساب Google. يحمل المتصفح الخطوط ومكوّن تسجيل الدخول من Google، مما ينشئ اتصالات مباشرة بخدماتها. يخضع استخدامك لخدمات Google أيضاً لسياسات Google.</li>
+        <li>Open‑Meteo: يرسل الخادم إحداثيات الموقع أو اسم المدينة إلى خدمات Open‑Meteo لجلب الطقس وجودة الهواء والبحث عن المواقع. عند طلب تقرير الشهر، تُستخدم الإحداثيات وميل الألواح واتجاهها والفترة المطلوبة لجلب بيانات الإشعاع والجو اللازمة لتقدير الإنتاج. لا يرسل سياج إليهم كلمة مرورك أو صورك.</li>
+        <li>Claude من Anthropic: يتطلب التحليل تفعيل الخدمة في خادم الموقع. عند تفعيلها وضغطك زر تحليل الألواح، يرسل سياج حتى ثماني صور أو لقطات ثابتة إجمالاً للطلب، وأوقات اللقطات ووقت التصوير المؤكد واتجاه الشمس المحسوب وقياسات اتجاه الألواح وقراءة الجو المتاحة. لا يرسل الفيديو الكامل أو الصوت أو إحداثيات GPS الدقيقة أو بيانات الدخول إلى Claude. هذا تحليل للصور المختارة من المقطع، وقد تفوته مشاهد بين اللقطات.</li>
+        <li>قراءة الفاتورة باستخدام Claude: عند تفعيل الخدمة وطلبك قراءة الفاتورة بشكل مستقل، تُرسل صورتها إلى Anthropic لاستخراج فترة الفاتورة والاستهلاك والمبلغ والرسوم والتعرفة المطبوعة إن كانت واضحة. قد تتضمن الصورة بيانات شخصية لم تحجبها. تُعرض الحقول للمراجعة والتعديل، ولا تُستخدم تعرفة مستخرجة في حساب خسارة الشهر حتى تؤكدها. رفع الفاتورة أو الفيديو وحده لا يبدأ طلب تحليل مدفوع.</li>
+        <li>Render: يستضيف الموقع وخادم سياج الذي يعالج تسجيل الدخول والجلسات وطلبات المزامنة والملفات والطقس.</li>
+        <li>Supabase: يستضيف قاعدة Postgres لبيانات الحسابات، وقيم كلمات المرور المشتقة والمملحة، وسجلات الجلسات وبيانات النظام والإعدادات والفحوصات وبيانات المرفقات. تُحفظ الصور والفيديوهات في Supabase Storage داخل حاوية خاصة، ويتيحها خادم سياج بعد التحقق من حساب المستخدم. لا نستخدم Supabase Auth لتسجيل الدخول؛ يتحقق خادم سياج من حساب كلمة المرور أو Google.</li>
+        <li>خدمة إشعارات المتصفح: عند تفعيل الإشعارات، تُنقل رسائل التنبيه عبر خدمة Push الخاصة بمتصفحك باستخدام عنوان الاشتراك ومفاتيحه. يراجع الخادم الطقس في موقع نظامك المحفوظ يومياً، وتوقظ وظيفة مجدولة في Supabase خادم سياج لإجراء الفحص وإعادة المحاولة عند الحاجة. لا ترسل وظيفة الجدولة بيانات موقعك أو حسابك في طلبها.</li>
+        <li>لا تتضمن النسخة الحالية تكامل إعلانات أو أدوات تتبع تسويقي. لا يطلب سياج موقع الجهاز إلا إذا اخترت استخدام GPS.</li>
+      </ul>
+
+      <h2>التخزين والاحتفاظ</h2>
+      <p>يستخدم سياج التخزين المحلي في المتصفح لبعض البيانات، ويزامن الحساب وبيانات النظام وسجل الفحوصات إلى قاعدة Supabase والمرفقات إلى Supabase Storage عند نجاح الاتصال. يمكن استرجاع البيانات التي تمت مزامنتها من جهاز آخر عند فتح عنوان الموقع نفسه وتسجيل الدخول بالحساب نفسه. تبقى الملفات التي لم تنجح مزامنتها على الجهاز الذي أضيفت منه. قاعدة الحسابات والمرفقات مستقلة عن قرص خادم Render المؤقت، لذلك لا يعتمد حفظها على بقاء ذلك القرص عند إعادة تشغيل الموقع أو نشره.</p>
+      <p>قد تتوقف المزامنة مؤقتاً إذا تعذر الاتصال بالخدمات أو توقّف مشروع Supabase على الخطة المجانية لقلة النشاط. تنطبق حدود الخطة على السعة والاستخدام. التخزين السحابي لا يغني عن النسخ الاحتياطية؛ احتفظ بنسخة مستقلة من بياناتك وملفاتك المهمة، فالنسخ الاحتياطي لقاعدة البيانات وحدها لا يتضمن محتوى ملفات Storage.</p>
+      <p>قد يبقى الحساب وسجل البيانات في قاعدة الخدمة ما دامت موجودة. يوفر الموقع خيارات حذف المرفقات وطلب مسح بيانات نظام الألواح؛ يعتمد حذف النسخة الموجودة على الخادم على نجاح الطلب، وقد تبقى نسخ محلية في متصفحات أخرى إلى أن تُحدَّث أو تُمسح. لا توفر النسخة الحالية زر حذف كامل للحساب؛ للاستفسار عن بيانات الحساب، تواصل عبر البريد أدناه.</p>
+      <p>تخضع معالجة Anthropic للصور والبيانات المرسلة إليها لسياساتها وإعدادات حساب الخدمة؛ لا يقدم سياج ضماناً مستقلاً لمدة احتفاظ أي خدمة خارجية بالبيانات. راجع <a href="https://platform.claude.com/docs/en/manage-claude/api-and-data-retention" rel="noopener noreferrer">معلومات Anthropic عن معالجة بيانات API والاحتفاظ بها</a>.</p>
+
+      <h2>حدود التحليل والحساب</h2>
+      <p>تقدير مساحة الغبار أو الظل المرئية ليس قياساً لفقد الطاقة. الصور العادية لا تقيس الميل المطلق أو اتجاه البوصلة أو حرارة سطح اللوح، واتجاه الشمس لا يحدد درجة حرارة اللوح. يعتمد حساب خسارة الشهر على إنتاج شمسي متوقع وإنتاج فعلي للفترة نفسها وتعرفة وحدة طاقة مؤكدة؛ الفاتورة وحدها لا تثبت فقد الإنتاج. إذا استخدم سياج نموذج الطقس لتقدير الإنتاج، يعرض الافتراضات ونقص البيانات، ولا يحوّل حالة لقطة واحدة تلقائياً إلى خسارة شهرية.</p>
+
+      <h2>الأمان والتحكم</h2>
+      <p>يستخدم الموقع HTTPS عند فتحه على عنوانه المنشور، ويحفظ كلمات المرور بصيغة مشتقة ومملحة، ويستخدم ملف ارتباط جلسة لا تستطيع شفرة الواجهة قراءته مباشرة. يمكنك التحكم في إذن الموقع والإشعارات من إعدادات المتصفح، واستخدام خيارات حذف المرفقات وبيانات النظام داخل سياج.</p>
+
+      <h2>التواصل</h2>
+      <p>للاستفسار عن هذه السياسة أو بيانات حسابك، راسلنا على: <a class="contact" href="mailto:shathaalbaraa67@gmail.com">shathaalbaraa67@gmail.com</a></p>
+    </article>
+
+    <article id="policy-en" lang="en" dir="ltr" hidden>
+      <h1>Privacy Policy</h1>
+      <p class="updated">Siyaj | Solar Energy Companion — Last updated: October 10, 2026</p>
+      <p>This page explains the data Siyaj handles when you use the site and sign in. It describes the settings of the version deployed on Render as of the date shown above.</p>
+
+      <h2>Data we handle</h2>
+      <ul>
+        <li>Account data: username, email, and phone number for password-based accounts. Passwords are stored as salted derived values, not plain text. With Google sign-in, Siyaj receives the account identifier, verified email, name, and profile picture provided by Google.</li>
+        <li>System data: site name and coordinates when selected, panel details, settings and orientation, weather and dust data, confirmed capture time, bill and tariff data and production readings you enter or review, and inspection history, calculations, and recommendations. Analysis results you choose to use are stored with your account data.</li>
+        <li>Attachments: panel photos or videos and an electricity-bill image if you choose to add them. Files, including full videos, pass through Siyaj's server to a private Supabase Storage bucket when syncing succeeds, and a local copy is kept in browser storage. A bill image may contain the customer's name, address and account number; you can obscure these before requesting extraction.</li>
+        <li>Analysis requests: when Claude is enabled and you request analysis, per-account and site request counts are used to enforce usage limits and restrict excessive concurrent requests.</li>
+        <li>Browser data: app state stored locally in your browser, attachments in browser storage, and a sign-in session cookie. When you enable notifications on a device, the push subscription needed for dust alerts and cleaning-related heat warnings is stored. That device's subscription is removed when you turn it off or sign out.</li>
+      </ul>
+
+      <h2>How data is used and shared</h2>
+      <ul>
+        <li>Google is used to sign in and verify your Google account. Your browser loads fonts and the sign-in component from Google, creating direct connections to its services. Your use of Google services is also subject to Google's policies.</li>
+        <li>Open‑Meteo receives site coordinates or a city name from the server to provide weather, air-quality, and location-search data. For a monthly report, coordinates, panel tilt and orientation, and the requested period are used to retrieve radiation and weather data for generation estimates. Siyaj does not send your password or photos to Open‑Meteo.</li>
+        <li>Claude by Anthropic requires activation on Siyaj's server. When enabled and you press the panel-analysis button, Siyaj sends up to eight images or still frames in total per request, frame times, confirmed capture time, derived sun direction, supplied panel orientation measurements, and available ambient weather information. Full videos, audio, exact GPS coordinates and sign-in credentials are not sent to Claude. This analyzes selected frames and may miss scenes between samples.</li>
+        <li>Claude bill extraction: when enabled and you separately request bill extraction, the bill image is sent to Anthropic to extract the billing period, consumption, amount, charges and an unambiguous printed tariff if available. The image may include personal data you have not obscured. Extracted fields are shown for review and editing; an extracted tariff is not used for monthly-loss calculations until you confirm it. Uploading a bill or video alone does not start a paid analysis request.</li>
+        <li>Render hosts the site and Siyaj's server, which processes sign-in, sessions, synchronization, file, and weather requests.</li>
+        <li>Supabase hosts the Postgres database for accounts, salted derived password values, session records, system data, settings, inspections, and attachment metadata. Photos and videos are stored in a private Supabase Storage bucket and served through Siyaj's server after account verification. Siyaj does not use Supabase Auth for sign-in; its server verifies password accounts or Google sign-in.</li>
+        <li>Browser push services: when enabled, alert messages are delivered through your browser's push service using the subscription endpoint and keys. The server checks the weather at your saved system location daily. A scheduled Supabase job wakes Siyaj's server to run the check and retry when needed; its request contains no account or location data.</li>
+        <li>The current version has no advertising integrations or marketing-tracking tools. Device location is requested only if you choose GPS.</li>
+      </ul>
+
+      <h2>Storage and retention</h2>
+      <p>Siyaj uses browser storage for some data and syncs account, system, and inspection-history data to its Supabase database and attachments to Supabase Storage when the connection succeeds. Synced data can be retrieved on another device by opening the same site address and signing in with the same account. Files that have not synced successfully remain on the device where they were added. Account and attachment storage is separate from Render's temporary server disk, so retaining that data does not depend on the disk surviving a site restart or redeploy.</p>
+      <p>Synchronization may be temporarily unavailable if a service cannot be reached or the free Supabase project is paused for low activity. Plan limits apply to capacity and usage. Cloud storage does not replace backups: keep an independent copy of important data and files. Database backups alone do not include the contents of Storage files.</p>
+      <p>Account and app data may remain in the service database while that data exists. The site provides options to delete attachments and request removal of panel-system data. Server deletion depends on a successful request, and local copies in other browsers may remain until updated or cleared. The current version has no full account-deletion button; contact us below with questions about account data.</p>
+      <p>Anthropic's processing of submitted images and data is subject to its policies and service-account settings. Siyaj does not independently guarantee how long any external service retains data. See <a href="https://platform.claude.com/docs/en/manage-claude/api-and-data-retention" rel="noopener noreferrer">Anthropic's API data processing and retention information</a>.</p>
+
+      <h2>Analysis and calculation limits</h2>
+      <p>Estimated visible dust or shade coverage is not an energy-loss measurement. Ordinary images do not measure absolute tilt, compass bearing or panel surface temperature, and sun direction does not determine panel temperature. Monthly loss requires expected and actual solar generation for the same period and a confirmed energy unit tariff; a bill alone does not establish lost solar generation. When Siyaj uses weather to model expected generation, it discloses assumptions and missing data and does not automatically turn one sampled scene into a monthly loss.</p>
+
+      <h2>Security and controls</h2>
+      <p>The published site uses HTTPS, stores passwords as salted derived values, and uses a session cookie that client-side code cannot directly read. You can control location and notification permissions in browser settings and use Siyaj's attachment and system-data deletion options.</p>
+
+      <h2>Contact</h2>
+      <p>For questions about this policy or your account data, email: <a class="contact" href="mailto:shathaalbaraa67@gmail.com">shathaalbaraa67@gmail.com</a></p>
+    </article>
+  </main>
+  <footer><a href="/">العودة إلى سياج</a></footer>
+  <script>
+    const articles = { ar: document.getElementById('policy-ar'), en: document.getElementById('policy-en') };
+    document.querySelectorAll('[data-language]').forEach((button) => button.addEventListener('click', () => {
+      const language = button.dataset.language;
+      Object.entries(articles).forEach(([key, article]) => { article.hidden = key !== language; });
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+      document.querySelectorAll('[data-language]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+    }));
+  </script>
+</body>
+</html>

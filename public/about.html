@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f2e9">
+  <meta name="description" content="سياج يساعد أصحاب أنظمة الطاقة الشمسية على متابعة الطقس وبيانات الألواح، ومراجعة الفحوصات وتقدير الإنتاج والخسارة الشهرية وفق البيانات المتاحة.">
+  <title>سياج | رفيق الطاقة الشمسية</title>
+  <link rel="icon" href="/assets/logo.png">
+  <style>
+    :root { color-scheme: light; --paper: #f5f2e9; --card: #fffdf8; --ink: #44413a; --muted: #756f65; --line: #ddd4c5; --orange: #eb5b24; --soft: #f6e5d7; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.9 system-ui, "Segoe UI", sans-serif; }
+    a { color: #a93d16; text-underline-offset: .2em; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+    .topbar { padding: .75rem max(1.25rem, calc((100vw - 1080px) / 2)); display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--line); background: var(--card); }
+    .brand { display: flex; align-items: center; gap: .65rem; color: var(--ink); font-weight: 800; font-size: 1.4rem; text-decoration: none; }
+    .brand img { display: block; width: 60px; height: 55px; object-fit: contain; }
+    .language-switch { display: flex; gap: .4rem; }
+    .language-switch button { padding: .35rem .85rem; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); background: transparent; font: inherit; cursor: pointer; }
+    .language-switch button[aria-pressed="true"] { color: white; background: var(--orange); border-color: var(--orange); }
+    main { width: min(1080px, calc(100% - 2.5rem)); margin: 2rem auto 3rem; }
+    .hero { display: grid; grid-template-columns: 1.6fr 1fr; align-items: center; gap: 2rem; padding: clamp(1.4rem, 4vw, 3rem); background: var(--card); border: 1px solid var(--line); border-radius: 1.6rem; }
+    .eyebrow { margin: 0 0 .5rem; color: #a93d16; font-size: .9rem; font-weight: 700; }
+    h1 { margin: 0 0 1rem; font-size: clamp(1.8rem, 4.4vw, 3rem); line-height: 1.45; }
+    h2 { margin: 0 0 .8rem; font-size: 1.5rem; line-height: 1.6; }
+    h3 { margin: .4rem 0; font-size: 1.1rem; }
+    p { margin: .5rem 0; color: var(--muted); }
+    .hero-logo { display: block; width: min(100%, 320px); max-height: 275px; object-fit: contain; margin: auto; }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+    .button { display: inline-block; padding: .65rem 1.5rem; border-radius: .8rem; background: var(--orange); color: white; font-weight: 700; text-decoration: none; }
+    .section { margin-top: 2.5rem; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .card { padding: 1.3rem; background: var(--card); border: 1px solid var(--line); border-radius: 1.1rem; }
+    .card p { font-size: .95rem; }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 0; padding: 0; list-style: none; counter-reset: steps; }
+    .steps li { padding: 1.3rem; border: 1px solid var(--line); border-radius: 1.1rem; counter-increment: steps; }
+    .steps li::before { content: counter(steps); display: grid; place-items: center; width: 2.3rem; height: 2.3rem; margin-bottom: .8rem; border-radius: 50%; background: var(--soft); color: #a93d16; font-weight: 800; }
+    .steps p { font-size: .94rem; }
+    .details { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .details h2 { font-size: 1.2rem; }
+    .notice { margin-top: 1.4rem; padding: 1rem 1.25rem; border-inline-start: 4px solid var(--orange); border-radius: .6rem; background: var(--soft); }
+    .notice p { color: var(--ink); font-size: .95rem; }
+    footer { padding: 1.25rem; border-top: 1px solid var(--line); text-align: center; color: var(--muted); font-size: .9rem; }
+    [hidden] { display: none !important; }
+    @media (max-width: 760px) { .hero { grid-template-columns: 1fr; gap: 1rem; } .hero-logo { width: 210px; max-height: 170px; } .cards, .details { grid-template-columns: 1fr; } .steps { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 440px) { .topbar { padding: .6rem 1rem; } .brand { gap: .3rem; font-size: 1.2rem; } .brand img { width: 47px; height: 44px; } .language-switch button { padding: .25rem .6rem; font-size: .9rem; } main { width: calc(100% - 2rem); margin-top: 1rem; } .steps { grid-template-columns: 1fr; } .section { margin-top: 1.8rem; } }
+  </style>
+  <noscript><style>.language-switch { display: none; } #about-en[hidden] { display: block !important; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ddd4c5; }</style></noscript>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/about.html"><img src="/assets/logo.png" alt=""><span>سياج</span></a>
+    <nav class="language-switch" aria-label="Language / اللغة">
+      <button type="button" data-language="ar" aria-controls="about-ar" aria-pressed="true">العربية</button>
+      <button type="button" data-language="en" aria-controls="about-en" aria-pressed="false">English</button>
+    </nav>
+  </header>
+  <main>
+    <article id="about-ar" lang="ar" dir="rtl">
+      <section class="hero" aria-labelledby="heading-ar">
+        <div>
+          <p class="eyebrow">سياج · رفيق الطاقة الشمسية</p>
+          <h1 id="heading-ar">تابع نظامك الشمسي، خطوة بخطوة</h1>
+          <p>يساعد سياج أصحاب المنازل ومشغّلي أنظمة الطاقة الشمسية على جمع بيانات الألواح والطقس، ومراجعة حالتها، وتقدير الإنتاج والفقد وفق البيانات المتاحة، والرجوع إلى سجل الفحوصات.</p>
+          <p>ابدأ ببيانات نظامك وموقعه لتكوين صورة أوضح عن ظروف الألواح.</p>
+          <div class="actions"><a class="button" href="/">فتح سياج وتسجيل الدخول</a><a href="/privacy.html">سياسة الخصوصية</a></div>
+        </div>
+        <img class="hero-logo" src="/assets/logo.png" alt="شعار سياج">
+      </section>
+      <section class="section" aria-labelledby="features-ar">
+        <h2 id="features-ar">ماذا يمكنك متابعة؟</h2>
+        <div class="cards">
+          <div class="card"><h3>الطقس حول الألواح</h3><p>حدد المدينة أو استخدم موقع جهازك بإذنك لجلب بيانات الطقس وجودة الهواء المتاحة للموقع.</p></div>
+          <div class="card"><h3>خسارة الشهر</h3><p>قارن الإنتاج الشمسي المتوقع والفعلي للفترة نفسها، وأكد تعرفة وحدة الطاقة لحساب أثر الفقد المالي. الفاتورة وحدها لا تقيس إنتاج الألواح.</p></div>
+          <div class="card"><h3>سجل الفحوصات</h3><p>راجع بيانات النظام والنتائج السابقة، وأضف صور الألواح أو مقاطعها لتوثيق حالتها.</p></div>
+        </div>
+      </section>
+      <section class="section" aria-labelledby="steps-ar">
+        <h2 id="steps-ar">كيف تبدأ؟</h2>
+        <ol class="steps">
+          <li><h3>البيئة والموقع</h3><p>أدخل ظروف النظام وحدد موقعه لجلب الطقس.</p></li>
+          <li><h3>بيانات الألواح</h3><p>أضف مواصفات الألواح والصور أو الفيديو الذي تريد حفظه.</p></li>
+          <li><h3>فاتورة الكهرباء</h3><p>أدخل البيانات، أو اطلب قراءة صورة الفاتورة عند تفعيل Claude؛ راجع القيم وأكد التعرفة.</p></li>
+          <li><h3>المراجعة والمتابعة</h3><p>راجع البيانات ثم اطلع على الملخص والتقديرات وسجل الفحوصات.</p></li>
+        </ol>
+      </section>
+      <section class="section card" aria-labelledby="claude-ar">
+        <h2 id="claude-ar">تحليل الألواح والفاتورة باستخدام Claude</h2>
+        <p>عند تفعيل الخدمة، يمكنك طلب وصف الغبار والظل الظاهرين في صور الألواح أو لقطات مختارة من الفيديو، مع ملاحظات على تركيب الألواح وسياق اتجاه الشمس ووقت التصوير. ويمكنك طلب قراءة صورة الفاتورة ومراجعة الحقول المستخرجة وتعديلها. رفع الملف وحده لا يبدأ التحليل.</p>
+        <p>يتلقى Claude حتى ثماني صور أو لقطات إجمالاً لكل تحليل ألواح، أو صورة الفاتورة في طلب مستقل. لا يتلقى الفيديو الكامل أو الصوت أو إحداثيات GPS الدقيقة. مساحة الغبار أو الظل الظاهرة ليست نسبة فقد كهربائي، والصورة العادية لا تقيس ميل اللوح المطلق أو اتجاه البوصلة أو حرارة سطحه. تحتاج خسارة الشهر إلى بيانات إنتاج لنفس الفترة؛ تُعرض الافتراضات عند استخدام نموذج الطقس.</p>
+      </section>
+      <section class="section details" aria-label="الحساب والبيانات">
+        <div class="card"><h2>تسجيل الدخول باستخدام Google</h2><p>يمكنك إنشاء حساب بكلمة مرور أو اختيار Google للدخول إلى سياج. عند استخدام Google، يتلقى سياج معرّف الحساب والاسم والبريد الإلكتروني الموثق وصورة الملف الشخصي المتاحة لإنشاء حسابك والتحقق من تسجيل الدخول.</p></div>
+        <div class="card"><h2>بياناتك وخصوصيتك</h2><p>تعرف على البيانات المستخدمة وكيفية حفظها والخدمات التي يعتمد عليها الموقع في <a href="/privacy.html">سياسة الخصوصية</a>. استخدام GPS وإضافة المرفقات اختياريان.</p></div>
+      </section>
+      <aside class="notice"><p>النتائج تقديرات تعتمد على البيانات التي تدخلها والطقس المتاح. تُحفظ بيانات الحساب في Supabase والصور والفيديوهات في حاوية خاصة، ويمكن استرجاع ما تمت مزامنته من جهاز آخر بالحساب نفسه. قد تتعطل المزامنة مؤقتاً عند انقطاع الاتصال أو توقف الخدمات المجانية؛ احتفظ بنسخة مستقلة من بياناتك المهمة.</p></aside>
+    </article>
+    <article id="about-en" lang="en" dir="ltr" hidden>
+      <section class="hero" aria-labelledby="heading-en">
+        <div>
+          <p class="eyebrow">Siyaj · Solar Energy Companion</p>
+          <h1 id="heading-en">Follow your solar system, step by step</h1>
+          <p>Siyaj helps homeowners and solar-system operators collect panel and weather data, review panel condition, estimate generation and losses from available information, and review inspection history.</p>
+          <p>Start with your system details and location to understand the conditions around your panels.</p>
+          <div class="actions"><a class="button" href="/">Open Siyaj and sign in</a><a href="/privacy.html">Privacy policy</a></div>
+        </div>
+        <img class="hero-logo" src="/assets/logo.png" alt="Siyaj logo">
+      </section>
+      <section class="section" aria-labelledby="features-en">
+        <h2 id="features-en">What can you track?</h2>
+        <div class="cards">
+          <div class="card"><h3>Weather around your panels</h3><p>Select a city or allow access to your device location to retrieve available local weather and air-quality data.</p></div>
+          <div class="card"><h3>Monthly loss</h3><p>Compare expected and actual solar generation for the same period and confirm an energy unit tariff to estimate the financial effect. A bill alone does not measure panel generation.</p></div>
+          <div class="card"><h3>Inspection history</h3><p>Review system details and previous results, and add panel photos or videos to document their condition.</p></div>
+        </div>
+      </section>
+      <section class="section" aria-labelledby="steps-en">
+        <h2 id="steps-en">How do you start?</h2>
+        <ol class="steps">
+          <li><h3>Environment and location</h3><p>Enter your system's conditions and choose its location for weather data.</p></li>
+          <li><h3>Panel details</h3><p>Add panel specifications and photos or a video you want to save.</p></li>
+          <li><h3>Electricity bill</h3><p>Enter the data, or request bill-image extraction when Claude is enabled; review the fields and confirm the tariff.</p></li>
+          <li><h3>Review and follow up</h3><p>Check your details, then view the summary, estimates, and inspection history.</p></li>
+        </ol>
+      </section>
+      <section class="section card" aria-labelledby="claude-en">
+        <h2 id="claude-en">Panel and bill analysis with Claude</h2>
+        <p>When the service is enabled, you can request descriptions of visible dust and shade in panel photos or selected video frames, with qualitative mounting observations and context from sun direction and capture time. You can separately request bill-image extraction, then review and edit the fields. Uploading a file alone does not start analysis.</p>
+        <p>Claude receives up to eight images or frames in total for each panel request, or a bill image in a separate request. It does not receive the full video, audio or exact GPS coordinates. Visible dust or shade area is not an electrical-loss percentage, and an ordinary image does not measure absolute tilt, compass bearing or panel surface temperature. Monthly loss requires generation data for the same period; assumptions are disclosed when weather is used to model generation.</p>
+      </section>
+      <section class="section details" aria-label="Account and data">
+        <div class="card"><h2>Sign in with Google</h2><p>Create a password account or choose Google to sign in to Siyaj. With Google, Siyaj receives your account identifier, name, verified email, and available profile picture to create your account and verify sign-in.</p></div>
+        <div class="card"><h2>Your data and privacy</h2><p>Read the <a href="/privacy.html">privacy policy</a> for the data used, how it is stored, and the services the site relies on. GPS and attachments are optional.</p></div>
+      </section>
+      <aside class="notice"><p>Results are estimates based on the data you enter and available weather information. Account data is stored in Supabase, with photos and videos in a private bucket. Synced data can be retrieved on another device with the same account. Synchronization may be temporarily unavailable if the connection fails or a free service pauses. Keep an independent copy of important data.</p></aside>
+    </article>
+  </main>
+  <footer><a id="footer-privacy" href="/privacy.html">سياسة الخصوصية</a> · <a id="footer-app" href="/">فتح سياج</a></footer>
+  <script>
+    const articles = { ar: document.getElementById('about-ar'), en: document.getElementById('about-en') };
+    document.querySelectorAll('[data-language]').forEach((button) => button.addEventListener('click', () => {
+      const language = button.dataset.language;
+      Object.entries(articles).forEach(([key, article]) => { article.hidden = key !== language; });
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+      document.querySelectorAll('[data-language]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+      document.getElementById('footer-privacy').textContent = language === 'ar' ? 'سياسة الخصوصية' : 'Privacy policy';
+      document.getElementById('footer-app').textContent = language === 'ar' ? 'فتح سياج' : 'Open Siyaj';
+    }));
+  </script>
+</body>
+</html>
