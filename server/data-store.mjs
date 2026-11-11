@@ -255,9 +255,14 @@ async function ensurePostgres() {
         )
       `);
       // Accounts use Siyaj's server auth. Supabase's browser roles must never read the shared state.
+      // Plain Postgres (Render, RDS, Cloud SQL) has no anon/authenticated roles, so revoke only what exists.
+      const browserRoles = (await client.query(
+        "SELECT rolname FROM pg_roles WHERE rolname IN ('anon', 'authenticated')",
+      )).rows.map((row) => row.rolname);
+      const revokeTargets = ['PUBLIC', ...browserRoles].join(', ');
       for (const table of ['siyaj_app_state', 'app_settings', 'panel_analyses']) {
         await client.query(`ALTER TABLE public.${table} ENABLE ROW LEVEL SECURITY`);
-        await client.query(`REVOKE ALL ON TABLE public.${table} FROM PUBLIC, anon, authenticated`);
+        await client.query(`REVOKE ALL ON TABLE public.${table} FROM ${revokeTargets}`);
       }
       await client.query(
         'INSERT INTO public.siyaj_app_state (id, state) VALUES (1, $1::jsonb) ON CONFLICT (id) DO NOTHING',
