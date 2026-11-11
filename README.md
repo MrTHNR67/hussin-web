@@ -159,6 +159,7 @@
 ## التشغيل السحابي (Cloud / Scaling / IAM)
 
 - [docs/cloud-native.md](docs/cloud-native.md) — خدمة الطقس المستقلة، نمط Serverless، وعوامل 12-Factor.
+- [docs/network.md](docs/network.md) — تصميم الشبكة الافتراضية والتقسيم والتوجيه وقواعد الجدار الناري.
 - [docs/scaling.md](docs/scaling.md) — `/healthz` و`/readyz`، Nginx، ثلاث نسخ، وسياسة التوسّع التلقائي.
 - [docs/iam.md](docs/iam.md) — رؤوس الأمان وCSP، حدود المحاولات وقفل الحساب، سجل التدقيق، والأدوار.
 
