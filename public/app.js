@@ -2795,7 +2795,7 @@ async function handleSignup(event) {
     });
     const session = await response.json();
     if (!response.ok) throw new Error(session.error || 'تعذر إنشاء الحساب.');
-    await finishServerAuth(session, state); showToast('تم إنشاء الحساب وحفظه على الخادم.'); await continueAfterAuth();
+    await finishServerAuth(session, state); const signupDev = session?.user?.role === 'developer'; showToast(signupDev ? 'Welcome dev' : ('تم إنشاء الحساب وحفظه على الخادم.'); await continueAfterAuth();
   } catch (error) { showToast(error.message || 'تعذر إنشاء الحساب.'); }
 }
 async function handleLogin(event) {
@@ -2826,7 +2826,7 @@ async function handleLogin(event) {
       else throw new Error(session.error || 'لم نعثر على الحساب. أنشئ حساباً جديداً.');
     } else if (!response.ok) throw new Error(session.error || 'تعذر تسجيل الدخول.');
     const legacy = readAccounts().find((item) => item.email === identifier.toLowerCase() || item.phoneKey === normalizedPhone(identifier) || item.usernameKey === normalizedUsername(identifier));
-    await finishServerAuth(session, seedState, legacy?.id); showToast('تم تسجيل الدخول ومزامنة بياناتك.'); await continueAfterAuth();
+    await finishServerAuth(session, seedState, legacy?.id); const loginDev = session?.user?.role === 'developer'; showToast(loginDev ? 'Welcome dev' : ('تم تسجيل الدخول ومزامنة بياناتك.'); await continueAfterAuth();
   } catch (error) { showToast(error.message || 'تعذر تسجيل الدخول.'); }
 }
 let googleSignInReady = false;

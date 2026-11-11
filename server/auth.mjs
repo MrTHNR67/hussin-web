@@ -19,10 +19,21 @@ function adminEmails() {
     .split(',').map((value) => value.trim().toLowerCase()).filter(Boolean);
 }
 function developerCredentials() {
-  return {
-    email: String(process.env.SIYAJ_DEV_EMAIL || '').trim().toLowerCase(),
-    password: String(process.env.SIYAJ_DEV_PASSWORD || ''),
-  };
+  const pairs = [];
+  const list = String(process.env.SIYAJ_DEV_ACCOUNTS || '').trim();
+  if (list) {
+    for (const part of list.split(',')) {
+      const [email, password] = part.split(':');
+      if (email && password) pairs.push({ email: email.trim().toLowerCase(), password: password.trim() });
+    }
+  }
+  const singleEmail = String(process.env.SIYAJ_DEV_EMAIL || '').trim().toLowerCase();
+  const singlePassword = String(process.env.SIYAJ_DEV_PASSWORD || '');
+  if (singleEmail && singlePassword) pairs.push({ email: singleEmail, password: singlePassword });
+  return pairs;
+}
+function isDeveloperAccount(email, password) {
+  return developerCredentials().some((pair) => pair.email === String(email || '').trim().toLowerCase() && pair.password === String(password || ''));
 }
 function roleFor(user) {
   if (user?.role === 'developer') return 'developer';
@@ -65,11 +76,10 @@ export async function registerAccount(input) {
   const valid = checkNewUser(input);
   const salt = randomBytes(16).toString('hex');
   const passwordHash = (await derivePassword(String(input.password), salt)).toString('hex');
-  const dev = developerCredentials();
-  const isDeveloperAccount = Boolean(dev.email && dev.password && valid.email === dev.email && String(input.password || '') === dev.password);
+  const isDeveloperAccountValue = isDeveloperAccount(valid.email, input.password);
   const user = {
     id: randomUUID(), ...valid, password_salt: salt, password_hash: passwordHash,
-    name: valid.username, picture: '', google_sub: '', role: isDeveloperAccount ? 'developer' : 'user', created_at: new Date().toISOString(),
+    name: valid.username, picture: '', google_sub: '', role: isDeveloperAccountValue ? 'developer' : 'user', created_at: new Date().toISOString(),
   };
   await updateDatabase((db) => {
     if (Object.values(db.users).some((item) => item.username_key === user.username_key)) throw new AuthError('اسم المستخدم مستخدم بالفعل؛ اختر اسماً آخر.', 409);
