@@ -30,7 +30,8 @@
 ## Current deployment facts
 
 - Render web service `siyaj-web` (free plan, Frankfurt) deployed from `main` with auto-deploy.
-- Render Postgres `siyaj-db` (free plan, 1 GB, expires 2026-12-11).
+- Render Postgres `siyaj-db` (free plan, 1 GB, expires 2026-12-11); external IP allow-list pinned to a
+  non-routable TEST-NET range, so only the internal application network can connect.
 - Health checks: `/healthz` (liveness), `/readyz` (readiness).
 - Local evidence stack: 3 Node instances (3001–3003) behind Nginx `:8080`, metrics on loopback `:8081`,
   `SiyajAlwaysOn` keeps instances alive, `SiyajBackup` takes a verified database backup every 5 minutes.

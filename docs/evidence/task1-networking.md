@@ -82,7 +82,7 @@ client -> Nginx :8080 (only public listener) -> least_conn -> 127.0.0.1:3001/300
 | Internet → application | 443 | public | managed edge, TLS 1.3, HSTS, CSP |
 | Internet → application | 80 | public | 301 redirect to HTTPS |
 | App → Postgres | 5432 | private/internal hostname | Render internal network, TLS, dedicated role |
-| Postgres external endpoint | 5432 | reachable on the Internet | password + TLS required; **IP allow-list pinning recommended** (see limitations) |
+| Postgres external endpoint | 5432 | edge proxy only (sessions dropped) | IP allow-list pinned to RFC 5737 TEST-NET-3; external `pg` sessions rejected (17:32) |
 | App → weather/identity APIs | 443 | outbound only | CSP `connect-src` allow-list, no inbound opening |
 | Metrics endpoint (local) | 8081 | loopback only | `listen 127.0.0.1:8081`, `allow 127.0.0.1; deny all;` |
 | Backends (local) | 3001–3003 | loopback only | bound to 127.0.0.1, only Nginx is public |
@@ -168,8 +168,9 @@ Observed: public listener 200/301 as above; `/nginx_status` on 8080 = **404**; m
 - The production endpoint is **PaaS**: the VPC/subnet/NSG layout is governed by Render, not by the
   IaC in `deploy/`. The IaC is the executable design for a provider-native deployment and was not
   applied (no cloud account/card).
-- Render Postgres exposes an external endpoint on 5432 by default. The app uses the internal URL;
-  the next hardening step is to pin the database IP allow-list to the operator's address.
+- The provider edge still accepts TCP 5432 on the database hostname, but the IP allow-list is pinned
+  to a non-routable TEST-NET range, so external PostgreSQL sessions are dropped (verified). Running
+  `pg_dump` requires temporarily allow-listing the operator's IP.
 - Single region (Frankfurt) for cost; multi-region would require a second service + DB replica and a
   global load balancer (documented, not deployed).
 - The local tunnel (`trycloudflare`) is a development convenience only; the stable public URL is the

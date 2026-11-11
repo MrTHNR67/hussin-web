@@ -97,5 +97,5 @@ Remove-Item -Recurse -Force .run, backups, data\siyaj.sqlite*
 
 - Free Render service sleeps after 15 minutes idle; free Postgres expires **2026-12-11**.
 - Public endpoint is PaaS; the Azure/GCP VPC/NSG designs are executable but were not applied.
-- Single region; no WAF/MFA yet; Render Postgres external endpoint requires IP allow-list pinning.
+- Single region; no WAF/MFA yet; Render Postgres external access is IP-restricted (allow-list pinned).
 - Uploaded media on Render is ephemeral across redeploys (object storage supported but not enabled).

@@ -173,9 +173,10 @@ optional Supabase/Claude/Google/SMTP keys) or in the operator's environment; `.e
 never committed.
 
 **Protected network/data.** Only 443 is public; the app uses the database's private hostname. The
-database requires password + TLS. Toolkit-style hardening (IP allow-list pinning, per-user media
-paths, upload type/size limits, CORS/CSP allow-lists) is documented, and the Azure/GCP IaC encodes
-the fully private two-tier design with NSG/firewall denies for SSH and 5432.
+database's external IP allow-list is pinned to a non-routable RFC 5737 TEST-NET range (verified:
+external `pg` sessions are dropped), so normal traffic and any Internet client both go through the
+internal path or nowhere. Upload type/size limits, per-user media paths, CORS/CSP allow-lists, and
+the fully private two-tier NSG/firewall design in the Azure/GCP IaC complete the boundary.
 
 ---
 
@@ -240,8 +241,9 @@ used.
    autoscaling; elasticity evidence comes from the controlled local cluster + the IaC policies.
 2. The public endpoint is PaaS: VPC/NSG controls are provider-managed; the Azure/GCP templates were
    reviewed but not applied (no cloud account/card was available to the team).
-3. Render Postgres has an external endpoint (TCP 5432 reachable) protected by password + TLS; pinning
-   its IP allow-list is the next hardening step.
+3. Render Postgres still accepts TCP 5432 at the provider edge, but its IP allow-list is pinned to a
+   non-routable TEST-NET range and external sessions are dropped (verified). Running `pg_dump`
+   requires temporarily allow-listing the operator's IP.
 4. The local HA demo isolates components, not hosts (all three processes share one machine); host and
    zone redundancy are delivered by the IaC designs and by Render's platform.
 5. Single region (Frankfurt). Multi-region was intentionally skipped: it doubles cost and earns no

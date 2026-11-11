@@ -41,6 +41,8 @@ snapshot is a consistent logical backup for this deployment.
    ```bash
    pg_dump "$DATABASE_URL" --format=custom --no-owner --file=siyaj-$(date +%Y%m%d-%H%M).dump
    ```
+   The database IP allow-list is pinned to a non-routable range (Task 6), so an operator running
+   `pg_dump` must temporarily add their public IP in the Render dashboard/API and remove it after.
 3. **Restore** into a clean database, then point the service at it:
    ```bash
    pg_restore --clean --if-exists --no-owner --dbname "$DATABASE_URL" siyaj-YYYYMMDD-HHMM.dump
