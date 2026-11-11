@@ -22,6 +22,12 @@ const mediaBucket = String(process.env.SUPABASE_STORAGE_BUCKET || 'siyaj-media')
 const remoteStorageRequested = Boolean(supabaseUrl || supabaseSecretKey);
 const remoteStorageConfigured = Boolean(supabaseUrl && supabaseSecretKey && mediaBucket);
 const databaseSslCa = String(process.env.DATABASE_SSL_CA || '').trim().replace(/\\n/g, '\n');
+const databaseSslMode = String(process.env.DATABASE_SSL || '').trim().toLowerCase();
+// "false" disables TLS (loopback networks only), "no-verify" keeps TLS but accepts
+// managed-provider certificates that are not in Node's trust store (e.g. Render internal).
+const databaseSsl = databaseSslMode === 'false'
+  ? false
+  : { rejectUnauthorized: databaseSslMode !== 'no-verify', ...(databaseSslCa ? { ca: databaseSslCa } : {}) };
 function verifiedDatabaseConnectionString(value) {
   let url;
   try { url = new URL(value); }
@@ -39,7 +45,7 @@ function verifiedDatabaseConnectionString(value) {
 }
 const pool = databaseUrl ? new pg.Pool({
   connectionString: verifiedDatabaseConnectionString(databaseUrl),
-  ssl: { rejectUnauthorized: true, ...(databaseSslCa ? { ca: databaseSslCa } : {}) },
+  ssl: databaseSsl,
   max: 2,
   connectionTimeoutMillis: 12_000,
   idleTimeoutMillis: 30_000,
