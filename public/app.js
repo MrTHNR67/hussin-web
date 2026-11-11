@@ -1,309 +1,309 @@
-﻿const STORAGE_KEY = 'siyaj.solarGuardian.v1';
+const STORAGE_KEY = 'siyaj.solarGuardian.v1';
 const DB_NAME = 'siyaj-local-media';
 const DB_STORE = 'attachments';
 const STEPS = [
-  { title: 'Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¨ÙŠØ¦Ø© ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹', short: 'Ø§Ù„Ø¨ÙŠØ¦Ø© ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹', description: 'Ø£Ø®Ø¨Ø±Ù†Ø§ Ø¹Ù† Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ§Ù„Ø¸Ø±ÙˆÙ Ø§Ù„Ù…Ø­ÙŠØ·Ø© Ø¨Ø§Ù„Ø£Ù„ÙˆØ§Ø­.' },
-  { title: 'Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø£Ù„ÙˆØ§Ø­', short: 'Ø§Ù„Ø£Ù„ÙˆØ§Ø­', description: 'Ø£Ø¶Ù Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆØ£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù‚ØµÙŠØ±Ø§Ù‹ Ù„ÙØ­ØµÙ‡Ø§ Ø¨ØµØ±ÙŠØ§Ù‹.' },
-  { title: 'ÙØ§ØªÙˆØ±Ø© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡', short: 'Ø§Ù„ÙØ§ØªÙˆØ±Ø©', description: 'ØªØ³Ø§Ø¹Ø¯Ù†Ø§ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¹Ù„Ù‰ ØªÙ‚Ø¯ÙŠØ± Ù‚ÙŠÙ…Ø© Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙŠ Ù‚Ø¯ ØªÙÙ‚Ø¯Ù‡Ø§.' },
-  { title: 'ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª', short: 'Ø§Ù„ØªØ£ÙƒÙŠØ¯', description: 'Ø±Ø§Ø¬Ø¹ Ù…Ù„Ø®Øµ Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ù‚Ø¨Ù„ Ø£Ù† ÙŠØ¨Ø¯Ø£ Ø³ÙŠØ§Ø¬ Ø¨ØªØ­Ù„ÙŠÙ„ Ù†Ø¸Ø§Ù…Ùƒ.' },
+  { title: 'أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ¨أ™إ أکآ¦أکآ© أ™ث†أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹', short: 'أکآ§أ™â€‍أکآ¨أ™إ أکآ¦أکآ© أ™ث†أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹', description: 'أکآ£أکآ®أکآ¨أکآ±أ™â€ أکآ§ أکآ¹أ™â€  أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™ث†أکآ§أ™â€‍أکآ¸أکآ±أ™ث†أ™آپ أکآ§أ™â€‍أ™â€¦أکآ­أ™إ أکآ·أکآ© أکآ¨أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­.' },
+  { title: 'أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', short: 'أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', description: 'أکآ£أکآ¶أ™آپ أ™â€¦أکآ¹أ™â€‍أ™ث†أ™â€¦أکآ§أکآھ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™â€¦أ™â€ڑأکآ·أکآ¹أکآ§أ™â€¹ أ™â€ڑأکآµأ™إ أکآ±أکآ§أ™â€¹ أ™â€‍أ™آپأکآ­أکآµأ™â€،أکآ§ أکآ¨أکآµأکآ±أ™إ أکآ§أ™â€¹.' },
+  { title: 'أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ§أ™â€‍أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ،', short: 'أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©', description: 'أکآھأکآ³أکآ§أکآ¹أکآ¯أ™â€ أکآ§ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ¹أ™â€‍أ™â€° أکآھأ™â€ڑأکآ¯أ™إ أکآ± أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآھأ™إ  أ™â€ڑأکآ¯ أکآھأ™آپأ™â€ڑأکآ¯أ™â€،أکآ§.' },
+  { title: 'أکآھأکآ£أ™ئ’أ™إ أکآ¯ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ', short: 'أکآ§أ™â€‍أکآھأکآ£أ™ئ’أ™إ أکآ¯', description: 'أکآ±أکآ§أکآ¬أکآ¹ أ™â€¦أ™â€‍أکآ®أکآµ أکآ§أ™â€‍أ™â€¦أکآ¹أ™â€‍أ™ث†أ™â€¦أکآ§أکآھ أ™â€ڑأکآ¨أ™â€‍ أکآ£أ™â€  أ™إ أکآ¨أکآ¯أکآ£ أکآ³أ™إ أکآ§أکآ¬ أکآ¨أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’.' },
 ];
 // Search aliases support familiar spellings; free text also accepts unlisted and legacy brands.
 const PANEL_MANUFACTURERS = [
-  ['Sheida Solar', ['Sheida', 'Ø´ÙŠØ¯Ø§', 'Ø´ÙŠØ¯Ø©']],
-  ['Desert Technologies', ['DT', 'Ø¯ÙŠØ²Ø±Øª ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ²', 'ØªÙ‚Ù†ÙŠØ§Øª Ø§Ù„ØµØ­Ø±Ø§Ø¡']],
-  ['Philadelphia Solar', ['Philadelphia', 'ÙÙŠÙ„Ø§Ø¯Ù„ÙÙŠØ§', 'ÙÙŠÙ„Ø§Ø¯Ù„ÙÙŠØ§ Ø³ÙˆÙ„Ø§Ø±']],
-  ['DuSol', ['Dusol', 'Ø¯Ùˆ Ø³ÙˆÙ„', 'Ø¯ÙˆØ³ÙˆÙ„']],
-  ['JinkoSolar', ['Jinko', 'Jinko Solar', 'Ø¬ÙŠÙ†ÙƒÙˆ', 'Ø¬Ù†ÙƒÙˆ']],
-  ['JA Solar', ['JASolar', 'JA', 'Ø¬ÙŠ Ø§ÙŠ', 'Ø¬ÙŠ Ø¥ÙŠÙ‡', 'Ø¬Ø§ Ø³ÙˆÙ„Ø§Ø±']],
-  ['LONGi Solar', ['LONGi', 'Ù„ÙˆÙ†Ø¬ÙŠ', 'Ù„ÙˆÙ†ØºÙŠ', 'Ù„ÙˆÙ†Ø¬Ù‰']],
-  ['Trina Solar', ['Trina', 'Trinasolar', 'ØªØ±ÙŠÙ†Ø§']],
-  ['Canadian Solar', ['Canadian', 'CSI Solar', 'ÙƒÙ†Ø¯ÙŠØ§Ù†', 'ÙƒØ§Ù†Ø§Ø¯ÙŠØ§Ù†', 'ÙƒÙ†Ø¯ÙŠ']],
-  ['Qcells', ['Q Cells', 'Q-Cells', 'Hanwha', 'ÙƒÙŠÙˆ Ø³ÙŠÙ„Ø²', 'Ù‡Ø§Ù†ÙˆØ§']],
-  ['REC', ['REC Group', 'Ø§Ø± Ø§ÙŠ Ø³ÙŠ', 'Ø¢Ø± Ø¥ÙŠ Ø³ÙŠ', 'Ø±ÙŠÙƒ']],
-  ['Maxeon', ['Maxeon Solar', 'Ù…Ø§ÙƒØ³ÙŠÙˆÙ†', 'Ù…Ø§ÙƒØ³ÙˆÙ†']],
-  ['SunPower', ['Sun Power', 'ØµÙ† Ø¨Ø§ÙˆØ±', 'Ø³Ø§Ù† Ø¨Ø§ÙˆØ±']],
-  ['First Solar', ['First', 'ÙÙŠØ±Ø³Øª Ø³ÙˆÙ„Ø§Ø±', 'ÙÙŠØ±Ø³Øª']],
-  ['Astronergy', ['CHINT', 'Chint Solar', 'Astro Energy', 'Ø£Ø³ØªØ±ÙˆÙ†Ø±Ø¬ÙŠ', 'Ø§Ø³ØªØ±ÙˆÙ†Ø±Ø¬ÙŠ', 'Ø´ÙŠÙ†Øª']],
-  ['Risen Energy', ['Risen', 'Ø±ÙŠØ²Ù†', 'Ø±Ø§ÙŠØ²Ù†']],
-  ['Tongwei Solar', ['TW Solar', 'Tongwei', 'ØªÙˆÙ†ØºÙˆÙŠ', 'ØªÙˆÙ†Ø¬ÙˆÙŠ', 'ØªÙŠ Ø¯Ø¨Ù„ÙŠÙˆ']],
-  ['DMEGC Solar', ['DMEGC', 'Hengdian', 'Ø¯ÙŠ Ø§Ù… Ø§ÙŠ Ø¬ÙŠ Ø³ÙŠ', 'Ø¯ÙŠ Ø¥Ù… Ø¥ÙŠ Ø¬ÙŠ Ø³ÙŠ']],
-  ['AIKO', ['Aiko Solar', 'Aiko Energy', 'Ø£ÙŠÙƒÙˆ', 'Ø§ÙŠÙƒÙˆ']],
-  ['DAS Solar', ['DAS', 'Ø¯Ø§Ø³', 'Ø¯Ø§Ø³ Ø³ÙˆÙ„Ø§Ø±']],
-  ['Huasun', ['Huasun Solar', 'Ù‡ÙˆØ§Ø³Ù†', 'Ù‡ÙˆØ§Ø³Ø§Ù†']],
-  ['Seraphim', ['Seraphim Solar', 'Ø³ÙŠØ±Ø§ÙÙŠÙ…', 'Ø³Ø±Ø§ÙÙŠÙ…']],
-  ['PHONO Solar', ['Phono', 'SUMEC', 'ÙÙˆÙ†Ùˆ', 'ÙÙˆÙ†Ùˆ Ø³ÙˆÙ„Ø§Ø±']],
-  ['Talesun', ['Talesun Solar', 'ØªØ§ÙŠÙ„Ø³Ù†', 'ØªØ§Ù„ÙŠØ³Ù†']],
-  ['Suntech', ['Suntech Power', 'Sun Tech', 'ØµÙ† ØªÙƒ', 'Ø³Ø§Ù†ØªÙƒ', 'Ø³Ù†ØªÙƒ']],
-  ['Yingli Solar', ['Yingli', 'ÙŠÙ†Ø¬Ù„ÙŠ', 'ÙŠÙ†ØºÙ„ÙŠ']],
-  ['GCL System Integration', ['GCL', 'GCL SI', 'GCL Solar', 'Ø¬ÙŠ Ø³ÙŠ Ø§Ù„', 'Ø¬ÙŠ Ø³ÙŠ Ø¥Ù„']],
-  ['EGing PV', ['Eging', 'Ø§ÙŠØ¬ÙŠÙ†Ø¬', 'Ø¥ÙŠØ¬ÙŠÙ†Øº']],
-  ['Jolywood', ['Jolywood Solar', 'Ø¬ÙˆÙ„ÙŠ ÙˆÙˆØ¯', 'Ø¬ÙˆÙ„ÙŠÙˆÙˆØ¯']],
-  ['ZNShine Solar', ['Znshine', 'Ø²ÙŠÙ†Ø´Ø§ÙŠÙ†', 'Ø²Ø¯ Ø§Ù† Ø´Ø§ÙŠÙ†']],
-  ['Sunova Solar', ['Sunova', 'ØµÙ†ÙˆÙØ§', 'Ø³Ø§Ù†ÙˆÙØ§']],
-  ['URE', ['United Renewable Energy', 'ÙŠÙˆ Ø¢Ø± Ø¥ÙŠ', 'ÙŠÙˆ Ø§Ø± Ø§ÙŠ']],
-  ['VSUN', ['VSUN Solar', 'Vietnam Sunergy', 'ÙÙŠ ØµÙ†', 'ÙÙŠ Ø³Ø§Ù†']],
-  ['Sharp', ['Sharp Solar', 'Ø´Ø§Ø±Ø¨']],
-  ['Waaree', ['Waaree Energies', 'ÙˆØ§Ø±ÙŠ', 'ÙˆØ§Ø±ÙŠÙŠ']],
-  ['Vikram Solar', ['Vikram', 'ÙÙŠÙƒØ±Ø§Ù…']],
-  ['Adani Solar', ['Adani', 'Ø£Ø¯Ø§Ù†ÙŠ', 'Ø§Ø¯Ø§Ù†ÙŠ']],
-  ['Tata Power Solar', ['Tata', 'TP Solar', 'Tata Solar', 'ØªØ§ØªØ§', 'ØªØ§ØªØ§ Ø¨Ø§ÙˆØ±']],
-  ['RenewSys', ['Renew Sys', 'Ø±ÙŠÙ†ÙŠÙˆ Ø³ÙŠØ³', 'Ø±ÙŠÙ†ÙŠÙˆØ³ÙŠØ³']],
-  ['Goldi Solar', ['Goldi', 'Ø¬ÙˆÙ„Ø¯ÙŠ', 'ØºÙˆÙ„Ø¯ÙŠ']],
-  ['Premier Energies', ['Premier', 'Ø¨Ø±ÙŠÙ…ÙŠØ±', 'Ø¨Ø±ÙŠÙ…ÙŠÙŠØ±']],
-  ['Emmvee', ['Emmvee Solar', 'Ø¥Ù…ÙÙŠ', 'Ø§Ù…ÙÙŠ']],
-  ['Saatvik', ['Saatvik Green Energy', 'Ø³Ø§ØªÙÙŠÙƒ']],
-  ['Rayzon Solar', ['Rayzon', 'Ø±Ø§ÙŠØ²ÙˆÙ†', 'Ø±ÙŠØ²ÙˆÙ†']],
-  ['AESOLAR', ['AE Solar', 'AE-Solar', 'Ø§ÙŠ Ø§ÙŠ Ø³ÙˆÙ„Ø§Ø±', 'Ø¥ÙŠÙ‡ Ø¥ÙŠ Ø³ÙˆÙ„Ø§Ø±']],
-  ['Solarwatt', ['Solar Watt', 'Ø³ÙˆÙ„Ø§Ø± ÙˆØ§Øª', 'Ø³ÙˆÙ„Ø§Ø±ÙˆØ§Øª']],
-  ['SoliTek', ['Ø³ÙˆÙ„ÙŠØªÙƒ', 'Ø³ÙˆÙ„ÙŠ ØªÙƒ']],
-  ['Eurener', ['ÙŠÙˆØ±ÙŠÙ†Ø±', 'ÙŠÙˆØ±ÙŠÙ†ÙŠØ±']],
-  ['Silfab Solar', ['Silfab', 'Ø³ÙŠÙ„ÙØ§Ø¨']],
-  ['Mission Solar', ['Mission Solar Energy', 'Mission', 'Ù…ÙŠØ´Ù† Ø³ÙˆÙ„Ø§Ø±', 'Ù…ÙŠØ´Ù†']],
-  ['SEG Solar', ['SEG', 'Ø§Ø³ Ø§ÙŠ Ø¬ÙŠ', 'Ø¥Ø³ Ø¥ÙŠ Ø¬ÙŠ']],
-  ['Heliene', ['Ù‡ÙŠÙ„ÙŠÙŠÙ†', 'Ù‡ÙŠÙ„ÙŠØ§Ù†']],
-  ['Qn-SOLAR', ['Qn Solar', 'ÙƒÙŠÙˆ Ø§Ù† Ø³ÙˆÙ„Ø§Ø±']],
-  ['Osda', ['Osda Solar', 'Ø£ÙˆØ³Ø¯Ø§', 'Ø§ÙˆØ³Ø¯Ø§']],
-  ['Bluesun Solar', ['Bluesun', 'Blue Sun', 'Ø¨Ù„Ùˆ ØµÙ†', 'Ø¨Ù„ÙˆØ³Ù†']],
-  ['Luxen Solar', ['Luxen', 'Ù„ÙˆÙƒØ³Ù†', 'Ù„ÙˆÙƒØ³ÙŠÙ†']],
-  ['CW Enerji', ['CW Energy', 'Ø³ÙŠ Ø¯Ø¨Ù„ÙŠÙˆ', 'Ø³ÙŠ Ø¯Ø¨Ù„ÙŠÙˆ Ø¥Ù†Ø±Ø¬ÙŠ']],
+  ['Sheida Solar', ['Sheida', 'أکآ´أ™إ أکآ¯أکآ§', 'أکآ´أ™إ أکآ¯أکآ©']],
+  ['Desert Technologies', ['DT', 'أکآ¯أ™إ أکآ²أکآ±أکآھ أکآھأ™ئ’أ™â€ أ™ث†أ™â€‍أ™ث†أکآ¬أ™إ أکآ²', 'أکآھأ™â€ڑأ™â€ أ™إ أکآ§أکآھ أکآ§أ™â€‍أکآµأکآ­أکآ±أکآ§أکآ،']],
+  ['Philadelphia Solar', ['Philadelphia', 'أ™آپأ™إ أ™â€‍أکآ§أکآ¯أ™â€‍أ™آپأ™إ أکآ§', 'أ™آپأ™إ أ™â€‍أکآ§أکآ¯أ™â€‍أ™آپأ™إ أکآ§ أکآ³أ™ث†أ™â€‍أکآ§أکآ±']],
+  ['DuSol', ['Dusol', 'أکآ¯أ™ث† أکآ³أ™ث†أ™â€‍', 'أکآ¯أ™ث†أکآ³أ™ث†أ™â€‍']],
+  ['JinkoSolar', ['Jinko', 'Jinko Solar', 'أکآ¬أ™إ أ™â€ أ™ئ’أ™ث†', 'أکآ¬أ™â€ أ™ئ’أ™ث†']],
+  ['JA Solar', ['JASolar', 'JA', 'أکآ¬أ™إ  أکآ§أ™إ ', 'أکآ¬أ™إ  أکآ¥أ™إ أ™â€،', 'أکآ¬أکآ§ أکآ³أ™ث†أ™â€‍أکآ§أکآ±']],
+  ['LONGi Solar', ['LONGi', 'أ™â€‍أ™ث†أ™â€ أکآ¬أ™إ ', 'أ™â€‍أ™ث†أ™â€ أکآ؛أ™إ ', 'أ™â€‍أ™ث†أ™â€ أکآ¬أ™â€°']],
+  ['Trina Solar', ['Trina', 'Trinasolar', 'أکآھأکآ±أ™إ أ™â€ أکآ§']],
+  ['Canadian Solar', ['Canadian', 'CSI Solar', 'أ™ئ’أ™â€ أکآ¯أ™إ أکآ§أ™â€ ', 'أ™ئ’أکآ§أ™â€ أکآ§أکآ¯أ™إ أکآ§أ™â€ ', 'أ™ئ’أ™â€ أکآ¯أ™إ ']],
+  ['Qcells', ['Q Cells', 'Q-Cells', 'Hanwha', 'أ™ئ’أ™إ أ™ث† أکآ³أ™إ أ™â€‍أکآ²', 'أ™â€،أکآ§أ™â€ أ™ث†أکآ§']],
+  ['REC', ['REC Group', 'أکآ§أکآ± أکآ§أ™إ  أکآ³أ™إ ', 'أکآ¢أکآ± أکآ¥أ™إ  أکآ³أ™إ ', 'أکآ±أ™إ أ™ئ’']],
+  ['Maxeon', ['Maxeon Solar', 'أ™â€¦أکآ§أ™ئ’أکآ³أ™إ أ™ث†أ™â€ ', 'أ™â€¦أکآ§أ™ئ’أکآ³أ™ث†أ™â€ ']],
+  ['SunPower', ['Sun Power', 'أکآµأ™â€  أکآ¨أکآ§أ™ث†أکآ±', 'أکآ³أکآ§أ™â€  أکآ¨أکآ§أ™ث†أکآ±']],
+  ['First Solar', ['First', 'أ™آپأ™إ أکآ±أکآ³أکآھ أکآ³أ™ث†أ™â€‍أکآ§أکآ±', 'أ™آپأ™إ أکآ±أکآ³أکآھ']],
+  ['Astronergy', ['CHINT', 'Chint Solar', 'Astro Energy', 'أکآ£أکآ³أکآھأکآ±أ™ث†أ™â€ أکآ±أکآ¬أ™إ ', 'أکآ§أکآ³أکآھأکآ±أ™ث†أ™â€ أکآ±أکآ¬أ™إ ', 'أکآ´أ™إ أ™â€ أکآھ']],
+  ['Risen Energy', ['Risen', 'أکآ±أ™إ أکآ²أ™â€ ', 'أکآ±أکآ§أ™إ أکآ²أ™â€ ']],
+  ['Tongwei Solar', ['TW Solar', 'Tongwei', 'أکآھأ™ث†أ™â€ أکآ؛أ™ث†أ™إ ', 'أکآھأ™ث†أ™â€ أکآ¬أ™ث†أ™إ ', 'أکآھأ™إ  أکآ¯أکآ¨أ™â€‍أ™إ أ™ث†']],
+  ['DMEGC Solar', ['DMEGC', 'Hengdian', 'أکآ¯أ™إ  أکآ§أ™â€¦ أکآ§أ™إ  أکآ¬أ™إ  أکآ³أ™إ ', 'أکآ¯أ™إ  أکآ¥أ™â€¦ أکآ¥أ™إ  أکآ¬أ™إ  أکآ³أ™إ ']],
+  ['AIKO', ['Aiko Solar', 'Aiko Energy', 'أکآ£أ™إ أ™ئ’أ™ث†', 'أکآ§أ™إ أ™ئ’أ™ث†']],
+  ['DAS Solar', ['DAS', 'أکآ¯أکآ§أکآ³', 'أکآ¯أکآ§أکآ³ أکآ³أ™ث†أ™â€‍أکآ§أکآ±']],
+  ['Huasun', ['Huasun Solar', 'أ™â€،أ™ث†أکآ§أکآ³أ™â€ ', 'أ™â€،أ™ث†أکآ§أکآ³أکآ§أ™â€ ']],
+  ['Seraphim', ['Seraphim Solar', 'أکآ³أ™إ أکآ±أکآ§أ™آپأ™إ أ™â€¦', 'أکآ³أکآ±أکآ§أ™آپأ™إ أ™â€¦']],
+  ['PHONO Solar', ['Phono', 'SUMEC', 'أ™آپأ™ث†أ™â€ أ™ث†', 'أ™آپأ™ث†أ™â€ أ™ث† أکآ³أ™ث†أ™â€‍أکآ§أکآ±']],
+  ['Talesun', ['Talesun Solar', 'أکآھأکآ§أ™إ أ™â€‍أکآ³أ™â€ ', 'أکآھأکآ§أ™â€‍أ™إ أکآ³أ™â€ ']],
+  ['Suntech', ['Suntech Power', 'Sun Tech', 'أکآµأ™â€  أکآھأ™ئ’', 'أکآ³أکآ§أ™â€ أکآھأ™ئ’', 'أکآ³أ™â€ أکآھأ™ئ’']],
+  ['Yingli Solar', ['Yingli', 'أ™إ أ™â€ أکآ¬أ™â€‍أ™إ ', 'أ™إ أ™â€ أکآ؛أ™â€‍أ™إ ']],
+  ['GCL System Integration', ['GCL', 'GCL SI', 'GCL Solar', 'أکآ¬أ™إ  أکآ³أ™إ  أکآ§أ™â€‍', 'أکآ¬أ™إ  أکآ³أ™إ  أکآ¥أ™â€‍']],
+  ['EGing PV', ['Eging', 'أکآ§أ™إ أکآ¬أ™إ أ™â€ أکآ¬', 'أکآ¥أ™إ أکآ¬أ™إ أ™â€ أکآ؛']],
+  ['Jolywood', ['Jolywood Solar', 'أکآ¬أ™ث†أ™â€‍أ™إ  أ™ث†أ™ث†أکآ¯', 'أکآ¬أ™ث†أ™â€‍أ™إ أ™ث†أ™ث†أکآ¯']],
+  ['ZNShine Solar', ['Znshine', 'أکآ²أ™إ أ™â€ أکآ´أکآ§أ™إ أ™â€ ', 'أکآ²أکآ¯ أکآ§أ™â€  أکآ´أکآ§أ™إ أ™â€ ']],
+  ['Sunova Solar', ['Sunova', 'أکآµأ™â€ أ™ث†أ™آپأکآ§', 'أکآ³أکآ§أ™â€ أ™ث†أ™آپأکآ§']],
+  ['URE', ['United Renewable Energy', 'أ™إ أ™ث† أکآ¢أکآ± أکآ¥أ™إ ', 'أ™إ أ™ث† أکآ§أکآ± أکآ§أ™إ ']],
+  ['VSUN', ['VSUN Solar', 'Vietnam Sunergy', 'أ™آپأ™إ  أکآµأ™â€ ', 'أ™آپأ™إ  أکآ³أکآ§أ™â€ ']],
+  ['Sharp', ['Sharp Solar', 'أکآ´أکآ§أکآ±أکآ¨']],
+  ['Waaree', ['Waaree Energies', 'أ™ث†أکآ§أکآ±أ™إ ', 'أ™ث†أکآ§أکآ±أ™إ أ™إ ']],
+  ['Vikram Solar', ['Vikram', 'أ™آپأ™إ أ™ئ’أکآ±أکآ§أ™â€¦']],
+  ['Adani Solar', ['Adani', 'أکآ£أکآ¯أکآ§أ™â€ أ™إ ', 'أکآ§أکآ¯أکآ§أ™â€ أ™إ ']],
+  ['Tata Power Solar', ['Tata', 'TP Solar', 'Tata Solar', 'أکآھأکآ§أکآھأکآ§', 'أکآھأکآ§أکآھأکآ§ أکآ¨أکآ§أ™ث†أکآ±']],
+  ['RenewSys', ['Renew Sys', 'أکآ±أ™إ أ™â€ أ™إ أ™ث† أکآ³أ™إ أکآ³', 'أکآ±أ™إ أ™â€ أ™إ أ™ث†أکآ³أ™إ أکآ³']],
+  ['Goldi Solar', ['Goldi', 'أکآ¬أ™ث†أ™â€‍أکآ¯أ™إ ', 'أکآ؛أ™ث†أ™â€‍أکآ¯أ™إ ']],
+  ['Premier Energies', ['Premier', 'أکآ¨أکآ±أ™إ أ™â€¦أ™إ أکآ±', 'أکآ¨أکآ±أ™إ أ™â€¦أ™إ أ™إ أکآ±']],
+  ['Emmvee', ['Emmvee Solar', 'أکآ¥أ™â€¦أ™آپأ™إ ', 'أکآ§أ™â€¦أ™آپأ™إ ']],
+  ['Saatvik', ['Saatvik Green Energy', 'أکآ³أکآ§أکآھأ™آپأ™إ أ™ئ’']],
+  ['Rayzon Solar', ['Rayzon', 'أکآ±أکآ§أ™إ أکآ²أ™ث†أ™â€ ', 'أکآ±أ™إ أکآ²أ™ث†أ™â€ ']],
+  ['AESOLAR', ['AE Solar', 'AE-Solar', 'أکآ§أ™إ  أکآ§أ™إ  أکآ³أ™ث†أ™â€‍أکآ§أکآ±', 'أکآ¥أ™إ أ™â€، أکآ¥أ™إ  أکآ³أ™ث†أ™â€‍أکآ§أکآ±']],
+  ['Solarwatt', ['Solar Watt', 'أکآ³أ™ث†أ™â€‍أکآ§أکآ± أ™ث†أکآ§أکآھ', 'أکآ³أ™ث†أ™â€‍أکآ§أکآ±أ™ث†أکآ§أکآھ']],
+  ['SoliTek', ['أکآ³أ™ث†أ™â€‍أ™إ أکآھأ™ئ’', 'أکآ³أ™ث†أ™â€‍أ™إ  أکآھأ™ئ’']],
+  ['Eurener', ['أ™إ أ™ث†أکآ±أ™إ أ™â€ أکآ±', 'أ™إ أ™ث†أکآ±أ™إ أ™â€ أ™إ أکآ±']],
+  ['Silfab Solar', ['Silfab', 'أکآ³أ™إ أ™â€‍أ™آپأکآ§أکآ¨']],
+  ['Mission Solar', ['Mission Solar Energy', 'Mission', 'أ™â€¦أ™إ أکآ´أ™â€  أکآ³أ™ث†أ™â€‍أکآ§أکآ±', 'أ™â€¦أ™إ أکآ´أ™â€ ']],
+  ['SEG Solar', ['SEG', 'أکآ§أکآ³ أکآ§أ™إ  أکآ¬أ™إ ', 'أکآ¥أکآ³ أکآ¥أ™إ  أکآ¬أ™إ ']],
+  ['Heliene', ['أ™â€،أ™إ أ™â€‍أ™إ أ™إ أ™â€ ', 'أ™â€،أ™إ أ™â€‍أ™إ أکآ§أ™â€ ']],
+  ['Qn-SOLAR', ['Qn Solar', 'أ™ئ’أ™إ أ™ث† أکآ§أ™â€  أکآ³أ™ث†أ™â€‍أکآ§أکآ±']],
+  ['Osda', ['Osda Solar', 'أکآ£أ™ث†أکآ³أکآ¯أکآ§', 'أکآ§أ™ث†أکآ³أکآ¯أکآ§']],
+  ['Bluesun Solar', ['Bluesun', 'Blue Sun', 'أکآ¨أ™â€‍أ™ث† أکآµأ™â€ ', 'أکآ¨أ™â€‍أ™ث†أکآ³أ™â€ ']],
+  ['Luxen Solar', ['Luxen', 'أ™â€‍أ™ث†أ™ئ’أکآ³أ™â€ ', 'أ™â€‍أ™ث†أ™ئ’أکآ³أ™إ أ™â€ ']],
+  ['CW Enerji', ['CW Energy', 'أکآ³أ™إ  أکآ¯أکآ¨أ™â€‍أ™إ أ™ث†', 'أکآ³أ™إ  أکآ¯أکآ¨أ™â€‍أ™إ أ™ث† أکآ¥أ™â€ أکآ±أکآ¬أ™إ ']],
 ].sort(([a], [b]) => a.localeCompare(b, 'en'));
 const TRANSLATIONS = {
-  'Ø§Ø¨Ø­Ø« Ø¹Ù† Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©': 'Search for a manufacturer',
-  'Ø¹Ø±Ø¶ Ø§Ù„Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©': 'Show manufacturers', 'Ø§Ù„Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©': 'Manufacturers',
-  'Ø§Ø¨Ø­Ø« Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© Ø£Ùˆ Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©ØŒ Ø£Ùˆ Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ø§Ù„Ø´Ø±ÙƒØ©. ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ø®ØªÙŠØ§Ø± Â«ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙÂ».': 'Search in Arabic or English, or enter the company name. You can choose â€œUnknownâ€.',
-  'ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ai': 'Analyze bill with Ai',
-  'Ø§Ù„ØºØ¨Ø§Ø± ÙÙŠ Ø§Ù„Ø¬Ùˆ': 'Airborne dust', 'Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…ÙˆÙ‚Ø¹Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠ': 'Use your current location',
-  'ØªÙ…Øª Ø§Ù„ØªØ¹Ø¨Ø¦Ø© Ù…Ù† Ø§Ù„Ø·Ù‚Ø³': 'Filled from weather data', 'Ø¬Ø§Ø±Ù ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹â€¦': 'Getting locationâ€¦',
-  'ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude': 'Panel assessment with Claude', 'ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude': 'Read bill with Claude',
-  'Ø§Ù„Ø¸Ù„ ÙˆØ§Ù„ØºØ¨Ø§Ø± ÙˆØ§ØªØ¬Ø§Ù‡ Ø§Ù„Ø´Ù…Ø³': 'Shade, dust and sun direction', 'Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø© ÙˆÙ‚ÙŠÙ…ØªÙ‡Ø§': 'Energy deficit and its value',
-  'Ø­ÙØ¸ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª': 'Save details',
-  'Ø¹Ù†Ø¯ Ø¶ØºØ· Ù‡Ø°Ø§ Ø§Ù„Ø²Ø±ØŒ ØªÙØ±Ø³Ù„ ØµÙˆØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ„Ù‚Ø·Ø§Øª Ù…ÙˆØ²Ø¹Ø© Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ø¥Ù„Ù‰ AnthropicØŒ Ø­ØªÙ‰ 8 ØµÙˆØ± ÙÙŠ Ø§Ù„Ø·Ù„Ø¨. Ù„Ø§ ÙŠÙØ­Ù„Ù„ Ø§Ù„ØµÙˆØª Ø£Ùˆ ÙƒÙ„ Ø§Ù„Ø¥Ø·Ø§Ø±Ø§Øª.': 'Choosing this button sends panel photos and frames sampled across your video to Anthropic, up to 8 images per request. Audio and every frame are not assessed.',
-  'Ø§ØªØ¬Ø§Ù‡ ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Panel facing direction (optional)', '0Â° Ø´Ù…Ø§Ù„ Â· 90Â° Ø´Ø±Ù‚ Â· 180Â° Ø¬Ù†ÙˆØ¨ Â· 270Â° ØºØ±Ø¨. Ø£Ø¯Ø®Ù„ Ù‚Ø±Ø§Ø¡Ø© Ø¨ÙˆØµÙ„Ø© Ù„Ù„ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„ØªÙŠ ØªÙˆØ§Ø¬Ù‡ Ø§Ù„Ø´Ù…Ø³.': '0Â° north Â· 90Â° east Â· 180Â° south Â· 270Â° west. Enter a compass reading for the panel facing direction.',
-  'ÙˆÙ‚Øª ØªØµÙˆÙŠØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel capture time', 'ÙˆÙ‚Øª Ù…Ø­Ù„ÙŠ ØªØ®ØªØ§Ø±Ù‡Ø› Ù„Ø§ Ù†Ø³ØªØ®Ø±Ø¬Ù‡ Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆ. ÙŠÙ„Ø²Ù… Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆØ§Ù„Ù…ÙŠÙ„ ÙˆØ§Ù„Ø§ØªØ¬Ø§Ù‡ ÙˆØ§Ù„ÙˆÙ‚Øª Ù„Ø­Ø³Ø§Ø¨ Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ø´Ù…Ø³.': 'Your selected local time; it is not extracted from video metadata. Location, tilt, direction and time are needed for sun geometry.',
-  'ÙŠÙØ­Øµ Claude ØµÙˆØ±Ø§Ù‹ ÙˆÙ„Ù‚Ø·Ø§Øª Ù…Ø®ØªØ§Ø±Ø© Ù…Ù† Ø§Ù„Ù…Ù‚Ø§Ø·Ø¹ØŒ Ø­ØªÙ‰ 8 ØµÙˆØ± ÙÙŠ Ø§Ù„Ø·Ù„Ø¨. Ù„Ø§ ÙŠÙØ­Øµ Ø§Ù„ØµÙˆØª Ø£Ùˆ ÙƒÙ„ Ø¥Ø·Ø§Ø±Ø§Øª Ø§Ù„ÙÙŠØ¯ÙŠÙˆ.': 'Claude inspects photos and selected frames from your clips, up to 8 images per request. Audio and every video frame are not analyzed.',
-  'Ù„Ø§ ÙŠÙ…ÙƒÙ† Ù‚ÙŠØ§Ø³ Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø³Ø·Ø­ Ø£Ùˆ Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ù…ÙŠÙ„ Ø§Ù„Ø¯Ù‚ÙŠÙ‚Ø© Ù…Ù† ØµÙˆØ±Ø© Ø¹Ø§Ø¯ÙŠØ©Ø› ÙŠØ¹ØªÙ…Ø¯ Ø§Ù„Ø­Ø³Ø§Ø¨ Ø¹Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙŠ ØªØ¯Ø®Ù„Ù‡Ø§ ÙˆØ§Ù„Ø·Ù‚Ø³.': 'An ordinary image cannot measure surface temperature or exact panel tilt; calculations use your inputs and weather.',
-  'ØªÙØ±Ø³Ù„ Ø§Ù„ØµÙˆØ± ÙˆØ§Ù„Ù„Ù‚Ø·Ø§Øª Ø¥Ù„Ù‰ Anthropic ÙÙ‚Ø· Ø¹Ù†Ø¯ Ø¶ØºØ· Â«ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… ClaudeÂ».': 'Images and frames are sent to Anthropic only when you choose â€œPanel assessment with Claudeâ€.',
-  'Ø¥Ù†ØªØ§Ø¬ Ù…ØªÙˆÙ‚Ø¹ Ù„Ù„Ø´Ù‡Ø± (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Expected monthly generation (optional)', 'Ø¥Ù†ØªØ§Ø¬ ÙØ¹Ù„ÙŠ Ù„Ù„Ø´Ù‡Ø± (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Actual monthly generation (optional)',
-  'Ø§Ø³ØªØ®Ø¯Ù… Ø®Ø· Ø£Ø³Ø§Ø³ Ù…ÙˆØ«ÙˆÙ‚Ø§Ù‹ Ù„Ù„Ù†Ø¸Ø§Ù…. ÙŠØ¬Ø¨ Ø£Ù† ÙŠØºØ·ÙŠ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ Ø§Ù„ÙØªØ±Ø© Ù†ÙØ³Ù‡Ø§.': 'Use a reliable baseline for your system. Expected and actual generation must cover the same period.',
-  'Ù‚Ø±Ø§Ø¡Ø© Ø¹Ø¯Ù‘Ø§Ø¯ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø£Ùˆ Ø§Ù„Ø¹Ø§ÙƒØ³Ø› Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„ÙŠØ³ Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.': 'A generation meter or inverter reading; bill consumption is not panel generation.',
-  'Ù‚Ø¯ ØªØªØ¶Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø´Ø®ØµÙŠØ©Ø› Ø§Ø­Ø¬Ø¨ Ù…Ø§ Ù„Ø§ ÙŠÙ„Ø²Ù…. Ù„Ù† ØªÙØ±Ø³Ù„ Ø¥Ù„Ù‰ Anthropic Ø¥Ù„Ø§ Ø¹Ù†Ø¯ Ø¶ØºØ· Ø²Ø± ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø©.': 'Bills may contain personal details; cover anything unnecessary. The bill is sent to Anthropic only when you press the bill analysis button.',
-  'Ø±Ø§Ø¬Ø¹ Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Review extracted bill details', 'Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©': 'Apply reviewed details', 'Ø¥Ù„ØºØ§Ø¡': 'Cancel',
-  'Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø§Ù„Ø·Ø§Ù‚Ø©': 'Energy consumption', 'Ø§Ù„Ø¹Ù…Ù„Ø©': 'Currency', 'Ø§Ù„ØªØ¹Ø±ÙØ© Ù„ÙƒÙ„ kWh': 'Rate per kWh', 'Ø£ÙŠØ§Ù… Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Billing days',
-  'Ù‡Ø°Ù‡ Ù‚Ø±Ø§Ø¡Ø© Ø¢Ù„ÙŠØ© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„Ø®Ø·Ø£. Ø±Ø§Ø¬Ø¹ Ø§Ù„Ø£Ø±Ù‚Ø§Ù… ÙˆØ§Ù„Ø¹Ù…Ù„Ø© ÙˆØ§Ù„Ø´Ù‡Ø± Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù…Ù‡Ø§. Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙˆØ­Ø¯Ù‡Ø§ Ù„Ø§ ØªØ«Ø¨Øª Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­.': 'Automatic extraction can be wrong. Review numbers, currency and month before applying them. A bill alone cannot establish solar losses.',
-  'Ø§Ù„Ø®Ø³Ø§Ø±Ø© ÙÙŠ Ø§Ù„Ø´Ù‡Ø± Ø§Ù„Ù…Ø­Ø¯Ø¯': 'Loss for selected month', 'Ø§Ù„Ø´Ù‡Ø±': 'Month', 'ØªØ­Ø¯ÙŠØ« ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø´Ù‡Ø±': 'Update monthly assessment',
-  'Claude ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„ Ø¨Ø¹Ø¯. ÙŠØ³ØªØ·ÙŠØ¹ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØªÙØ¹ÙŠÙ„Ù‡ Ø¨Ù…ÙØªØ§Ø­ Anthropic.': 'Claude is not enabled yet. The site administrator can enable it with an Anthropic key.',
-  'ØªØ¹Ø°Ø± Ù…Ø¹Ø±ÙØ© Ø­Ø§Ù„Ø© ClaudeØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.': 'Could not check Claude availability; try again.',
-  'Ø¬Ø§Ø±Ù Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©â€¦': 'Reading billâ€¦', 'ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©. Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ÙˆØ¶Ø­.': 'Could not read the bill. Try a clearer image.',
-  'ØªÙ… Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø§Ù„ØªÙŠ Ø±Ø§Ø¬Ø¹ØªÙ‡Ø§.': 'Your reviewed bill details were applied.', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø´Ù‡Ø± ÙˆØ§Ù„Ø£Ø±Ù‚Ø§Ù… Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø©.': 'Check the month and numbers before applying bill details.',
-  'Ø­Ø³Ø§Ø¨ Ø§Ù„Ù‚ÙŠÙ…Ø© Ù‡Ù†Ø§ ÙŠØ¯Ø¹Ù… Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø¹ÙÙ…Ø§Ù†ÙŠØ› Ø£Ø¯Ø®Ù„ ØªØ¹Ø±ÙØ© Ø¨Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø¹ÙÙ…Ø§Ù†ÙŠ ÙŠØ¯ÙˆÙŠØ§Ù‹ Ù„Ù‡Ø°Ù‡ Ø§Ù„ÙØ§ØªÙˆØ±Ø©.': 'The value calculation supports Omani rials; enter an OMR rate manually for this bill.',
-  'ØªØ£ÙƒØ¯ Ù…Ù† Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨ÙŠÙ† 0 Ùˆ360 Ø¯Ø±Ø¬Ø©.': 'Panel direction must be between 0 and 360 degrees.', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ù…ÙŠÙ„ Ø¨ÙŠÙ† 0 Ùˆ90 Ø¯Ø±Ø¬Ø©.': 'Panel tilt must be between 0 and 90 degrees.',
-  'ØªØ£ÙƒØ¯ Ù…Ù† ÙˆÙ‚Øª Ø§Ù„ØªØµÙˆÙŠØ±.': 'Check the capture time.', 'ØªØ£ÙƒØ¯ Ù…Ù† Ù‚ÙŠÙ…Ø© Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ù‘Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ.': 'Check expected and actual generation.',
-  'ØªØ¹Ø°Ø± ÙØªØ­ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­Ø› Ø¬Ø±Ù‘Ø¨ MP4 Ø£Ùˆ Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ù…Ù† Ø§Ù„Ù…Ù‚Ø·Ø¹.': 'This browser could not open the video; try MP4 or attach still images from the clip.',
-  'Ù„Ø§ ØªÙˆØ¬Ø¯ Ù„Ù‚Ø·Ø§Øª Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØ­Ù„ÙŠÙ„Ø› Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© ÙˆØ§Ø¶Ø­Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ø¯Ø¹ÙˆÙ…Ø§Ù‹.': 'No readable frames were available; attach a clear image or supported video.',
-  'ØªØºÙŠØ±Øª Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„ØªØ­Ù„ÙŠÙ„. Ø£Ø¹Ø¯ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø§Ù„ÙŠØ©.': 'Details changed during analysis. Submit again with the current details.',
-  'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø­Ø¯ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¢Ù†. Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù„Ø§Ø­Ù‚Ø§Ù‹.': 'Could not check the analysis usage limit. Try again later.',
-  'Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø°ÙƒÙŠ Ù…ØªÙˆÙ‚Ù Ø­Ø§Ù„ÙŠØ§Ù‹ ÙˆÙÙ‚ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù….': 'AI analysis is currently disabled by the usage settings.',
-  'ÙŠÙˆØ¬Ø¯ ØªØ­Ù„ÙŠÙ„ Ù„Ø­Ø³Ø§Ø¨Ùƒ Ù‚ÙŠØ¯ Ø§Ù„ØªÙ†ÙÙŠØ°. Ø§Ù†ØªØ¸Ø± Ø§ÙƒØªÙ…Ø§Ù„Ù‡.': 'An assessment for your account is already running. Wait for it to finish.',
-  'Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ù…Ø´ØºÙˆÙ„ Ø­Ø§Ù„ÙŠØ§Ù‹. Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ø¨Ø¹Ø¯ Ù‚Ù„ÙŠÙ„.': 'The analysis service is busy. Try again shortly.',
-  'ÙˆØµÙ„Øª Ø¥Ù„Ù‰ Ø­Ø¯ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙŠÙˆÙ…ÙŠ Ù„Ø­Ø³Ø§Ø¨Ùƒ. ÙŠØªØ¬Ø¯Ø¯ Ø§Ù„Ø­Ø¯ Ø¹Ù†Ø¯ Ù…Ù†ØªØµÙ Ø§Ù„Ù„ÙŠÙ„ Ø¨ØªÙˆÙ‚ÙŠØª UTC.': 'Your account has reached its daily analysis limit. The limit resets at midnight UTC.',
-  'ÙˆØµÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø¥Ù„Ù‰ Ø­Ø¯ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙŠÙˆÙ…ÙŠ. ÙŠØªØ¬Ø¯Ø¯ Ø§Ù„Ø­Ø¯ Ø¹Ù†Ø¯ Ù…Ù†ØªØµÙ Ø§Ù„Ù„ÙŠÙ„ Ø¨ØªÙˆÙ‚ÙŠØª UTC.': 'The site has reached its daily analysis limit. The limit resets at midnight UTC.',
-  'Ø§Ù†ØªØ¸Ø± 30 Ø«Ø§Ù†ÙŠØ© Ø¨ÙŠÙ† Ø·Ù„Ø¨Ø§Øª Ø§Ù„ØªØ­Ù„ÙŠÙ„.': 'Wait 30 seconds between analysis requests.',
-  'Ø§Ù†ØªÙ‡Øª Ø¬Ù„Ø³Ø© Ø§Ù„Ø¯Ø®ÙˆÙ„Ø› Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ù† Ø¬Ø¯ÙŠØ¯.': 'Your session has expired. Log in again.',
-  'Ø£Ø¶Ù GOOGLE_CLIENT_ID Ø¥Ù„Ù‰ Ù…Ù„Ù .env Ù„ØªÙØ¹ÙŠÙ„ ØªØ³Ø¬ÙŠÙ„ Google.': 'Add GOOGLE_CLIENT_ID to the .env file to enable Google sign-in.',
-  'Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù‚Ø¨Ù„ Ø§Ù„ØªØ­Ù„ÙŠÙ„.': 'Attach a panel photo or video before analysis.',
-  'ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ØµÙˆØ± Ø§Ù„Ù…Ø±ÙÙ‚Ø©. Ø¬Ø±Ù‘Ø¨ ØµÙˆØ± JPEG Ø£Ùˆ PNG Ø£Ùˆ WEBP.': 'Could not read the attached images. Try JPEG, PNG, or WEBP images.',
-  'Ø±ÙÙŠÙ‚Ùƒ Ø§Ù„Ø°ÙƒÙŠ Ù„Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ø´Ù…Ø³ÙŠØ©': 'Your smart solar companion', 'Ù†Ø­Ù…ÙŠ Ø¥Ù†ØªØ§Ø¬ÙƒØŒ Ø®Ø·ÙˆØ© Ø¨Ø®Ø·ÙˆØ©': 'Protecting your solar output, step by step',
-  'Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©': 'Home', 'Ø§Ù„Ø³Ø¬Ù„': 'History', 'Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª': 'Settings', 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„': 'Log in', 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨': 'Create account',
-  'Ø­Ø¯Ù‘Ø¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù…': 'Set system location', 'Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ù„Ø±Ø¦ÙŠØ³ÙŠØ©': 'Back to home', 'Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©': 'Menu',
-  'ØµØ¨Ø§Ø­ Ø§Ù„Ø·Ø§Ù‚Ø©ØŒ ': 'Hello, ', 'ÙŠØ§ ØµØ¯ÙŠÙ‚ Ø§Ù„Ø´Ù…Ø³': 'sunshine', 'Ù‡Ø°Ù‡ Ù„Ù…Ø­Ø© Ø³Ø±ÙŠØ¹Ø© Ø¹Ù† Ø£Ø¯Ø§Ø¡ Ù†Ø¸Ø§Ù…Ùƒ Ø§Ù„ÙŠÙˆÙ….': 'Here is a quick look at your system today.',
-  'ØªØ­Ø¯ÙŠØ« Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù…': 'Update system details', 'Ø­Ø§Ù„Ø© Ø§Ù„ÙŠÙˆÙ…': 'Todayâ€™s status', 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø¨ÙŠØ§Ù†Ø§Øª Ù†Ø¸Ø§Ù…Ùƒ': 'Waiting for your system details',
-  'Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ­Ù„ÙŠÙ„': 'Start analysis', 'ÙÙ‚Ø¯ ØªÙ‚Ø¯ÙŠØ±ÙŠ': 'Estimated loss', 'Ù†Ø­ØªØ§Ø¬ Ø¨Ø¹Ø¶ Ø§Ù„ØªÙØ§ØµÙŠÙ„ Ø£ÙˆÙ„Ø§Ù‹': 'A few details are needed first',
-  'Ø£Ø¯Ø®Ù„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù„Ù„Ø­ØµÙˆÙ„ Ø¹Ù„Ù‰ Ù‚Ø±Ø§Ø¡Ø© Ø£ÙˆØ¶Ø­.': 'Enter your system details and add a panel photo or video for a clearer estimate.',
-  'Ø¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù…': 'Set up system', 'Ø§Ù„Ø·Ù‚Ø³ â€”': 'Weather â€”', 'Ø§Ù„Ø·Ù‚Ø³ ØºÙŠØ± Ù…ØªØ§Ø­': 'Weather unavailable',
-  'Ø¢Ø®Ø± ØªØ­Ø¯ÙŠØ« ': 'Last updated ', 'Ù…Ù„Ø®Øµ Ø§Ù„Ù†Ø¸Ø§Ù…': 'System overview', 'Ù†Ø¸Ø±Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel overview',
-  'Ø¯Ø±Ø¬Ø© Ø§Ù„Ø­Ø±Ø§Ø±Ø©': 'Temperature', 'Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ Ø§Ù„Ø­Ø§Ù„ÙŠØ©': 'Current air temperature', 'Ø§Ù„Ø±Ø·ÙˆØ¨Ø©': 'Humidity', 'Ø§Ù„Ø±Ø·ÙˆØ¨Ø© Ø§Ù„Ù†Ø³Ø¨ÙŠØ©': 'Relative humidity',
-  'Ù…Ø³ØªÙˆÙ‰ Ø§Ù„ØºØ¨Ø§Ø±': 'Dust level', 'ØªÙ‚Ø¯ÙŠØ± Ø£ÙˆÙ„ÙŠ': 'Initial estimate', 'ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Estimated panel dust',
-  'ØªÙ‚Ø¯ÙŠØ±Ùƒ Ø§Ù„ÙŠØ¯ÙˆÙŠ Ù„Ù„Ø£Ù„ÙˆØ§Ø­': 'Your panel estimate', 'Ù…Ø¤Ø´Ø± Ø¬ÙˆÙŠ': 'air indicator', 'Ø§Ù„Ø®Ø³Ø§Ø±Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ©': 'Daily energy loss',
-  'Ø·Ø§Ù‚Ø© ØªÙ‚Ø¯ÙŠØ±ÙŠØ©': 'Estimated energy', 'ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹': 'Refresh weather and location', 'ØªÙˆØµÙŠØ© Ø³ÙŠØ§Ø¬': 'Siyaj recommendation',
-  'Ø§Ø¨Ø¯Ø£ Ø¨ÙØ­Øµ Ø£Ù„ÙˆØ§Ø­Ùƒ': 'Start with a panel check', 'Ù‚Ø¯ ÙŠÙƒÙˆÙ† ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ù…ÙÙŠØ¯Ø§Ù‹': 'Panel cleaning may help',
-  'Ø±Ø§Ù‚Ø¨ Ø£Ø«Ø± Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Keep an eye on heat impact', 'Ø­Ø§ÙØ¸ Ø¹Ù„Ù‰ Ù…ØªØ§Ø¨Ø¹Ø© Ø¯ÙˆØ±ÙŠØ©': 'Keep checking your system regularly',
-  'ØªÙ… Ø§Ù„ØªÙ†Ø¸ÙŠÙ': 'Cleaned', 'Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø£Ø¯Ø§Ø¡': 'Performance', 'Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹': 'Weekly outlook', 'Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹': 'Estimated output',
-  'Ø¢Ø®Ø± 7 Ø£ÙŠØ§Ù…': 'Last 7 days', 'Ø§Ù„Ø£ÙŠØ§Ù… Ø§Ù„Ø³Ø¨Ø¹Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©': 'Next 7 days', 'Ù…Ø®Ø·Ø· Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ Ø®Ù„Ø§Ù„ Ø§Ù„Ø£ÙŠØ§Ù… Ø§Ù„Ø³Ø¨Ø¹Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©': 'Expected solar output for the next seven days', 'ØªÙ‚Ø¯ÙŠØ±Ø§Øª Ø£ÙˆÙ„ÙŠØ© ØªØªØ­Ø¯Ø« Ù…Ø¹ Ø§Ù„Ø·Ù‚Ø³': 'Initial estimates update with the weather',
-  'Ø¨ÙŠØ§Ù†Ø§Øª Ù…Ø®ØªØµØ±Ø©': 'System details', 'Ù„Ù… ØªØªÙ… Ø¥Ø¶Ø§ÙØ© Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ø¹Ø¯.': 'No system details added yet.',
-  'Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆØ§Ù„ØºØ¨Ø§Ø±': 'Panel tilt and dust', 'Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ù„ÙˆØ­ ÙˆØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø±': 'Tilt angle and dust build-up',
-  'ÙŠØªØºÙŠÙ‘Ø± Ø§Ù„Ù…Ø´Ù‡Ø¯ Ø­Ø³Ø¨ Ù…ÙŠÙ„ Ø§Ù„Ù„ÙˆØ­ Ø§Ù„Ù…Ø¯Ø®Ù„ ÙÙŠ ØµÙØ­Ø© Ø§Ù„ØªØ³Ø¬ÙŠÙ„ØŒ ÙˆØ£Ø¯Ù†Ù‰ Ù…ÙŠÙ„ ÙŠØ¹Ù†ÙŠ ØºØ¨Ø§Ø±Ø§Ù‹ Ø£ÙƒØ«Ø±.': 'The scene follows the tilt entered on the setup page: the lower the tilt, the more dust collects.',
-  'Ø§Ù„Ù‚Ø¯Ø±Ø©': 'Capacity', 'Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panels', 'Ø§Ù„Ù…ÙˆÙ‚Ø¹': 'Location', 'Ø§Ù„Ù…ÙŠÙ„': 'Tilt', 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯': 'Not set',
-  'Ø§Ù„Ù†ØªØ§Ø¦Ø¬ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ© Ù„Ø§ ØªØ³ØªØ¨Ø¯Ù„ ÙØ­Øµ ÙÙ†ÙŠ Ù…Ø®ØªØµ.': 'Estimates do not replace an inspection by a qualified technician.',
-  'Ø®Ø·ÙˆØ© Ø¨Ø³ÙŠØ·Ø© Ù†Ø­Ùˆ Ø·Ø§Ù‚Ø© Ø£ÙØ¶Ù„': 'A few steps toward better solar performance', 'Ù„Ù†ØªØ¹Ø±Ù‘Ù Ø¹Ù„Ù‰ Ù†Ø¸Ø§Ù…Ùƒ ': 'Letâ€™s get to know your system ',
-  'Ø£Ø¬Ø¨ Ø¹Ù† Ù‡Ø°Ù‡ Ø§Ù„Ø®Ø·ÙˆØ§Øª Ù„ØªØ­ØµÙ„ Ø³ÙŠØ§Ø¬ Ø¹Ù„Ù‰ ØµÙˆØ±Ø© Ù…ØªÙƒØ§Ù…Ù„Ø© Ø¹Ù† Ø£Ù„ÙˆØ§Ø­Ùƒ.': 'Answer these questions to help Siyaj understand your panels.',
-  'Ø§Ù„Ø¨ÙŠØ¦Ø© ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹': 'Environment & location', 'Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¨ÙŠØ¦Ø© ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹': 'Environment and location',
-  'Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panels', 'Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel details', 'Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Electricity bill', 'ÙØ§ØªÙˆØ±Ø© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡': 'Electricity bill',
-  'Ø§Ù„ØªØ£ÙƒÙŠØ¯': 'Review', 'ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª': 'Review details', 'Ø¨ÙŠØ§Ù†Ø§ØªÙƒ ØªØ­ÙØ¸ Ø¹Ù„Ù‰ Ø­Ø³Ø§Ø¨Ùƒ ÙˆØªØ¸Ù‡Ø± Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ù† Ø£Ø¬Ù‡Ø²ØªÙƒ.': 'Your details are saved to your account and appear when you sign in on your devices.',
-  'Ø­ÙØ¸ ØªÙ„Ù‚Ø§Ø¦ÙŠ': 'Saved automatically', 'Ø§Ù„ØªØ§Ù„ÙŠ ': 'Next ', 'Ø§Ù„Ø³Ø§Ø¨Ù‚': 'Back', 'ØªØ³ØªØºØ±Ù‚ Ø£Ù‚Ù„ Ù…Ù† Ø¯Ù‚ÙŠÙ‚ØªÙŠÙ†': 'Takes less than two minutes',
-  'ØªÙ‚Ø¯ÙŠØ±Ø§Øª Ø³ÙŠØ§Ø¬ Ø¥Ø±Ø´Ø§Ø¯ÙŠØ©': 'Siyaj estimates are guidance only', 'Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ­Ù„ÙŠÙ„ ': 'Analyze system ',
-  'Ø£Ø®Ø¨Ø±Ù†Ø§ Ø¹Ù† Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ§Ù„Ø¸Ø±ÙˆÙ Ø§Ù„Ù…Ø­ÙŠØ·Ø© Ø¨Ø§Ù„Ø£Ù„ÙˆØ§Ø­.': 'Tell us where your system is and about the conditions around the panels.',
-  'Ø£Ø¶Ù Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆØ£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù‚ØµÙŠØ±Ø§Ù‹ Ù„ÙØ­ØµÙ‡Ø§ Ø¨ØµØ±ÙŠØ§Ù‹.': 'Add panel details and attach a photo or short video for visual inspection.',
-  'ØªØ³Ø§Ø¹Ø¯Ù†Ø§ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¹Ù„Ù‰ ØªÙ‚Ø¯ÙŠØ± Ù‚ÙŠÙ…Ø© Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙŠ Ù‚Ø¯ ØªÙÙ‚Ø¯Ù‡Ø§.': 'Bill details help estimate the value of energy you may be losing.',
-  'Ø±Ø§Ø¬Ø¹ Ù…Ù„Ø®Øµ Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ù‚Ø¨Ù„ Ø£Ù† ÙŠØ¨Ø¯Ø£ Ø³ÙŠØ§Ø¬ Ø¨ØªØ­Ù„ÙŠÙ„ Ù†Ø¸Ø§Ù…Ùƒ.': 'Review the details before Siyaj analyzes your system.',
-  'Ø§Ø³Ù…Ùƒ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Your name (optional)', 'Ø¯Ø±Ø¬Ø© Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ': 'Air temperature', 'Ø§Ù„Ø±Ø·ÙˆØ¨Ø© Ø§Ù„Ù†Ø³Ø¨ÙŠØ©': 'Relative humidity', 'Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Number of panels',
-  'ØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Dust on the panels', 'ØªÙ‚Ø¯ÙŠØ± Ù…Ø¨Ø¯Ø¦ÙŠØ› Ø¹Ø¯Ù‘Ù„Ù‡ Ø­Ø³Ø¨ Ù…Ø§ ØªØ±Ø§Ù‡ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.': 'An initial estimate; adjust it to match what you see on the panels.',
-  'Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù…': 'System location', 'Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†Ø© Ø£Ùˆ Ù…Ø­Ø§ÙØ¸Ø©': 'Search for a city or region', 'Ø¨Ø­Ø«': 'Search',
-  'Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ø¯Ù‚ÙŠÙ‚ Ø§Ø®ØªÙŠØ§Ø±ÙŠØ› Ø§Ø³ØªØ®Ø¯Ù… GPS Ù„Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø£Ù‚Ø±Ø¨.': 'Exact location is optional. Use GPS for nearby weather.',
-  'Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…ÙˆÙ‚Ø¹ÙŠ Ø§Ù„Ø­Ø§Ù„ÙŠ': 'Use my current location', 'Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù†Ø¸Ø§Ù…': 'Total system capacity', 'Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©': 'Manufacturer',
-  'Ø£Ùˆ Ø§ÙƒØªØ¨: ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ': 'Or enter: unknown', 'Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¹Ù† Ø§Ù„Ø£ÙÙ‚ÙŠ': 'Panel tilt from horizontal', 'Ù†ÙˆØ¹ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel type',
-  'Ø£Ø­Ø§Ø¯ÙŠØ© Ø§Ù„Ø¨Ù„ÙˆØ±Ø©': 'Monocrystalline', 'Ù…ØªØ¹Ø¯Ø¯Ø© Ø§Ù„Ø¨Ù„ÙˆØ±Ø§Øª': 'Polycrystalline', 'Ø£ØºØ´ÙŠØ© Ø±Ù‚ÙŠÙ‚Ø©': 'Thin film', 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ': 'Unknown',
-  'ÙƒÙØ§Ø¡Ø© Ø§Ù„Ù„ÙˆØ­ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Panel efficiency (optional)', 'Ù…Ø¹Ø§Ù…Ù„ Ø§Ù„Ø­Ø±Ø§Ø±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Temperature coefficient (optional)',
-  'ØºØ§Ù„Ø¨Ø§Ù‹ Ø¨ÙŠÙ† â€Ž-0.25 Ùˆâ€Ž-0.50 Ù„ÙƒÙ„ Ø¯Ø±Ø¬Ø©.': 'Usually between -0.25 and -0.50 per degree.', 'Ù‚Ø¯Ø±Ø© Ø§Ù„Ù„ÙˆØ­ Ø§Ù„ÙˆØ§Ø­Ø¯ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Power per panel (optional)',
-  'ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel photo or video', 'Ø£Ø¶Ù ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù‚ØµÙŠØ±Ø§Ù‹': 'Add a photo or short video',
-  'ØµÙˆØ±Ø© ÙˆØ§Ø¶Ø­Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ù† 5 Ø¥Ù„Ù‰ 10 Ø«ÙˆØ§Ù†Ù Â· Ø­ØªÙ‰ 6 Ù…Ù„ÙØ§ØªØŒ 25 Ù…ÙŠØºØ§Ø¨Ø§ÙŠØª Ù„Ù„Ù…Ù„Ù': 'A clear photo or a 5â€“10 second video Â· up to 6 files, 25 MB per file',
-  'ØªÙØ­ÙØ¸ Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª ÙÙŠ Ø­Ø³Ø§Ø¨Ùƒ ÙˆØªØ¸Ù‡Ø± Ø¹Ù„Ù‰ Ø£Ø¬Ù‡Ø²ØªÙƒ. ØªÙØ±Ø³Ù„ Ø¥Ø·Ø§Ø±Ø§Øª ØµÙˆØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¥Ù„Ù‰ AI ÙÙ‚Ø· Ø¹Ù†Ø¯ Ø¶ØºØ· Â«Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ­Ù„ÙŠÙ„Â».': 'Attachments sync to your account and devices. Panel image frames are sent to AI only when you choose â€œAnalyze systemâ€.',
-  'Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Bill amount', 'Ø§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Bill consumption (optional)',
-  'Ø¥Ù† ØªÙˆÙØ±ØŒ Ù†Ø³ØªØ®Ø¯Ù…Ù‡ Ù„Ø§Ø´ØªÙ‚Ø§Ù‚ ØªØ¹Ø±ÙØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ Ø§Ù„ØªÙ‚Ø±ÙŠØ¨ÙŠØ©.': 'If available, we use it to estimate your electricity rate.',
-  'ØªØ¹Ø±ÙØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Electricity rate (optional)', 'ØªÙØ³ØªØ®Ø¯Ù… Ø¥Ø°Ø§ Ù„Ù… ØªØ¯Ø®Ù„ Ø§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ.': 'Used if consumption is not provided.',
-  'Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Bill month', 'ØµÙˆØ±Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Bill photo (optional)', 'Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Attach a bill photo',
-  'ØªÙØ­ÙØ¸ ÙÙŠ Ø­Ø³Ø§Ø¨Ùƒ ÙˆÙ„Ø§ ØªÙØ±Ø³Ù„ Ù„Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¨ØµØ±ÙŠ': 'Saved to your account and not sent for visual analysis.',
-  'Ø±Ø§Ø¬Ø¹ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª': 'Review your details', 'Ø§Ø³Ù… ØµØ§Ø­Ø¨ Ø§Ù„Ù†Ø¸Ø§Ù…': 'Account name', 'Ù„Ù… ØªÙØ¶Ù': 'Not added', 'Ù„ÙˆØ­': 'panels',
-  'Ù…Ù„Ù Ù„Ù„Ø£Ù„ÙˆØ§Ø­': 'panel file(s)', 'Ù…Ù„ÙØ§Øª Ù„Ù„Ø£Ù„ÙˆØ§Ø­': 'panel files', 'Ø³ÙŠØ­Ø³Ø¨ Ø³ÙŠØ§Ø¬ ÙÙ‚Ø¯ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ Ù…Ù† Ø§Ù„Ø­Ø±Ø§Ø±Ø© ÙˆØ§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„ Ø§Ù„Ù…Ø±Ø¦ÙŠ. Ù‚ÙŠÙ…Ø© Ø§Ù„Ù…Ø§Ù„ ØªÙ‚Ø¯ÙŠØ±ÙŠØ© ÙˆØªØªØºÙŠØ± Ø­Ø³Ø¨ Ø§Ù„ØªØ¹Ø±ÙØ© Ø§Ù„Ù…Ø¯Ø®Ù„Ø©. ': 'Siyaj estimates energy loss from heat, dust, and visible shade. The cost estimate depends on your electricity rate. ',
-  'Ø³ÙŠØªÙ… Ø¥Ø±Ø³Ø§Ù„ ØµÙˆØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙÙ‚Ø· Ù„Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø°ÙƒÙŠ.': 'Only panel images will be sent for AI analysis.', 'Ø£Ø¶Ù ØµÙˆØ±Ø© Ù„Ù„Ø£Ù„ÙˆØ§Ø­ ÙÙŠ Ø§Ù„Ø®Ø·ÙˆØ© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø© Ù„ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¨ØµØ±ÙŠ.': 'Add a panel photo in the previous step to enable visual analysis.',
-  'Ø±Ø­Ù„ØªÙƒ Ù…Ø¹ Ø§Ù„Ø´Ù…Ø³': 'Your solar journey', 'Ø³Ø¬Ù„ Ø§Ù„ÙØ­ÙˆØµØ§Øª': 'Inspection history', 'ÙƒÙ„ Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„ÙØ­Øµ Ø§Ù„Ù…Ø­ÙÙˆØ¸Ø© ÙÙŠ Ø­Ø³Ø§Ø¨Ùƒ.': 'All inspections saved to your account.',
-  'ÙØ­Øµ Ø¬Ø¯ÙŠØ¯ ': 'New inspection ', 'Ù„Ø§ ØªÙˆØ¬Ø¯ ÙØ­ÙˆØµØ§Øª Ù…Ø­ÙÙˆØ¸Ø© Ø¨Ø¹Ø¯': 'No saved inspections yet', 'Ø¨Ø¹Ø¯ Ø¥Ø¹Ø¯Ø§Ø¯ Ù†Ø¸Ø§Ù…Ùƒ Ø³ÙŠØ¸Ù‡Ø± Ù‡Ù†Ø§ Ø³Ø¬Ù„ Ø§Ù„ÙØ­ÙˆØµØ§Øª.': 'Your inspections will appear here after system setup.',
-  'Ø¹Ø±Ø¶': 'View', 'ÙÙ‚Ø¯ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ Ø­ÙŠÙ†Ù‡Ø§: ': 'Estimated energy loss then: ', 'ÙÙ‚Ø¯ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ ': 'Estimated loss ',
-  'ØªÙØ¶ÙŠÙ„Ø§ØªÙƒ': 'Your preferences', 'Ø®ØµÙ‘Øµ ØªØ¬Ø±Ø¨Ø© Ø³ÙŠØ§Ø¬ Ø¨Ù…Ø§ ÙŠÙ†Ø§Ø³Ø¨Ùƒ.': 'Personalize your Siyaj experience.', 'Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª ÙˆØ§Ù„Ø¹Ø±Ø¶': 'Alerts and display',
-  'ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„Ù…ØªØµÙØ­': 'Browser notifications', 'ØªÙ†Ø¨ÙŠÙ‡ Ø¹Ù†Ø¯ ØªØºÙŠØ± Ù…Ù‡Ù… ÙÙŠ Ø§Ù„Ø·Ù‚Ø³': 'Alerts for significant weather changes', 'Ø§Ù„ÙˆØ¶Ø¹ Ø§Ù„Ù„ÙŠÙ„ÙŠ': 'Dark mode',
-  'Ø£Ù„ÙˆØ§Ù† Ø£Ù‡Ø¯Ø£ Ø¹Ù†Ø¯ Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…Ø³Ø§Ø¡Ù‹': 'A softer display for evening use', 'Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡ Ø§Ù„ØµÙˆØªÙŠ': 'Sound alerts', 'ØµÙˆØª Ø¹Ù†Ø¯ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„Ù…Ù‡Ù…Ø©': 'Play a sound for important alerts',
-  'Ø§Ù„Ù„ØºØ©': 'Language', 'Ù„ØºØ© ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ù…ÙˆÙ‚Ø¹': 'Interface language', 'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©': 'Arabic', 'Ø¨ÙŠØ§Ù†Ø§ØªÙƒ ÙˆØ®ØµÙˆØµÙŠØªÙƒ': 'Your data and privacy',
-  'ÙŠØ­ÙØ¸ Ø³ÙŠØ§Ø¬ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø¨Ùƒ ÙˆØ¥Ø¹Ø¯Ø§Ø¯Ø§ØªÙƒ ÙˆØ³Ø¬Ù„ Ø§Ù„ÙØ­ÙˆØµØ§Øª ÙˆÙ…Ø±ÙÙ‚Ø§ØªÙƒ ÙÙŠ Ø§Ù„ØªØ®Ø²ÙŠÙ† Ø§Ù„Ø³Ø­Ø§Ø¨ÙŠØŒ ÙˆØªØ¸Ù‡Ø± Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙŠ ØªÙ…Øª Ù…Ø²Ø§Ù…Ù†ØªÙ‡Ø§ Ø¹Ù„Ù‰ Ø£Ø¬Ù‡Ø²ØªÙƒ Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ù„Ø­Ø³Ø§Ø¨ Ù†ÙØ³Ù‡. Ø¹Ù†Ø¯ Ø·Ù„Ø¨ Ø§Ù„ØªØ­Ù„ÙŠÙ„ ÙÙ‚Ø·ØŒ ØªÙØ±Ø³Ù„ ØµÙˆØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ„Ù‚Ø·Ø§Øª Ù…ÙˆØ²Ø¹Ø© Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ø£Ùˆ ØµÙˆØ±Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¥Ù„Ù‰ Anthropic Ù„ØªØ­Ù„ÙŠÙ„Ù‡Ø§ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude. ÙŠÙ…ÙƒÙ†Ùƒ Ù…Ø±Ø§Ø¬Ø¹Ø© Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù…Ù‡Ø§. Ø¥Ø­Ø¯Ø§Ø«ÙŠØ§Øª GPS ØªÙØ³ØªØ®Ø¯Ù… Ù„Ø­Ø³Ø§Ø¨ Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø´Ù…Ø³ ÙˆØ§Ù„Ø·Ù‚Ø³ ÙˆØ§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø¹Ù†Ø¯ ØªÙØ¹ÙŠÙ„Ù‡Ø§.': 'Siyaj saves account details, settings, inspection history and attachments in cloud storage and syncs them across your devices. Only when you request analysis, panel photos, sampled video frames or a bill image are sent to Anthropic for assessment by Claude. You can review extracted bill details before applying them. GPS coordinates are used for sun geometry, weather and alerts when enabled.',
-  'ØªÙ†Ø²ÙŠÙ„ Ù†Ø³Ø®Ø© Ù…Ù† Ø¨ÙŠØ§Ù†Ø§ØªÙŠ': 'Download my data', 'Ù…Ø³Ø­ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø¨ÙŠ': 'Clear my account data', 'Ø±ÙÙŠÙ‚Ùƒ Ø§Ù„Ø°ÙƒÙŠ Ù„Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ø´Ù…Ø³ÙŠØ© Â· Ø¥ØµØ¯Ø§Ø± ØªØ¬Ø±ÙŠØ¨ÙŠ': 'Your smart solar companion Â· Preview',
-  'ØµÙÙ†Ø¹ Ø¨Ø¹Ù†Ø§ÙŠØ© Ù„Ù†Ø¹Ø·ÙŠ Ø§Ù„Ø´Ù…Ø³ Ø­Ù‚Ù‡Ø§': 'Made with care, under the sun', 'Ø­Ø³Ø§Ø¨Ùƒ ÙÙŠ Ø³ÙŠØ§Ø¬': 'Your Siyaj account', 'Ø£Ù‡Ù„Ø§Ù‹': 'Welcome',
-  'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù…ØªØ§Ø¨Ø¹Ø© Ù†Ø¸Ø§Ù…Ùƒ Ø§Ù„Ø´Ù…Ø³ÙŠ.': 'Log in to keep up with your solar system.', 'Ø§Ø³ØªØ®Ø¯Ù… Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ù‡Ø§ØªÙÙƒ.': 'Use your email address or phone number.',
-  'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ': 'Email address or phone number', 'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±': 'Password', 'Ø£Ø¯Ø®Ù„ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±': 'Enter your password',
-  'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø£Ùˆ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ': 'Username, email or phone number',
-  'Ø¯Ø®ÙˆÙ„ ': 'Log in ', 'Ù„ÙŠØ³ Ù„Ø¯ÙŠÙƒ Ø­Ø³Ø§Ø¨ØŸ ': 'Donâ€™t have an account? ', 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø¬Ø¯ÙŠØ¯': 'Create a new account', 'Ø£Ùˆ': 'OR',
-  'Ø§Ù„Ù…ØªØ§Ø¨Ø¹Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google': 'Continue with Google', 'Ø³Ø¬Ù‘Ù„ Ø¨ÙŠØ§Ù†Ø§ØªÙƒ Ù„Ù„Ø¨Ø¯Ø¡ Ù…Ø¹ Ø³ÙŠØ§Ø¬.': 'Enter your details to get started with Siyaj.',
-  'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ': 'Email address', 'Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ': 'Phone number', '8 Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„': 'At least 8 characters',
-  'ØªØ£ÙƒÙŠØ¯ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±': 'Confirm password', 'Ø£Ø¹Ø¯ ÙƒØªØ§Ø¨Ø© ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±': 'Enter your password again', 'Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨ ': 'Create account ',
-  'Ù„Ø¯ÙŠÙƒ Ø­Ø³Ø§Ø¨ØŸ ': 'Already have an account? ', 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google': 'Sign up with Google', 'ÙŠÙØ­ÙØ¸ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙˆØ§Ù„Ù…Ø±ÙÙ‚Ø§Øª Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆØªØ¸Ù‡Ø± Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ù† Ø£Ø¬Ù‡Ø²ØªÙƒ.': 'Your account, details, and attachments are saved on the server and appear when you sign in on your devices.',
-  'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…': 'Username', 'Ù…Ø«Ø§Ù„: maryam_1': 'Example: maryam_1', 'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙØ±ÙŠØ¯. Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø¨Ùƒ ÙˆÙØ­ÙˆØµØ§ØªÙƒ ÙˆÙ…Ø±ÙÙ‚Ø§ØªÙƒ ØªØªØ²Ø§Ù…Ù† Ø¨ÙŠÙ† Ø£Ø¬Ù‡Ø²ØªÙƒ.': 'Usernames are unique. Your account, inspections, and attachments sync across your devices.',
-  'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù…Ù† 3 Ø¥Ù„Ù‰ 24 Ø­Ø±ÙØ§Ù‹ Ø£Ùˆ Ø±Ù‚Ù…Ø§Ù‹ØŒ ÙˆÙŠÙ…ÙƒÙ† Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ù†Ù‚Ø·Ø© ÙˆØ§Ù„Ø´Ø±Ø·Ø© Ø§Ù„Ø³ÙÙ„ÙŠØ© ÙÙ‚Ø·.': 'Username must be 3â€“24 letters or numbers. Periods and underscores are also allowed.',
-  'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù…Ø³ØªØ®Ø¯Ù… Ø¨Ø§Ù„ÙØ¹Ù„Ø› Ø§Ø®ØªØ± Ø§Ø³Ù…Ø§Ù‹ Ø¢Ø®Ø±.': 'That username is already taken. Choose another one.',
-  'Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø­Ø§Ù„ÙŠØ©': 'Current weather', 'ØªØ¸Ù‡Ø± Ø¨Ø¹Ø¯ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹': 'Shown after setting a location',
-  'ØªÙ‚Ø¯ÙŠØ± Ù…Ø¨Ø¯Ø¦ÙŠ Ù…Ù† Ø§Ù„ØºØ¨Ø§Ø± Ø§Ù„Ø¬ÙˆÙŠØŒ ÙˆÙ„ÙŠØ³ Ù‚ÙŠØ§Ø³Ø§Ù‹ Ù…Ø¨Ø§Ø´Ø±Ø§Ù‹ Ø¹Ù„Ù‰ Ø³Ø·Ø­ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.': 'Initial estimate from airborne dust, not a direct measurement on the panels.',
-  'Ù‡Ø°Ø§ Ø§Ù„Ø­Ø³Ø§Ø¨ Ù…Ø±ØªØ¨Ø· Ø¨Ù€ GoogleØ› ØªØ§Ø¨Ø¹ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google.': 'This account uses Google. Continue with Google.',
-  'ØªØ³Ø¬ÙŠÙ„ Google ÙŠØ­ØªØ§Ø¬ Ø¥Ø¶Ø§ÙØ© GOOGLE_CLIENT_ID Ø¥Ù„Ù‰ Ù…Ù„Ù .env.': 'Google sign-in needs GOOGLE_CLIENT_ID added to the .env file.',
-  'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google.': 'Signed in with Google.', 'Ù‡Ø°Ø§ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ù…Ø±ØªØ¨Ø· Ø¨Ø­Ø³Ø§Ø¨ Google Ø¢Ø®Ø±.': 'This email is linked to another Google account.',
-  'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø­Ø³Ø§Ø¨ Google.': 'Could not verify the Google account.', 'Ù„Ù… ÙŠØµÙ„ Ø±Ù…Ø² ØªØ³Ø¬ÙŠÙ„ Google.': 'Google sign-in did not return a credential.',
-  'Ø±Ù…Ø² Google ØºÙŠØ± ØµØ§Ù„Ø­ Ø£Ùˆ Ø§Ù†ØªÙ‡Øª ØµÙ„Ø§Ø­ÙŠØªÙ‡.': 'The Google credential is invalid or expired.',
-  'Ù‡Ù„ ØªØ±ÙŠØ¯ Ù…Ø³Ø­ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆÙ…Ø±ÙÙ‚Ø§ØªÙ‡ Ù…Ù† Ø¬Ù…ÙŠØ¹ Ø£Ø¬Ù‡Ø²ØªÙƒØŸ': 'Delete your account data and attachments from all your devices?',
-  'ØªØ­Ù„ÙŠÙ„ Ø¨ØµØ±ÙŠ': 'Visual inspection', 'ØªÙ‚Ø¯ÙŠØ± Ø£ÙˆÙ„ÙŠ': 'Initial estimate', 'Ø³Ù…Ø§Ø¡ ØµØ§ÙÙŠØ©': 'Clear sky', 'ØºØ§Ø¦Ù… Ø¬Ø²Ø¦ÙŠØ§Ù‹': 'Partly cloudy',
-  'Ø¶Ø¨Ø§Ø¨': 'Fog', 'Ø±Ø°Ø§Ø°': 'Drizzle', 'Ø£Ù…Ø·Ø§Ø±': 'Rain', 'Ø«Ù„ÙˆØ¬': 'Snow', 'Ø¹ÙˆØ§ØµÙ Ø±Ø¹Ø¯ÙŠØ©': 'Thunderstorms', 'Ø­Ø§Ù„Ø© Ù…ØªØºÙŠØ±Ø©': 'Changing conditions',
-  'Ù„Ø§ ÙŠØ¸Ù‡Ø± ØºØ¨Ø§Ø± ÙˆØ§Ø¶Ø­': 'No obvious dust visible', 'ØºØ¨Ø§Ø± Ø®ÙÙŠÙ Ø¸Ø§Ù‡Ø±': 'Light dust visible', 'ØºØ¨Ø§Ø± Ù…ØªÙˆØ³Ø· Ø¸Ø§Ù‡Ø±': 'Moderate dust visible',
-  'ØºØ¨Ø§Ø± ÙƒØ«ÙŠÙ Ø¸Ø§Ù‡Ø±': 'Heavy dust visible', 'Ø§Ù„ØµÙˆØ±Ø© ØºÙŠØ± ÙˆØ§Ø¶Ø­Ø©': 'Image is unclear', 'ÙŠØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ø§Ù†ØªØ¨Ø§Ù‡': 'Needs attention', 'Ù…Ø³ØªÙˆÙ‰ Ù…ØªÙˆØ³Ø·': 'Moderate level', 'Ø£Ø¯Ø§Ø¡ Ù…Ø·Ù…Ø¦Ù†': 'Looking good',
-  'Ø§Ù†ØªØ¨Ø§Ù‡': 'Attention', 'Ù…Ø±Ø§Ù‚Ø¨Ø©': 'Monitor', 'Ø¬ÙŠØ¯': 'Good', 'ØªÙ… ÙØ­Øµ Ø¨ØµØ±ÙŠ': 'Visual inspection', 'ÙØ­Øµ Ù…Ø­ÙÙˆØ¸': 'Saved inspection',
-  'ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ù…Ø±ØªÙØ¹Ø§Ù‹': 'dust estimate is high', 'ØªØ§Ø¨Ø¹ Ø§Ù„ØªØºÙŠØ±Ø§Øª ÙÙŠ Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§ÙØ­Øµ Ø³Ø·Ø­ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù„Ø¹ÙˆØ§ØµÙ Ø£Ùˆ ÙØªØ±Ø§Øª Ø§Ù„ØºØ¨Ø§Ø±.': 'Watch for weather changes and inspect panels after storms or dusty periods.',
-  'Ø­Ø±Ø§Ø±Ø© Ù…Ø±ØªÙØ¹Ø©': 'High temperature', 'ÙÙŠ Ù…ÙˆÙ‚Ø¹ÙƒØ› ØªØ¬Ù†Ø¨ Ù„Ù…Ø³ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ‚Øª Ø§Ù„Ø¸Ù‡ÙŠØ±Ø©.': 'at your location; avoid touching panels at midday.',
-  'Ù‡Ø¨Ø§Øª Ø±ÙŠØ§Ø­ Ù‚ÙˆÙŠØ© ØªØµÙ„ Ø¥Ù„Ù‰ ': 'Strong wind gusts up to ', ' ÙƒÙ…/Ø³Ø› Ø£Ø¬Ù‘Ù„ Ø§Ù„ØµØ¹ÙˆØ¯ Ø¥Ù„Ù‰ Ø§Ù„Ø³Ø·Ø­ Ø­ØªÙ‰ ØªÙ‡Ø¯Ø£.': ' km/h; wait for calmer conditions before going onto the roof.',
-  'Ø§Ø­ØªÙ…Ø§Ù„ Ù‡Ø·ÙˆÙ„ Ù…Ø±ØªÙØ¹ (': 'High chance of rain (', '%)Ø› Ø±Ø§Ù‚Ø¨ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù†Ù‚Ø¶Ø§Ø¡ Ø§Ù„Ø·Ù‚Ø³.': '%); check the panels after the weather passes.',
-  'ØªÙ… ØªØ­Ø¯ÙŠØ« ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ø¨Ø¹Ø¯ Ø§Ù„ØªÙ†Ø¸ÙŠÙ.': 'Dust estimate updated after cleaning.', 'ÙˆØ§Ø¬Ù‡Ø© Ø³ÙŠØ§Ø¬ Ù…ØªØ§Ø­Ø© Ø­Ø§Ù„ÙŠØ§Ù‹ Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©.': 'Siyaj is currently available in Arabic.',
-  'ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø±ÙŠØ§Ø­': 'Dust and wind push alerts', 'ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø±ÙŠØ§Ø­ Ø¹Ø¨Ø± Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª': 'Push alerts for dusty and windy weather',
-  'ÙƒÙ„ ': 'Every ', ' ÙŠÙˆÙ…Ø§Ù‹ ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰': ' days at most', 'ØªÙˆÙ‚Ø¹Ø§Øª Ø§Ù„ØºØ¨Ø§Ø± Ø§Ù„Ø¬ÙˆÙŠ: Open-Meteo ÙˆCAMS.': 'Air quality forecasts: Open-Meteo and CAMS.',
-  'ÙŠØªÙ… Ø¥Ø±Ø³Ø§Ù„ ØªÙ†Ø¨ÙŠÙ‡ Ø§Ù„ØªÙ†Ø¸ÙŠÙ Ù…Ø±Ø© ÙƒÙ„ 14 ÙŠÙˆÙ…Ø§Ù‹ ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰.': 'Cleaning alerts are limited to once every 14 days.',
-  'Ø®Ø³Ø§Ø±Ø© Ø´Ù‡Ø±ÙŠØ© ØªÙ‚Ø¯ÙŠØ±ÙŠØ©': 'Estimated monthly loss', 'Ø®Ø³Ø§Ø±Ø© Ø¨Ø³Ø¨Ø¨ Ø§Ù„ØºØ¨Ø§Ø±:': 'Dust loss:', 'Ø®Ø³Ø§Ø±Ø© Ø¨Ø³Ø¨Ø¨ Ø§Ù„Ø­Ø±Ø§Ø±Ø©:': 'Heat loss:',
-  'Ø±.Ø¹ Ø´Ù‡Ø±ÙŠØ§Ù‹': 'OMR / month', 'Ø²Ø§ÙˆÙŠØ© Ù„ÙˆØ­Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠØ© ØªØ®Ù„ÙŠÙ‡ ÙŠØªØ¬Ù…Ø¹ Ø¹Ù„ÙŠÙ‡ ØºØ¨Ø§Ø± Ø£Ø³Ø±Ø¹ Ù…Ù† Ù„Ùˆ ÙƒØ§Ù†Øª Ù‚Ø±ÙŠØ¨Ø© Ù…Ù† 30 Ø¯Ø±Ø¬Ø©.': 'Your current panel tilt may collect dust faster than an angle close to 30 degrees.',
-  'ØªØ­ØªØ§Ø¬ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø¥Ù„Ù‰ Ø¥Ø¹Ø¯Ø§Ø¯ Push ÙÙŠ Ø§Ù„Ø®Ø§Ø¯Ù…. Ø±Ø§Ø¬Ø¹ Ù…Ù„Ù README.': 'Push alerts need server setup. See the README.',
-  'ØªØ¹Ø°Ø± ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§ØªØ› ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¥Ø°Ù† ÙˆØ§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù….': 'Could not enable alerts. Check permission and server connection.',
-  'Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª ØªØ¹Ù…Ù„ Ø¨Ø¹Ø¯ Ø¥Ø¶Ø§ÙØ© Ù…ÙØ§ØªÙŠØ­ VAPID ÙˆØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù….': 'Alerts work after adding VAPID keys and starting the server.',
-  'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø³Ø¬Ù„ Ø§Ù„ØªÙ†Ø¸ÙŠÙ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….': 'Could not save the cleaning record on the server.',
-  'ØªØ¹Ø°Ø± Ø­Ø³Ø§Ø¨ ØªÙØµÙŠÙ„ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ø­Ø§Ù„ÙŠØ§Ù‹.': 'Could not calculate the heat loss breakdown right now.',
-  'ØªÙ†Ø¨ÙŠÙ‡ ØºØ¨Ø§Ø± Ù…Ù† Ø³ÙŠØ§Ø¬': 'Dust alert from Siyaj', 'ØªÙ†Ø¨ÙŠÙ‡ ØªÙˆÙ‚ÙŠØª Ø§Ù„ØªÙ†Ø¸ÙŠÙ Ù…Ù† Ø³ÙŠØ§Ø¬': 'Cleaning time alert from Siyaj',
-  'Ù„Ù… Ù†Ø¹Ø«Ø± Ø¹Ù„Ù‰ Ù†ØªØ§Ø¦Ø¬. Ø¬Ø±Ù‘Ø¨ ÙƒØªØ§Ø¨Ø© Ø§Ù„Ø§Ø³Ù… Ø¨Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©.': 'No results found. Try entering the name in English.',
-  'ØªØ¹Ø°Ø± Ø§Ù„Ø¨Ø­Ø«. ØªØ£ÙƒØ¯ Ù…Ù† ØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù….': 'Search failed. Make sure the local server is running.',
-  'Ù„Ù… ÙŠØªÙ… ØªÙØ¹ÙŠÙ„ Ø¥Ø°Ù† Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.': 'Notification permission was not granted.', 'ØªÙ… ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.': 'Notifications enabled.', 'ØªÙ… Ø¥ÙŠÙ‚Ø§Ù Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.': 'Notifications disabled.',
-  'ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø² ÙÙ‚Ø·': 'Alerts on this device only',
-  'Ù…ÙØ¹Ù‘Ù„Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø²': 'Enabled on this device', 'ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø²': 'Not enabled on this device',
-  'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².': 'Could not check alerts on this device.',
-  'ØªØ¹Ø°Ø± Ø¥ÙŠÙ‚Ø§Ù ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².': 'Could not disable alerts on this device.',
-  'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬Ø› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.': 'Could not log out. Please try again.',
-  'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„ØªÙ†Ø¸ÙŠÙ ÙˆØªØ­Ø¯ÙŠØ« ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø±.': 'Cleaning was recorded and the dust estimate was updated.',
-  'Ù„Ù… ØªØªÙˆÙØ± Ø¨ÙŠØ§Ù†Ø§Øª ÙƒØ§ÙÙŠØ© Ù„Ø­Ø³Ø§Ø¨ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø­Ø±Ø§Ø±Ø©Ø› Ø§Ù„ØªÙ‚Ø¯ÙŠØ± Ø§Ù„Ø­Ø§Ù„ÙŠ ÙŠØ´Ù…Ù„ Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„ ÙÙ‚Ø·.': 'There is not enough data to calculate heat loss; this estimate includes dust and shade only.',
-  'ÙŠÙˆÙ…ÙŠØ§Ù‹ ÙˆÙÙ‚ ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„.': 'per day based on estimated dust and shade.',
-  'ØªÙ… Ù…Ø³Ø­ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø¨Ùƒ.': 'Your account data was cleared.', 'ØªÙ… ØªÙ†Ø²ÙŠÙ„ Ù†Ø³Ø®Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª.': 'Data export downloaded.', 'ØªÙ… ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù….': 'System location set.',
-  'Ù„Ù… Ù†ØªÙ…ÙƒÙ† Ù…Ù† ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹. ØªØ­Ù‚Ù‚ Ù…Ù† Ø¥Ø°Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙÙŠ Ø§Ù„Ù…ØªØµÙØ­.': 'Could not get your location. Check your browser location permission.',
-  'Ø­Ø¯Ù‘Ø¯ Ù…Ø¯ÙŠÙ†Ø© Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… GPS Ø£ÙˆÙ„Ø§Ù‹.': 'Choose a city or use GPS first.', 'Ø£Ø¯Ø®Ù„ Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£ÙˆÙ„Ø§Ù‹.': 'Enter the number of panels first.',
-  'ØªØ£ÙƒØ¯ Ù…Ù† Ø¯Ø±Ø¬Ø© Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ.': 'Check the air temperature.', 'Ø§Ù„Ø±Ø·ÙˆØ¨Ø© ÙŠØ¬Ø¨ Ø£Ù† ØªÙƒÙˆÙ† Ø¨ÙŠÙ† 0 Ùˆ100%.': 'Humidity must be between 0 and 100%.',
-  'Ø£Ø¯Ø®Ù„ Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù†Ø¸Ø§Ù….': 'Enter the total system capacity.', 'Ø£Ø¶Ù Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„Ø­Ø³Ø§Ø¨ Ø§Ù„ØªØ¹Ø±ÙØ© Ø§Ù„ØªÙ‚Ø±ÙŠØ¨ÙŠØ©.': 'Enter the bill amount to estimate the electricity rate.',
-  'Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ù…Ø¯ÙŠÙ†Ø© Ù„Ù„Ø¨Ø­Ø«.': 'Enter a city name to search.', 'Ø§Ø®ØªØ± ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ø¯Ø¹ÙˆÙ…Ø§Ù‹.': 'Choose a supported image or video.',
-  'ÙŠÙ…ÙƒÙ† Ø¥Ø±ÙØ§Ù‚ Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙƒØµÙˆØ±Ø©.': 'The bill can be attached as an image.', 'ÙŠÙ…ÙƒÙ†Ùƒ Ø¥Ø¶Ø§ÙØ© 6 Ù…Ù„ÙØ§Øª ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰.': 'You can add up to 6 files.',
-  'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ù…Ù„Ù Ù…Ø­Ù„ÙŠØ§Ù‹Ø› Ø¬Ø±Ù‘Ø¨ Ù…Ù„ÙØ§Ù‹ Ø£ØµØºØ±.': 'Could not save the file locally. Try a smaller file.',
-  'Ø§Ø®ØªØ± JPG Ø£Ùˆ PNG Ø£Ùˆ WEBP Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ MP4 Ø£Ùˆ WEBM Ø£Ùˆ MOV.': 'Choose JPG, PNG, WEBP, MP4, WEBM, or MOV.', 'ÙŠØ¬Ø¨ Ø£Ù„Ø§ ÙŠØªØ¬Ø§ÙˆØ² Ø­Ø¬Ù… Ø§Ù„Ù…Ù„Ù 25 Ù…ÙŠØºØ§Ø¨Ø§ÙŠØª.': 'Each file must be 25 MB or smaller.',
-  'Ø£Ø¶Ù ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù„ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¨ØµØ±ÙŠ Ø¨Ø§Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„Ø§ØµØ·Ù†Ø§Ø¹ÙŠ.': 'Add a panel photo or video to enable AI visual analysis.',
-  'Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ©': 'Total capacity', 'Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø§Ù„Ø´Ù‡Ø±ÙŠØ©': 'Monthly bill', 'Ù„Ù… ØªØªÙ… Ø¥Ø¶Ø§ÙØ© Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ø¹Ø¯.': 'No system details added yet.',
-  'Ø£Ø¯Ø®Ù„ Ø¨Ø±ÙŠØ¯Ø§Ù‹ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ§Ù‹ ØµØ§Ù„Ø­Ø§Ù‹.': 'Enter a valid email address.', 'Ø£Ø¯Ø®Ù„ Ø±Ù‚Ù… Ù‡Ø§ØªÙ ØµØ§Ù„Ø­Ø§Ù‹.': 'Enter a valid phone number.',
-  'ÙŠØ¬Ø¨ Ø£Ù† ØªØªÙƒÙˆÙ† ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ù…Ù† 8 Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„.': 'Password must be at least 8 characters.', 'ÙƒÙ„Ù…ØªØ§ Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± Ù…ØªØ·Ø§Ø¨Ù‚ØªÙŠÙ†.': 'The passwords do not match.',
-  'Ù‡Ø°Ø§ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ Ù…Ø³Ø¬Ù„ Ù…Ø³Ø¨Ù‚Ø§Ù‹.': 'This email or phone number is already registered.', 'ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨.': 'Could not create the account.',
-  'Ù„Ù… Ù†Ø¹Ø«Ø± Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­. Ø£Ù†Ø´Ø¦ Ø­Ø³Ø§Ø¨Ø§Ù‹ Ø£ÙˆÙ„Ø§Ù‹.': 'This account was not found in this browser. Create an account first.',
-  'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± ØµØ­ÙŠØ­Ø©.': 'Incorrect password.', 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.': 'Could not log in.', 'ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ­ÙØ¸Ù‡ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….': 'Account created and saved on the server.',
-  'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.': 'You are logged in.', 'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬.': 'You are logged out.', 'ØªØ³Ø¬ÙŠÙ„ Google ÙŠØ­ØªØ§Ø¬ Ø¥Ø¹Ø¯Ø§Ø¯ OAuth Ù…Ù† Google Ù‚Ø¨Ù„ ØªÙØ¹ÙŠÙ„Ù‡.': 'Google sign-in needs Google OAuth configuration before it can be enabled.',
-  'ÙŠØªØ·Ù„Ø¨ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø³Ø§Ø¨ Ù…ØªØµÙØ­Ø§Ù‹ Ø¢Ù…Ù†Ø§Ù‹ Ù…Ø«Ù„ localhost.': 'Account creation requires a secure browser context such as localhost.',
-  'ÙÙ‚Ø¯ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ Ø­ÙŠÙ†Ù‡Ø§: ': 'Estimated energy loss then: ', 'ÙØ§ØªÙˆØ±Ø©': 'Bill', 'Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ': 'Consumption', 'ØªÙ†Ø¨ÙŠÙ‡': 'Alert',
-  'ØªÙ… ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù….': 'System location set.', 'ØªÙ… ØªØ­Ø¯ÙŠØ« ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ø¨Ø¹Ø¯ Ø§Ù„ØªÙ†Ø¸ÙŠÙ.': 'Dust estimate updated after cleaning.',
-  'ÙÙ‚Ø¯ Ø§Ù„ÙŠÙˆÙ… ': 'Todayâ€™s loss: ', 'Ø¥Ø´Ø¹Ø§Ø¹ Ø§Ù„Ø´Ù…Ø³ ÙŠØªØºÙŠØ± Ø­Ø³Ø¨ Ø§Ù„Ø·Ù‚Ø³': 'Sunshine varies with the weather',
-  'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø¨ÙŠØ§Ù†Ø§Øª Ù†Ø¸Ø§Ù…Ùƒ': 'Waiting for your system details', 'ØªÙ… Ø§Ù„ØªÙ†Ø¸ÙŠÙ': 'Cleaned',
-  'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬': 'Log out', 'name@example.com Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ': 'name@example.com or phone number',
-  'Ø±.Ø¹': 'OMR', 'Ùƒ.Ùˆ.Ø³': 'kWh', 'ÙˆØ§Ø·': 'W', 'Â°Ù…': 'Â°C', 'ÙƒÙ…/Ø³': 'km/h',
-  'Ø§Ù„ØªØ¹Ø±ÙØ© Ø§Ù„ØªÙŠ Ø£Ø¯Ø®Ù„ØªÙ‡Ø§': 'the rate you entered', 'Ù…Ø´ØªÙ‚Ø© Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙˆØ§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ': 'derived from your bill and consumption', 'ØªØ¹Ø±ÙØ© Ù…Ø±Ø¬Ø¹ÙŠØ© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØºÙŠÙŠØ±': 'editable reference rate',
-  'ØªÙ‚Ø±ÙŠØ¨Ø§Ù‹': 'approx.', 'Ù‚Ø¯ ÙŠÙÙ‚Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù… Ù†Ø­Ùˆ ': 'The system may lose about ', ' ÙŠÙˆÙ…ÙŠØ§Ù‹ ÙˆÙÙ‚ ØªÙ‚Ø¯ÙŠØ± Ø§Ù„Ø­Ø±Ø§Ø±Ø© ÙˆØ§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„.': ' per day based on estimated heat, dust, and shade.',
-  ' ÙÙŠ Ù…ÙˆÙ‚Ø¹ÙƒØ› ØªØ¬Ù†Ø¨ Ù„Ù…Ø³ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ‚Øª Ø§Ù„Ø¸Ù‡ÙŠØ±Ø©.': ' at your location; avoid touching panels at midday.',
-  'Ø§Ù„Ù…ØªØµÙØ­ Ù„Ø§ ÙŠØ¯Ø¹Ù… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹.': 'Your browser does not support location services.', 'ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù‚Ø³.': 'Could not load weather.',
-  'ØªØ¹Ø°Ø± ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³.': 'Could not refresh the weather.', 'ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø¢Ù†.': 'Weather data is unavailable right now.',
-  'ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø¢Ù†. Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰ Ø¨Ø¹Ø¯ Ù‚Ù„ÙŠÙ„ Ø£Ùˆ Ø£Ø¯Ø®Ù„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙŠØ¯ÙˆÙŠÙ‹Ø§.': 'Weather data is unavailable right now. Try again shortly or enter the readings manually.',
-  'Ø¥Ø­Ø¯Ø§Ø«ÙŠØ§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØºÙŠØ± ØµØ§Ù„Ø­Ø©.': 'The location coordinates are invalid.',
-  'ØªØ¹Ø°Ø± ØªÙ†ÙÙŠØ° Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø°ÙƒÙŠ.': 'Could not run AI analysis.', 'ØªØ¹Ø°Ø± ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ù…Ø±ÙÙ‚ Ø§Ù„Ø¢Ù†.': 'Could not analyze the attachment right now.',
-  'Ù„Ù… ÙŠØµÙ„ Ø±Ø¯ Ù‚Ø§Ø¨Ù„ Ù„Ù„Ù‚Ø±Ø§Ø¡Ø© Ù…Ù† Ø®Ø¯Ù…Ø© Ø§Ù„ØªØ­Ù„ÙŠÙ„.': 'The analysis service returned an unreadable response.',
-  'Ø­Ø±Ø§Ø±Ø© Ù…Ø±ØªÙØ¹Ø©': 'High temperature', 'Ù‡Ø¨Ø§Øª Ø±ÙŠØ§Ø­ Ù‚ÙˆÙŠØ© ØªØµÙ„ Ø¥Ù„Ù‰ ': 'Strong wind gusts up to ',
-  'Ø§Ø­ØªÙ…Ø§Ù„ Ù‡Ø·ÙˆÙ„ Ù…Ø±ØªÙØ¹ (': 'High chance of rain (', '%)Ø› Ø±Ø§Ù‚Ø¨ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù†Ù‚Ø¶Ø§Ø¡ Ø§Ù„Ø·Ù‚Ø³.': '%); check the panels after the weather passes.',
-  'Ø¬Ø§Ø±ÙŠ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹â€¦': 'Getting locationâ€¦', 'Ø¬Ø§Ø±Ù Ø§Ù„Ø¨Ø­Ø«â€¦': 'Searchingâ€¦', 'ØªØ¹Ø°Ø± Ø§Ù„Ø¨Ø­Ø« Ø¹Ù† Ø§Ù„Ù…Ø¯ÙŠÙ†Ø©.': 'Could not search for the city.',
-  'Ù„Ù… Ù†Ø¹Ø«Ø± Ø¹Ù„Ù‰ Ù†ØªØ§Ø¦Ø¬. Ø¬Ø±Ù‘Ø¨ ÙƒØªØ§Ø¨Ø© Ø§Ù„Ø§Ø³Ù… Ø¨Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©.': 'No results found. Try entering the name in English.',
-  'ØªØ¹Ø°Ø± Ø§Ù„Ø¨Ø­Ø«. ØªØ£ÙƒØ¯ Ù…Ù† ØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù….': 'Search failed. Make sure the local server is running.',
-  'Ø§Ù„Ø±Ù…Ø² Ø§Ù„Ø¨Ø±ÙŠØ¯ÙŠ': 'Postal code',
-  ' Ø§Ù„Ù†ØªÙŠØ¬Ø© Ø§Ù„Ø­Ø§Ù„ÙŠØ© ØªÙ‚Ø¯ÙŠØ±ÙŠØ© ÙˆØªØ¹ØªÙ…Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙŠ Ø£Ø¯Ø®Ù„ØªÙ‡Ø§.': ' This is an estimate based on the details you entered.',
-  'Ø£Ø¶Ù Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… Ø£ÙˆÙ„Ø§Ù‹': 'Add system details first', 'ØªÙ‚Ø¯ÙŠØ±Ø§Øª Ø£ÙˆÙ„ÙŠØ©': 'Initial estimates',
-  'ÙŠØ¸Ù‡Ø± ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ù…Ø±ØªÙØ¹Ø§Ù‹Ø› ØªØ­Ù‚Ù‚ Ø¨ØµØ±ÙŠØ§Ù‹ Ù…Ù† Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ†Ø¸Ù‘ÙÙ‡Ø§ Ø¹Ù†Ø¯ Ø§Ù„Ø­Ø§Ø¬Ø© ÙˆØ¨Ø·Ø±ÙŠÙ‚Ø© Ø¢Ù…Ù†Ø©.': 'Dust may be high; inspect the panels and clean them safely if needed.',
-  'ØªØ§Ø¨Ø¹ Ø§Ù„ØªØºÙŠØ±Ø§Øª ÙÙŠ Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§ÙØ­Øµ Ø³Ø·Ø­ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù„Ø¹ÙˆØ§ØµÙ Ø£Ùˆ ÙØªØ±Ø§Øª Ø§Ù„ØºØ¨Ø§Ø±.': 'Watch for weather changes and inspect the panels after storms or dusty periods.',
-  'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©': 'Arabic', 'English': 'English', 'PM10': 'PM10', 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ': 'Unknown',
-  'Ø§Ù„Ø¨Ù„Ø§ØºØ§Øª ÙˆØ§Ù„Ø´ÙƒØ§ÙˆÙ‰': 'Complaints & reports', 'ØªÙ‚Ø±ÙŠØ± Ø§Ù„Ù†Ø¸Ø§Ù…': 'System report',
-  'ØªÙˆØ§ØµÙ„ Ù…Ø¨Ø§Ø´Ø± Ù…Ø¹ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø©': 'Direct contact with the maintenance team',
-  'Ø£Ø±Ø³Ù„ Ø¨Ù„Ø§ØºØ§Ù‹ Ø¹Ù† Ø£ÙŠ Ù…Ø´ÙƒÙ„Ø© ÙÙŠ Ù†Ø¸Ø§Ù…Ùƒ Ø§Ù„Ø´Ù…Ø³ÙŠØŒ ÙˆØ³ÙŠØ±Ø³Ù„ Ù…Ø¨Ø§Ø´Ø±Ø© Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø©.': 'Send a complaint about any issue with your solar system and it reaches the maintenance team directly.',
-  'Ø¨Ù„Ø§Øº Ø¬Ø¯ÙŠØ¯': 'New complaint', 'Ø§ÙƒØªØ¨ Ø¨Ù„Ø§ØºÙƒ': 'Write your complaint',
-  'Ø³ÙŠÙØ±Ø³Ù„ Ø§Ù„Ø¨Ù„Ø§Øº Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø© Ù…Ø¨Ø§Ø´Ø±Ø©.': 'Your complaint is sent to the maintenance team directly.',
-  'Ø§Ù„Ø§Ø³Ù… (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Name (optional)', 'ÙˆØ³ÙŠÙ„Ø© Ø§Ù„ØªÙˆØ§ØµÙ„ (Ø¨Ø±ÙŠØ¯ Ø£Ùˆ Ù‡Ø§ØªÙ)': 'Contact (email or phone)',
-  'Ù†ÙˆØ¹ Ø§Ù„Ø¨Ù„Ø§Øº': 'Complaint type', 'Ø§Ù„Ù…ÙˆØ¶ÙˆØ¹ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Subject (optional)', 'ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø¨Ù„Ø§Øº': 'Complaint details',
-  'Ø¶Ø¹Ù ÙÙŠ Ø§Ù„Ø¥Ù†ØªØ§Ø¬': 'Low generation', 'ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Dust on panels',
-  'ØªØ¸Ù„ÙŠÙ„ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Shading on panels', 'Ù…Ø´ÙƒÙ„Ø© ÙƒÙ‡Ø±Ø¨Ø§Ø¦ÙŠØ©': 'Electrical issue',
-  'Ø·Ù„Ø¨ ØµÙŠØ§Ù†Ø©': 'Maintenance request', 'Ø£Ø®Ø±Ù‰': 'Other',
-  'Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¨Ù„Ø§Øº': 'Send complaint', 'Ù…Ø´Ø§Ø±ÙƒØ© / Ù†Ø³Ø® Ø§Ù„Ø¨Ù„Ø§Øº': 'Share / copy complaint',
-  'Ø¨Ù„Ø§ØºØ§ØªÙŠ Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©': 'My complaints', 'Ù…Ù„Ø®Øµ Ø¬Ø§Ù‡Ø² Ù„Ù„Ù…Ø´Ø§Ø±ÙƒØ©': 'Summary ready to share',
-  'ØªÙ‚Ø±ÙŠØ± Ø´Ø§Ù…Ù„ ÙŠÙ…ÙƒÙ† ØªÙ†Ø²ÙŠÙ„Ù‡ PDF Ø£Ùˆ Ù…Ø´Ø§Ø±ÙƒØªÙ‡ Ù…Ø¹ Ø´Ø±ÙƒØ© Ø§Ù„ØµÙŠØ§Ù†Ø©.': 'A full report you can download as PDF or share with a maintenance company.',
-  'ØªÙ†Ø²ÙŠÙ„ PDF': 'Download PDF', 'Ø·Ø¨Ø§Ø¹Ø©': 'Print', 'Ù…Ø´Ø§Ø±ÙƒØ©': 'Share',
-  'Ø¬Ø§Ø±Ù ØªØ¬Ù‡ÙŠØ² Ø³ÙŠØ§Ø¬â€¦': 'Preparing Siyajâ€¦', 'Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©': 'Try again',
-  'ÙŠØªÙ… Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆØªØ­Ù…ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§ØªÙƒØŒ Ù„Ø­Ø¸Ø§Øª Ù…Ù† ÙØ¶Ù„Ùƒ.': 'Contacting the server and loading your data, just a moment.',
-  'ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹': 'Update weather and location',
-  'Ù…Ø«Ø§Ù„: Ù…Ø±ÙŠÙ…': 'e.g. Mariam', 'name@example.com Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ': 'name@example.com or a phone number',
-  'Ù…Ø«Ø§Ù„: ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙÙŠ Ø§Ù„Ø´ØªØ§Ø¡': 'e.g. panel cleaning in winter',
-  'ØµÙ Ø§Ù„Ù…Ø´ÙƒÙ„Ø© ÙˆÙ…ØªÙ‰ Ù„Ø§Ø­Ø¸ØªÙ‡Ø§â€¦': 'Describe the issue and when you noticed itâ€¦',
-  'ØµÙŠØ§Ù†Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel maintenance',
-  'Ø¯ÙˆØ±Ø© Ø§Ù„ØµÙŠØ§Ù†Ø© ÙƒÙ„ 6 Ø£Ø´Ù‡Ø±': 'Maintenance cycle every 6 months',
-  'ØªÙ…Øª Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„ÙŠÙˆÙ… âœ“': 'Maintenance done today âœ“',
-  'Ø§Ø³Ù… Ø´Ø±ÙƒØ© Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel company name',
-  'Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ù„Ù„Ø£Ù„ÙˆØ§Ø­': 'Last panel maintenance',
-  'Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©': 'Last maintenance',
-  'Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©': 'Next maintenance',
-  'Ù…ÙˆØ¹Ø¯ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©': 'Next maintenance due',
-  'Ù„Ù… ØªÙØ³Ø¬Ù„': 'Not recorded',
-  'Ø´Ø±ÙƒØ© Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel company',
-  'Ø§Ù„Ø´Ø±ÙƒØ©': 'Company',
-  'Ø§Ù„Ù…ØµÙ†Ø¹': 'Manufacturer',
-  'ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©': 'Not set',
-  'Ø£Ø¶Ù ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©': 'Add the last maintenance date',
+  'أکآ§أکآ¨أکآ­أکآ« أکآ¹أ™â€  أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أ™â€کأکآ¹أکآ©': 'Search for a manufacturer',
+  'أکآ¹أکآ±أکآ¶ أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أ™â€کأکآ¹أکآ©': 'Show manufacturers', 'أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أ™â€کأکآ¹أکآ©': 'Manufacturers',
+  'أکآ§أکآ¨أکآ­أکآ« أکآ¨أکآ§أ™â€‍أکآ¹أکآ±أکآ¨أ™إ أکآ© أکآ£أ™ث† أکآ§أ™â€‍أکآ¥أ™â€ أکآ¬أ™â€‍أ™إ أکآ²أ™إ أکآ©أکإ’ أکآ£أ™ث† أکآ§أ™ئ’أکآھأکآ¨ أکآ§أکآ³أ™â€¦ أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ©. أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أکآ§أکآ®أکآھأ™إ أکآ§أکآ± أ‚آ«أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپأ‚آ».': 'Search in Arabic or English, or enter the company name. You can choose أ¢â‚¬إ“Unknownأ¢â‚¬آ‌.',
+  'أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Ai': 'Analyze bill with Ai',
+  'أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™آپأ™إ  أکآ§أ™â€‍أکآ¬أ™ث†': 'Airborne dust', 'أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™ئ’ أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ ': 'Use your current location',
+  'أکآھأ™â€¦أکآھ أکآ§أ™â€‍أکآھأکآ¹أکآ¨أکآ¦أکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³': 'Filled from weather data', 'أکآ¬أکآ§أکآ±أ™آچ أکآھأکآ­أکآ¯أ™إ أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹أ¢â‚¬آ¦': 'Getting locationأ¢â‚¬آ¦',
+  'أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claude': 'Panel assessment with Claude', 'أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claude': 'Read bill with Claude',
+  'أکآ§أ™â€‍أکآ¸أ™â€‍ أ™ث†أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أکآ´أ™â€¦أکآ³': 'Shade, dust and sun direction', 'أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أ™ث†أ™â€ڑأ™إ أ™â€¦أکآھأ™â€،أکآ§': 'Energy deficit and its value',
+  'أکآ­أ™آپأکآ¸ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ': 'Save details',
+  'أکآ¹أ™â€ أکآ¯ أکآ¶أکآ؛أکآ· أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ²أکآ±أکإ’ أکآھأ™آڈأکآ±أکآ³أ™â€‍ أکآµأ™ث†أکآ± أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أ™â€¦أ™ث†أکآ²أکآ¹أکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث† أکآ¥أ™â€‍أ™â€° Anthropicأکإ’ أکآ­أکآھأ™â€° 8 أکآµأ™ث†أکآ± أ™آپأ™إ  أکآ§أ™â€‍أکآ·أ™â€‍أکآ¨. أ™â€‍أکآ§ أ™إ أ™آڈأکآ­أ™â€‍أ™â€‍ أکآ§أ™â€‍أکآµأ™ث†أکآھ أکآ£أ™ث† أ™ئ’أ™â€‍ أکآ§أ™â€‍أکآ¥أکآ·أکآ§أکآ±أکآ§أکآھ.': 'Choosing this button sends panel photos and frames sampled across your video to Anthropic, up to 8 images per request. Audio and every frame are not assessed.',
+  'أکآ§أکآھأکآ¬أکآ§أ™â€، أ™ث†أکآ§أکآ¬أ™â€،أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Panel facing direction (optional)', '0أ‚آ° أکآ´أ™â€¦أکآ§أ™â€‍ أ‚آ· 90أ‚آ° أکآ´أکآ±أ™â€ڑ أ‚آ· 180أ‚آ° أکآ¬أ™â€ أ™ث†أکآ¨ أ‚آ· 270أ‚آ° أکآ؛أکآ±أکآ¨. أکآ£أکآ¯أکآ®أ™â€‍ أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ¨أ™ث†أکآµأ™â€‍أکآ© أ™â€‍أ™â€‍أ™ث†أکآ§أکآ¬أ™â€،أکآ© أکآ§أ™â€‍أکآھأ™إ  أکآھأ™ث†أکآ§أکآ¬أ™â€، أکآ§أ™â€‍أکآ´أ™â€¦أکآ³.': '0أ‚آ° north أ‚آ· 90أ‚آ° east أ‚آ· 180أ‚آ° south أ‚آ· 270أ‚آ° west. Enter a compass reading for the panel facing direction.',
+  'أ™ث†أ™â€ڑأکآھ أکآھأکآµأ™ث†أ™إ أکآ± أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Panel capture time', 'أ™ث†أ™â€ڑأکآھ أ™â€¦أکآ­أ™â€‍أ™إ  أکآھأکآ®أکآھأکآ§أکآ±أ™â€،أکâ€؛ أ™â€‍أکآ§ أ™â€ أکآ³أکآھأکآ®أکآ±أکآ¬أ™â€، أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث†. أ™إ أ™â€‍أکآ²أ™â€¦ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™ث†أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أ™ث†أکآ§أ™â€‍أکآ§أکآھأکآ¬أکآ§أ™â€، أ™ث†أکآ§أ™â€‍أ™ث†أ™â€ڑأکآھ أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ²أکآ§أ™ث†أ™إ أکآ© أکآ§أ™â€‍أکآ´أ™â€¦أکآ³.': 'Your selected local time; it is not extracted from video metadata. Location, tilt, direction and time are needed for sun geometry.',
+  'أ™إ أ™آپأکآ­أکآµ Claude أکآµأ™ث†أکآ±أکآ§أ™â€¹ أ™ث†أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أ™â€¦أکآ®أکآھأکآ§أکآ±أکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآ§أکآ·أکآ¹أکإ’ أکآ­أکآھأ™â€° 8 أکآµأ™ث†أکآ± أ™آپأ™إ  أکآ§أ™â€‍أکآ·أ™â€‍أکآ¨. أ™â€‍أکآ§ أ™إ أ™آپأکآ­أکآµ أکآ§أ™â€‍أکآµأ™ث†أکآھ أکآ£أ™ث† أ™ئ’أ™â€‍ أکآ¥أکآ·أکآ§أکآ±أکآ§أکآھ أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث†.': 'Claude inspects photos and selected frames from your clips, up to 8 images per request. Audio and every video frame are not analyzed.',
+  'أ™â€‍أکآ§ أ™إ أ™â€¦أ™ئ’أ™â€  أ™â€ڑأ™إ أکآ§أکآ³ أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ³أکآ·أکآ­ أکآ£أ™ث† أکآ²أکآ§أ™ث†أ™إ أکآ© أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أ™â€ڑأ™إ أ™â€ڑأکآ© أ™â€¦أ™â€  أکآµأ™ث†أکآ±أکآ© أکآ¹أکآ§أکآ¯أ™إ أکآ©أکâ€؛ أ™إ أکآ¹أکآھأ™â€¦أکآ¯ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآھأ™إ  أکآھأکآ¯أکآ®أ™â€‍أ™â€،أکآ§ أ™ث†أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³.': 'An ordinary image cannot measure surface temperature or exact panel tilt; calculations use your inputs and weather.',
+  'أکآھأ™آڈأکآ±أکآ³أ™â€‍ أکآ§أ™â€‍أکآµأ™ث†أکآ± أ™ث†أکآ§أ™â€‍أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أکآ¥أ™â€‍أ™â€° Anthropic أ™آپأ™â€ڑأکآ· أکآ¹أ™â€ أکآ¯ أکآ¶أکآ؛أکآ· أ‚آ«أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claudeأ‚آ».': 'Images and frames are sent to Anthropic only when you choose أ¢â‚¬إ“Panel assessment with Claudeأ¢â‚¬آ‌.',
+  'أکآ¥أ™â€ أکآھأکآ§أکآ¬ أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™â€‍أ™â€‍أکآ´أ™â€،أکآ± (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Expected monthly generation (optional)', 'أکآ¥أ™â€ أکآھأکآ§أکآ¬ أ™آپأکآ¹أ™â€‍أ™إ  أ™â€‍أ™â€‍أکآ´أ™â€،أکآ± (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Actual monthly generation (optional)',
+  'أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ أکآ®أکآ· أکآ£أکآ³أکآ§أکآ³ أ™â€¦أ™ث†أکآ«أ™ث†أ™â€ڑأکآ§أ™â€¹ أ™â€‍أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦. أ™إ أکآ¬أکآ¨ أکآ£أ™â€  أ™إ أکآ؛أکآ·أ™إ  أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™ث†أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ  أکآ§أ™â€‍أ™آپأکآھأکآ±أکآ© أ™â€ أ™آپأکآ³أ™â€،أکآ§.': 'Use a reliable baseline for your system. Expected and actual generation must cover the same period.',
+  'أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ¹أکآ¯أ™â€کأکآ§أکآ¯ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ£أ™ث† أکآ§أ™â€‍أکآ¹أکآ§أ™ئ’أکآ³أکâ€؛ أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™â€‍أ™إ أکآ³ أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­.': 'A generation meter or inverter reading; bill consumption is not panel generation.',
+  'أ™â€ڑأکآ¯ أکآھأکآھأکآ¶أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ´أکآ®أکآµأ™إ أکآ©أکâ€؛ أکآ§أکآ­أکآ¬أکآ¨ أ™â€¦أکآ§ أ™â€‍أکآ§ أ™إ أ™â€‍أکآ²أ™â€¦. أ™â€‍أ™â€  أکآھأ™آڈأکآ±أکآ³أ™â€‍ أکآ¥أ™â€‍أ™â€° Anthropic أکآ¥أ™â€‍أکآ§ أکآ¹أ™â€ أکآ¯ أکآ¶أکآ؛أکآ· أکآ²أکآ± أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©.': 'Bills may contain personal details; cover anything unnecessary. The bill is sent to Anthropic only when you press the bill analysis button.',
+  'أکآ±أکآ§أکآ¬أکآ¹ أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©': 'Review extracted bill details', 'أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أکآ±أکآ§أکآ¬أکآ¹أکآ©': 'Apply reviewed details', 'أکآ¥أ™â€‍أکآ؛أکآ§أکآ،': 'Cancel',
+  'أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ©': 'Energy consumption', 'أکآ§أ™â€‍أکآ¹أ™â€¦أ™â€‍أکآ©': 'Currency', 'أکآ§أ™â€‍أکآھأکآ¹أکآ±أ™آپأکآ© أ™â€‍أ™ئ’أ™â€‍ kWh': 'Rate per kWh', 'أکآ£أ™إ أکآ§أ™â€¦ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©': 'Billing days',
+  'أ™â€،أکآ°أ™â€، أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ¢أ™â€‍أ™إ أکآ© أ™â€ڑأکآ§أکآ¨أ™â€‍أکآ© أ™â€‍أ™â€‍أکآ®أکآ·أکآ£. أکآ±أکآ§أکآ¬أکآ¹ أکآ§أ™â€‍أکآ£أکآ±أ™â€ڑأکآ§أ™â€¦ أ™ث†أکآ§أ™â€‍أکآ¹أ™â€¦أ™â€‍أکآ© أ™ث†أکآ§أ™â€‍أکآ´أ™â€،أکآ± أ™â€ڑأکآ¨أ™â€‍ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦أ™â€،أکآ§. أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™ث†أکآ­أکآ¯أ™â€،أکآ§ أ™â€‍أکآ§ أکآھأکآ«أکآ¨أکآھ أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­.': 'Automatic extraction can be wrong. Review numbers, currency and month before applying them. A bill alone cannot establish solar losses.',
+  'أکآ§أ™â€‍أکآ®أکآ³أکآ§أکآ±أکآ© أ™آپأ™إ  أکآ§أ™â€‍أکآ´أ™â€،أکآ± أکآ§أ™â€‍أ™â€¦أکآ­أکآ¯أکآ¯': 'Loss for selected month', 'أکآ§أ™â€‍أکآ´أ™â€،أکآ±': 'Month', 'أکآھأکآ­أکآ¯أ™إ أکآ« أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ´أ™â€،أکآ±': 'Update monthly assessment',
+  'Claude أکآ؛أ™إ أکآ± أ™â€¦أ™آپأکآ¹أ™â€کأ™â€‍ أکآ¨أکآ¹أکآ¯. أ™إ أکآ³أکآھأکآ·أ™إ أکآ¹ أ™â€¦أکآ³أکآ¤أ™ث†أ™â€‍ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآھأ™آپأکآ¹أ™إ أ™â€‍أ™â€، أکآ¨أ™â€¦أ™آپأکآھأکآ§أکآ­ Anthropic.': 'Claude is not enabled yet. The site administrator can enable it with an Anthropic key.',
+  'أکآھأکآ¹أکآ°أکآ± أ™â€¦أکآ¹أکآ±أ™آپأکآ© أکآ­أکآ§أ™â€‍أکآ© Claudeأکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€°.': 'Could not check Claude availability; try again.',
+  'أکآ¬أکآ§أکآ±أ™آچ أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©أ¢â‚¬آ¦': 'Reading billأ¢â‚¬آ¦', 'أکآھأکآ¹أکآ°أکآ± أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©. أکآ¬أکآ±أ™â€کأکآ¨ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث†أکآ¶أکآ­.': 'Could not read the bill. Try a clearer image.',
+  'أکآھأ™â€¦ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ§أ™â€‍أکآھأ™إ  أکآ±أکآ§أکآ¬أکآ¹أکآھأ™â€،أکآ§.': 'Your reviewed bill details were applied.', 'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ´أ™â€،أکآ± أ™ث†أکآ§أ™â€‍أکآ£أکآ±أ™â€ڑأکآ§أ™â€¦ أ™â€ڑأکآ¨أ™â€‍ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©.': 'Check the month and numbers before applying bill details.',
+  'أکآ­أکآ³أکآ§أکآ¨ أکآ§أ™â€‍أ™â€ڑأ™إ أ™â€¦أکآ© أ™â€،أ™â€ أکآ§ أ™إ أکآ¯أکآ¹أ™â€¦ أکآ§أ™â€‍أکآ±أ™إ أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¹أ™آڈأ™â€¦أکآ§أ™â€ أ™إ أکâ€؛ أکآ£أکآ¯أکآ®أ™â€‍ أکآھأکآ¹أکآ±أ™آپأکآ© أکآ¨أکآ§أ™â€‍أکآ±أ™إ أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¹أ™آڈأ™â€¦أکآ§أ™â€ أ™إ  أ™إ أکآ¯أ™ث†أ™إ أکآ§أ™â€¹ أ™â€‍أ™â€،أکآ°أ™â€، أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©.': 'The value calculation supports Omani rials; enter an OMR rate manually for this bill.',
+  'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أ™إ أ™â€  0 أ™ث†360 أکآ¯أکآ±أکآ¬أکآ©.': 'Panel direction must be between 0 and 360 degrees.', 'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أکآ¨أ™إ أ™â€  0 أ™ث†90 أکآ¯أکآ±أکآ¬أکآ©.': 'Panel tilt must be between 0 and 90 degrees.',
+  'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآھأکآµأ™ث†أ™إ أکآ±.': 'Check the capture time.', 'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأ™â€کأکآ¹ أ™ث†أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ .': 'Check expected and actual generation.',
+  'أکآھأکآ¹أکآ°أکآ± أ™آپأکآھأکآ­ أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™آپأ™إ  أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­أکâ€؛ أکآ¬أکآ±أ™â€کأکآ¨ MP4 أکآ£أ™ث† أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ§أ™â€¹ أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآ·أکآ¹.': 'This browser could not open the video; try MP4 or attach still images from the clip.',
+  'أ™â€‍أکآ§ أکآھأ™ث†أکآ¬أکآ¯ أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أ™â€ڑأکآ§أکآ¨أ™â€‍أکآ© أ™â€‍أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍أکâ€؛ أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أ™ث†أکآ§أکآ¶أکآ­أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€¦أکآ¯أکآ¹أ™ث†أ™â€¦أکآ§أ™â€¹.': 'No readable frames were available; attach a clear image or supported video.',
+  'أکآھأکآ؛أ™إ أکآ±أکآھ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ£أکآ«أ™â€ أکآ§أکآ، أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍. أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أکآ·أ™â€‍أکآ¨ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ©.': 'Details changed during analysis. Submit again with the current details.',
+  'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآ­أکآ¯ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¢أ™â€ . أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أ™â€¦أکآ­أکآ§أ™ث†أ™â€‍أکآ© أ™â€‍أکآ§أکآ­أ™â€ڑأکآ§أ™â€¹.': 'Could not check the analysis usage limit. Try again later.',
+  'أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ°أ™ئ’أ™إ  أ™â€¦أکآھأ™ث†أ™â€ڑأ™آپ أکآ­أکآ§أ™â€‍أ™إ أکآ§أ™â€¹ أ™ث†أ™آپأ™â€ڑ أکآ¥أکآ¹أکآ¯أکآ§أکآ¯أکآ§أکآھ أکآ§أ™â€‍أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦.': 'AI analysis is currently disabled by the usage settings.',
+  'أ™إ أ™ث†أکآ¬أکآ¯ أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أ™â€‍أکآ­أکآ³أکآ§أکآ¨أ™ئ’ أ™â€ڑأ™إ أکآ¯ أکآ§أ™â€‍أکآھأ™â€ أ™آپأ™إ أکآ°. أکآ§أ™â€ أکآھأکآ¸أکآ± أکآ§أ™ئ’أکآھأ™â€¦أکآ§أ™â€‍أ™â€،.': 'An assessment for your account is already running. Wait for it to finish.',
+  'أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أ™â€¦أکآ´أکآ؛أ™ث†أ™â€‍ أکآ­أکآ§أ™â€‍أ™إ أکآ§أ™â€¹. أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أ™â€¦أکآ­أکآ§أ™ث†أ™â€‍أکآ© أکآ¨أکآ¹أکآ¯ أ™â€ڑأ™â€‍أ™إ أ™â€‍.': 'The analysis service is busy. Try again shortly.',
+  'أ™ث†أکآµأ™â€‍أکآھ أکآ¥أ™â€‍أ™â€° أکآ­أکآ¯ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦أ™إ  أ™â€‍أکآ­أکآ³أکآ§أکآ¨أ™ئ’. أ™إ أکآھأکآ¬أکآ¯أکآ¯ أکآ§أ™â€‍أکآ­أکآ¯ أکآ¹أ™â€ أکآ¯ أ™â€¦أ™â€ أکآھأکآµأ™آپ أکآ§أ™â€‍أ™â€‍أ™إ أ™â€‍ أکآ¨أکآھأ™ث†أ™â€ڑأ™إ أکآھ UTC.': 'Your account has reached its daily analysis limit. The limit resets at midnight UTC.',
+  'أ™ث†أکآµأ™â€‍ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ¥أ™â€‍أ™â€° أکآ­أکآ¯ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦أ™إ . أ™إ أکآھأکآ¬أکآ¯أکآ¯ أکآ§أ™â€‍أکآ­أکآ¯ أکآ¹أ™â€ أکآ¯ أ™â€¦أ™â€ أکآھأکآµأ™آپ أکآ§أ™â€‍أ™â€‍أ™إ أ™â€‍ أکآ¨أکآھأ™ث†أ™â€ڑأ™إ أکآھ UTC.': 'The site has reached its daily analysis limit. The limit resets at midnight UTC.',
+  'أکآ§أ™â€ أکآھأکآ¸أکآ± 30 أکآ«أکآ§أ™â€ أ™إ أکآ© أکآ¨أ™إ أ™â€  أکآ·أ™â€‍أکآ¨أکآ§أکآھ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍.': 'Wait 30 seconds between analysis requests.',
+  'أکآ§أ™â€ أکآھأ™â€،أکآھ أکآ¬أ™â€‍أکآ³أکآ© أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍أکâ€؛ أکآ³أکآ¬أ™â€کأ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أ™â€¦أ™â€  أکآ¬أکآ¯أ™إ أکآ¯.': 'Your session has expired. Log in again.',
+  'أکآ£أکآ¶أ™آپ GOOGLE_CLIENT_ID أکآ¥أ™â€‍أ™â€° أ™â€¦أ™â€‍أ™آپ .env أ™â€‍أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآھأکآ³أکآ¬أ™إ أ™â€‍ Google.': 'Add GOOGLE_CLIENT_ID to the .env file to enable Google sign-in.',
+  'أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™â€ڑأکآ¨أ™â€‍ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍.': 'Attach a panel photo or video before analysis.',
+  'أکآھأکآ¹أکآ°أکآ± أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أکآµأ™ث†أکآ± أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑأکآ©. أکآ¬أکآ±أ™â€کأکآ¨ أکآµأ™ث†أکآ± JPEG أکآ£أ™ث† PNG أکآ£أ™ث† WEBP.': 'Could not read the attached images. Try JPEG, PNG, or WEBP images.',
+  'أکآ±أ™آپأ™إ أ™â€ڑأ™ئ’ أکآ§أ™â€‍أکآ°أ™ئ’أ™إ  أ™â€‍أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ أکآ©': 'Your smart solar companion', 'أ™â€ أکآ­أ™â€¦أ™إ  أکآ¥أ™â€ أکآھأکآ§أکآ¬أ™ئ’أکإ’ أکآ®أکآ·أ™ث†أکآ© أکآ¨أکآ®أکآ·أ™ث†أکآ©': 'Protecting your solar output, step by step',
+  'أکآ§أ™â€‍أکآ±أکآ¦أ™إ أکآ³أ™إ أکآ©': 'Home', 'أکآ§أ™â€‍أکآ³أکآ¬أ™â€‍': 'History', 'أکآ§أ™â€‍أکآ¥أکآ¹أکآ¯أکآ§أکآ¯أکآ§أکآھ': 'Settings', 'أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍': 'Log in', 'أکآ¥أ™â€ أکآ´أکآ§أکآ، أکآ­أکآ³أکآ§أکآ¨': 'Create account',
+  'أکآ­أکآ¯أ™â€کأکآ¯ أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦': 'Set system location', 'أکآ§أ™â€‍أکآ¹أ™ث†أکآ¯أکآ© أ™â€‍أ™â€‍أکآ±أکآ¦أ™إ أکآ³أ™إ أکآ©': 'Back to home', 'أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¦أ™â€¦أکآ©': 'Menu',
+  'أکآµأکآ¨أکآ§أکآ­ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ©أکإ’ ': 'Hello, ', 'أ™إ أکآ§ أکآµأکآ¯أ™إ أ™â€ڑ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³': 'sunshine', 'أ™â€،أکآ°أ™â€، أ™â€‍أ™â€¦أکآ­أکآ© أکآ³أکآ±أ™إ أکآ¹أکآ© أکآ¹أ™â€  أکآ£أکآ¯أکآ§أکآ، أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’ أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦.': 'Here is a quick look at your system today.',
+  'أکآھأکآ­أکآ¯أ™إ أکآ« أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦': 'Update system details', 'أکآ­أکآ§أ™â€‍أکآ© أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦': 'Todayأ¢â‚¬â„¢s status', 'أکآ¨أکآ§أ™â€ أکآھأکآ¸أکآ§أکآ± أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’': 'Waiting for your system details',
+  'أکآ§أکآ¨أکآ¯أکآ£ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍': 'Start analysis', 'أ™آپأ™â€ڑأکآ¯ أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ ': 'Estimated loss', 'أ™â€ أکآ­أکآھأکآ§أکآ¬ أکآ¨أکآ¹أکآ¶ أکآ§أ™â€‍أکآھأ™آپأکآ§أکآµأ™إ أ™â€‍ أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹': 'A few details are needed first',
+  'أکآ£أکآ¯أکآ®أ™â€‍ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™ث†أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™â€¦أ™â€ڑأکآ·أکآ¹أکآ§أ™â€¹ أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™â€‍أ™â€‍أکآ­أکآµأ™ث†أ™â€‍ أکآ¹أ™â€‍أ™â€° أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ£أ™ث†أکآ¶أکآ­.': 'Enter your system details and add a panel photo or video for a clearer estimate.',
+  'أکآ¥أکآ¹أکآ¯أکآ§أکآ¯ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦': 'Set up system', 'أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أ¢â‚¬â€‌': 'Weather أ¢â‚¬â€‌', 'أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ§أکآ­': 'Weather unavailable',
+  'أکآ¢أکآ®أکآ± أکآھأکآ­أکآ¯أ™إ أکآ« ': 'Last updated ', 'أ™â€¦أ™â€‍أکآ®أکآµ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦': 'System overview', 'أ™â€ أکآ¸أکآ±أکآ© أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Panel overview',
+  'أکآ¯أکآ±أکآ¬أکآ© أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ©': 'Temperature', 'أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ¬أ™ث† أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ©': 'Current air temperature', 'أکآ§أ™â€‍أکآ±أکآ·أ™ث†أکآ¨أکآ©': 'Humidity', 'أکآ§أ™â€‍أکآ±أکآ·أ™ث†أکآ¨أکآ© أکآ§أ™â€‍أ™â€ أکآ³أکآ¨أ™إ أکآ©': 'Relative humidity',
+  'أ™â€¦أکآ³أکآھأ™ث†أ™â€° أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±': 'Dust level', 'أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ£أ™ث†أ™â€‍أ™إ ': 'Initial estimate', 'أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Estimated panel dust',
+  'أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™ئ’ أکآ§أ™â€‍أ™إ أکآ¯أ™ث†أ™إ  أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Your panel estimate', 'أ™â€¦أکآ¤أکآ´أکآ± أکآ¬أ™ث†أ™إ ': 'air indicator', 'أکآ§أ™â€‍أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦أ™إ أکآ©': 'Daily energy loss',
+  'أکآ·أکآ§أ™â€ڑأکآ© أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ©': 'Estimated energy', 'أکآھأکآ­أکآ¯أ™إ أکآ« أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أ™ث†أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹': 'Refresh weather and location', 'أکآھأ™ث†أکآµأ™إ أکآ© أکآ³أ™إ أکآ§أکآ¬': 'Siyaj recommendation',
+  'أکآ§أکآ¨أکآ¯أکآ£ أکآ¨أ™آپأکآ­أکآµ أکآ£أ™â€‍أ™ث†أکآ§أکآ­أ™ئ’': 'Start with a panel check', 'أ™â€ڑأکآ¯ أ™إ أ™ئ’أ™ث†أ™â€  أکآھأ™â€ أکآ¸أ™إ أ™آپ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™â€¦أ™آپأ™إ أکآ¯أکآ§أ™â€¹': 'Panel cleaning may help',
+  'أکآ±أکآ§أ™â€ڑأکآ¨ أکآ£أکآ«أکآ± أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Keep an eye on heat impact', 'أکآ­أکآ§أ™آپأکآ¸ أکآ¹أ™â€‍أ™â€° أ™â€¦أکآھأکآ§أکآ¨أکآ¹أکآ© أکآ¯أ™ث†أکآ±أ™إ أکآ©': 'Keep checking your system regularly',
+  'أکآھأ™â€¦ أکآ§أ™â€‍أکآھأ™â€ أکآ¸أ™إ أ™آپ': 'Cleaned', 'أ™â€¦أکآھأکآ§أکآ¨أکآ¹أکآ© أکآ§أ™â€‍أکآ£أکآ¯أکآ§أکآ،': 'Performance', 'أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أکآ£أکآ³أکآ¨أ™ث†أکآ¹': 'Weekly outlook', 'أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹': 'Estimated output',
+  'أکآ¢أکآ®أکآ± 7 أکآ£أ™إ أکآ§أ™â€¦': 'Last 7 days', 'أکآ§أ™â€‍أکآ£أ™إ أکآ§أ™â€¦ أکآ§أ™â€‍أکآ³أکآ¨أکآ¹أکآ© أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¯أ™â€¦أکآ©': 'Next 7 days', 'أ™â€¦أکآ®أکآ·أکآ· أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أکآ®أ™â€‍أکآ§أ™â€‍ أکآ§أ™â€‍أکآ£أ™إ أکآ§أ™â€¦ أکآ§أ™â€‍أکآ³أکآ¨أکآ¹أکآ© أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¯أ™â€¦أکآ©': 'Expected solar output for the next seven days', 'أکآھأ™â€ڑأکآ¯أ™إ أکآ±أکآ§أکآھ أکآ£أ™ث†أ™â€‍أ™إ أکآ© أکآھأکآھأکآ­أکآ¯أکآ« أ™â€¦أکآ¹ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³': 'Initial estimates update with the weather',
+  'أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™â€¦أکآ®أکآھأکآµأکآ±أکآ©': 'System details', 'أ™â€‍أ™â€¦ أکآھأکآھأ™â€¦ أکآ¥أکآ¶أکآ§أ™آپأکآ© أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ¨أکآ¹أکآ¯.': 'No system details added yet.',
+  'أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±': 'Panel tilt and dust', 'أکآ²أکآ§أ™ث†أ™إ أکآ© أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­ أ™ث†أکآھأکآ±أکآ§أ™ئ’أ™â€¦ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±': 'Tilt angle and dust build-up',
+  'أ™إ أکآھأکآ؛أ™إ أ™â€کأکآ± أکآ§أ™â€‍أ™â€¦أکآ´أ™â€،أکآ¯ أکآ­أکآ³أکآ¨ أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­ أکآ§أ™â€‍أ™â€¦أکآ¯أکآ®أ™â€‍ أ™آپأ™إ  أکآµأ™آپأکآ­أکآ© أکآ§أ™â€‍أکآھأکآ³أکآ¬أ™إ أ™â€‍أکإ’ أ™ث†أکآ£أکآ¯أ™â€ أ™â€° أ™â€¦أ™إ أ™â€‍ أ™إ أکآ¹أ™â€ أ™إ  أکآ؛أکآ¨أکآ§أکآ±أکآ§أ™â€¹ أکآ£أ™ئ’أکآ«أکآ±.': 'The scene follows the tilt entered on the setup page: the lower the tilt, the more dust collects.',
+  'أکآ§أ™â€‍أ™â€ڑأکآ¯أکآ±أکآ©': 'Capacity', 'أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Panels', 'أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹': 'Location', 'أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍': 'Tilt', 'أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ¯أکآ¯': 'Not set',
+  'أکآ§أ™â€‍أ™â€ أکآھأکآ§أکآ¦أکآ¬ أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ© أ™â€‍أکآ§ أکآھأکآ³أکآھأکآ¨أکآ¯أ™â€‍ أ™آپأکآ­أکآµ أ™آپأ™â€ أ™إ  أ™â€¦أکآ®أکآھأکآµ.': 'Estimates do not replace an inspection by a qualified technician.',
+  'أکآ®أکآ·أ™ث†أکآ© أکآ¨أکآ³أ™إ أکآ·أکآ© أ™â€ أکآ­أ™ث† أکآ·أکآ§أ™â€ڑأکآ© أکآ£أ™آپأکآ¶أ™â€‍': 'A few steps toward better solar performance', 'أ™â€‍أ™â€ أکآھأکآ¹أکآ±أ™â€کأ™آپ أکآ¹أ™â€‍أ™â€° أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’ ': 'Letأ¢â‚¬â„¢s get to know your system ',
+  'أکآ£أکآ¬أکآ¨ أکآ¹أ™â€  أ™â€،أکآ°أ™â€، أکآ§أ™â€‍أکآ®أکآ·أ™ث†أکآ§أکآھ أ™â€‍أکآھأکآ­أکآµأ™â€‍ أکآ³أ™إ أکآ§أکآ¬ أکآ¹أ™â€‍أ™â€° أکآµأ™ث†أکآ±أکآ© أ™â€¦أکآھأ™ئ’أکآ§أ™â€¦أ™â€‍أکآ© أکآ¹أ™â€  أکآ£أ™â€‍أ™ث†أکآ§أکآ­أ™ئ’.': 'Answer these questions to help Siyaj understand your panels.',
+  'أکآ§أ™â€‍أکآ¨أ™إ أکآ¦أکآ© أ™ث†أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹': 'Environment & location', 'أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ¨أ™إ أکآ¦أکآ© أ™ث†أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹': 'Environment and location',
+  'أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Panels', 'أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Panel details', 'أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©': 'Electricity bill', 'أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ§أ™â€‍أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ،': 'Electricity bill',
+  'أکآ§أ™â€‍أکآھأکآ£أ™ئ’أ™إ أکآ¯': 'Review', 'أکآھأکآ£أ™ئ’أ™إ أکآ¯ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ': 'Review details', 'أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھأ™ئ’ أکآھأکآ­أ™آپأکآ¸ أکآ¹أ™â€‍أ™â€° أکآ­أکآ³أکآ§أکآ¨أ™ئ’ أ™ث†أکآھأکآ¸أ™â€،أکآ± أکآ¹أ™â€ أکآ¯ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أ™â€¦أ™â€  أکآ£أکآ¬أ™â€،أکآ²أکآھأ™ئ’.': 'Your details are saved to your account and appear when you sign in on your devices.',
+  'أکآ­أ™آپأکآ¸ أکآھأ™â€‍أ™â€ڑأکآ§أکآ¦أ™إ ': 'Saved automatically', 'أکآ§أ™â€‍أکآھأکآ§أ™â€‍أ™إ  ': 'Next ', 'أکآ§أ™â€‍أکآ³أکآ§أکآ¨أ™â€ڑ': 'Back', 'أکآھأکآ³أکآھأکآ؛أکآ±أ™â€ڑ أکآ£أ™â€ڑأ™â€‍ أ™â€¦أ™â€  أکآ¯أ™â€ڑأ™إ أ™â€ڑأکآھأ™إ أ™â€ ': 'Takes less than two minutes',
+  'أکآھأ™â€ڑأکآ¯أ™إ أکآ±أکآ§أکآھ أکآ³أ™إ أکآ§أکآ¬ أکآ¥أکآ±أکآ´أکآ§أکآ¯أ™إ أکآ©': 'Siyaj estimates are guidance only', 'أکآ§أکآ¨أکآ¯أکآ£ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ ': 'Analyze system ',
+  'أکآ£أکآ®أکآ¨أکآ±أ™â€ أکآ§ أکآ¹أ™â€  أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™ث†أکآ§أ™â€‍أکآ¸أکآ±أ™ث†أ™آپ أکآ§أ™â€‍أ™â€¦أکآ­أ™إ أکآ·أکآ© أکآ¨أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­.': 'Tell us where your system is and about the conditions around the panels.',
+  'أکآ£أکآ¶أ™آپ أ™â€¦أکآ¹أ™â€‍أ™ث†أ™â€¦أکآ§أکآھ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™â€¦أ™â€ڑأکآ·أکآ¹أکآ§أ™â€¹ أ™â€ڑأکآµأ™إ أکآ±أکآ§أ™â€¹ أ™â€‍أ™آپأکآ­أکآµأ™â€،أکآ§ أکآ¨أکآµأکآ±أ™إ أکآ§أ™â€¹.': 'Add panel details and attach a photo or short video for visual inspection.',
+  'أکآھأکآ³أکآ§أکآ¹أکآ¯أ™â€ أکآ§ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ¹أ™â€‍أ™â€° أکآھأ™â€ڑأکآ¯أ™إ أکآ± أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآھأ™إ  أ™â€ڑأکآ¯ أکآھأ™آپأ™â€ڑأکآ¯أ™â€،أکآ§.': 'Bill details help estimate the value of energy you may be losing.',
+  'أکآ±أکآ§أکآ¬أکآ¹ أ™â€¦أ™â€‍أکآ®أکآµ أکآ§أ™â€‍أ™â€¦أکآ¹أ™â€‍أ™ث†أ™â€¦أکآ§أکآھ أ™â€ڑأکآ¨أ™â€‍ أکآ£أ™â€  أ™إ أکآ¨أکآ¯أکآ£ أکآ³أ™إ أکآ§أکآ¬ أکآ¨أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’.': 'Review the details before Siyaj analyzes your system.',
+  'أکآ§أکآ³أ™â€¦أ™ئ’ (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Your name (optional)', 'أکآ¯أکآ±أکآ¬أکآ© أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ¬أ™ث†': 'Air temperature', 'أکآ§أ™â€‍أکآ±أکآ·أ™ث†أکآ¨أکآ© أکآ§أ™â€‍أ™â€ أکآ³أکآ¨أ™إ أکآ©': 'Relative humidity', 'أکآ¹أکآ¯أکآ¯ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Number of panels',
+  'أکآھأکآ±أکآ§أ™ئ’أ™â€¦ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Dust on the panels', 'أکآھأ™â€ڑأکآ¯أ™إ أکآ± أ™â€¦أکآ¨أکآ¯أکآ¦أ™إ أکâ€؛ أکآ¹أکآ¯أ™â€کأ™â€‍أ™â€، أکآ­أکآ³أکآ¨ أ™â€¦أکآ§ أکآھأکآ±أکآ§أ™â€، أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­.': 'An initial estimate; adjust it to match what you see on the panels.',
+  'أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦': 'System location', 'أکآ§أکآ¨أکآ­أکآ« أکآ¹أ™â€  أ™â€¦أکآ¯أ™إ أ™â€ أکآ© أکآ£أ™ث† أ™â€¦أکآ­أکآ§أ™آپأکآ¸أکآ©': 'Search for a city or region', 'أکآ¨أکآ­أکآ«': 'Search',
+  'أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أکآ¯أ™â€ڑأ™إ أ™â€ڑ أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ أکâ€؛ أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ GPS أ™â€‍أکآ¬أ™â€‍أکآ¨ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أکآ£أ™â€ڑأکآ±أکآ¨.': 'Exact location is optional. Use GPS for nearby weather.',
+  'أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™إ  أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ ': 'Use my current location', 'أکآ§أ™â€‍أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ أکآ© أ™â€‍أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦': 'Total system capacity', 'أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أ™â€کأکآ¹أکآ©': 'Manufacturer',
+  'أکآ£أ™ث† أکآ§أ™ئ’أکآھأکآ¨: أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ': 'Or enter: unknown', 'أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¹أ™â€  أکآ§أ™â€‍أکآ£أ™آپأ™â€ڑأ™إ ': 'Panel tilt from horizontal', 'أ™â€ أ™ث†أکآ¹ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Panel type',
+  'أکآ£أکآ­أکآ§أکآ¯أ™إ أکآ© أکآ§أ™â€‍أکآ¨أ™â€‍أ™ث†أکآ±أکآ©': 'Monocrystalline', 'أ™â€¦أکآھأکآ¹أکآ¯أکآ¯أکآ© أکآ§أ™â€‍أکآ¨أ™â€‍أ™ث†أکآ±أکآ§أکآھ': 'Polycrystalline', 'أکآ£أکآ؛أکآ´أ™إ أکآ© أکآ±أ™â€ڑأ™إ أ™â€ڑأکآ©': 'Thin film', 'أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ': 'Unknown',
+  'أ™ئ’أ™آپأکآ§أکآ،أکآ© أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­ (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Panel efficiency (optional)', 'أ™â€¦أکآ¹أکآ§أ™â€¦أ™â€‍ أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Temperature coefficient (optional)',
+  'أکآ؛أکآ§أ™â€‍أکآ¨أکآ§أ™â€¹ أکآ¨أ™إ أ™â€  أ¢â‚¬إ½-0.25 أ™ث†أ¢â‚¬إ½-0.50 أ™â€‍أ™ئ’أ™â€‍ أکآ¯أکآ±أکآ¬أکآ©.': 'Usually between -0.25 and -0.50 per degree.', 'أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­ أکآ§أ™â€‍أ™ث†أکآ§أکآ­أکآ¯ (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Power per panel (optional)',
+  'أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Panel photo or video', 'أکآ£أکآ¶أ™آپ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™â€¦أ™â€ڑأکآ·أکآ¹أکآ§أ™â€¹ أ™â€ڑأکآµأ™إ أکآ±أکآ§أ™â€¹': 'Add a photo or short video',
+  'أکآµأ™ث†أکآ±أکآ© أ™ث†أکآ§أکآ¶أکآ­أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€¦أ™â€  5 أکآ¥أ™â€‍أ™â€° 10 أکآ«أ™ث†أکآ§أ™â€ أ™آچ أ‚آ· أکآ­أکآھأ™â€° 6 أ™â€¦أ™â€‍أ™آپأکآ§أکآھأکإ’ 25 أ™â€¦أ™إ أکآ؛أکآ§أکآ¨أکآ§أ™إ أکآھ أ™â€‍أ™â€‍أ™â€¦أ™â€‍أ™آپ': 'A clear photo or a 5أ¢â‚¬â€œ10 second video أ‚آ· up to 6 files, 25 MB per file',
+  'أکآھأ™آڈأکآ­أ™آپأکآ¸ أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھ أ™آپأ™إ  أکآ­أکآ³أکآ§أکآ¨أ™ئ’ أ™ث†أکآھأکآ¸أ™â€،أکآ± أکآ¹أ™â€‍أ™â€° أکآ£أکآ¬أ™â€،أکآ²أکآھأ™ئ’. أکآھأ™آڈأکآ±أکآ³أ™â€‍ أکآ¥أکآ·أکآ§أکآ±أکآ§أکآھ أکآµأ™ث†أکآ± أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¥أ™â€‍أ™â€° AI أ™آپأ™â€ڑأکآ· أکآ¹أ™â€ أکآ¯ أکآ¶أکآ؛أکآ· أ‚آ«أکآ§أکآ¨أکآ¯أکآ£ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍أ‚آ».': 'Attachments sync to your account and devices. Panel image frames are sent to AI only when you choose أ¢â‚¬إ“Analyze systemأ¢â‚¬آ‌.',
+  'أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©': 'Bill amount', 'أکآ§أ™â€‍أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’ أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Bill consumption (optional)',
+  'أکآ¥أ™â€  أکآھأ™ث†أ™آپأکآ±أکإ’ أ™â€ أکآ³أکآھأکآ®أکآ¯أ™â€¦أ™â€، أ™â€‍أکآ§أکآ´أکآھأ™â€ڑأکآ§أ™â€ڑ أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ، أکآ§أ™â€‍أکآھأ™â€ڑأکآ±أ™إ أکآ¨أ™إ أکآ©.': 'If available, we use it to estimate your electricity rate.',
+  'أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ، (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Electricity rate (optional)', 'أکآھأ™آڈأکآ³أکآھأکآ®أکآ¯أ™â€¦ أکآ¥أکآ°أکآ§ أ™â€‍أ™â€¦ أکآھأکآ¯أکآ®أ™â€‍ أکآ§أ™â€‍أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’.': 'Used if consumption is not provided.',
+  'أکآ´أ™â€،أکآ± أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©': 'Bill month', 'أکآµأ™ث†أکآ±أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Bill photo (optional)', 'أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©': 'Attach a bill photo',
+  'أکآھأ™آڈأکآ­أ™آپأکآ¸ أ™آپأ™إ  أکآ­أکآ³أکآ§أکآ¨أ™ئ’ أ™ث†أ™â€‍أکآ§ أکآھأ™آڈأکآ±أکآ³أ™â€‍ أ™â€‍أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¨أکآµأکآ±أ™إ ': 'Saved to your account and not sent for visual analysis.',
+  'أکآ±أکآ§أکآ¬أکآ¹ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ': 'Review your details', 'أکآ§أکآ³أ™â€¦ أکآµأکآ§أکآ­أکآ¨ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦': 'Account name', 'أ™â€‍أ™â€¦ أکآھأ™آڈأکآ¶أ™آپ': 'Not added', 'أ™â€‍أ™ث†أکآ­': 'panels',
+  'أ™â€¦أ™â€‍أ™آپ أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'panel file(s)', 'أ™â€¦أ™â€‍أ™آپأکآ§أکآھ أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'panel files', 'أکآ³أ™إ أکآ­أکآ³أکآ¨ أکآ³أ™إ أکآ§أکآ¬ أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ  أ™â€¦أ™â€  أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© أ™ث†أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أ™â€‍أکآ¸أ™â€‍ أکآ§أ™â€‍أ™â€¦أکآ±أکآ¦أ™إ . أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أ™â€¦أکآ§أ™â€‍ أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ© أ™ث†أکآھأکآھأکآ؛أ™إ أکآ± أکآ­أکآ³أکآ¨ أکآ§أ™â€‍أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أ™â€¦أکآ¯أکآ®أ™â€‍أکآ©. ': 'Siyaj estimates energy loss from heat, dust, and visible shade. The cost estimate depends on your electricity rate. ',
+  'أکآ³أ™إ أکآھأ™â€¦ أکآ¥أکآ±أکآ³أکآ§أ™â€‍ أکآµأ™ث†أکآ± أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™آپأ™â€ڑأکآ· أ™â€‍أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ°أ™ئ’أ™إ .': 'Only panel images will be sent for AI analysis.', 'أکآ£أکآ¶أ™آپ أکآµأ™ث†أکآ±أکآ© أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™آپأ™إ  أکآ§أ™â€‍أکآ®أکآ·أ™ث†أکآ© أکآ§أ™â€‍أکآ³أکآ§أکآ¨أ™â€ڑأکآ© أ™â€‍أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¨أکآµأکآ±أ™إ .': 'Add a panel photo in the previous step to enable visual analysis.',
+  'أکآ±أکآ­أ™â€‍أکآھأ™ئ’ أ™â€¦أکآ¹ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³': 'Your solar journey', 'أکآ³أکآ¬أ™â€‍ أکآ§أ™â€‍أ™آپأکآ­أ™ث†أکآµأکآ§أکآھ': 'Inspection history', 'أ™ئ’أ™â€‍ أکآ¹أ™â€¦أ™â€‍أ™إ أکآ§أکآھ أکآ§أ™â€‍أ™آپأکآ­أکآµ أکآ§أ™â€‍أ™â€¦أکآ­أ™آپأ™ث†أکآ¸أکآ© أ™آپأ™إ  أکآ­أکآ³أکآ§أکآ¨أ™ئ’.': 'All inspections saved to your account.',
+  'أ™آپأکآ­أکآµ أکآ¬أکآ¯أ™إ أکآ¯ ': 'New inspection ', 'أ™â€‍أکآ§ أکآھأ™ث†أکآ¬أکآ¯ أ™آپأکآ­أ™ث†أکآµأکآ§أکآھ أ™â€¦أکآ­أ™آپأ™ث†أکآ¸أکآ© أکآ¨أکآ¹أکآ¯': 'No saved inspections yet', 'أکآ¨أکآ¹أکآ¯ أکآ¥أکآ¹أکآ¯أکآ§أکآ¯ أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’ أکآ³أ™إ أکآ¸أ™â€،أکآ± أ™â€،أ™â€ أکآ§ أکآ³أکآ¬أ™â€‍ أکآ§أ™â€‍أ™آپأکآ­أ™ث†أکآµأکآ§أکآھ.': 'Your inspections will appear here after system setup.',
+  'أکآ¹أکآ±أکآ¶': 'View', 'أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ  أکآ­أ™إ أ™â€ أ™â€،أکآ§: ': 'Estimated energy loss then: ', 'أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ  ': 'Estimated loss ',
+  'أکآھأ™آپأکآ¶أ™إ أ™â€‍أکآ§أکآھأ™ئ’': 'Your preferences', 'أکآ®أکآµأ™â€کأکآµ أکآھأکآ¬أکآ±أکآ¨أکآ© أکآ³أ™إ أکآ§أکآ¬ أکآ¨أ™â€¦أکآ§ أ™إ أ™â€ أکآ§أکآ³أکآ¨أ™ئ’.': 'Personalize your Siyaj experience.', 'أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أ™ث†أکآ§أ™â€‍أکآ¹أکآ±أکآ¶': 'Alerts and display',
+  'أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­': 'Browser notifications', 'أکآھأ™â€ أکآ¨أ™إ أ™â€، أکآ¹أ™â€ أکآ¯ أکآھأکآ؛أ™إ أکآ± أ™â€¦أ™â€،أ™â€¦ أ™آپأ™إ  أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³': 'Alerts for significant weather changes', 'أکآ§أ™â€‍أ™ث†أکآ¶أکآ¹ أکآ§أ™â€‍أ™â€‍أ™إ أ™â€‍أ™إ ': 'Dark mode',
+  'أکآ£أ™â€‍أ™ث†أکآ§أ™â€  أکآ£أ™â€،أکآ¯أکآ£ أکآ¹أ™â€ أکآ¯ أکآ§أ™â€‍أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أ™â€¦أکآ³أکآ§أکآ،أ™â€¹': 'A softer display for evening use', 'أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€، أکآ§أ™â€‍أکآµأ™ث†أکآھأ™إ ': 'Sound alerts', 'أکآµأ™ث†أکآھ أکآ¹أ™â€ أکآ¯ أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أ™â€،أ™â€¦أکآ©': 'Play a sound for important alerts',
+  'أکآ§أ™â€‍أ™â€‍أکآ؛أکآ©': 'Language', 'أ™â€‍أکآ؛أکآ© أ™ث†أکآ§أکآ¬أ™â€،أکآ© أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹': 'Interface language', 'أکآ§أ™â€‍أکآ¹أکآ±أکآ¨أ™إ أکآ©': 'Arabic', 'أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھأ™ئ’ أ™ث†أکآ®أکآµأ™ث†أکآµأ™إ أکآھأ™ئ’': 'Your data and privacy',
+  'أ™إ أکآ­أ™آپأکآ¸ أکآ³أ™إ أکآ§أکآ¬ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ­أکآ³أکآ§أکآ¨أ™ئ’ أ™ث†أکآ¥أکآ¹أکآ¯أکآ§أکآ¯أکآ§أکآھأ™ئ’ أ™ث†أکآ³أکآ¬أ™â€‍ أکآ§أ™â€‍أ™آپأکآ­أ™ث†أکآµأکآ§أکآھ أ™ث†أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھأ™ئ’ أ™آپأ™إ  أکآ§أ™â€‍أکآھأکآ®أکآ²أ™إ أ™â€  أکآ§أ™â€‍أکآ³أکآ­أکآ§أکآ¨أ™إ أکإ’ أ™ث†أکآھأکآ¸أ™â€،أکآ± أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآھأ™إ  أکآھأ™â€¦أکآھ أ™â€¦أکآ²أکآ§أ™â€¦أ™â€ أکآھأ™â€،أکآ§ أکآ¹أ™â€‍أ™â€° أکآ£أکآ¬أ™â€،أکآ²أکآھأ™ئ’ أکآ¹أ™â€ أکآ¯ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أکآ¨أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™â€ أ™آپأکآ³أ™â€،. أکآ¹أ™â€ أکآ¯ أکآ·أ™â€‍أکآ¨ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أ™آپأ™â€ڑأکآ·أکإ’ أکآھأ™آڈأکآ±أکآ³أ™â€‍ أکآµأ™ث†أکآ± أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أ™â€¦أ™ث†أکآ²أکآ¹أکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث† أکآ£أ™ث† أکآµأ™ث†أکآ±أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ¥أ™â€‍أ™â€° Anthropic أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍أ™â€،أکآ§ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claude. أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أ™â€¦أکآ±أکآ§أکآ¬أکآ¹أکآ© أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™â€ڑأکآ¨أ™â€‍ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦أ™â€،أکآ§. أکآ¥أکآ­أکآ¯أکآ§أکآ«أ™إ أکآ§أکآھ GPS أکآھأ™آڈأکآ³أکآھأکآ®أکآ¯أ™â€¦ أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أ™ث†أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أ™ث†أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أکآ¹أ™â€ أکآ¯ أکآھأ™آپأکآ¹أ™إ أ™â€‍أ™â€،أکآ§.': 'Siyaj saves account details, settings, inspection history and attachments in cloud storage and syncs them across your devices. Only when you request analysis, panel photos, sampled video frames or a bill image are sent to Anthropic for assessment by Claude. You can review extracted bill details before applying them. GPS coordinates are used for sun geometry, weather and alerts when enabled.',
+  'أکآھأ™â€ أکآ²أ™إ أ™â€‍ أ™â€ أکآ³أکآ®أکآ© أ™â€¦أ™â€  أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھأ™إ ': 'Download my data', 'أ™â€¦أکآ³أکآ­ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ­أکآ³أکآ§أکآ¨أ™إ ': 'Clear my account data', 'أکآ±أ™آپأ™إ أ™â€ڑأ™ئ’ أکآ§أ™â€‍أکآ°أ™ئ’أ™إ  أ™â€‍أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ أکآ© أ‚آ· أکآ¥أکآµأکآ¯أکآ§أکآ± أکآھأکآ¬أکآ±أ™إ أکآ¨أ™إ ': 'Your smart solar companion أ‚آ· Preview',
+  'أکآµأ™آڈأ™â€ أکآ¹ أکآ¨أکآ¹أ™â€ أکآ§أ™إ أکآ© أ™â€‍أ™â€ أکآ¹أکآ·أ™إ  أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أکآ­أ™â€ڑأ™â€،أکآ§': 'Made with care, under the sun', 'أکآ­أکآ³أکآ§أکآ¨أ™ئ’ أ™آپأ™إ  أکآ³أ™إ أکآ§أکآ¬': 'Your Siyaj account', 'أکآ£أ™â€،أ™â€‍أکآ§أ™â€¹': 'Welcome',
+  'أکآ³أکآ¬أ™â€کأ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أ™â€‍أ™â€¦أکآھأکآ§أکآ¨أکآ¹أکآ© أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ .': 'Log in to keep up with your solar system.', 'أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ أکآ¨أکآ±أ™إ أکآ¯أ™ئ’ أکآ§أ™â€‍أکآ¥أ™â€‍أ™ئ’أکآھأکآ±أ™ث†أ™â€ أ™إ  أکآ£أ™ث† أکآ±أ™â€ڑأ™â€¦ أ™â€،أکآ§أکآھأ™آپأ™ئ’.': 'Use your email address or phone number.',
+  'أکآ§أ™â€‍أکآ¨أکآ±أ™إ أکآ¯ أکآ§أ™â€‍أکآ¥أ™â€‍أ™ئ’أکآھأکآ±أ™ث†أ™â€ أ™إ  أکآ£أ™ث† أکآ±أ™â€ڑأ™â€¦ أکآ§أ™â€‍أ™â€،أکآ§أکآھأ™آپ': 'Email address or phone number', 'أ™ئ’أ™â€‍أ™â€¦أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أ™ث†أکآ±': 'Password', 'أکآ£أکآ¯أکآ®أ™â€‍ أ™ئ’أ™â€‍أ™â€¦أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أ™ث†أکآ±': 'Enter your password',
+  'أکآ§أکآ³أ™â€¦ أکآ§أ™â€‍أ™â€¦أکآ³أکآھأکآ®أکآ¯أ™â€¦ أکآ£أ™ث† أکآ§أ™â€‍أکآ¨أکآ±أ™إ أکآ¯ أکآ§أ™â€‍أکآ¥أ™â€‍أ™ئ’أکآھأکآ±أ™ث†أ™â€ أ™إ  أکآ£أ™ث† أکآ±أ™â€ڑأ™â€¦ أکآ§أ™â€‍أ™â€،أکآ§أکآھأ™آپ': 'Username, email or phone number',
+  'أکآ¯أکآ®أ™ث†أ™â€‍ ': 'Log in ', 'أ™â€‍أ™إ أکآ³ أ™â€‍أکآ¯أ™إ أ™ئ’ أکآ­أکآ³أکآ§أکآ¨أکإ¸ ': 'Donأ¢â‚¬â„¢t have an account? ', 'أکآ¥أ™â€ أکآ´أکآ§أکآ، أکآ­أکآ³أکآ§أکآ¨ أکآ¬أکآ¯أ™إ أکآ¯': 'Create a new account', 'أکآ£أ™ث†': 'OR',
+  'أکآ§أ™â€‍أ™â€¦أکآھأکآ§أکآ¨أکآ¹أکآ© أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Google': 'Continue with Google', 'أکآ³أکآ¬أ™â€کأ™â€‍ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھأ™ئ’ أ™â€‍أ™â€‍أکآ¨أکآ¯أکآ، أ™â€¦أکآ¹ أکآ³أ™إ أکآ§أکآ¬.': 'Enter your details to get started with Siyaj.',
+  'أکآ§أ™â€‍أکآ¨أکآ±أ™إ أکآ¯ أکآ§أ™â€‍أکآ¥أ™â€‍أ™ئ’أکآھأکآ±أ™ث†أ™â€ أ™إ ': 'Email address', 'أکآ±أ™â€ڑأ™â€¦ أکآ§أ™â€‍أ™â€،أکآ§أکآھأ™آپ': 'Phone number', '8 أکآ£أکآ­أکآ±أ™آپ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€ڑأ™â€‍': 'At least 8 characters',
+  'أکآھأکآ£أ™ئ’أ™إ أکآ¯ أ™ئ’أ™â€‍أ™â€¦أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أ™ث†أکآ±': 'Confirm password', 'أکآ£أکآ¹أکآ¯ أ™ئ’أکآھأکآ§أکآ¨أکآ© أ™ئ’أ™â€‍أ™â€¦أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أ™ث†أکآ±': 'Enter your password again', 'أکآ¥أ™â€ أکآ´أکآ§أکآ، أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ ': 'Create account ',
+  'أ™â€‍أکآ¯أ™إ أ™ئ’ أکآ­أکآ³أکآ§أکآ¨أکإ¸ ': 'Already have an account? ', 'أکآ¥أ™â€ أکآ´أکآ§أکآ، أکآ­أکآ³أکآ§أکآ¨ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Google': 'Sign up with Google', 'أ™إ أ™آڈأکآ­أ™آپأکآ¸ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™ث†أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™ث†أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦ أ™ث†أکآھأکآ¸أ™â€،أکآ± أکآ¹أ™â€ أکآ¯ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أ™â€¦أ™â€  أکآ£أکآ¬أ™â€،أکآ²أکآھأ™ئ’.': 'Your account, details, and attachments are saved on the server and appear when you sign in on your devices.',
+  'أکآ§أکآ³أ™â€¦ أکآ§أ™â€‍أ™â€¦أکآ³أکآھأکآ®أکآ¯أ™â€¦': 'Username', 'أ™â€¦أکآ«أکآ§أ™â€‍: maryam_1': 'Example: maryam_1', 'أکآ§أکآ³أ™â€¦ أکآ§أ™â€‍أ™â€¦أکآ³أکآھأکآ®أکآ¯أ™â€¦ أ™آپأکآ±أ™إ أکآ¯. أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ­أکآ³أکآ§أکآ¨أ™ئ’ أ™ث†أ™آپأکآ­أ™ث†أکآµأکآ§أکآھأ™ئ’ أ™ث†أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھأ™ئ’ أکآھأکآھأکآ²أکآ§أ™â€¦أ™â€  أکآ¨أ™إ أ™â€  أکآ£أکآ¬أ™â€،أکآ²أکآھأ™ئ’.': 'Usernames are unique. Your account, inspections, and attachments sync across your devices.',
+  'أکآ§أکآ³أ™â€¦ أکآ§أ™â€‍أ™â€¦أکآ³أکآھأکآ®أکآ¯أ™â€¦ أ™â€¦أ™â€  3 أکآ¥أ™â€‍أ™â€° 24 أکآ­أکآ±أ™آپأکآ§أ™â€¹ أکآ£أ™ث† أکآ±أ™â€ڑأ™â€¦أکآ§أ™â€¹أکإ’ أ™ث†أ™إ أ™â€¦أ™ئ’أ™â€  أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ§أ™â€‍أ™â€ أ™â€ڑأکآ·أکآ© أ™ث†أکآ§أ™â€‍أکآ´أکآ±أکآ·أکآ© أکآ§أ™â€‍أکآ³أ™آپأ™â€‍أ™إ أکآ© أ™آپأ™â€ڑأکآ·.': 'Username must be 3أ¢â‚¬â€œ24 letters or numbers. Periods and underscores are also allowed.',
+  'أکآ§أکآ³أ™â€¦ أکآ§أ™â€‍أ™â€¦أکآ³أکآھأکآ®أکآ¯أ™â€¦ أ™â€¦أکآ³أکآھأکآ®أکآ¯أ™â€¦ أکآ¨أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أکâ€؛ أکآ§أکآ®أکآھأکآ± أکآ§أکآ³أ™â€¦أکآ§أ™â€¹ أکآ¢أکآ®أکآ±.': 'That username is already taken. Choose another one.',
+  'أکآ­أکآ§أ™â€‍أکآ© أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ©': 'Current weather', 'أکآھأکآ¸أ™â€،أکآ± أکآ¨أکآ¹أکآ¯ أکآھأکآ­أکآ¯أ™إ أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹': 'Shown after setting a location',
+  'أکآھأ™â€ڑأکآ¯أ™إ أکآ± أ™â€¦أکآ¨أکآ¯أکآ¦أ™إ  أ™â€¦أ™â€  أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ§أ™â€‍أکآ¬أ™ث†أ™إ أکإ’ أ™ث†أ™â€‍أ™إ أکآ³ أ™â€ڑأ™إ أکآ§أکآ³أکآ§أ™â€¹ أ™â€¦أکآ¨أکآ§أکآ´أکآ±أکآ§أ™â€¹ أکآ¹أ™â€‍أ™â€° أکآ³أکآ·أکآ­ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­.': 'Initial estimate from airborne dust, not a direct measurement on the panels.',
+  'أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™â€¦أکآ±أکآھأکآ¨أکآ· أکآ¨أ™â‚¬ Googleأکâ€؛ أکآھأکآ§أکآ¨أکآ¹ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Google.': 'This account uses Google. Continue with Google.',
+  'أکآھأکآ³أکآ¬أ™إ أ™â€‍ Google أ™إ أکآ­أکآھأکآ§أکآ¬ أکآ¥أکآ¶أکآ§أ™آپأکآ© GOOGLE_CLIENT_ID أکآ¥أ™â€‍أ™â€° أ™â€¦أ™â€‍أ™آپ .env.': 'Google sign-in needs GOOGLE_CLIENT_ID added to the .env file.',
+  'أکآھأ™â€¦ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Google.': 'Signed in with Google.', 'أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¨أکآ±أ™إ أکآ¯ أ™â€¦أکآ±أکآھأکآ¨أکآ· أکآ¨أکآ­أکآ³أکآ§أکآ¨ Google أکآ¢أکآ®أکآ±.': 'This email is linked to another Google account.',
+  'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآ­أکآ³أکآ§أکآ¨ Google.': 'Could not verify the Google account.', 'أ™â€‍أ™â€¦ أ™إ أکآµأ™â€‍ أکآ±أ™â€¦أکآ² أکآھأکآ³أکآ¬أ™إ أ™â€‍ Google.': 'Google sign-in did not return a credential.',
+  'أکآ±أ™â€¦أکآ² Google أکآ؛أ™إ أکآ± أکآµأکآ§أ™â€‍أکآ­ أکآ£أ™ث† أکآ§أ™â€ أکآھأ™â€،أکآھ أکآµأ™â€‍أکآ§أکآ­أ™إ أکآھأ™â€،.': 'The Google credential is invalid or expired.',
+  'أ™â€،أ™â€‍ أکآھأکآ±أ™إ أکآ¯ أ™â€¦أکآ³أکآ­ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™ث†أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھأ™â€، أ™â€¦أ™â€  أکآ¬أ™â€¦أ™إ أکآ¹ أکآ£أکآ¬أ™â€،أکآ²أکآھأ™ئ’أکإ¸': 'Delete your account data and attachments from all your devices?',
+  'أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ¨أکآµأکآ±أ™إ ': 'Visual inspection', 'أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ£أ™ث†أ™â€‍أ™إ ': 'Initial estimate', 'أکآ³أ™â€¦أکآ§أکآ، أکآµأکآ§أ™آپأ™إ أکآ©': 'Clear sky', 'أکآ؛أکآ§أکآ¦أ™â€¦ أکآ¬أکآ²أکآ¦أ™إ أکآ§أ™â€¹': 'Partly cloudy',
+  'أکآ¶أکآ¨أکآ§أکآ¨': 'Fog', 'أکآ±أکآ°أکآ§أکآ°': 'Drizzle', 'أکآ£أ™â€¦أکآ·أکآ§أکآ±': 'Rain', 'أکآ«أ™â€‍أ™ث†أکآ¬': 'Snow', 'أکآ¹أ™ث†أکآ§أکآµأ™آپ أکآ±أکآ¹أکآ¯أ™إ أکآ©': 'Thunderstorms', 'أکآ­أکآ§أ™â€‍أکآ© أ™â€¦أکآھأکآ؛أ™إ أکآ±أکآ©': 'Changing conditions',
+  'أ™â€‍أکآ§ أ™إ أکآ¸أ™â€،أکآ± أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أکآ¶أکآ­': 'No obvious dust visible', 'أکآ؛أکآ¨أکآ§أکآ± أکآ®أ™آپأ™إ أ™آپ أکآ¸أکآ§أ™â€،أکآ±': 'Light dust visible', 'أکآ؛أکآ¨أکآ§أکآ± أ™â€¦أکآھأ™ث†أکآ³أکآ· أکآ¸أکآ§أ™â€،أکآ±': 'Moderate dust visible',
+  'أکآ؛أکآ¨أکآ§أکآ± أ™ئ’أکآ«أ™إ أ™آپ أکآ¸أکآ§أ™â€،أکآ±': 'Heavy dust visible', 'أکآ§أ™â€‍أکآµأ™ث†أکآ±أکآ© أکآ؛أ™إ أکآ± أ™ث†أکآ§أکآ¶أکآ­أکآ©': 'Image is unclear', 'أ™إ أکآ­أکآھأکآ§أکآ¬ أکآ¥أ™â€‍أ™â€° أکآ§أ™â€ أکآھأکآ¨أکآ§أ™â€،': 'Needs attention', 'أ™â€¦أکآ³أکآھأ™ث†أ™â€° أ™â€¦أکآھأ™ث†أکآ³أکآ·': 'Moderate level', 'أکآ£أکآ¯أکآ§أکآ، أ™â€¦أکآ·أ™â€¦أکآ¦أ™â€ ': 'Looking good',
+  'أکآ§أ™â€ أکآھأکآ¨أکآ§أ™â€،': 'Attention', 'أ™â€¦أکآ±أکآ§أ™â€ڑأکآ¨أکآ©': 'Monitor', 'أکآ¬أ™إ أکآ¯': 'Good', 'أکآھأ™â€¦ أ™آپأکآ­أکآµ أکآ¨أکآµأکآ±أ™إ ': 'Visual inspection', 'أ™آپأکآ­أکآµ أ™â€¦أکآ­أ™آپأ™ث†أکآ¸': 'Saved inspection',
+  'أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™â€¦أکآ±أکآھأ™آپأکآ¹أکآ§أ™â€¹': 'dust estimate is high', 'أکآھأکآ§أکآ¨أکآ¹ أکآ§أ™â€‍أکآھأکآ؛أ™إ أکآ±أکآ§أکآھ أ™آپأ™إ  أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أ™ث†أکآ§أ™آپأکآ­أکآµ أکآ³أکآ·أکآ­ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ¹أکآ¯ أکآ§أ™â€‍أکآ¹أ™ث†أکآ§أکآµأ™آپ أکآ£أ™ث† أ™آپأکآھأکآ±أکآ§أکآھ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±.': 'Watch for weather changes and inspect panels after storms or dusty periods.',
+  'أکآ­أکآ±أکآ§أکآ±أکآ© أ™â€¦أکآ±أکآھأ™آپأکآ¹أکآ©': 'High temperature', 'أ™آپأ™إ  أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™ئ’أکâ€؛ أکآھأکآ¬أ™â€ أکآ¨ أ™â€‍أ™â€¦أکآ³ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآ¸أ™â€،أ™إ أکآ±أکآ©.': 'at your location; avoid touching panels at midday.',
+  'أ™â€،أکآ¨أکآ§أکآھ أکآ±أ™إ أکآ§أکآ­ أ™â€ڑأ™ث†أ™إ أکآ© أکآھأکآµأ™â€‍ أکآ¥أ™â€‍أ™â€° ': 'Strong wind gusts up to ', ' أ™ئ’أ™â€¦/أکآ³أکâ€؛ أکآ£أکآ¬أ™â€کأ™â€‍ أکآ§أ™â€‍أکآµأکآ¹أ™ث†أکآ¯ أکآ¥أ™â€‍أ™â€° أکآ§أ™â€‍أکآ³أکآ·أکآ­ أکآ­أکآھأ™â€° أکآھأ™â€،أکآ¯أکآ£.': ' km/h; wait for calmer conditions before going onto the roof.',
+  'أکآ§أکآ­أکآھأ™â€¦أکآ§أ™â€‍ أ™â€،أکآ·أ™ث†أ™â€‍ أ™â€¦أکآ±أکآھأ™آپأکآ¹ (': 'High chance of rain (', '%)أکâ€؛ أکآ±أکآ§أ™â€ڑأکآ¨ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ¹أکآ¯ أکآ§أ™â€ أ™â€ڑأکآ¶أکآ§أکآ، أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³.': '%); check the panels after the weather passes.',
+  'أکآھأ™â€¦ أکآھأکآ­أکآ¯أ™إ أکآ« أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ¨أکآ¹أکآ¯ أکآ§أ™â€‍أکآھأ™â€ أکآ¸أ™إ أ™آپ.': 'Dust estimate updated after cleaning.', 'أ™ث†أکآ§أکآ¬أ™â€،أکآ© أکآ³أ™إ أکآ§أکآ¬ أ™â€¦أکآھأکآ§أکآ­أکآ© أکآ­أکآ§أ™â€‍أ™إ أکآ§أ™â€¹ أکآ¨أکآ§أ™â€‍أکآ¹أکآ±أکآ¨أ™إ أکآ©.': 'Siyaj is currently available in Arabic.',
+  'أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أ™â€‍أکآ±أ™إ أکآ§أکآ­': 'Dust and wind push alerts', 'أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أ™â€‍أکآ±أ™إ أکآ§أکآ­ أکآ¹أکآ¨أکآ± أکآ§أ™â€‍أکآ¥أکآ´أکآ¹أکآ§أکآ±أکآ§أکآھ': 'Push alerts for dusty and windy weather',
+  'أ™ئ’أ™â€‍ ': 'Every ', ' أ™إ أ™ث†أ™â€¦أکآ§أ™â€¹ أ™ئ’أکآ­أکآ¯ أکآ£أ™â€ڑأکآµأ™â€°': ' days at most', 'أکآھأ™ث†أ™â€ڑأکآ¹أکآ§أکآھ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ§أ™â€‍أکآ¬أ™ث†أ™إ : Open-Meteo أ™ث†CAMS.': 'Air quality forecasts: Open-Meteo and CAMS.',
+  'أ™إ أکآھأ™â€¦ أکآ¥أکآ±أکآ³أکآ§أ™â€‍ أکآھأ™â€ أکآ¨أ™إ أ™â€، أکآ§أ™â€‍أکآھأ™â€ أکآ¸أ™إ أ™آپ أ™â€¦أکآ±أکآ© أ™ئ’أ™â€‍ 14 أ™إ أ™ث†أ™â€¦أکآ§أ™â€¹ أ™ئ’أکآ­أکآ¯ أکآ£أ™â€ڑأکآµأ™â€°.': 'Cleaning alerts are limited to once every 14 days.',
+  'أکآ®أکآ³أکآ§أکآ±أکآ© أکآ´أ™â€،أکآ±أ™إ أکآ© أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ©': 'Estimated monthly loss', 'أکآ®أکآ³أکآ§أکآ±أکآ© أکآ¨أکآ³أکآ¨أکآ¨ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±:': 'Dust loss:', 'أکآ®أکآ³أکآ§أکآ±أکآ© أکآ¨أکآ³أکآ¨أکآ¨ أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ©:': 'Heat loss:',
+  'أکآ±.أکآ¹ أکآ´أ™â€،أکآ±أ™إ أکآ§أ™â€¹': 'OMR / month', 'أکآ²أکآ§أ™ث†أ™إ أکآ© أ™â€‍أ™ث†أکآ­أ™ئ’ أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ© أکآھأکآ®أ™â€‍أ™إ أ™â€، أ™إ أکآھأکآ¬أ™â€¦أکآ¹ أکآ¹أ™â€‍أ™إ أ™â€، أکآ؛أکآ¨أکآ§أکآ± أکآ£أکآ³أکآ±أکآ¹ أ™â€¦أ™â€  أ™â€‍أ™ث† أ™ئ’أکآ§أ™â€ أکآھ أ™â€ڑأکآ±أ™إ أکآ¨أکآ© أ™â€¦أ™â€  30 أکآ¯أکآ±أکآ¬أکآ©.': 'Your current panel tilt may collect dust faster than an angle close to 30 degrees.',
+  'أکآھأکآ­أکآھأکآ§أکآ¬ أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أکآ¥أ™â€‍أ™â€° أکآ¥أکآ¹أکآ¯أکآ§أکآ¯ Push أ™آپأ™إ  أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦. أکآ±أکآ§أکآ¬أکآ¹ أ™â€¦أ™â€‍أ™آپ README.': 'Push alerts need server setup. See the README.',
+  'أکآھأکآ¹أکآ°أکآ± أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھأکâ€؛ أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ¥أکآ°أ™â€  أ™ث†أکآ§أ™â€‍أکآ§أکآھأکآµأکآ§أ™â€‍ أکآ¨أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.': 'Could not enable alerts. Check permission and server connection.',
+  'أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أکآھأکآ¹أ™â€¦أ™â€‍ أکآ¨أکآ¹أکآ¯ أکآ¥أکآ¶أکآ§أ™آپأکآ© أ™â€¦أ™آپأکآ§أکآھأ™إ أکآ­ VAPID أ™ث†أکآھأکآ´أکآ؛أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.': 'Alerts work after adding VAPID keys and starting the server.',
+  'أکآھأکآ¹أکآ°أکآ± أکآ­أ™آپأکآ¸ أکآ³أکآ¬أ™â€‍ أکآ§أ™â€‍أکآھأ™â€ أکآ¸أ™إ أ™آپ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.': 'Could not save the cleaning record on the server.',
+  'أکآھأکآ¹أکآ°أکآ± أکآ­أکآ³أکآ§أکآ¨ أکآھأ™آپأکآµأ™إ أ™â€‍ أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© أکآ­أکآ§أ™â€‍أ™إ أکآ§أ™â€¹.': 'Could not calculate the heat loss breakdown right now.',
+  'أکآھأ™â€ أکآ¨أ™إ أ™â€، أکآ؛أکآ¨أکآ§أکآ± أ™â€¦أ™â€  أکآ³أ™إ أکآ§أکآ¬': 'Dust alert from Siyaj', 'أکآھأ™â€ أکآ¨أ™إ أ™â€، أکآھأ™ث†أ™â€ڑأ™إ أکآھ أکآ§أ™â€‍أکآھأ™â€ أکآ¸أ™إ أ™آپ أ™â€¦أ™â€  أکآ³أ™إ أکآ§أکآ¬': 'Cleaning time alert from Siyaj',
+  'أ™â€‍أ™â€¦ أ™â€ أکآ¹أکآ«أکآ± أکآ¹أ™â€‍أ™â€° أ™â€ أکآھأکآ§أکآ¦أکآ¬. أکآ¬أکآ±أ™â€کأکآ¨ أ™ئ’أکآھأکآ§أکآ¨أکآ© أکآ§أ™â€‍أکآ§أکآ³أ™â€¦ أکآ¨أکآ§أ™â€‍أکآ¥أ™â€ أکآ¬أ™â€‍أ™إ أکآ²أ™إ أکآ©.': 'No results found. Try entering the name in English.',
+  'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآ¨أکآ­أکآ«. أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآھأکآ´أکآ؛أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.': 'Search failed. Make sure the local server is running.',
+  'أ™â€‍أ™â€¦ أ™إ أکآھأ™â€¦ أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ¥أکآ°أ™â€  أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ.': 'Notification permission was not granted.', 'أکآھأ™â€¦ أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ.': 'Notifications enabled.', 'أکآھأ™â€¦ أکآ¥أ™إ أ™â€ڑأکآ§أ™آپ أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ.': 'Notifications disabled.',
+  'أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ² أ™آپأ™â€ڑأکآ·': 'Alerts on this device only',
+  'أ™â€¦أ™آپأکآ¹أ™â€کأ™â€‍أکآ© أکآ¹أ™â€‍أ™â€° أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ²': 'Enabled on this device', 'أکآ؛أ™إ أکآ± أ™â€¦أ™آپأکآ¹أ™â€کأ™â€‍أکآ© أکآ¹أ™â€‍أ™â€° أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ²': 'Not enabled on this device',
+  'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ².': 'Could not check alerts on this device.',
+  'أکآھأکآ¹أکآ°أکآ± أکآ¥أ™إ أ™â€ڑأکآ§أ™آپ أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ².': 'Could not disable alerts on this device.',
+  'أکآھأکآ¹أکآ°أکآ± أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ±أ™ث†أکآ¬أکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€°.': 'Could not log out. Please try again.',
+  'أکآھأ™â€¦ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآھأ™â€ أکآ¸أ™إ أ™آپ أ™ث†أکآھأکآ­أکآ¯أ™إ أکآ« أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±.': 'Cleaning was recorded and the dust estimate was updated.',
+  'أ™â€‍أ™â€¦ أکآھأکآھأ™ث†أ™آپأکآ± أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™ئ’أکآ§أ™آپأ™إ أکآ© أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ©أکâ€؛ أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ  أ™إ أکآ´أ™â€¦أ™â€‍ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أ™â€‍أکآ¸أ™â€‍ أ™آپأ™â€ڑأکآ·.': 'There is not enough data to calculate heat loss; this estimate includes dust and shade only.',
+  'أ™إ أ™ث†أ™â€¦أ™إ أکآ§أ™â€¹ أ™ث†أ™آپأ™â€ڑ أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أ™â€‍أکآ¸أ™â€‍.': 'per day based on estimated dust and shade.',
+  'أکآھأ™â€¦ أ™â€¦أکآ³أکآ­ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ­أکآ³أکآ§أکآ¨أ™ئ’.': 'Your account data was cleared.', 'أکآھأ™â€¦ أکآھأ™â€ أکآ²أ™إ أ™â€‍ أ™â€ أکآ³أکآ®أکآ© أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ.': 'Data export downloaded.', 'أکآھأ™â€¦ أکآھأکآ­أکآ¯أ™إ أکآ¯ أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦.': 'System location set.',
+  'أ™â€‍أ™â€¦ أ™â€ أکآھأ™â€¦أ™ئ’أ™â€  أ™â€¦أ™â€  أکآھأکآ­أکآ¯أ™إ أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹. أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآ¥أکآ°أ™â€  أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™آپأ™إ  أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­.': 'Could not get your location. Check your browser location permission.',
+  'أکآ­أکآ¯أ™â€کأکآ¯ أ™â€¦أکآ¯أ™إ أ™â€ أکآ© أکآ£أ™ث† أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ GPS أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹.': 'Choose a city or use GPS first.', 'أکآ£أکآ¯أکآ®أ™â€‍ أکآ¹أکآ¯أکآ¯ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹.': 'Enter the number of panels first.',
+  'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآ¯أکآ±أکآ¬أکآ© أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ¬أ™ث†.': 'Check the air temperature.', 'أکآ§أ™â€‍أکآ±أکآ·أ™ث†أکآ¨أکآ© أ™إ أکآ¬أکآ¨ أکآ£أ™â€  أکآھأ™ئ’أ™ث†أ™â€  أکآ¨أ™إ أ™â€  0 أ™ث†100%.': 'Humidity must be between 0 and 100%.',
+  'أکآ£أکآ¯أکآ®أ™â€‍ أکآ§أ™â€‍أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ أکآ© أ™â€‍أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦.': 'Enter the total system capacity.', 'أکآ£أکآ¶أ™آپ أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ§أ™â€‍أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أکآھأ™â€ڑأکآ±أ™إ أکآ¨أ™إ أکآ©.': 'Enter the bill amount to estimate the electricity rate.',
+  'أکآ§أ™ئ’أکآھأکآ¨ أکآ§أکآ³أ™â€¦ أ™â€¦أکآ¯أ™إ أ™â€ أکآ© أ™â€‍أ™â€‍أکآ¨أکآ­أکآ«.': 'Enter a city name to search.', 'أکآ§أکآ®أکآھأکآ± أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€¦أکآ¯أکآ¹أ™ث†أ™â€¦أکآ§أ™â€¹.': 'Choose a supported image or video.',
+  'أ™إ أ™â€¦أ™ئ’أ™â€  أکآ¥أکآ±أ™آپأکآ§أ™â€ڑ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™ئ’أکآµأ™ث†أکآ±أکآ©.': 'The bill can be attached as an image.', 'أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أکآ¥أکآ¶أکآ§أ™آپأکآ© 6 أ™â€¦أ™â€‍أ™آپأکآ§أکآھ أ™ئ’أکآ­أکآ¯ أکآ£أ™â€ڑأکآµأ™â€°.': 'You can add up to 6 files.',
+  'أکآھأکآ¹أکآ°أکآ± أکآ­أ™آپأکآ¸ أکآ§أ™â€‍أ™â€¦أ™â€‍أ™آپ أ™â€¦أکآ­أ™â€‍أ™إ أکآ§أ™â€¹أکâ€؛ أکآ¬أکآ±أ™â€کأکآ¨ أ™â€¦أ™â€‍أ™آپأکآ§أ™â€¹ أکآ£أکآµأکآ؛أکآ±.': 'Could not save the file locally. Try a smaller file.',
+  'أکآ§أکآ®أکآھأکآ± JPG أکآ£أ™ث† PNG أکآ£أ™ث† WEBP أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† MP4 أکآ£أ™ث† WEBM أکآ£أ™ث† MOV.': 'Choose JPG, PNG, WEBP, MP4, WEBM, or MOV.', 'أ™إ أکآ¬أکآ¨ أکآ£أ™â€‍أکآ§ أ™إ أکآھأکآ¬أکآ§أ™ث†أکآ² أکآ­أکآ¬أ™â€¦ أکآ§أ™â€‍أ™â€¦أ™â€‍أ™آپ 25 أ™â€¦أ™إ أکآ؛أکآ§أکآ¨أکآ§أ™إ أکآھ.': 'Each file must be 25 MB or smaller.',
+  'أکآ£أکآ¶أ™آپ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™â€‍أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¨أکآµأکآ±أ™إ  أکآ¨أکآ§أ™â€‍أکآ°أ™ئ’أکآ§أکآ، أکآ§أ™â€‍أکآ§أکآµأکآ·أ™â€ أکآ§أکآ¹أ™إ .': 'Add a panel photo or video to enable AI visual analysis.',
+  'أکآ§أ™â€‍أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ أکآ©': 'Total capacity', 'أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ§أ™â€‍أکآ´أ™â€،أکآ±أ™إ أکآ©': 'Monthly bill', 'أ™â€‍أ™â€¦ أکآھأکآھأ™â€¦ أکآ¥أکآ¶أکآ§أ™آپأکآ© أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ¨أکآ¹أکآ¯.': 'No system details added yet.',
+  'أکآ£أکآ¯أکآ®أ™â€‍ أکآ¨أکآ±أ™إ أکآ¯أکآ§أ™â€¹ أکآ¥أ™â€‍أ™ئ’أکآھأکآ±أ™ث†أ™â€ أ™إ أکآ§أ™â€¹ أکآµأکآ§أ™â€‍أکآ­أکآ§أ™â€¹.': 'Enter a valid email address.', 'أکآ£أکآ¯أکآ®أ™â€‍ أکآ±أ™â€ڑأ™â€¦ أ™â€،أکآ§أکآھأ™آپ أکآµأکآ§أ™â€‍أکآ­أکآ§أ™â€¹.': 'Enter a valid phone number.',
+  'أ™إ أکآ¬أکآ¨ أکآ£أ™â€  أکآھأکآھأ™ئ’أ™ث†أ™â€  أ™ئ’أ™â€‍أ™â€¦أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أ™ث†أکآ± أ™â€¦أ™â€  8 أکآ£أکآ­أکآ±أ™آپ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€ڑأ™â€‍.': 'Password must be at least 8 characters.', 'أ™ئ’أ™â€‍أ™â€¦أکآھأکآ§ أکآ§أ™â€‍أ™â€¦أکآ±أ™ث†أکآ± أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ·أکآ§أکآ¨أ™â€ڑأکآھأ™إ أ™â€ .': 'The passwords do not match.',
+  'أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¨أکآ±أ™إ أکآ¯ أکآ£أ™ث† أکآ±أ™â€ڑأ™â€¦ أکآ§أ™â€‍أ™â€،أکآ§أکآھأ™آپ أ™â€¦أکآ³أکآ¬أ™â€‍ أ™â€¦أکآ³أکآ¨أ™â€ڑأکآ§أ™â€¹.': 'This email or phone number is already registered.', 'أکآھأکآ¹أکآ°أکآ± أکآ¥أ™â€ أکآ´أکآ§أکآ، أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨.': 'Could not create the account.',
+  'أ™â€‍أ™â€¦ أ™â€ أکآ¹أکآ«أکآ± أکآ¹أ™â€‍أ™â€° أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™آپأ™إ  أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­. أکآ£أ™â€ أکآ´أکآ¦ أکآ­أکآ³أکآ§أکآ¨أکآ§أ™â€¹ أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹.': 'This account was not found in this browser. Create an account first.',
+  'أ™ئ’أ™â€‍أ™â€¦أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أ™ث†أکآ± أکآ؛أ™إ أکآ± أکآµأکآ­أ™إ أکآ­أکآ©.': 'Incorrect password.', 'أکآھأکآ¹أکآ°أکآ± أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍.': 'Could not log in.', 'أکآھأ™â€¦ أکآ¥أ™â€ أکآ´أکآ§أکآ، أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™ث†أکآ­أ™آپأکآ¸أ™â€، أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.': 'Account created and saved on the server.',
+  'أکآھأ™â€¦ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍.': 'You are logged in.', 'أکآھأ™â€¦ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ±أ™ث†أکآ¬.': 'You are logged out.', 'أکآھأکآ³أکآ¬أ™إ أ™â€‍ Google أ™إ أکآ­أکآھأکآ§أکآ¬ أکآ¥أکآ¹أکآ¯أکآ§أکآ¯ OAuth أ™â€¦أ™â€  Google أ™â€ڑأکآ¨أ™â€‍ أکآھأ™آپأکآ¹أ™إ أ™â€‍أ™â€،.': 'Google sign-in needs Google OAuth configuration before it can be enabled.',
+  'أ™إ أکآھأکآ·أ™â€‍أکآ¨ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™â€¦أکآھأکآµأ™آپأکآ­أکآ§أ™â€¹ أکآ¢أ™â€¦أ™â€ أکآ§أ™â€¹ أ™â€¦أکآ«أ™â€‍ localhost.': 'Account creation requires a secure browser context such as localhost.',
+  'أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ  أکآ­أ™إ أ™â€ أ™â€،أکآ§: ': 'Estimated energy loss then: ', 'أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©': 'Bill', 'أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’': 'Consumption', 'أکآھأ™â€ أکآ¨أ™إ أ™â€،': 'Alert',
+  'أکآھأ™â€¦ أکآھأکآ­أکآ¯أ™إ أکآ¯ أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦.': 'System location set.', 'أکآھأ™â€¦ أکآھأکآ­أکآ¯أ™إ أکآ« أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ¨أکآ¹أکآ¯ أکآ§أ™â€‍أکآھأ™â€ أکآ¸أ™إ أ™آپ.': 'Dust estimate updated after cleaning.',
+  'أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦ ': 'Todayأ¢â‚¬â„¢s loss: ', 'أکآ¥أکآ´أکآ¹أکآ§أکآ¹ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أ™إ أکآھأکآ؛أ™إ أکآ± أکآ­أکآ³أکآ¨ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³': 'Sunshine varies with the weather',
+  'أکآ¨أکآ§أ™â€ أکآھأکآ¸أکآ§أکآ± أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’': 'Waiting for your system details', 'أکآھأ™â€¦ أکآ§أ™â€‍أکآھأ™â€ أکآ¸أ™إ أ™آپ': 'Cleaned',
+  'أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ±أ™ث†أکآ¬': 'Log out', 'name@example.com أکآ£أ™ث† أکآ±أ™â€ڑأ™â€¦ أکآ§أ™â€‍أ™â€،أکآ§أکآھأ™آپ': 'name@example.com or phone number',
+  'أکآ±.أکآ¹': 'OMR', 'أ™ئ’.أ™ث†.أکآ³': 'kWh', 'أ™ث†أکآ§أکآ·': 'W', 'أ‚آ°أ™â€¦': 'أ‚آ°C', 'أ™ئ’أ™â€¦/أکآ³': 'km/h',
+  'أکآ§أ™â€‍أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أکآھأ™إ  أکآ£أکآ¯أکآ®أ™â€‍أکآھأ™â€،أکآ§': 'the rate you entered', 'أ™â€¦أکآ´أکآھأ™â€ڑأکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™ث†أکآ§أ™â€‍أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’': 'derived from your bill and consumption', 'أکآھأکآ¹أکآ±أ™آپأکآ© أ™â€¦أکآ±أکآ¬أکآ¹أ™إ أکآ© أ™â€ڑأکآ§أکآ¨أ™â€‍أکآ© أ™â€‍أ™â€‍أکآھأکآ؛أ™إ أ™إ أکآ±': 'editable reference rate',
+  'أکآھأ™â€ڑأکآ±أ™إ أکآ¨أکآ§أ™â€¹': 'approx.', 'أ™â€ڑأکآ¯ أ™إ أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™â€ أکآ­أ™ث† ': 'The system may lose about ', ' أ™إ أ™ث†أ™â€¦أ™إ أکآ§أ™â€¹ أ™ث†أ™آپأ™â€ڑ أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© أ™ث†أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أ™â€‍أکآ¸أ™â€‍.': ' per day based on estimated heat, dust, and shade.',
+  ' أ™آپأ™إ  أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™ئ’أکâ€؛ أکآھأکآ¬أ™â€ أکآ¨ أ™â€‍أ™â€¦أکآ³ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآ¸أ™â€،أ™إ أکآ±أکآ©.': ' at your location; avoid touching panels at midday.',
+  'أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­ أ™â€‍أکآ§ أ™إ أکآ¯أکآ¹أ™â€¦ أکآھأکآ­أکآ¯أ™إ أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹.': 'Your browser does not support location services.', 'أکآھأکآ¹أکآ°أکآ± أکآ¬أ™â€‍أکآ¨ أکآ­أکآ§أ™â€‍أکآ© أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³.': 'Could not load weather.',
+  'أکآھأکآ¹أکآ°أکآ± أکآھأکآ­أکآ¯أ™إ أکآ« أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³.': 'Could not refresh the weather.', 'أکآھأکآ¹أکآ°أکآ± أکآ¬أ™â€‍أکآ¨ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أکآ¢أ™â€ .': 'Weather data is unavailable right now.',
+  'أکآھأکآ¹أکآ°أکآ± أکآ¬أ™â€‍أکآ¨ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أکآ¢أ™â€ . أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€° أکآ¨أکآ¹أکآ¯ أ™â€ڑأ™â€‍أ™إ أ™â€‍ أکآ£أ™ث† أکآ£أکآ¯أکآ®أ™â€‍ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™إ أکآ¯أ™ث†أ™إ أ™â€¹أکآ§.': 'Weather data is unavailable right now. Try again shortly or enter the readings manually.',
+  'أکآ¥أکآ­أکآ¯أکآ§أکآ«أ™إ أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ؛أ™إ أکآ± أکآµأکآ§أ™â€‍أکآ­أکآ©.': 'The location coordinates are invalid.',
+  'أکآھأکآ¹أکآ°أکآ± أکآھأ™â€ أ™آپأ™إ أکآ° أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ°أ™ئ’أ™إ .': 'Could not run AI analysis.', 'أکآھأکآ¹أکآ°أکآ± أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑ أکآ§أ™â€‍أکآ¢أ™â€ .': 'Could not analyze the attachment right now.',
+  'أ™â€‍أ™â€¦ أ™إ أکآµأ™â€‍ أکآ±أکآ¯ أ™â€ڑأکآ§أکآ¨أ™â€‍ أ™â€‍أ™â€‍أ™â€ڑأکآ±أکآ§أکآ،أکآ© أ™â€¦أ™â€  أکآ®أکآ¯أ™â€¦أکآ© أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍.': 'The analysis service returned an unreadable response.',
+  'أکآ­أکآ±أکآ§أکآ±أکآ© أ™â€¦أکآ±أکآھأ™آپأکآ¹أکآ©': 'High temperature', 'أ™â€،أکآ¨أکآ§أکآھ أکآ±أ™إ أکآ§أکآ­ أ™â€ڑأ™ث†أ™إ أکآ© أکآھأکآµأ™â€‍ أکآ¥أ™â€‍أ™â€° ': 'Strong wind gusts up to ',
+  'أکآ§أکآ­أکآھأ™â€¦أکآ§أ™â€‍ أ™â€،أکآ·أ™ث†أ™â€‍ أ™â€¦أکآ±أکآھأ™آپأکآ¹ (': 'High chance of rain (', '%)أکâ€؛ أکآ±أکآ§أ™â€ڑأکآ¨ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ¹أکآ¯ أکآ§أ™â€ أ™â€ڑأکآ¶أکآ§أکآ، أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³.': '%); check the panels after the weather passes.',
+  'أکآ¬أکآ§أکآ±أ™إ  أکآھأکآ­أکآ¯أ™إ أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹أ¢â‚¬آ¦': 'Getting locationأ¢â‚¬آ¦', 'أکآ¬أکآ§أکآ±أ™آچ أکآ§أ™â€‍أکآ¨أکآ­أکآ«أ¢â‚¬آ¦': 'Searchingأ¢â‚¬آ¦', 'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآ¨أکآ­أکآ« أکآ¹أ™â€  أکآ§أ™â€‍أ™â€¦أکآ¯أ™إ أ™â€ أکآ©.': 'Could not search for the city.',
+  'أ™â€‍أ™â€¦ أ™â€ أکآ¹أکآ«أکآ± أکآ¹أ™â€‍أ™â€° أ™â€ أکآھأکآ§أکآ¦أکآ¬. أکآ¬أکآ±أ™â€کأکآ¨ أ™ئ’أکآھأکآ§أکآ¨أکآ© أکآ§أ™â€‍أکآ§أکآ³أ™â€¦ أکآ¨أکآ§أ™â€‍أکآ¥أ™â€ أکآ¬أ™â€‍أ™إ أکآ²أ™إ أکآ©.': 'No results found. Try entering the name in English.',
+  'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآ¨أکآ­أکآ«. أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآھأکآ´أکآ؛أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.': 'Search failed. Make sure the local server is running.',
+  'أکآ§أ™â€‍أکآ±أ™â€¦أکآ² أکآ§أ™â€‍أکآ¨أکآ±أ™إ أکآ¯أ™إ ': 'Postal code',
+  ' أکآ§أ™â€‍أ™â€ أکآھأ™إ أکآ¬أکآ© أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ© أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ© أ™ث†أکآھأکآ¹أکآھأ™â€¦أکآ¯ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآھأ™إ  أکآ£أکآ¯أکآ®أ™â€‍أکآھأ™â€،أکآ§.': ' This is an estimate based on the details you entered.',
+  'أکآ£أکآ¶أ™آپ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹': 'Add system details first', 'أکآھأ™â€ڑأکآ¯أ™إ أکآ±أکآ§أکآھ أکآ£أ™ث†أ™â€‍أ™إ أکآ©': 'Initial estimates',
+  'أ™إ أکآ¸أ™â€،أکآ± أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™â€¦أکآ±أکآھأ™آپأکآ¹أکآ§أ™â€¹أکâ€؛ أکآھأکآ­أ™â€ڑأ™â€ڑ أکآ¨أکآµأکآ±أ™إ أکآ§أ™â€¹ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أ™â€ أکآ¸أ™â€کأ™آپأ™â€،أکآ§ أکآ¹أ™â€ أکآ¯ أکآ§أ™â€‍أکآ­أکآ§أکآ¬أکآ© أ™ث†أکآ¨أکآ·أکآ±أ™إ أ™â€ڑأکآ© أکآ¢أ™â€¦أ™â€ أکآ©.': 'Dust may be high; inspect the panels and clean them safely if needed.',
+  'أکآھأکآ§أکآ¨أکآ¹ أکآ§أ™â€‍أکآھأکآ؛أ™إ أکآ±أکآ§أکآھ أ™آپأ™إ  أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أ™ث†أکآ§أ™آپأکآ­أکآµ أکآ³أکآ·أکآ­ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ¹أکآ¯ أکآ§أ™â€‍أکآ¹أ™ث†أکآ§أکآµأ™آپ أکآ£أ™ث† أ™آپأکآھأکآ±أکآ§أکآھ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±.': 'Watch for weather changes and inspect the panels after storms or dusty periods.',
+  'أکآ§أ™â€‍أکآ¹أکآ±أکآ¨أ™إ أکآ©': 'Arabic', 'English': 'English', 'PM10': 'PM10', 'أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ': 'Unknown',
+  'أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛أکآ§أکآھ أ™ث†أکآ§أ™â€‍أکآ´أ™ئ’أکآ§أ™ث†أ™â€°': 'Complaints & reports', 'أکآھأ™â€ڑأکآ±أ™إ أکآ± أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦': 'System report',
+  'أکآھأ™ث†أکآ§أکآµأ™â€‍ أ™â€¦أکآ¨أکآ§أکآ´أکآ± أ™â€¦أکآ¹ أ™آپأکآ±أ™إ أ™â€ڑ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ©': 'Direct contact with the maintenance team',
+  'أکآ£أکآ±أکآ³أ™â€‍ أکآ¨أ™â€‍أکآ§أکآ؛أکآ§أ™â€¹ أکآ¹أ™â€  أکآ£أ™إ  أ™â€¦أکآ´أ™ئ’أ™â€‍أکآ© أ™آپأ™إ  أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ أکإ’ أ™ث†أکآ³أ™إ أکآ±أکآ³أ™â€‍ أ™â€¦أکآ¨أکآ§أکآ´أکآ±أکآ© أکآ¥أ™â€‍أ™â€° أ™آپأکآ±أ™إ أ™â€ڑ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ©.': 'Send a complaint about any issue with your solar system and it reaches the maintenance team directly.',
+  'أکآ¨أ™â€‍أکآ§أکآ؛ أکآ¬أکآ¯أ™إ أکآ¯': 'New complaint', 'أکآ§أ™ئ’أکآھأکآ¨ أکآ¨أ™â€‍أکآ§أکآ؛أ™ئ’': 'Write your complaint',
+  'أکآ³أ™إ أ™آڈأکآ±أکآ³أ™â€‍ أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛ أکآ¥أ™â€‍أ™â€° أ™آپأکآ±أ™إ أ™â€ڑ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أ™â€¦أکآ¨أکآ§أکآ´أکآ±أکآ©.': 'Your complaint is sent to the maintenance team directly.',
+  'أکآ§أ™â€‍أکآ§أکآ³أ™â€¦ (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Name (optional)', 'أ™ث†أکآ³أ™إ أ™â€‍أکآ© أکآ§أ™â€‍أکآھأ™ث†أکآ§أکآµأ™â€‍ (أکآ¨أکآ±أ™إ أکآ¯ أکآ£أ™ث† أ™â€،أکآ§أکآھأ™آپ)': 'Contact (email or phone)',
+  'أ™â€ أ™ث†أکآ¹ أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛': 'Complaint type', 'أکآ§أ™â€‍أ™â€¦أ™ث†أکآ¶أ™ث†أکآ¹ (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )': 'Subject (optional)', 'أکآھأ™آپأکآ§أکآµأ™إ أ™â€‍ أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛': 'Complaint details',
+  'أکآ¶أکآ¹أ™آپ أ™آپأ™إ  أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬': 'Low generation', 'أکآ؛أکآ¨أکآ§أکآ± أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Dust on panels',
+  'أکآھأکآ¸أ™â€‍أ™إ أ™â€‍ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Shading on panels', 'أ™â€¦أکآ´أ™ئ’أ™â€‍أکآ© أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ¦أ™إ أکآ©': 'Electrical issue',
+  'أکآ·أ™â€‍أکآ¨ أکآµأ™إ أکآ§أ™â€ أکآ©': 'Maintenance request', 'أکآ£أکآ®أکآ±أ™â€°': 'Other',
+  'أکآ¥أکآ±أکآ³أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛': 'Send complaint', 'أ™â€¦أکآ´أکآ§أکآ±أ™ئ’أکآ© / أ™â€ أکآ³أکآ® أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛': 'Share / copy complaint',
+  'أکآ¨أ™â€‍أکآ§أکآ؛أکآ§أکآھأ™إ  أکآ§أ™â€‍أکآ³أکآ§أکآ¨أ™â€ڑأکآ©': 'My complaints', 'أ™â€¦أ™â€‍أکآ®أکآµ أکآ¬أکآ§أ™â€،أکآ² أ™â€‍أ™â€‍أ™â€¦أکآ´أکآ§أکآ±أ™ئ’أکآ©': 'Summary ready to share',
+  'أکآھأ™â€ڑأکآ±أ™إ أکآ± أکآ´أکآ§أ™â€¦أ™â€‍ أ™إ أ™â€¦أ™ئ’أ™â€  أکآھأ™â€ أکآ²أ™إ أ™â€‍أ™â€، PDF أکآ£أ™ث† أ™â€¦أکآ´أکآ§أکآ±أ™ئ’أکآھأ™â€، أ™â€¦أکآ¹ أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ©.': 'A full report you can download as PDF or share with a maintenance company.',
+  'أکآھأ™â€ أکآ²أ™إ أ™â€‍ PDF': 'Download PDF', 'أکآ·أکآ¨أکآ§أکآ¹أکآ©': 'Print', 'أ™â€¦أکآ´أکآ§أکآ±أ™ئ’أکآ©': 'Share',
+  'أکآ¬أکآ§أکآ±أ™آچ أکآھأکآ¬أ™â€،أ™إ أکآ² أکآ³أ™إ أکآ§أکآ¬أ¢â‚¬آ¦': 'Preparing Siyajأ¢â‚¬آ¦', 'أکآ¥أکآ¹أکآ§أکآ¯أکآ© أکآ§أ™â€‍أ™â€¦أکآ­أکآ§أ™ث†أ™â€‍أکآ©': 'Try again',
+  'أ™إ أکآھأ™â€¦ أکآ§أ™â€‍أکآ§أکآھأکآµأکآ§أ™â€‍ أکآ¨أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦ أ™ث†أکآھأکآ­أ™â€¦أ™إ أ™â€‍ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھأ™ئ’أکإ’ أ™â€‍أکآ­أکآ¸أکآ§أکآھ أ™â€¦أ™â€  أ™آپأکآ¶أ™â€‍أ™ئ’.': 'Contacting the server and loading your data, just a moment.',
+  'أکآھأکآ­أکآ¯أ™إ أکآ« أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أ™ث†أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹': 'Update weather and location',
+  'أ™â€¦أکآ«أکآ§أ™â€‍: أ™â€¦أکآ±أ™إ أ™â€¦': 'e.g. Mariam', 'name@example.com أکآ£أ™ث† أکآ±أ™â€ڑأ™â€¦ أکآ§أ™â€‍أ™â€،أکآ§أکآھأ™آپ': 'name@example.com or a phone number',
+  'أ™â€¦أکآ«أکآ§أ™â€‍: أکآھأ™â€ أکآ¸أ™إ أ™آپ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™آپأ™إ  أکآ§أ™â€‍أکآ´أکآھأکآ§أکآ،': 'e.g. panel cleaning in winter',
+  'أکآµأ™آپ أکآ§أ™â€‍أ™â€¦أکآ´أ™ئ’أ™â€‍أکآ© أ™ث†أ™â€¦أکآھأ™â€° أ™â€‍أکآ§أکآ­أکآ¸أکآھأ™â€،أکآ§أ¢â‚¬آ¦': 'Describe the issue and when you noticed itأ¢â‚¬آ¦',
+  'أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Panel maintenance',
+  'أکآ¯أ™ث†أکآ±أکآ© أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أ™ئ’أ™â€‍ 6 أکآ£أکآ´أ™â€،أکآ±': 'Maintenance cycle every 6 months',
+  'أکآھأ™â€¦أکآھ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦ أ¢إ“â€œ': 'Maintenance done today أ¢إ“â€œ',
+  'أکآ§أکآ³أ™â€¦ أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Panel company name',
+  'أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ© أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Last panel maintenance',
+  'أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ©': 'Last maintenance',
+  'أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¯أ™â€¦أکآ©': 'Next maintenance',
+  'أ™â€¦أ™ث†أکآ¹أکآ¯ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¯أ™â€¦أکآ©': 'Next maintenance due',
+  'أ™â€‍أ™â€¦ أکآھأ™آڈأکآ³أکآ¬أ™â€‍': 'Not recorded',
+  'أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­': 'Panel company',
+  'أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ©': 'Company',
+  'أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أکآ¹': 'Manufacturer',
+  'أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ¯أکآ¯أکآ©': 'Not set',
+  'أکآ£أکآ¶أ™آپ أکآھأکآ§أکآ±أ™إ أکآ® أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ©': 'Add the last maintenance date',
 };
 const ORIGINAL_TEXT = new WeakMap();
 const ORIGINAL_ATTRIBUTES = new WeakMap();
@@ -341,7 +341,7 @@ let gpsNotice = null;
 let weatherNotice = null;
 let complaintConfig = { email: 'shathaalbaraa67@gmail.com', delivery: false };
 
-// ---------- Ø´Ø±ÙŠØ· Ø§Ù„ØªÙ‚Ø¯Ù… Ø§Ù„Ø¹Ù„ÙˆÙŠ: ÙŠØ¸Ù‡Ø± Ù„ÙƒÙ„ Ø·Ù„Ø¨ Ø´Ø¨ÙƒØ© Ø¬Ø§Ø±Ù ----------
+// ---------- أکآ´أکآ±أ™إ أکآ· أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™â€¦ أکآ§أ™â€‍أکآ¹أ™â€‍أ™ث†أ™إ : أ™إ أکآ¸أ™â€،أکآ± أ™â€‍أ™ئ’أ™â€‍ أکآ·أ™â€‍أکآ¨ أکآ´أکآ¨أ™ئ’أکآ© أکآ¬أکآ§أکآ±أ™آچ ----------
 let pendingRequests = 0;
 let requestProgressTimer = null;
 function updateRequestProgress() {
@@ -367,7 +367,7 @@ if (typeof window !== 'undefined' && window.fetch) {
   };
 }
 
-// ---------- Ø´Ø§Ø´Ø© Ø§Ù„ØªØ­Ù…ÙŠÙ„ Ø¹Ù†Ø¯ ØªØ£Ø®Ø± Ø§Ù„Ø®Ø§Ø¯Ù… ----------
+// ---------- أکآ´أکآ§أکآ´أکآ© أکآ§أ™â€‍أکآھأکآ­أ™â€¦أ™إ أ™â€‍ أکآ¹أ™â€ أکآ¯ أکآھأکآ£أکآ®أکآ± أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦ ----------
 let bootstrapSettled = false;
 let introActive = false;
 let loadingSlowTimer = null;
@@ -379,12 +379,12 @@ function showLoadingScreen(title, note) {
   const noteNode = el('app-loading-note');
   const retry = el('app-loading-retry');
   if (titleNode && title) titleNode.textContent = title;
-  if (noteNode) { noteNode.textContent = note || ui('ÙŠØªÙ… Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆØªØ­Ù…ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§ØªÙƒØŒ Ù„Ø­Ø¸Ø§Øª Ù…Ù† ÙØ¶Ù„Ùƒ.', 'Contacting the server and loading your data, just a moment.'); noteNode.classList.remove('slow'); }
+  if (noteNode) { noteNode.textContent = note || ui('أ™إ أکآھأ™â€¦ أکآ§أ™â€‍أکآ§أکآھأکآµأکآ§أ™â€‍ أکآ¨أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦ أ™ث†أکآھأکآ­أ™â€¦أ™إ أ™â€‍ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھأ™ئ’أکإ’ أ™â€‍أکآ­أکآ¸أکآ§أکآھ أ™â€¦أ™â€  أ™آپأکآ¶أ™â€‍أ™ئ’.', 'Contacting the server and loading your data, just a moment.'); noteNode.classList.remove('slow'); }
   if (retry) { retry.hidden = true; retry.onclick = () => window.location.reload(); }
   clearTimeout(loadingSlowTimer);
   loadingSlowTimer = setTimeout(() => {
     if (screen.hidden) return;
-    if (noteNode) { noteNode.textContent = ui('ÙŠØ¨Ø¯Ùˆ Ø£Ù† Ø§Ù„Ø®Ø§Ø¯Ù… ÙŠØ³ØªØºØ±Ù‚ ÙˆÙ‚ØªØ§Ù‹ Ø£Ø·ÙˆÙ„ Ù…Ù† Ø§Ù„Ù…Ø¹ØªØ§Ø¯. ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø§ØªØµØ§Ù„ Ø«Ù… Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©.', 'The server is taking longer than usual. Check your connection and try again.'); noteNode.classList.add('slow'); }
+    if (noteNode) { noteNode.textContent = ui('أ™إ أکآ¨أکآ¯أ™ث† أکآ£أ™â€  أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦ أ™إ أکآ³أکآھأکآ؛أکآ±أ™â€ڑ أ™ث†أ™â€ڑأکآھأکآ§أ™â€¹ أکآ£أکآ·أ™ث†أ™â€‍ أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أکآ¹أکآھأکآ§أکآ¯. أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ§أکآھأکآµأکآ§أ™â€‍ أکآ«أ™â€¦ أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أ™â€¦أکآ­أکآ§أ™ث†أ™â€‍أکآ©.', 'The server is taking longer than usual. Check your connection and try again.'); noteNode.classList.add('slow'); }
     if (retry) retry.hidden = false;
   }, 10000);
 }
@@ -407,14 +407,14 @@ function resetAiRequests() {
   analysisSequence += 1; invoiceSequence += 1;
   analysisController?.abort(); invoiceController?.abort();
   invoiceReview = null; invoiceBusy = false; analysisBusy = false;
-  const button = el('start-setup'); if (button) { button.disabled = false; button.innerHTML = ui('Ø¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù… <span>â†</span>', 'Set up system <span>â†</span>'); }
-  const aiButton = el('analyze-panels'); if (aiButton) { aiButton.disabled = true; aiButton.textContent = ui('ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude', 'Panel assessment with Claude'); }
+  const button = el('start-setup'); if (button) { button.disabled = false; button.innerHTML = ui('أکآ¥أکآ¹أکآ¯أکآ§أکآ¯ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ <span>أ¢â€ آگ</span>', 'Set up system <span>أ¢â€ آگ</span>'); }
+  const aiButton = el('analyze-panels'); if (aiButton) { aiButton.disabled = true; aiButton.textContent = ui('أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claude', 'Panel assessment with Claude'); }
 }
 function analysisFingerprint() {
   return JSON.stringify({ accountId: currentAccount?.id, form: state.form, weather: { timezone: state.weather?.timezone, temperature: state.weather?.current?.temperature_2m, time: state.weather?.current?.time }, language: state.settings.language, media: mediaFor('panels').map(({ id, updatedAt }) => ({ id, updatedAt })) });
 }
 function claudeAvailabilityMarkup() {
-  const message = claudeEnabled === true ? ui('Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ai', 'Analysis with Ai') : claudeEnabled === false ? ui('Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ai ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„ Ø¨Ø¹Ø¯.', 'Ai analysis is not enabled yet.') : aiConfigurationChecked ? ui('ØªØ¹Ø°Ø± Ù…Ø¹Ø±ÙØ© Ø­Ø§Ù„Ø© Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… AiØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.', 'Could not check Ai analysis availability; try again.') : ui('Ø¬Ø§Ø±Ù Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø®Ø¯Ù…Ø© Aiâ€¦', 'Checking Ai analysisâ€¦');
+  const message = claudeEnabled === true ? ui('أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Ai', 'Analysis with Ai') : claudeEnabled === false ? ui('أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Ai أکآ؛أ™إ أکآ± أ™â€¦أ™آپأکآ¹أ™â€کأ™â€‍ أکآ¨أکآ¹أکآ¯.', 'Ai analysis is not enabled yet.') : aiConfigurationChecked ? ui('أکآھأکآ¹أکآ°أکآ± أ™â€¦أکآ¹أکآ±أ™آپأکآ© أکآ­أکآ§أ™â€‍أکآ© أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Aiأکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€°.', 'Could not check Ai analysis availability; try again.') : ui('أکآ¬أکآ§أکآ±أ™آچ أکآ§أ™â€‍أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآ®أکآ¯أ™â€¦أکآ© Aiأ¢â‚¬آ¦', 'Checking Ai analysisأ¢â‚¬آ¦');
   return `<p class="ai-availability" role="status">${escapeHtml(message)}</p>`;
 }
 async function loadAiConfig() {
@@ -455,7 +455,7 @@ function airborneDustReading(weather) {
     if ((typeof raw !== 'number' && typeof raw !== 'string') || String(raw).trim() === '') continue;
     const concentration = Number(raw);
     if (!Number.isFinite(concentration) || concentration < 0) continue;
-    // A presentation index: 200 Âµg/mÂ³ maps to 100; this is not an air fraction or energy loss.
+    // A presentation index: 200 أ‚آµg/mأ‚آ³ maps to 100; this is not an air fraction or energy loss.
     return { source, concentration, percent: Math.min(100, Math.round(concentration / 2)) };
   }
   return null;
@@ -469,7 +469,7 @@ function weatherFieldWasFilled(key) {
 }
 function weatherFieldCheck(key) {
   if (!Object.hasOwn(DEFAULT_STATE.weatherPrefill, key)) return '';
-  return `<span class="weather-field-check" data-weather-check="${key}" role="img" aria-label="${ui('ØªÙ…Øª Ø§Ù„ØªØ¹Ø¨Ø¦Ø© Ù…Ù† Ø§Ù„Ø·Ù‚Ø³', 'Filled from weather data')}" title="${ui('ØªÙ…Øª Ø§Ù„ØªØ¹Ø¨Ø¦Ø© Ù…Ù† Ø§Ù„Ø·Ù‚Ø³', 'Filled from weather data')}" ${weatherFieldWasFilled(key) ? '' : 'hidden'}>âœ“</span>`;
+  return `<span class="weather-field-check" data-weather-check="${key}" role="img" aria-label="${ui('أکآھأ™â€¦أکآھ أکآ§أ™â€‍أکآھأکآ¹أکآ¨أکآ¦أکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³', 'Filled from weather data')}" title="${ui('أکآھأ™â€¦أکآھ أکآ§أ™â€‍أکآھأکآ¹أکآ¨أکآ¦أکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³', 'Filled from weather data')}" ${weatherFieldWasFilled(key) ? '' : 'hidden'}>أ¢إ“â€œ</span>`;
 }
 function refreshWeatherFieldChecks() {
   document.querySelectorAll('[data-weather-check]').forEach((node) => { node.hidden = !weatherFieldWasFilled(node.dataset.weatherCheck); });
@@ -480,17 +480,17 @@ function clearWeatherForLocation() {
   if (!state.form.airDustManual) {
     state.form.airDustPercent = null;
     const input = el('field-airDustPercent');
-    if (input) { input.value = '0'; input.setAttribute('aria-valuetext', ui('ØºÙŠØ± Ù…ØªØ§Ø­', 'Unavailable')); }
-    const output = document.querySelector('[data-output="airDustPercent"]'); if (output) output.textContent = 'â€”';
+    if (input) { input.value = '0'; input.setAttribute('aria-valuetext', ui('أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ§أکآ­', 'Unavailable')); }
+    const output = document.querySelector('[data-output="airDustPercent"]'); if (output) output.textContent = 'أ¢â‚¬â€‌';
   }
   const hint = el('air-dust-hint'); if (hint) hint.textContent = airDustHint();
-  const condition = el('wizard-weather-condition'); if (condition) condition.textContent = ui('Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø·Ù‚Ø³', 'Waiting for weather data');
+  const condition = el('wizard-weather-condition'); if (condition) condition.textContent = ui('أکآ¨أکآ§أ™â€ أکآھأکآ¸أکآ§أکآ± أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³', 'Waiting for weather data');
   refreshWeatherFieldChecks();
 }
 function airDustHint() {
-  const explanation = ui('Ù…Ø¤Ø´Ø± Ù†Ø³Ø¨ÙŠ Ù…Ù† ØªØ±ÙƒÙŠØ² Ø§Ù„ØºØ¨Ø§Ø± ÙÙŠ Ø§Ù„Ø¬Ùˆ: 0â€“100%ØŒ ÙˆÙŠØµÙ„ Ø¥Ù„Ù‰ 100% Ø¹Ù†Ø¯ 200 Âµg/mÂ³. Ù„Ø§ ÙŠÙ…Ø«Ù„ ØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£Ùˆ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø©.', 'A relative airborne dust index: 0â€“100%, reaching 100% at 200 Âµg/mÂ³. It does not measure panel soiling or energy loss.');
+  const explanation = ui('أ™â€¦أکآ¤أکآ´أکآ± أ™â€ أکآ³أکآ¨أ™إ  أ™â€¦أ™â€  أکآھأکآ±أ™ئ’أ™إ أکآ² أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™آپأ™إ  أکآ§أ™â€‍أکآ¬أ™ث†: 0أ¢â‚¬â€œ100%أکإ’ أ™ث†أ™إ أکآµأ™â€‍ أکآ¥أ™â€‍أ™â€° 100% أکآ¹أ™â€ أکآ¯ 200 أ‚آµg/mأ‚آ³. أ™â€‍أکآ§ أ™إ أ™â€¦أکآ«أ™â€‍ أکآھأکآ±أکآ§أ™ئ’أ™â€¦ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ£أ™ث† أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ©.', 'A relative airborne dust index: 0أ¢â‚¬â€œ100%, reaching 100% at 200 أ‚آµg/mأ‚آ³. It does not measure panel soiling or energy loss.');
   const reading = airborneDustReading(state.weather);
-  const detail = state.form.airDustManual ? ui('Ù‚ÙŠÙ…Ø© Ù…Ø¹Ø¯Ù‘Ù„Ø© ÙŠØ¯ÙˆÙŠØ§Ù‹.', 'Manually adjusted value.') : reading ? `${reading.source === 'pm10' ? 'PM10' : ui('ØªØ±ÙƒÙŠØ² Ø§Ù„ØºØ¨Ø§Ø±', 'Dust concentration')}: ${reading.concentration.toFixed(1)} Âµg/mÂ³.` : ui('ØªØ¸Ù‡Ø± Ø§Ù„Ù‚Ø±Ø§Ø¡Ø© Ø¹Ù†Ø¯ ØªÙˆÙØ± Ø¨ÙŠØ§Ù†Ø§Øª Ø¬ÙˆØ¯Ø© Ø§Ù„Ù‡ÙˆØ§Ø¡ Ù„Ù…ÙˆÙ‚Ø¹Ùƒ.', 'The reading appears when air quality data is available for your location.');
+  const detail = state.form.airDustManual ? ui('أ™â€ڑأ™إ أ™â€¦أکآ© أ™â€¦أکآ¹أکآ¯أ™â€کأ™â€‍أکآ© أ™إ أکآ¯أ™ث†أ™إ أکآ§أ™â€¹.', 'Manually adjusted value.') : reading ? `${reading.source === 'pm10' ? 'PM10' : ui('أکآھأکآ±أ™ئ’أ™إ أکآ² أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±', 'Dust concentration')}: ${reading.concentration.toFixed(1)} أ‚آµg/mأ‚آ³.` : ui('أکآھأکآ¸أ™â€،أکآ± أکآ§أ™â€‍أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ¹أ™â€ أکآ¯ أکآھأ™ث†أ™آپأکآ± أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ¬أ™ث†أکآ¯أکآ© أکآ§أ™â€‍أ™â€،أ™ث†أکآ§أکآ، أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™ئ’.', 'The reading appears when air quality data is available for your location.');
   return `${explanation} ${detail}`;
 }
 function clearVisualAssessment() { state.ai = null; state.aiLanguage = null; state.aiModel = null; }
@@ -518,7 +518,7 @@ async function syncAccountState() {
     method: 'PUT', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ state: { ...state, user: null } }),
   });
-  if (!response.ok) throw new Error((await response.json()).error || 'ØªØ¹Ø°Ø± Ù…Ø²Ø§Ù…Ù†Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨.');
+  if (!response.ok) throw new Error((await response.json()).error || 'أکآھأکآ¹أکآ°أکآ± أ™â€¦أکآ²أکآ§أ™â€¦أ™â€ أکآ© أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨.');
 }
 async function syncPanelData() {
   if (!currentAccount?.id) return;
@@ -529,7 +529,7 @@ async function syncPanelData() {
       timezone: state.weather?.timezone || '', tilt: state.form.tilt, notifications: !!state.settings.notifications, lastCleanedAt: state.lastCleanedAt,
     }),
   });
-  if (!response.ok) throw new Error((await response.json()).error || 'ØªØ¹Ø°Ø± Ù…Ø²Ø§Ù…Ù†Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù….');
+  if (!response.ok) throw new Error((await response.json()).error || 'أکآھأکآ¹أکآ°أکآ± أ™â€¦أکآ²أکآ§أ™â€¦أ™â€ أکآ© أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦.');
 }
 
 async function loadAppSettings() {
@@ -552,7 +552,7 @@ function tiltWarningMarkup() {
   const target = Number(appSettings.tilt_target_degrees);
   const message = state.settings.language === 'en'
     ? `Your current panel tilt may collect dust faster than an angle close to ${target} degrees.`
-    : `Ø²Ø§ÙˆÙŠØ© Ù„ÙˆØ­Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠØ© ØªØ®Ù„ÙŠÙ‡ ÙŠØªØ¬Ù…Ø¹ Ø¹Ù„ÙŠÙ‡ ØºØ¨Ø§Ø± Ø£Ø³Ø±Ø¹ Ù…Ù† Ù„Ùˆ ÙƒØ§Ù†Øª Ù‚Ø±ÙŠØ¨Ø© Ù…Ù† ${target} Ø¯Ø±Ø¬Ø©.`;
+    : `أکآ²أکآ§أ™ث†أ™إ أکآ© أ™â€‍أ™ث†أکآ­أ™ئ’ أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ© أکآھأکآ®أ™â€‍أ™إ أ™â€، أ™إ أکآھأکآ¬أ™â€¦أکآ¹ أکآ¹أ™â€‍أ™إ أ™â€، أکآ؛أکآ¨أکآ§أکآ± أکآ£أکآ³أکآ±أکآ¹ أ™â€¦أ™â€  أ™â€‍أ™ث† أ™ئ’أکآ§أ™â€ أکآھ أ™â€ڑأکآ±أ™إ أکآ¨أکآ© أ™â€¦أ™â€  ${target} أکآ¯أکآ±أکآ¬أکآ©.`;
   return `<div class="tilt-warning" role="status">${message}</div>`;
 }
 
@@ -746,28 +746,28 @@ function panelVisualMessage(tilt) {
   if (panelVisualTiltIsPlaceholder()) {
     return {
       tone: 'neutral',
-      headline: english ? `Suggested angle: ${target}Â°` : `Ø§Ù„Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ù…Ù‚ØªØ±Ø­Ø©: ${target}Â°`,
-      detail: english ? 'Enter the panel tilt above to preview how dust builds up on the glass.' : 'Ø£Ø¯Ø®Ù„ Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£Ø¹Ù„Ø§Ù‡ Ù„ØªØ±Ù‰ ÙƒÙŠÙ ÙŠØªØºÙŠÙ‘Ø± ØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ù„ÙˆØ­.',
+      headline: english ? `Suggested angle: ${target}أ‚آ°` : `أکآ§أ™â€‍أکآ²أکآ§أ™ث†أ™إ أکآ© أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآھأکآ±أکآ­أکآ©: ${target}أ‚آ°`,
+      detail: english ? 'Enter the panel tilt above to preview how dust builds up on the glass.' : 'أکآ£أکآ¯أکآ®أ™â€‍ أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ£أکآ¹أ™â€‍أکآ§أ™â€، أ™â€‍أکآھأکآ±أ™â€° أ™ئ’أ™إ أ™آپ أ™إ أکآھأکآ؛أ™إ أ™â€کأکآ± أکآھأکآ±أکآ§أ™ئ’أ™â€¦ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­.',
     };
   }
   if (tilt < low) {
     return {
       tone: 'warn',
-      headline: english ? `We suggest raising the tilt to about ${target}Â°` : `Ù†Ù‚ØªØ±Ø­ Ø±ÙØ¹ Ø§Ù„Ù…ÙŠÙ„ Ø¥Ù„Ù‰ ${target}Â° ØªÙ‚Ø±ÙŠØ¨Ø§Ù‹`,
-      detail: english ? `At ${shown}Â° the panel is almost flat, so dust settles faster and blocks the sun.` : `Ø¹Ù†Ø¯ ${shown}Â° ÙŠÙƒÙˆÙ† Ø§Ù„Ù„ÙˆØ­ Ø´Ø¨Ù‡ Ø£ÙÙ‚ÙŠØŒ ÙÙŠØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø± Ø£Ø³Ø±Ø¹ ÙˆÙŠØ­Ø¬Ø¨ Ø¶ÙˆØ¡ Ø§Ù„Ø´Ù…Ø³.`,
+      headline: english ? `We suggest raising the tilt to about ${target}أ‚آ°` : `أ™â€ أ™â€ڑأکآھأکآ±أکآ­ أکآ±أ™آپأکآ¹ أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أکآ¥أ™â€‍أ™â€° ${target}أ‚آ° أکآھأ™â€ڑأکآ±أ™إ أکآ¨أکآ§أ™â€¹`,
+      detail: english ? `At ${shown}أ‚آ° the panel is almost flat, so dust settles faster and blocks the sun.` : `أکآ¹أ™â€ أکآ¯ ${shown}أ‚آ° أ™إ أ™ئ’أ™ث†أ™â€  أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­ أکآ´أکآ¨أ™â€، أکآ£أ™آپأ™â€ڑأ™إ أکإ’ أ™آپأ™إ أکآھأکآ±أکآ§أ™ئ’أ™â€¦ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ£أکآ³أکآ±أکآ¹ أ™ث†أ™إ أکآ­أکآ¬أکآ¨ أکآ¶أ™ث†أکآ، أکآ§أ™â€‍أکآ´أ™â€¦أکآ³.`,
     };
   }
   if (tilt > high) {
     return {
       tone: 'warn',
-      headline: english ? `We suggest lowering the tilt to about ${target}Â°` : `Ù†Ù‚ØªØ±Ø­ Ø®ÙØ¶ Ø§Ù„Ù…ÙŠÙ„ Ø¥Ù„Ù‰ ${target}Â° ØªÙ‚Ø±ÙŠØ¨Ø§Ù‹`,
-      detail: english ? `At ${shown}Â° the panel is steeper than the recommended ${formatTiltDegrees(low)}Â°â€“${formatTiltDegrees(high)}Â° range.` : `Ø¹Ù†Ø¯ ${shown}Â° ÙŠÙƒÙˆÙ† Ø§Ù„Ù„ÙˆØ­ Ø£ÙƒØ«Ø± Ø§Ù†Ø­Ø¯Ø§Ø±Ø§Ù‹ Ù…Ù† Ø§Ù„Ù…Ø¯Ù‰ Ø§Ù„Ù…ÙˆØµÙ‰ Ø¨Ù‡ (${formatTiltDegrees(low)}Â°â€“${formatTiltDegrees(high)}Â°).`,
+      headline: english ? `We suggest lowering the tilt to about ${target}أ‚آ°` : `أ™â€ أ™â€ڑأکآھأکآ±أکآ­ أکآ®أ™آپأکآ¶ أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أکآ¥أ™â€‍أ™â€° ${target}أ‚آ° أکآھأ™â€ڑأکآ±أ™إ أکآ¨أکآ§أ™â€¹`,
+      detail: english ? `At ${shown}أ‚آ° the panel is steeper than the recommended ${formatTiltDegrees(low)}أ‚آ°أ¢â‚¬â€œ${formatTiltDegrees(high)}أ‚آ° range.` : `أکآ¹أ™â€ أکآ¯ ${shown}أ‚آ° أ™إ أ™ئ’أ™ث†أ™â€  أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­ أکآ£أ™ئ’أکآ«أکآ± أکآ§أ™â€ أکآ­أکآ¯أکآ§أکآ±أکآ§أ™â€¹ أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أکآ¯أ™â€° أکآ§أ™â€‍أ™â€¦أ™ث†أکآµأ™â€° أکآ¨أ™â€، (${formatTiltDegrees(low)}أ‚آ°أ¢â‚¬â€œ${formatTiltDegrees(high)}أ‚آ°).`,
     };
   }
   return {
     tone: 'good',
-    headline: english ? `Your ${shown}Â° tilt is within the recommended range` : `Ø²Ø§ÙˆÙŠØªÙƒ ${shown}Â° Ø¶Ù…Ù† Ø§Ù„Ù…Ø¯Ù‰ Ø§Ù„Ù…ÙˆØµÙ‰ Ø¨Ù‡`,
-    detail: english ? `Keep it between ${formatTiltDegrees(low)}Â° and ${formatTiltDegrees(high)}Â°: the steeper the panel, the less dust it collects.` : `Ø£Ø¨Ù‚Ù Ø§Ù„Ù„ÙˆØ­ Ø¨ÙŠÙ† ${formatTiltDegrees(low)}Â° Ùˆ${formatTiltDegrees(high)}Â°: ÙƒÙ„Ù…Ø§ Ø§Ø±ØªÙØ¹ Ø§Ù„Ù…ÙŠÙ„ Ù‚Ù„Ù‘ ØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø±.`,
+    headline: english ? `Your ${shown}أ‚آ° tilt is within the recommended range` : `أکآ²أکآ§أ™ث†أ™إ أکآھأ™ئ’ ${shown}أ‚آ° أکآ¶أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أکآ¯أ™â€° أکآ§أ™â€‍أ™â€¦أ™ث†أکآµأ™â€° أکآ¨أ™â€،`,
+    detail: english ? `Keep it between ${formatTiltDegrees(low)}أ‚آ° and ${formatTiltDegrees(high)}أ‚آ°: the steeper the panel, the less dust it collects.` : `أکآ£أکآ¨أ™â€ڑأ™آگ أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­ أکآ¨أ™إ أ™â€  ${formatTiltDegrees(low)}أ‚آ° أ™ث†${formatTiltDegrees(high)}أ‚آ°: أ™ئ’أ™â€‍أ™â€¦أکآ§ أکآ§أکآ±أکآھأ™آپأکآ¹ أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أ™â€ڑأ™â€‍أ™â€ک أکآھأکآ±أکآ§أ™ئ’أ™â€¦ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±.`,
   };
 }
 function panelCellsMarkup(geometry) {
@@ -853,7 +853,7 @@ function panelTiltVisualMarkup() {
         </g>
         <g class="pv-dust-motes" id="panel-dust-motes" opacity="${(0.15 + dust * 0.5).toFixed(3)}">${motes}</g>
       </svg>
-      <span class="panel-visual-angle"><b id="panel-angle-value">${angle}Â°</b><small>${ui('Ù…ÙŠÙ„ Ø§Ù„Ù„ÙˆØ­', 'Panel tilt')}</small></span>
+      <span class="panel-visual-angle"><b id="panel-angle-value">${angle}أ‚آ°</b><small>${ui('أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­', 'Panel tilt')}</small></span>
     </div>
     <figcaption class="panel-visual-note is-${message.tone}" id="panel-visual-note" aria-live="polite">
       <strong>${escapeHtml(message.headline)}</strong>
@@ -901,7 +901,7 @@ function updatePanelVisual() {
   }
   panelVisualRayPaths(tilt).forEach((path, index) => el(`panel-ray-${index + 1}`)?.setAttribute('d', path));
   const angleValue = el('panel-angle-value');
-  if (angleValue) angleValue.textContent = `${formatTiltDegrees(tilt)}Â°`;
+  if (angleValue) angleValue.textContent = `${formatTiltDegrees(tilt)}أ‚آ°`;
   const note = el('panel-visual-note');
   if (note) {
     const message = panelVisualMessage(tilt);
@@ -968,32 +968,32 @@ function maintenanceStatus(reference = new Date()) {
   };
 }
 function maintenanceDateLabel(date, locale) {
-  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return 'â€”';
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return 'أ¢â‚¬â€‌';
   return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
 }
 function maintenanceElapsedLabel(status) {
   const english = state.settings.language === 'en';
-  if (status.elapsedDays === 0) return english ? 'today' : 'Ø§Ù„ÙŠÙˆÙ…';
+  if (status.elapsedDays === 0) return english ? 'today' : 'أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦';
   const parts = [];
-  if (status.months > 0) parts.push(english ? `${status.months} ${status.months === 1 ? 'month' : 'months'}` : arabicCount(status.months, { one: 'Ø´Ù‡Ø± ÙˆØ§Ø­Ø¯', two: 'Ø´Ù‡Ø±ÙŠÙ†', few: 'Ø£Ø´Ù‡Ø±', many: 'Ø´Ù‡Ø±Ù‹Ø§' }));
-  if (status.days > 0 || !parts.length) parts.push(english ? `${status.days} ${status.days === 1 ? 'day' : 'days'}` : arabicCount(status.days, { one: 'ÙŠÙˆÙ… ÙˆØ§Ø­Ø¯', two: 'ÙŠÙˆÙ…ÙŠÙ†', few: 'Ø£ÙŠØ§Ù…', many: 'ÙŠÙˆÙ…Ù‹Ø§' }));
-  return (english ? 'since ' : 'Ù‚Ø¨Ù„ ') + parts.join(english ? ' and ' : ' Ùˆ');
+  if (status.months > 0) parts.push(english ? `${status.months} ${status.months === 1 ? 'month' : 'months'}` : arabicCount(status.months, { one: 'أکآ´أ™â€،أکآ± أ™ث†أکآ§أکآ­أکآ¯', two: 'أکآ´أ™â€،أکآ±أ™إ أ™â€ ', few: 'أکآ£أکآ´أ™â€،أکآ±', many: 'أکآ´أ™â€،أکآ±أ™â€¹أکآ§' }));
+  if (status.days > 0 || !parts.length) parts.push(english ? `${status.days} ${status.days === 1 ? 'day' : 'days'}` : arabicCount(status.days, { one: 'أ™إ أ™ث†أ™â€¦ أ™ث†أکآ§أکآ­أکآ¯', two: 'أ™إ أ™ث†أ™â€¦أ™إ أ™â€ ', few: 'أکآ£أ™إ أکآ§أ™â€¦', many: 'أ™إ أ™ث†أ™â€¦أ™â€¹أکآ§' }));
+  return (english ? 'since ' : 'أ™â€ڑأکآ¨أ™â€‍ ') + parts.join(english ? ' and ' : ' أ™ث†');
 }
 function maintenanceRemainingLabel(status) {
   const english = state.settings.language === 'en';
   const count = Math.abs(status.daysRemaining);
-  if (status.daysRemaining === 0) return english ? 'Maintenance is due today.' : 'Ø§Ù„ØµÙŠØ§Ù†Ø© Ù…Ø³ØªØ­Ù‚Ø© Ø§Ù„ÙŠÙˆÙ….';
+  if (status.daysRemaining === 0) return english ? 'Maintenance is due today.' : 'أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أ™â€¦أکآ³أکآھأکآ­أ™â€ڑأکآ© أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦.';
   if (status.overdue) {
-    return english ? `Maintenance is ${count} ${count === 1 ? 'day' : 'days'} overdue.` : `ØªØ£Ø®Ø±Øª Ø§Ù„ØµÙŠØ§Ù†Ø© ${arabicCount(count, { one: 'ÙŠÙˆÙ…Ù‹Ø§ ÙˆØ§Ø­Ø¯Ù‹Ø§', two: 'ÙŠÙˆÙ…ÙŠÙ†', few: 'Ø£ÙŠØ§Ù…', many: 'ÙŠÙˆÙ…Ù‹Ø§' })}.`;
+    return english ? `Maintenance is ${count} ${count === 1 ? 'day' : 'days'} overdue.` : `أکآھأکآ£أکآ®أکآ±أکآھ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© ${arabicCount(count, { one: 'أ™إ أ™ث†أ™â€¦أ™â€¹أکآ§ أ™ث†أکآ§أکآ­أکآ¯أ™â€¹أکآ§', two: 'أ™إ أ™ث†أ™â€¦أ™إ أ™â€ ', few: 'أکآ£أ™إ أکآ§أ™â€¦', many: 'أ™إ أ™ث†أ™â€¦أ™â€¹أکآ§' })}.`;
   }
-  return english ? `${count} ${count === 1 ? 'day' : 'days'} left until the next maintenance.` : `Ø¨Ø§Ù‚ÙŠ ${arabicCount(count, { one: 'ÙŠÙˆÙ… ÙˆØ§Ø­Ø¯', two: 'ÙŠÙˆÙ…ÙŠÙ†', few: 'Ø£ÙŠØ§Ù…', many: 'ÙŠÙˆÙ…Ù‹Ø§' })} Ø¹Ù„Ù‰ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©.`;
+  return english ? `${count} ${count === 1 ? 'day' : 'days'} left until the next maintenance.` : `أکآ¨أکآ§أ™â€ڑأ™إ  ${arabicCount(count, { one: 'أ™إ أ™ث†أ™â€¦ أ™ث†أکآ§أکآ­أکآ¯', two: 'أ™إ أ™ث†أ™â€¦أ™إ أ™â€ ', few: 'أکآ£أ™إ أکآ§أ™â€¦', many: 'أ™إ أ™ث†أ™â€¦أ™â€¹أکآ§' })} أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¯أ™â€¦أکآ©.`;
 }
 function maintenancePillMarkup(status) {
   const english = state.settings.language === 'en';
   if (!status) return { hidden: true, className: '', text: '' };
-  if (status.overdue) return { hidden: false, className: 'is-overdue', text: english ? 'Overdue' : 'Ù…ØªØ£Ø®Ø±Ø©' };
-  if (status.dueSoon) return { hidden: false, className: 'is-due-soon', text: english ? 'Due soon' : 'Ù‚Ø±ÙŠØ¨Ø©' };
-  return { hidden: false, className: 'is-ok', text: english ? 'On schedule' : 'Ù…Ù†ØªØ¸Ù…Ø©' };
+  if (status.overdue) return { hidden: false, className: 'is-overdue', text: english ? 'Overdue' : 'أ™â€¦أکآھأکآ£أکآ®أکآ±أکآ©' };
+  if (status.dueSoon) return { hidden: false, className: 'is-due-soon', text: english ? 'Due soon' : 'أ™â€ڑأکآ±أ™إ أکآ¨أکآ©' };
+  return { hidden: false, className: 'is-ok', text: english ? 'On schedule' : 'أ™â€¦أ™â€ أکآھأکآ¸أ™â€¦أکآ©' };
 }
 function renderMaintenance() {
   const container = el('maintenance-content');
@@ -1004,7 +1004,7 @@ function renderMaintenance() {
   const button = el('maintenance-done');
   const pill = el('maintenance-state-pill');
   const panel = el('maintenance-panel');
-  if (button) { button.disabled = false; button.textContent = english ? 'Mark maintenance done today âœ“' : 'ØªÙ…Øª Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„ÙŠÙˆÙ… âœ“'; }
+  if (button) { button.disabled = false; button.textContent = english ? 'Mark maintenance done today أ¢إ“â€œ' : 'أکآھأ™â€¦أکآھ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦ أ¢إ“â€œ'; }
   const pillState = maintenancePillMarkup(status);
   if (pill) {
     pill.hidden = pillState.hidden;
@@ -1017,7 +1017,7 @@ function renderMaintenance() {
     panel.classList.toggle('maintenance-due-soon', Boolean(status?.dueSoon && !status?.overdue));
   }
   if (!status) {
-    container.innerHTML = `<div class="maintenance-empty-state"><div class="maintenance-empty-icon">ðŸ“…</div><p>${english ? 'No maintenance date is saved yet. Add the date of your last maintenance in the system details so we can schedule the next one and count the days for you.' : 'Ù„Ù… ÙŠÙØ³Ø¬ÙŽÙ‘Ù„ ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ø¨Ø¹Ø¯. Ø£Ø¶Ù ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ù…Ù† Â«ØªØ­Ø¯ÙŠØ« Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù…Â» Ù„Ù†Ø­Ø³Ø¨ Ù„Ùƒ Ù…ÙˆØ¹Ø¯ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø© ÙˆØ§Ù„ÙˆÙ‚Øª Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ ÙƒÙ„ ÙŠÙˆÙ….'}</p></div>`;
+    container.innerHTML = `<div class="maintenance-empty-state"><div class="maintenance-empty-icon">أ°إ¸â€œâ€¦</div><p>${english ? 'No maintenance date is saved yet. Add the date of your last maintenance in the system details so we can schedule the next one and count the days for you.' : 'أ™â€‍أ™â€¦ أ™إ أ™آڈأکآ³أکآ¬أ™إ½أ™â€کأ™â€‍ أکآھأکآ§أکآ±أ™إ أکآ® أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ© أکآ¨أکآ¹أکآ¯. أکآ£أکآ¶أ™آپ أکآھأکآ§أکآ±أ™إ أکآ® أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ© أ™â€¦أ™â€  أ‚آ«أکآھأکآ­أکآ¯أ™إ أکآ« أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦أ‚آ» أ™â€‍أ™â€ أکآ­أکآ³أکآ¨ أ™â€‍أ™ئ’ أ™â€¦أ™ث†أکآ¹أکآ¯ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¯أ™â€¦أکآ© أ™ث†أکآ§أ™â€‍أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أ™â€¦أکآھأکآ¨أ™â€ڑأ™إ  أ™ئ’أ™â€‍ أ™إ أ™ث†أ™â€¦.'}</p></div>`;
     return;
   }
   const lastLabel = maintenanceDateLabel(status.last, locale);
@@ -1026,43 +1026,43 @@ function renderMaintenance() {
   const remainingLabel = maintenanceRemainingLabel(status);
   const remainingShort = english
     ? `${Math.abs(status.daysRemaining)} ${Math.abs(status.daysRemaining) === 1 ? 'day' : 'days'}`
-    : arabicCount(Math.abs(status.daysRemaining), { one: 'ÙŠÙˆÙ… ÙˆØ§Ø­Ø¯', two: 'ÙŠÙˆÙ…ÙŠÙ†', few: 'Ø£ÙŠØ§Ù…', many: 'ÙŠÙˆÙ…Ù‹Ø§' });
+    : arabicCount(Math.abs(status.daysRemaining), { one: 'أ™إ أ™ث†أ™â€¦ أ™ث†أکآ§أکآ­أکآ¯', two: 'أ™إ أ™ث†أ™â€¦أ™إ أ™â€ ', few: 'أکآ£أ™إ أکآ§أ™â€¦', many: 'أ™إ أ™ث†أ™â€¦أ™â€¹أکآ§' });
   const progressCaption = english
     ? `${status.progressPercent}% of the cycle completed`
-    : `Ø§ÙƒØªÙ…Ù„Øª ${status.progressPercent}% Ù…Ù† Ø§Ù„Ø¯ÙˆØ±Ø©`;
+    : `أکآ§أ™ئ’أکآھأ™â€¦أ™â€‍أکآھ ${status.progressPercent}% أ™â€¦أ™â€  أکآ§أ™â€‍أکآ¯أ™ث†أکآ±أکآ©`;
   const overdueDaysShort = status.overdue
     ? (english
       ? `${Math.abs(status.daysRemaining)} ${Math.abs(status.daysRemaining) === 1 ? 'day' : 'days'}`
-      : arabicCount(Math.abs(status.daysRemaining), { one: 'ÙŠÙˆÙ… ÙˆØ§Ø­Ø¯', two: 'ÙŠÙˆÙ…ÙŠÙ†', few: 'Ø£ÙŠØ§Ù…', many: 'ÙŠÙˆÙ…Ù‹Ø§' }))
+      : arabicCount(Math.abs(status.daysRemaining), { one: 'أ™إ أ™ث†أ™â€¦ أ™ث†أکآ§أکآ­أکآ¯', two: 'أ™إ أ™ث†أ™â€¦أ™إ أ™â€ ', few: 'أکآ£أ™إ أکآ§أ™â€¦', many: 'أ™إ أ™ث†أ™â€¦أ™â€¹أکآ§' }))
     : '';
   const untilDueLabel = status.overdue
-    ? (english ? 'Date passed' : 'Ø§Ù†Ù‚Ø¶Ù‰ Ø§Ù„Ù…ÙˆØ¹Ø¯')
+    ? (english ? 'Date passed' : 'أکآ§أ™â€ أ™â€ڑأکآ¶أ™â€° أکآ§أ™â€‍أ™â€¦أ™ث†أکآ¹أکآ¯')
     : status.monthsUntilDue > 0
       ? (english
         ? `in about ${status.monthsUntilDue} ${status.monthsUntilDue === 1 ? 'month' : 'months'}`
-        : `Ø¨Ø¹Ø¯ ${arabicCount(status.monthsUntilDue, { one: 'Ø´Ù‡Ø± ÙˆØ§Ø­Ø¯', two: 'Ø´Ù‡Ø±ÙŠÙ†', few: 'Ø£Ø´Ù‡Ø±', many: 'Ø´Ù‡Ø±Ù‹Ø§' })}`)
-      : (english ? 'within this month' : 'Ø®Ù„Ø§Ù„ Ù‡Ø°Ø§ Ø§Ù„Ø´Ù‡Ø±');
+        : `أکآ¨أکآ¹أکآ¯ ${arabicCount(status.monthsUntilDue, { one: 'أکآ´أ™â€،أکآ± أ™ث†أکآ§أکآ­أکآ¯', two: 'أکآ´أ™â€،أکآ±أ™إ أ™â€ ', few: 'أکآ£أکآ´أ™â€،أکآ±', many: 'أکآ´أ™â€،أکآ±أ™â€¹أکآ§' })}`)
+      : (english ? 'within this month' : 'أکآ®أ™â€‍أکآ§أ™â€‍ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ´أ™â€،أکآ±');
   const overdueNote = english
     ? 'Panels can be affected if maintenance is delayed: dust and deposits build up, airflow drops, and generation declines gradually. Book a maintenance visit and clean the panels safely.'
-    : 'Ù‚Ø¯ ØªØªØ£Ø«Ø± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø§Ù„Ø´Ù…Ø³ÙŠØ© Ø¥Ø°Ø§ ØªØ£Ø®Ø±Øª Ø§Ù„ØµÙŠØ§Ù†Ø©: ÙŠØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„ØªØ±Ø³Ø¨Ø§Øª ÙˆØªÙ‚Ù„ Ø§Ù„ØªÙ‡ÙˆÙŠØ© ÙˆÙŠÙ†Ø®ÙØ¶ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ ØªØ¯Ø±ÙŠØ¬ÙŠÙ‹Ø§. Ø§Ø­Ø¬Ø² ØµÙŠØ§Ù†Ø© ÙˆÙ†Ø¸Ù‘Ù Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø·Ø±ÙŠÙ‚Ø© Ø¢Ù…Ù†Ø©.';
+    : 'أ™â€ڑأکآ¯ أکآھأکآھأکآ£أکآ«أکآ± أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ أکآ© أکآ¥أکآ°أکآ§ أکآھأکآ£أکآ®أکآ±أکآھ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ©: أ™إ أکآھأکآ±أکآ§أ™ئ’أ™â€¦ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أ™â€‍أکآھأکآ±أکآ³أکآ¨أکآ§أکآھ أ™ث†أکآھأ™â€ڑأ™â€‍ أکآ§أ™â€‍أکآھأ™â€،أ™ث†أ™إ أکآ© أ™ث†أ™إ أ™â€ أکآ®أ™آپأکآ¶ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآھأکآ¯أکآ±أ™إ أکآ¬أ™إ أ™â€¹أکآ§. أکآ§أکآ­أکآ¬أکآ² أکآµأ™إ أکآ§أ™â€ أکآ© أ™ث†أ™â€ أکآ¸أ™â€کأ™آپ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ·أکآ±أ™إ أ™â€ڑأکآ© أکآ¢أ™â€¦أ™â€ أکآ©.';
   const dueSoonNote = english
     ? 'The next maintenance is close. Booking it now keeps the panels within their cleaning cycle.'
-    : 'Ù…ÙˆØ¹Ø¯ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø© Ø§Ù‚ØªØ±Ø¨. Ø§Ø­Ø¬Ø²Ù‡Ø§ Ø§Ù„Ø¢Ù† Ù„ØªØ¨Ù‚Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¶Ù…Ù† Ø¯ÙˆØ±Ø© Ø§Ù„ØµÙŠØ§Ù†Ø©.';
+    : 'أ™â€¦أ™ث†أکآ¹أکآ¯ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¯أ™â€¦أکآ© أکآ§أ™â€ڑأکآھأکآ±أکآ¨. أکآ§أکآ­أکآ¬أکآ²أ™â€،أکآ§ أکآ§أ™â€‍أکآ¢أ™â€  أ™â€‍أکآھأکآ¨أ™â€ڑأ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¶أ™â€¦أ™â€  أکآ¯أ™ث†أکآ±أکآ© أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ©.';
   const onScheduleNote = english
     ? 'The panels are on schedule. The app recalculates the remaining days from the saved date every time you open it.'
-    : 'Ø§Ù„ØµÙŠØ§Ù†Ø© Ù…Ù†ØªØ¸Ù…Ø©. ÙŠØ­Ø³Ø¨ Ø³ÙŠØ§Ø¬ Ø§Ù„Ø£ÙŠØ§Ù… Ø§Ù„Ù…ØªØ¨Ù‚ÙŠØ© Ù…Ù† Ø§Ù„ØªØ§Ø±ÙŠØ® Ø§Ù„Ù…Ø­ÙÙˆØ¸ ÙÙŠ ÙƒÙ„ Ù…Ø±Ø© ØªÙØªØ­ ÙÙŠÙ‡Ø§ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚.';
+    : 'أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أ™â€¦أ™â€ أکآھأکآ¸أ™â€¦أکآ©. أ™إ أکآ­أکآ³أکآ¨ أکآ³أ™إ أکآ§أکآ¬ أکآ§أ™â€‍أکآ£أ™إ أکآ§أ™â€¦ أکآ§أ™â€‍أ™â€¦أکآھأکآ¨أ™â€ڑأ™إ أکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أکآھأکآ§أکآ±أ™إ أکآ® أکآ§أ™â€‍أ™â€¦أکآ­أ™آپأ™ث†أکآ¸ أ™آپأ™إ  أ™ئ’أ™â€‍ أ™â€¦أکآ±أکآ© أکآھأ™آپأکآھأکآ­ أ™آپأ™إ أ™â€،أکآ§ أکآ§أ™â€‍أکآھأکآ·أکآ¨أ™إ أ™â€ڑ.';
   const note = status.overdue ? overdueNote : status.dueSoon ? dueSoonNote : onScheduleNote;
   container.innerHTML = `<div class="maintenance-grid">
-      <div class="maintenance-stat"><span class="maintenance-stat-icon">ðŸ“…</span><div class="maintenance-stat-body"><small>${english ? 'Last maintenance' : 'Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©'}</small><b>${escapeHtml(lastLabel)}</b><span>${escapeHtml(elapsedLabel)}</span></div></div>
-      <div class="maintenance-stat"><span class="maintenance-stat-icon">â³</span><div class="maintenance-stat-body"><small>${status.overdue ? (english ? 'Overdue by' : 'Ù…ØªØ£Ø®Ø±Ø© Ù…Ù†Ø°') : (english ? 'Time left' : 'Ø§Ù„ÙˆÙ‚Øª Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ')}</small><b class="maintenance-remaining">${escapeHtml(overdueDaysShort || remainingShort)}</b><span>${escapeHtml(status.overdue ? (english ? 'Needs urgent attention' : 'ØªØ­ØªØ§Ø¬ ØµÙŠØ§Ù†Ø© Ø¹Ø§Ø¬Ù„Ø©') : progressCaption)}</span></div></div>
-      <div class="maintenance-stat"><span class="maintenance-stat-icon">ðŸ”§</span><div class="maintenance-stat-body"><small>${english ? 'Next maintenance' : 'Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©'}</small><b>${escapeHtml(dueLabel)}</b><span>${escapeHtml(untilDueLabel)}</span></div></div>
+      <div class="maintenance-stat"><span class="maintenance-stat-icon">أ°إ¸â€œâ€¦</span><div class="maintenance-stat-body"><small>${english ? 'Last maintenance' : 'أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ©'}</small><b>${escapeHtml(lastLabel)}</b><span>${escapeHtml(elapsedLabel)}</span></div></div>
+      <div class="maintenance-stat"><span class="maintenance-stat-icon">أ¢آڈآ³</span><div class="maintenance-stat-body"><small>${status.overdue ? (english ? 'Overdue by' : 'أ™â€¦أکآھأکآ£أکآ®أکآ±أکآ© أ™â€¦أ™â€ أکآ°') : (english ? 'Time left' : 'أکآ§أ™â€‍أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أ™â€¦أکآھأکآ¨أ™â€ڑأ™إ ')}</small><b class="maintenance-remaining">${escapeHtml(overdueDaysShort || remainingShort)}</b><span>${escapeHtml(status.overdue ? (english ? 'Needs urgent attention' : 'أکآھأکآ­أکآھأکآ§أکآ¬ أکآµأ™إ أکآ§أ™â€ أکآ© أکآ¹أکآ§أکآ¬أ™â€‍أکآ©') : progressCaption)}</span></div></div>
+      <div class="maintenance-stat"><span class="maintenance-stat-icon">أ°إ¸â€‌آ§</span><div class="maintenance-stat-body"><small>${english ? 'Next maintenance' : 'أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¯أ™â€¦أکآ©'}</small><b>${escapeHtml(dueLabel)}</b><span>${escapeHtml(untilDueLabel)}</span></div></div>
     </div>
     <div class="maintenance-progress">
-      <div class="maintenance-progress-head"><span>${english ? 'Cycle progress' : 'ØªÙ‚Ø¯Ù… Ø§Ù„Ø¯ÙˆØ±Ø©'}</span><b>${status.progressPercent}%</b></div>
-      <div class="maintenance-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${status.progressPercent}" aria-label="${english ? 'Maintenance cycle progress' : 'ØªÙ‚Ø¯Ù… Ø¯ÙˆØ±Ø© Ø§Ù„ØµÙŠØ§Ù†Ø©'}"><i style="width:${status.progressPercent}%"></i></div>
+      <div class="maintenance-progress-head"><span>${english ? 'Cycle progress' : 'أکآھأ™â€ڑأکآ¯أ™â€¦ أکآ§أ™â€‍أکآ¯أ™ث†أکآ±أکآ©'}</span><b>${status.progressPercent}%</b></div>
+      <div class="maintenance-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${status.progressPercent}" aria-label="${english ? 'Maintenance cycle progress' : 'أکآھأ™â€ڑأکآ¯أ™â€¦ أکآ¯أ™ث†أکآ±أکآ© أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ©'}"><i style="width:${status.progressPercent}%"></i></div>
       <div class="maintenance-progress-foot"><span>${escapeHtml(lastLabel)}</span><span>${escapeHtml(dueLabel)}</span></div>
     </div>
-    <p class="maintenance-note"><span class="maintenance-note-icon">${status.overdue ? 'âš ï¸' : status.dueSoon ? 'â°' : 'â„¹ï¸'}</span>${escapeHtml(note)}</p>`;
+    <p class="maintenance-note"><span class="maintenance-note-icon">${status.overdue ? 'أ¢إ،آ أ¯آ¸آڈ' : status.dueSoon ? 'أ¢آڈآ°' : 'أ¢â€‍آ¹أ¯آ¸آڈ'}</span>${escapeHtml(note)}</p>`;
 }
 
 function escapeHtml(value) { return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]); }
@@ -1078,9 +1078,9 @@ function translateText(value) {
     if (arabic.length <= 2 && /[\u0600-\u06FF]/.test(arabic)) continue;
     result = result.replaceAll(arabic, TRANSLATIONS[arabic]);
   }
-  result = result.replace(/Â°Ù…/g, 'Â°C');
-  result = result.replace(/[Ù -Ù©]/g, (digit) => String('Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©'.indexOf(digit)));
-  result = result.replace(/Ø§Ù„Ø®Ø·ÙˆØ© (\d+) Ù…Ù† (\d+)/g, 'Step $1 of $2');
+  result = result.replace(/أ‚آ°أ™â€¦/g, 'أ‚آ°C');
+  result = result.replace(/[أ™آ -أ™آ©]/g, (digit) => String('أ™آ أ™آ،أ™آ¢أ™آ£أ™آ¤أ™آ¥أ™آ¦أ™آ§أ™آ¨أ™آ©'.indexOf(digit)));
+  result = result.replace(/أکآ§أ™â€‍أکآ®أکآ·أ™ث†أکآ© (\d+) أ™â€¦أ™â€  (\d+)/g, 'Step $1 of $2');
   return result;
 }
 function applyLanguage() {
@@ -1107,7 +1107,7 @@ function applyLanguage() {
     }
   });
   const toggle = el('language-toggle');
-  if (toggle) { toggle.textContent = english ? 'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©' : 'EN'; toggle.setAttribute('aria-label', english ? 'Switch to Arabic' : 'Switch to English'); }
+  if (toggle) { toggle.textContent = english ? 'أکآ§أ™â€‍أکآ¹أکآ±أکآ¨أ™إ أکآ©' : 'EN'; toggle.setAttribute('aria-label', english ? 'Switch to Arabic' : 'Switch to English'); }
   const languageSelect = el('setting-language');
   if (languageSelect) languageSelect.value = english ? 'en' : 'ar';
 }
@@ -1116,9 +1116,9 @@ function showToast(message) {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 3100);
 }
 function syncHeader() {
-  el('header-location').textContent = state.form.location || 'Ø­Ø¯Ù‘Ø¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù…';
+  el('header-location').textContent = state.form.location || 'أکآ­أکآ¯أ™â€کأکآ¯ أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦';
   const authButton = el('auth-nav');
-  if (authButton) authButton.textContent = state.user?.username || 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„';
+  if (authButton) authButton.textContent = state.user?.username || 'أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍';
   const loggedIn = !!state.user;
   document.querySelector('.main-nav').hidden = !loggedIn;
   document.querySelector('.topbar-location').hidden = !loggedIn;
@@ -1179,7 +1179,7 @@ async function loadMedia() {
   catch (error) {
     const all = (await dbRequest('readonly', (store) => store.getAll()).catch(() => [])) || [];
     media = currentAccount ? all.filter((item) => item.accountId === currentAccount.id) : [];
-    showToast(error.message || 'ØªØ¹Ø°Ø± Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª Ø§Ù„Ø¢Ù†.');
+    showToast(error.message || 'أکآھأکآ¹أکآ°أکآ± أ™â€¦أکآ²أکآ§أ™â€¦أ™â€ أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھ أکآ§أ™â€‍أکآ¢أ™â€ .');
   }
   renderCurrentStep();
 }
@@ -1187,7 +1187,7 @@ async function syncAccountMedia() {
   if (!currentAccount?.id) return;
   const listResponse = await authenticatedFetch('/api/account/media');
   const listData = await listResponse.json();
-  if (!listResponse.ok) throw new Error(listData.error || 'ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ù…Ø±ÙÙ‚Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨.');
+  if (!listResponse.ok) throw new Error(listData.error || 'أکآھأکآ¹أکآ°أکآ± أکآھأکآ­أ™â€¦أ™إ أ™â€‍ أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨.');
   const remote = new Map((listData.files || []).map((item) => [item.id, item]));
   const allFiles = (await dbRequest('readonly', (store) => store.getAll())) || [];
   const local = allFiles.filter((item) => item.accountId === currentAccount.id);
@@ -1204,7 +1204,7 @@ async function syncAccountMedia() {
         + '?category=' + encodeURIComponent(item.category) + '&name=' + encodeURIComponent(item.name);
       const response = await authenticatedFetch(url, { method: 'POST', headers: { 'Content-Type': item.type || item.blob.type }, body: item.blob });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø±ÙØ¹ Ø£Ø­Ø¯ Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª Ø¥Ù„Ù‰ Ø§Ù„Ø­Ø³Ø§Ø¨.');
+      if (!response.ok) throw new Error(data.error || 'أکآھأکآ¹أکآ°أکآ± أکآ±أ™آپأکآ¹ أکآ£أکآ­أکآ¯ أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھ أکآ¥أ™â€‍أ™â€° أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨.');
       const syncedItem = { ...item, cloudSynced: true };
       await dbRequest('readwrite', (store) => store.put(syncedItem));
       localById.set(item.id, syncedItem);
@@ -1215,7 +1215,7 @@ async function syncAccountMedia() {
   for (const item of remote.values()) {
     if (localById.has(item.id)) continue;
     const response = await authenticatedFetch('/api/account/media/' + encodeURIComponent(item.id));
-    if (!response.ok) throw new Error('ØªØ¹Ø°Ø± ØªÙ†Ø²ÙŠÙ„ Ø£Ø­Ø¯ Ù…Ø±ÙÙ‚Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨.');
+    if (!response.ok) throw new Error('أکآھأکآ¹أکآ°أکآ± أکآھأ™â€ أکآ²أ™إ أ™â€‍ أکآ£أکآ­أکآ¯ أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨.');
     const saved = { id: item.id, accountId: currentAccount.id, category: item.category, name: item.name, type: item.type, blob: await response.blob(), updatedAt: Date.parse(item.updated_at) || Date.now(), cloudSynced: true };
     await dbRequest('readwrite', (store) => store.put(saved));
     localById.set(item.id, saved);
@@ -1224,7 +1224,7 @@ async function syncAccountMedia() {
 function saveFormField(target) {
   if (!target?.dataset?.field) return;
   const key = target.dataset.field;
-  const value = key === 'brand' && isUnknownManufacturer(target.value) ? 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ' : target.value;
+  const value = key === 'brand' && isUnknownManufacturer(target.value) ? 'أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ' : target.value;
   if (!['name', 'billMonth', 'expectedMonthlyKwh', 'actualMonthlyKwh', 'invoice', 'consumption', 'tariff'].includes(key) && String(state.form[key]) !== String(value)) clearVisualAssessment();
   if (key === 'billMonth' && String(state.form.billMonth) !== String(target.value)) {
     state.form.expectedMonthlyKwh = ''; state.form.actualMonthlyKwh = ''; invoiceReview = null;
@@ -1265,9 +1265,9 @@ function field(label, key, options = {}) {
   if (min !== undefined) attrs.push(`min="${min}"`); if (max !== undefined) attrs.push(`max="${max}"`); if (step !== undefined) attrs.push(`step="${step}"`);
   if (required) attrs.push('required');
   if (type === 'range') {
-    const output = current === '' ? 'â€”' : `${escapeHtml(current)}%`;
+    const output = current === '' ? 'أ¢â‚¬â€‌' : `${escapeHtml(current)}%`;
     attrs[2] = `value="${escapeHtml(current === '' ? min ?? 0 : current)}"`;
-    return `<div class="field ${full ? 'full' : ''}"><label for="field-${key}">${labelMarkup}</label><div class="range-row"><input id="field-${key}" ${attrs.join(' ')} aria-valuetext="${current === '' ? ui('ØºÙŠØ± Ù…ØªØ§Ø­', 'Unavailable') : `${escapeHtml(current)}%`}"><output data-output="${key}">${output}</output></div>${hint ? `<small class="helper-text" ${key === 'airDustPercent' ? 'id="air-dust-hint"' : ''}>${hint}</small>` : ''}</div>`;
+    return `<div class="field ${full ? 'full' : ''}"><label for="field-${key}">${labelMarkup}</label><div class="range-row"><input id="field-${key}" ${attrs.join(' ')} aria-valuetext="${current === '' ? ui('أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ§أکآ­', 'Unavailable') : `${escapeHtml(current)}%`}"><output data-output="${key}">${output}</output></div>${hint ? `<small class="helper-text" ${key === 'airDustPercent' ? 'id="air-dust-hint"' : ''}>${hint}</small>` : ''}</div>`;
   }
   return `<div class="field ${full ? 'full' : ''}"><label for="field-${key}">${labelMarkup}</label><div class="${suffix ? 'input-suffix' : ''}"><input id="field-${key}" ${attrs.join(' ')}>${suffix ? `<span>${suffix}</span>` : ''}</div>${hint ? `<small class="helper-text">${hint}</small>` : ''}</div>`;
 }
@@ -1276,14 +1276,14 @@ function selectField(label, key, choices, options = {}) {
   return `<div class="field ${full ? 'full' : ''}"><label for="field-${key}">${label}</label><select id="field-${key}" data-field="${key}">${choices.map(([value, text]) => `<option value="${escapeHtml(value)}" ${current === value ? 'selected' : ''}>${escapeHtml(text)}</option>`).join('')}</select></div>`;
 }
 function manufacturerSearchKey(value) {
-  return String(value ?? '').normalize('NFKD').toLowerCase().replace(/[\u0300-\u036f\u064b-\u065f\u0670\u0640]/g, '').replace(/[Ø£Ø¥Ø¢Ù±]/g, 'Ø§').replace(/Ù‰/g, 'ÙŠ').replace(/Ø©/g, 'Ù‡').replace(/[\s._-]+/g, '');
+  return String(value ?? '').normalize('NFKD').toLowerCase().replace(/[\u0300-\u036f\u064b-\u065f\u0670\u0640]/g, '').replace(/[أکآ£أکآ¥أکآ¢أ™آ±]/g, 'أکآ§').replace(/أ™â€°/g, 'أ™إ ').replace(/أکآ©/g, 'أ™â€،').replace(/[\s._-]+/g, '');
 }
 function isUnknownManufacturer(value) {
-  return ['ØºÙŠØ±Ù…Ø¹Ø±ÙˆÙ', 'unknown'].includes(manufacturerSearchKey(value));
+  return ['أکآ؛أ™إ أکآ±أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ', 'unknown'].includes(manufacturerSearchKey(value));
 }
 function manufacturerField() {
-  const value = isUnknownManufacturer(state.form.brand) ? ui('ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ', 'Unknown') : state.form.brand || '';
-  return `<div class="field manufacturer-picker"><label for="field-brand">Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©</label><div class="manufacturer-input-row"><input id="field-brand" data-field="brand" type="text" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="manufacturer-options" aria-describedby="manufacturer-hint" autocomplete="off" placeholder="Ø§Ø¨Ø­Ø« Ø¹Ù† Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©" value="${escapeHtml(value)}"><button class="manufacturer-toggle" type="button" aria-label="Ø¹Ø±Ø¶ Ø§Ù„Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©" aria-controls="manufacturer-options" aria-expanded="false">âŒ„</button><div id="manufacturer-options" class="manufacturer-options" role="listbox" aria-label="Ø§Ù„Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©" hidden></div></div><small id="manufacturer-hint" class="helper-text">Ø§Ø¨Ø­Ø« Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© Ø£Ùˆ Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©ØŒ Ø£Ùˆ Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ø§Ù„Ø´Ø±ÙƒØ©. ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ø®ØªÙŠØ§Ø± Â«ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙÂ».</small></div>`;
+  const value = isUnknownManufacturer(state.form.brand) ? ui('أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ', 'Unknown') : state.form.brand || '';
+  return `<div class="field manufacturer-picker"><label for="field-brand">أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أ™â€کأکآ¹أکآ©</label><div class="manufacturer-input-row"><input id="field-brand" data-field="brand" type="text" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="manufacturer-options" aria-describedby="manufacturer-hint" autocomplete="off" placeholder="أکآ§أکآ¨أکآ­أکآ« أکآ¹أ™â€  أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أ™â€کأکآ¹أکآ©" value="${escapeHtml(value)}"><button class="manufacturer-toggle" type="button" aria-label="أکآ¹أکآ±أکآ¶ أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أ™â€کأکآ¹أکآ©" aria-controls="manufacturer-options" aria-expanded="false">أ¢إ’â€‍</button><div id="manufacturer-options" class="manufacturer-options" role="listbox" aria-label="أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أ™â€کأکآ¹أکآ©" hidden></div></div><small id="manufacturer-hint" class="helper-text">أکآ§أکآ¨أکآ­أکآ« أکآ¨أکآ§أ™â€‍أکآ¹أکآ±أکآ¨أ™إ أکآ© أکآ£أ™ث† أکآ§أ™â€‍أکآ¥أ™â€ أکآ¬أ™â€‍أ™إ أکآ²أ™إ أکآ©أکإ’ أکآ£أ™ث† أکآ§أ™ئ’أکآھأکآ¨ أکآ§أکآ³أ™â€¦ أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ©. أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أکآ§أکآ®أکآھأ™إ أکآ§أکآ± أ‚آ«أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپأ‚آ».</small></div>`;
 }
 function bindManufacturerPicker() {
   manufacturerPickerController?.abort();
@@ -1303,9 +1303,9 @@ function bindManufacturerPicker() {
   const show = (query = input.value) => {
     const key = manufacturerSearchKey(query);
     const companies = PANEL_MANUFACTURERS.filter(([name, aliases]) => !key || [name, ...aliases].some((name) => manufacturerSearchKey(name).includes(key))).map(([name]) => ({ value: name, label: name }));
-    const unknown = { value: 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ', label: ui('ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ', 'Unknown') };
+    const unknown = { value: 'أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ', label: ui('أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ', 'Unknown') };
     matches = key ? [...companies, unknown] : [unknown, ...companies]; active = -1;
-    list.innerHTML = `${key && !companies.length && !isUnknownManufacturer(query) ? `<p class="manufacturer-no-results" role="status">${ui('ÙŠÙ…ÙƒÙ†Ùƒ Ø­ÙØ¸ Ø§Ù„Ø§Ø³Ù… Ø§Ù„Ø°ÙŠ ÙƒØªØ¨ØªÙ‡ØŒ Ø£Ùˆ Ø§Ø®ØªÙŠØ§Ø± Â«ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙÂ».', 'You can keep the name you entered, or choose â€œUnknownâ€.')}</p>` : ''}${matches.map((entry, index) => `<button type="button" tabindex="-1" role="option" class="manufacturer-option" id="manufacturer-option-${index}" data-manufacturer-index="${index}" aria-selected="false"><bdi>${escapeHtml(entry.label)}</bdi></button>`).join('')}`;
+    list.innerHTML = `${key && !companies.length && !isUnknownManufacturer(query) ? `<p class="manufacturer-no-results" role="status">${ui('أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أکآ­أ™آپأکآ¸ أکآ§أ™â€‍أکآ§أکآ³أ™â€¦ أکآ§أ™â€‍أکآ°أ™إ  أ™ئ’أکآھأکآ¨أکآھأ™â€،أکإ’ أکآ£أ™ث† أکآ§أکآ®أکآھأ™إ أکآ§أکآ± أ‚آ«أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپأ‚آ».', 'You can keep the name you entered, or choose أ¢â‚¬إ“Unknownأ¢â‚¬آ‌.')}</p>` : ''}${matches.map((entry, index) => `<button type="button" tabindex="-1" role="option" class="manufacturer-option" id="manufacturer-option-${index}" data-manufacturer-index="${index}" aria-selected="false"><bdi>${escapeHtml(entry.label)}</bdi></button>`).join('')}`;
     list.hidden = false; input.setAttribute('aria-expanded', 'true'); toggle.setAttribute('aria-expanded', 'true'); input.removeAttribute('aria-activedescendant');
   };
   const activate = (index) => {
@@ -1342,12 +1342,12 @@ function bindManufacturerPicker() {
   document.addEventListener('pointerdown', (event) => { if (!picker.contains(event.target)) close(); }, options);
 }
 function renderRail() {
-  el('step-rail').innerHTML = STEPS.map((step, index) => `<div class="rail-step ${index === currentStep ? 'active' : ''} ${index < currentStep ? 'done' : ''}"><span class="rail-number">${index < currentStep ? 'âœ“' : index + 1}</span><span><b>${step.short}</b><small>${step.title}</small></span></div>`).join('');
-  el('step-kicker').textContent = `Ø§Ù„Ø®Ø·ÙˆØ© ${currentStep + 1} Ù…Ù† ${STEPS.length}`;
+  el('step-rail').innerHTML = STEPS.map((step, index) => `<div class="rail-step ${index === currentStep ? 'active' : ''} ${index < currentStep ? 'done' : ''}"><span class="rail-number">${index < currentStep ? 'أ¢إ“â€œ' : index + 1}</span><span><b>${step.short}</b><small>${step.title}</small></span></div>`).join('');
+  el('step-kicker').textContent = `أکآ§أ™â€‍أکآ®أکآ·أ™ث†أکآ© ${currentStep + 1} أ™â€¦أ™â€  ${STEPS.length}`;
   el('step-back').disabled = currentStep === 0;
   el('step-back').style.opacity = currentStep === 0 ? '.45' : '1';
-  el('step-next').innerHTML = currentStep === STEPS.length - 1 ? 'Ø­ÙØ¸ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª <span>âœ“</span>' : 'Ø§Ù„ØªØ§Ù„ÙŠ <span>â†</span>';
-  el('form-hint').textContent = currentStep === 3 ? 'ØªÙ‚Ø¯ÙŠØ±Ø§Øª Ø³ÙŠØ§Ø¬ Ø¥Ø±Ø´Ø§Ø¯ÙŠØ©' : 'ØªØ³ØªØºØ±Ù‚ Ø£Ù‚Ù„ Ù…Ù† Ø¯Ù‚ÙŠÙ‚ØªÙŠÙ†';
+  el('step-next').innerHTML = currentStep === STEPS.length - 1 ? 'أکآ­أ™آپأکآ¸ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ <span>أ¢إ“â€œ</span>' : 'أکآ§أ™â€‍أکآھأکآ§أ™â€‍أ™إ  <span>أ¢â€ آگ</span>';
+  el('form-hint').textContent = currentStep === 3 ? 'أکآھأ™â€ڑأکآ¯أ™إ أکآ±أکآ§أکآھ أکآ³أ™إ أکآ§أکآ¬ أکآ¥أکآ±أکآ´أکآ§أکآ¯أ™إ أکآ©' : 'أکآھأکآ³أکآھأکآ؛أکآ±أ™â€ڑ أکآ£أ™â€ڑأ™â€‍ أ™â€¦أ™â€  أکآ¯أ™â€ڑأ™إ أ™â€ڑأکآھأ™إ أ™â€ ';
   const progress = el('wizard-progress-fill');
   if (progress) progress.style.width = `${Math.round(((currentStep + 1) / STEPS.length) * 100)}%`;
 }
@@ -1356,70 +1356,70 @@ function renderMedia(category) {
   const files = mediaFor(category);
   return `<div class="media-list">${files.map((item) => {
     const url = item.type.startsWith('image/') ? URL.createObjectURL(item.blob) : '';
-    return `<span class="media-chip">${url ? `<img class="upload-preview" src="${url}" alt="">` : 'â–£'}<span>${escapeHtml(item.name)}</span><button type="button" data-remove-media="${escapeHtml(item.id)}" aria-label="Ø­Ø°Ù ${escapeHtml(item.name)}">Ã—</button></span>`;
+    return `<span class="media-chip">${url ? `<img class="upload-preview" src="${url}" alt="">` : 'أ¢â€“آ£'}<span>${escapeHtml(item.name)}</span><button type="button" data-remove-media="${escapeHtml(item.id)}" aria-label="أکآ­أکآ°أ™آپ ${escapeHtml(item.name)}">أƒâ€”</button></span>`;
   }).join('')}</div>`;
 }
 function uploadBlock(category, title, detail, accept, multiple = false) {
-  return `<label class="upload-zone" data-drop-zone="${category}"><input type="file" data-upload="${category}" accept="${accept}" ${multiple ? 'multiple' : ''}><span class="upload-symbol">â†‘</span><b>${title}</b><small>${detail}</small></label>${renderMedia(category)}`;
+  return `<label class="upload-zone" data-drop-zone="${category}"><input type="file" data-upload="${category}" accept="${accept}" ${multiple ? 'multiple' : ''}><span class="upload-symbol">أ¢â€ â€ک</span><b>${title}</b><small>${detail}</small></label>${renderMedia(category)}`;
 }
 function invoiceReviewMarkup() {
   if (!invoiceReview || invoiceReview.accountId !== currentAccount?.id) return '';
   const invoice = invoiceReview.invoice;
   const entries = [
-    ['totalAmount', 'Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'number', '.001'], ['consumptionKwh', 'Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø§Ù„Ø·Ø§Ù‚Ø©', 'number', '.1'],
-    ['energyTariffPerKwh', 'Ø§Ù„ØªØ¹Ø±ÙØ© Ù„ÙƒÙ„ kWh', 'number', '.0001'], ['billingMonth', 'Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'month', ''],
-    ['currency', 'Ø§Ù„Ø¹Ù…Ù„Ø©', 'text', ''],
+    ['totalAmount', 'أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©', 'number', '.001'], ['consumptionKwh', 'أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ©', 'number', '.1'],
+    ['energyTariffPerKwh', 'أکآ§أ™â€‍أکآھأکآ¹أکآ±أ™آپأکآ© أ™â€‍أ™ئ’أ™â€‍ kWh', 'number', '.0001'], ['billingMonth', 'أکآ´أ™â€،أکآ± أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©', 'month', ''],
+    ['currency', 'أکآ§أ™â€‍أکآ¹أ™â€¦أ™â€‍أکآ©', 'text', ''],
   ];
   const notices = [invoice.summary, ...(invoice.ambiguities || [])].filter((value) => typeof value === 'string' && value);
-  const charges = [['energyCharges', ui('Ø±Ø³ÙˆÙ… Ø§Ù„Ø·Ø§Ù‚Ø©', 'Energy charges')], ['fixedCharges', ui('Ø±Ø³ÙˆÙ… Ø«Ø§Ø¨ØªØ©', 'Fixed charges')], ['taxes', ui('Ø§Ù„Ø¶Ø±Ø§Ø¦Ø¨', 'Taxes')], ['otherCharges', ui('Ø±Ø³ÙˆÙ… Ø£Ø®Ø±Ù‰', 'Other charges')]];
-  return `<section class="invoice-review" aria-labelledby="invoice-review-title"><h3 id="invoice-review-title">Ø±Ø§Ø¬Ø¹ Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©</h3><p>Ù‡Ø°Ù‡ Ù‚Ø±Ø§Ø¡Ø© Ø¢Ù„ÙŠØ© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„Ø®Ø·Ø£. Ø±Ø§Ø¬Ø¹ Ø§Ù„Ø£Ø±Ù‚Ø§Ù… ÙˆØ§Ù„Ø¹Ù…Ù„Ø© ÙˆØ§Ù„Ø´Ù‡Ø± Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù…Ù‡Ø§. Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙˆØ­Ø¯Ù‡Ø§ Ù„Ø§ ØªØ«Ø¨Øª Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­.</p><p class="helper-text">${ui('Ø§Ù„Ø«Ù‚Ø© ÙÙŠ Ø§Ù„Ù‚Ø±Ø§Ø¡Ø©', 'Extraction confidence')}: ${confidenceText(invoice.confidence)}${invoice.documentReadable === false ? ` Â· ${ui('Ø§Ù„ÙØ§ØªÙˆØ±Ø© ØºÙŠØ± Ù…Ù‚Ø±ÙˆØ¡Ø© Ø¨ÙˆØ¶ÙˆØ­', 'The bill is not clearly readable')}` : ''}</p><p class="helper-text">${ui('Ø§Ù„ÙØªØ±Ø© Ø§Ù„Ø¸Ø§Ù‡Ø±Ø© ÙÙŠ Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'Printed billing period')}: ${escapeHtml(invoice.billingStart || 'â€”')} â€” ${escapeHtml(invoice.billingEnd || 'â€”')}</p><div class="field-grid">${entries.map(([key, label, type, step]) => `<div class="field"><label for="invoice-review-${key}">${label}</label><input id="invoice-review-${key}" data-invoice-review="${key}" type="${type}" value="${escapeHtml(invoice[key] ?? '')}" ${type === 'number' ? `min="0" step="${step}"` : ''}></div>`).join('')}</div><div class="assessment-metrics">${charges.map(([key, label]) => assessmentMetric(label, assessmentValue(invoice[key], '', 3))).join('')}</div><p class="helper-text">${ui('ØªÙØ³ØªØ®Ø¯Ù… ÙÙ‚Ø· Ø§Ù„Ø­Ù‚ÙˆÙ„ Ø§Ù„ØªÙŠ Ø±Ø§Ø¬Ø¹ØªÙ‡Ø§ Ø£Ø¹Ù„Ø§Ù‡. Ø¥Ø°Ø§ ØªØ±ÙƒØª Ù…Ø¨Ù„Øº Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø£Ùˆ Ø§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø£Ùˆ Ø§Ù„ØªØ¹Ø±ÙØ© ÙØ§Ø±ØºØ§Ù‹ØŒ ØªÙÙ…Ø³Ø­ Ù‚ÙŠÙ…ØªÙ‡ Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©. Ù„Ø§ ØªÙØ´ØªÙ‚ ØªØ¹Ø±ÙØ© Ø§Ù„Ø·Ø§Ù‚Ø© Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„Ù‡Ø°Ø§ Ø§Ù„Ø­Ø³Ø§Ø¨ Ø§Ù„Ø´Ù‡Ø±ÙŠ.', 'Only the reviewed fields above are applied. Leaving amount, consumption or tariff blank clears its previous value. The monthly assessment does not derive an energy tariff from the bill total.')}</p>${notices.length ? `<ul class="assessment-notes">${notices.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul>` : ''}<div class="invoice-review-actions"><button type="button" class="button button-primary" id="apply-invoice">Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©</button><button type="button" class="button button-outline" id="cancel-invoice">Ø¥Ù„ØºØ§Ø¡</button></div></section>`;
+  const charges = [['energyCharges', ui('أکآ±أکآ³أ™ث†أ™â€¦ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ©', 'Energy charges')], ['fixedCharges', ui('أکآ±أکآ³أ™ث†أ™â€¦ أکآ«أکآ§أکآ¨أکآھأکآ©', 'Fixed charges')], ['taxes', ui('أکآ§أ™â€‍أکآ¶أکآ±أکآ§أکآ¦أکآ¨', 'Taxes')], ['otherCharges', ui('أکآ±أکآ³أ™ث†أ™â€¦ أکآ£أکآ®أکآ±أ™â€°', 'Other charges')]];
+  return `<section class="invoice-review" aria-labelledby="invoice-review-title"><h3 id="invoice-review-title">أکآ±أکآ§أکآ¬أکآ¹ أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©</h3><p>أ™â€،أکآ°أ™â€، أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ¢أ™â€‍أ™إ أکآ© أ™â€ڑأکآ§أکآ¨أ™â€‍أکآ© أ™â€‍أ™â€‍أکآ®أکآ·أکآ£. أکآ±أکآ§أکآ¬أکآ¹ أکآ§أ™â€‍أکآ£أکآ±أ™â€ڑأکآ§أ™â€¦ أ™ث†أکآ§أ™â€‍أکآ¹أ™â€¦أ™â€‍أکآ© أ™ث†أکآ§أ™â€‍أکآ´أ™â€،أکآ± أ™â€ڑأکآ¨أ™â€‍ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦أ™â€،أکآ§. أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™ث†أکآ­أکآ¯أ™â€،أکآ§ أ™â€‍أکآ§ أکآھأکآ«أکآ¨أکآھ أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­.</p><p class="helper-text">${ui('أکآ§أ™â€‍أکآ«أ™â€ڑأکآ© أ™آپأ™إ  أکآ§أ™â€‍أ™â€ڑأکآ±أکآ§أکآ،أکآ©', 'Extraction confidence')}: ${confidenceText(invoice.confidence)}${invoice.documentReadable === false ? ` أ‚آ· ${ui('أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ؛أ™إ أکآ± أ™â€¦أ™â€ڑأکآ±أ™ث†أکآ،أکآ© أکآ¨أ™ث†أکآ¶أ™ث†أکآ­', 'The bill is not clearly readable')}` : ''}</p><p class="helper-text">${ui('أکآ§أ™â€‍أ™آپأکآھأکآ±أکآ© أکآ§أ™â€‍أکآ¸أکآ§أ™â€،أکآ±أکآ© أ™آپأ™إ  أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©', 'Printed billing period')}: ${escapeHtml(invoice.billingStart || 'أ¢â‚¬â€‌')} أ¢â‚¬â€‌ ${escapeHtml(invoice.billingEnd || 'أ¢â‚¬â€‌')}</p><div class="field-grid">${entries.map(([key, label, type, step]) => `<div class="field"><label for="invoice-review-${key}">${label}</label><input id="invoice-review-${key}" data-invoice-review="${key}" type="${type}" value="${escapeHtml(invoice[key] ?? '')}" ${type === 'number' ? `min="0" step="${step}"` : ''}></div>`).join('')}</div><div class="assessment-metrics">${charges.map(([key, label]) => assessmentMetric(label, assessmentValue(invoice[key], '', 3))).join('')}</div><p class="helper-text">${ui('أکآھأ™آڈأکآ³أکآھأکآ®أکآ¯أ™â€¦ أ™آپأ™â€ڑأکآ· أکآ§أ™â€‍أکآ­أ™â€ڑأ™ث†أ™â€‍ أکآ§أ™â€‍أکآھأ™إ  أکآ±أکآ§أکآ¬أکآ¹أکآھأ™â€،أکآ§ أکآ£أکآ¹أ™â€‍أکآ§أ™â€،. أکآ¥أکآ°أکآ§ أکآھأکآ±أ™ئ’أکآھ أ™â€¦أکآ¨أ™â€‍أکآ؛ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ£أ™ث† أکآ§أ™â€‍أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’ أکآ£أ™ث† أکآ§أ™â€‍أکآھأکآ¹أکآ±أ™آپأکآ© أ™آپأکآ§أکآ±أکآ؛أکآ§أ™â€¹أکإ’ أکآھأ™آڈأ™â€¦أکآ³أکآ­ أ™â€ڑأ™إ أ™â€¦أکآھأ™â€، أکآ§أ™â€‍أکآ³أکآ§أکآ¨أ™â€ڑأکآ©. أ™â€‍أکآ§ أکآھأ™آڈأکآ´أکآھأ™â€ڑ أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أ™â€¦أ™â€  أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ  أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™â€‍أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ§أ™â€‍أکآ´أ™â€،أکآ±أ™إ .', 'Only the reviewed fields above are applied. Leaving amount, consumption or tariff blank clears its previous value. The monthly assessment does not derive an energy tariff from the bill total.')}</p>${notices.length ? `<ul class="assessment-notes">${notices.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul>` : ''}<div class="invoice-review-actions"><button type="button" class="button button-primary" id="apply-invoice">أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أکآ±أکآ§أکآ¬أکآ¹أکآ©</button><button type="button" class="button button-outline" id="cancel-invoice">أکآ¥أ™â€‍أکآ؛أکآ§أکآ،</button></div></section>`;
 }
 function renderCurrentStep() {
   renderRail(); const target = el('step-content');
   clearFormAlert();
   if (currentStep === 0) {
-    target.innerHTML = `<h2 class="step-title">${STEPS[0].title}</h2><p class="step-description">${STEPS[0].description}</p><button class="button button-outline weather-location-action" type="button" id="gps-button">âŒ– Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…ÙˆÙ‚Ø¹Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠ</button><p class="gps-status${gpsNotice ? ` gps-${gpsNotice.type}` : ''}" id="gps-status" role="status" aria-live="polite" ${gpsNotice ? '' : 'hidden'}>${gpsNotice ? escapeHtml(gpsNoticeText(gpsNotice.code)) : ''}</p><div class="field-grid">
-      ${field('Ø§Ø³Ù…Ùƒ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'name', { placeholder: 'Ù…Ø«Ø§Ù„: Ù…Ø±ÙŠÙ…' })}
-      ${field('Ø¯Ø±Ø¬Ø© Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ', 'ambientTemp', { type: 'number', suffix: 'Â°Ù…', placeholder: '35', min: '-10', max: '65', step: '0.1' })}
-      ${field('Ø§Ù„Ø±Ø·ÙˆØ¨Ø© Ø§Ù„Ù†Ø³Ø¨ÙŠØ©', 'humidity', { type: 'number', suffix: '%', placeholder: '45', min: '0', max: '100' })}
-      ${field('Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'panels', { type: 'number', placeholder: '12', min: '1', max: '10000' })}
-      ${field('Ø§Ù„ØºØ¨Ø§Ø± ÙÙŠ Ø§Ù„Ø¬Ùˆ', 'airDustPercent', { type: 'range', min: '0', max: '100', hint: airDustHint(), full: true })}
-      <div class="field full"><span class="field-label">Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù…</span><div class="inline-search"><input id="city-search" class="field-input" placeholder="Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†Ø© Ø£Ùˆ Ù…Ø­Ø§ÙØ¸Ø©" value="${escapeHtml(state.form.location)}"><button class="button button-outline" type="button" id="city-search-button">Ø¨Ø­Ø«</button></div><div class="search-results" id="search-results"></div><small class="helper-text">Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ø¯Ù‚ÙŠÙ‚ Ø§Ø®ØªÙŠØ§Ø±ÙŠØ› Ø§Ø³ØªØ®Ø¯Ù… GPS Ù„Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø£Ù‚Ø±Ø¨.</small><div class="weather-prefill"><span>Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø­Ø§Ù„ÙŠØ©</span><b id="wizard-weather-condition">${state.weather?.current ? weatherText(state.weather.current.weather_code) : 'ØªØ¸Ù‡Ø± Ø¨Ø¹Ø¯ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹'}</b></div></div>
+    target.innerHTML = `<h2 class="step-title">${STEPS[0].title}</h2><p class="step-description">${STEPS[0].description}</p><button class="button button-outline weather-location-action" type="button" id="gps-button">أ¢إ’â€“ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™ئ’ أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ </button><p class="gps-status${gpsNotice ? ` gps-${gpsNotice.type}` : ''}" id="gps-status" role="status" aria-live="polite" ${gpsNotice ? '' : 'hidden'}>${gpsNotice ? escapeHtml(gpsNoticeText(gpsNotice.code)) : ''}</p><div class="field-grid">
+      ${field('أکآ§أکآ³أ™â€¦أ™ئ’ (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )', 'name', { placeholder: 'أ™â€¦أکآ«أکآ§أ™â€‍: أ™â€¦أکآ±أ™إ أ™â€¦' })}
+      ${field('أکآ¯أکآ±أکآ¬أکآ© أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ¬أ™ث†', 'ambientTemp', { type: 'number', suffix: 'أ‚آ°أ™â€¦', placeholder: '35', min: '-10', max: '65', step: '0.1' })}
+      ${field('أکآ§أ™â€‍أکآ±أکآ·أ™ث†أکآ¨أکآ© أکآ§أ™â€‍أ™â€ أکآ³أکآ¨أ™إ أکآ©', 'humidity', { type: 'number', suffix: '%', placeholder: '45', min: '0', max: '100' })}
+      ${field('أکآ¹أکآ¯أکآ¯ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'panels', { type: 'number', placeholder: '12', min: '1', max: '10000' })}
+      ${field('أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™آپأ™إ  أکآ§أ™â€‍أکآ¬أ™ث†', 'airDustPercent', { type: 'range', min: '0', max: '100', hint: airDustHint(), full: true })}
+      <div class="field full"><span class="field-label">أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦</span><div class="inline-search"><input id="city-search" class="field-input" placeholder="أکآ§أکآ¨أکآ­أکآ« أکآ¹أ™â€  أ™â€¦أکآ¯أ™إ أ™â€ أکآ© أکآ£أ™ث† أ™â€¦أکآ­أکآ§أ™آپأکآ¸أکآ©" value="${escapeHtml(state.form.location)}"><button class="button button-outline" type="button" id="city-search-button">أکآ¨أکآ­أکآ«</button></div><div class="search-results" id="search-results"></div><small class="helper-text">أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أکآ¯أ™â€ڑأ™إ أ™â€ڑ أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ أکâ€؛ أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ GPS أ™â€‍أکآ¬أ™â€‍أکآ¨ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أکآ£أ™â€ڑأکآ±أکآ¨.</small><div class="weather-prefill"><span>أکآ­أکآ§أ™â€‍أکآ© أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ©</span><b id="wizard-weather-condition">${state.weather?.current ? weatherText(state.weather.current.weather_code) : 'أکآھأکآ¸أ™â€،أکآ± أکآ¨أکآ¹أکآ¯ أکآھأکآ­أکآ¯أ™إ أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹'}</b></div></div>
       </div>`;
   } else if (currentStep === 1) {
     target.innerHTML = `<h2 class="step-title">${STEPS[1].title}</h2><p class="step-description">${STEPS[1].description}</p><div class="field-grid">
-      ${field('Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù†Ø¸Ø§Ù…', 'power', { type: 'number', suffix: 'ÙˆØ§Ø·', placeholder: '5000', min: '1' })}
+      ${field('أکآ§أ™â€‍أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ أکآ© أ™â€‍أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦', 'power', { type: 'number', suffix: 'أ™ث†أکآ§أکآ·', placeholder: '5000', min: '1' })}
       ${manufacturerField()}
-      ${field('Ø§Ø³Ù… Ø´Ø±ÙƒØ© Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'company', { placeholder: 'Ù…Ø«Ø§Ù„: Ø´Ø±ÙƒØ© Ø§Ù„Ù†ÙˆØ± Ù„Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ø´Ù…Ø³ÙŠØ©', hint: ui('Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø© Ø£Ùˆ Ø§Ù„Ù…ÙˆØ±Ù‘Ø¯ ÙƒÙ…Ø§ ÙŠØ¸Ù‡Ø± ÙÙŠ ÙØ§ØªÙˆØ±Ø© Ø§Ù„Ø´Ø±Ø§Ø¡ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ).', 'Enter the manufacturer or supplier name as shown on the purchase invoice (optional).') })}
-      ${field('Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ù„Ù„Ø£Ù„ÙˆØ§Ø­', 'lastMaintenanceAt', { type: 'date', max: todayIsoDate(), hint: ui('ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ø£Ùˆ ØªÙ†Ø¸ÙŠÙ Ø´Ø§Ù…Ù„. Ù…Ù†Ù‡ Ù†Ø­Ø³Ø¨ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø© ÙƒÙ„ 6 Ø£Ø´Ù‡Ø± ÙˆÙ†Ù†Ø¨Ù‘Ù‡Ùƒ Ù‚Ø¨Ù„ Ù…ÙˆØ¹Ø¯Ù‡Ø§.', 'Date of the last maintenance or deep clean. We use it to schedule the next maintenance every 6 months and remind you before it is due.') })}
-      ${field('Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¹Ù† Ø§Ù„Ø£ÙÙ‚ÙŠ', 'tilt', { type: 'number', suffix: 'Â°', placeholder: '20', min: '0', max: '90' })}
-      ${field('Ø§ØªØ¬Ø§Ù‡ ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'panelAzimuth', { type: 'number', suffix: 'Â°', placeholder: '180', min: '0', max: '360', step: '1', hint: '0Â° Ø´Ù…Ø§Ù„ Â· 90Â° Ø´Ø±Ù‚ Â· 180Â° Ø¬Ù†ÙˆØ¨ Â· 270Â° ØºØ±Ø¨. Ø£Ø¯Ø®Ù„ Ù‚Ø±Ø§Ø¡Ø© Ø¨ÙˆØµÙ„Ø© Ù„Ù„ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„ØªÙŠ ØªÙˆØ§Ø¬Ù‡ Ø§Ù„Ø´Ù…Ø³.' })}
-      ${field('ÙˆÙ‚Øª ØªØµÙˆÙŠØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'captureAt', { type: 'datetime-local', hint: 'ÙˆÙ‚Øª Ù…Ø­Ù„ÙŠ ØªØ®ØªØ§Ø±Ù‡Ø› Ù„Ø§ Ù†Ø³ØªØ®Ø±Ø¬Ù‡ Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆ. ÙŠÙ„Ø²Ù… Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆØ§Ù„Ù…ÙŠÙ„ ÙˆØ§Ù„Ø§ØªØ¬Ø§Ù‡ ÙˆØ§Ù„ÙˆÙ‚Øª Ù„Ø­Ø³Ø§Ø¨ Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ø´Ù…Ø³.', full: true })}
-      <div class="field full"><button class="text-button" type="button" id="capture-now">${ui('Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„ÙˆÙ‚Øª Ø§Ù„Ø­Ø§Ù„ÙŠ Ø¥Ø°Ø§ ØµÙˆÙ‘Ø±Øª Ø§Ù„Ø¢Ù†', 'Use the current time if you filmed just now')}</button></div>
+      ${field('أکآ§أکآ³أ™â€¦ أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'company', { placeholder: 'أ™â€¦أکآ«أکآ§أ™â€‍: أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أ™â€ أ™ث†أکآ± أ™â€‍أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ أکآ©', hint: ui('أکآ§أ™ئ’أکآھأکآ¨ أکآ§أکآ³أ™â€¦ أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أ™â€کأکآ¹أکآ© أکآ£أ™ث† أکآ§أ™â€‍أ™â€¦أ™ث†أکآ±أ™â€کأکآ¯ أ™ئ’أ™â€¦أکآ§ أ™إ أکآ¸أ™â€،أکآ± أ™آپأ™إ  أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ§أ™â€‍أکآ´أکآ±أکآ§أکآ، (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ ).', 'Enter the manufacturer or supplier name as shown on the purchase invoice (optional).') })}
+      ${field('أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ© أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'lastMaintenanceAt', { type: 'date', max: todayIsoDate(), hint: ui('أکآھأکآ§أکآ±أ™إ أکآ® أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ© أکآ£أ™ث† أکآھأ™â€ أکآ¸أ™إ أ™آپ أکآ´أکآ§أ™â€¦أ™â€‍. أ™â€¦أ™â€ أ™â€، أ™â€ أکآ­أکآ³أکآ¨ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¯أ™â€¦أکآ© أ™ئ’أ™â€‍ 6 أکآ£أکآ´أ™â€،أکآ± أ™ث†أ™â€ أ™â€ أکآ¨أ™â€کأ™â€،أ™ئ’ أ™â€ڑأکآ¨أ™â€‍ أ™â€¦أ™ث†أکآ¹أکآ¯أ™â€،أکآ§.', 'Date of the last maintenance or deep clean. We use it to schedule the next maintenance every 6 months and remind you before it is due.') })}
+      ${field('أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¹أ™â€  أکآ§أ™â€‍أکآ£أ™آپأ™â€ڑأ™إ ', 'tilt', { type: 'number', suffix: 'أ‚آ°', placeholder: '20', min: '0', max: '90' })}
+      ${field('أکآ§أکآھأکآ¬أکآ§أ™â€، أ™ث†أکآ§أکآ¬أ™â€،أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )', 'panelAzimuth', { type: 'number', suffix: 'أ‚آ°', placeholder: '180', min: '0', max: '360', step: '1', hint: '0أ‚آ° أکآ´أ™â€¦أکآ§أ™â€‍ أ‚آ· 90أ‚آ° أکآ´أکآ±أ™â€ڑ أ‚آ· 180أ‚آ° أکآ¬أ™â€ أ™ث†أکآ¨ أ‚آ· 270أ‚آ° أکآ؛أکآ±أکآ¨. أکآ£أکآ¯أکآ®أ™â€‍ أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ¨أ™ث†أکآµأ™â€‍أکآ© أ™â€‍أ™â€‍أ™ث†أکآ§أکآ¬أ™â€،أکآ© أکآ§أ™â€‍أکآھأ™إ  أکآھأ™ث†أکآ§أکآ¬أ™â€، أکآ§أ™â€‍أکآ´أ™â€¦أکآ³.' })}
+      ${field('أ™ث†أ™â€ڑأکآھ أکآھأکآµأ™ث†أ™إ أکآ± أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'captureAt', { type: 'datetime-local', hint: 'أ™ث†أ™â€ڑأکآھ أ™â€¦أکآ­أ™â€‍أ™إ  أکآھأکآ®أکآھأکآ§أکآ±أ™â€،أکâ€؛ أ™â€‍أکآ§ أ™â€ أکآ³أکآھأکآ®أکآ±أکآ¬أ™â€، أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث†. أ™إ أ™â€‍أکآ²أ™â€¦ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™ث†أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أ™ث†أکآ§أ™â€‍أکآ§أکآھأکآ¬أکآ§أ™â€، أ™ث†أکآ§أ™â€‍أ™ث†أ™â€ڑأکآھ أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ²أکآ§أ™ث†أ™إ أکآ© أکآ§أ™â€‍أکآ´أ™â€¦أکآ³.', full: true })}
+      <div class="field full"><button class="text-button" type="button" id="capture-now">${ui('أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ§أ™â€‍أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ  أکآ¥أکآ°أکآ§ أکآµأ™ث†أ™â€کأکآ±أکآھ أکآ§أ™â€‍أکآ¢أ™â€ ', 'Use the current time if you filmed just now')}</button></div>
       <div id="tilt-warning-slot" class="field full">${tiltWarningMarkup()}</div>
-      ${selectField('Ù†ÙˆØ¹ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'panelType', [['monocrystalline', 'Ø£Ø­Ø§Ø¯ÙŠØ© Ø§Ù„Ø¨Ù„ÙˆØ±Ø©'], ['polycrystalline', 'Ù…ØªØ¹Ø¯Ø¯Ø© Ø§Ù„Ø¨Ù„ÙˆØ±Ø§Øª'], ['thin-film', 'Ø£ØºØ´ÙŠØ© Ø±Ù‚ÙŠÙ‚Ø©'], ['unknown', 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ']])}
-      ${field('ÙƒÙØ§Ø¡Ø© Ø§Ù„Ù„ÙˆØ­ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'efficiency', { type: 'number', suffix: '%', placeholder: '21', min: '1', max: '40', step: '.1' })}
-      ${field('Ù…Ø¹Ø§Ù…Ù„ Ø§Ù„Ø­Ø±Ø§Ø±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'coefficient', { type: 'number', suffix: '%/Â°Ù…', placeholder: '-0.35', step: '.01', hint: 'ØºØ§Ù„Ø¨Ø§Ù‹ Ø¨ÙŠÙ† â€Ž-0.25 Ùˆâ€Ž-0.50 Ù„ÙƒÙ„ Ø¯Ø±Ø¬Ø©.' })}
-      ${field('Ù‚Ø¯Ø±Ø© Ø§Ù„Ù„ÙˆØ­ Ø§Ù„ÙˆØ§Ø­Ø¯ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'ratedPower', { type: 'number', suffix: 'ÙˆØ§Ø·', placeholder: '450', min: '1' })}
-      <div class="field full"><span class="field-label">ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­</span>${uploadBlock('panels', 'Ø£Ø¶Ù ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù‚ØµÙŠØ±Ø§Ù‹', 'ØµÙˆØ±Ø© ÙˆØ§Ø¶Ø­Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ù† 5 Ø¥Ù„Ù‰ 10 Ø«ÙˆØ§Ù†Ù Â· Ø­ØªÙ‰ 6 Ù…Ù„ÙØ§ØªØŒ 25 Ù…ÙŠØºØ§Ø¨Ø§ÙŠØª Ù„Ù„Ù…Ù„Ù', 'image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm', true)}<small class="helper-text">ÙŠÙØ­Øµ Claude ØµÙˆØ±Ø§Ù‹ ÙˆÙ„Ù‚Ø·Ø§Øª Ù…Ø®ØªØ§Ø±Ø© Ù…Ù† Ø§Ù„Ù…Ù‚Ø§Ø·Ø¹ØŒ Ø­ØªÙ‰ 8 ØµÙˆØ± ÙÙŠ Ø§Ù„Ø·Ù„Ø¨. Ù„Ø§ ÙŠÙØ­Øµ Ø§Ù„ØµÙˆØª Ø£Ùˆ ÙƒÙ„ Ø¥Ø·Ø§Ø±Ø§Øª Ø§Ù„ÙÙŠØ¯ÙŠÙˆ.</small><small class="helper-text">Ù„Ø§ ÙŠÙ…ÙƒÙ† Ù‚ÙŠØ§Ø³ Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø³Ø·Ø­ Ø£Ùˆ Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ù…ÙŠÙ„ Ø§Ù„Ø¯Ù‚ÙŠÙ‚Ø© Ù…Ù† ØµÙˆØ±Ø© Ø¹Ø§Ø¯ÙŠØ©Ø› ÙŠØ¹ØªÙ…Ø¯ Ø§Ù„Ø­Ø³Ø§Ø¨ Ø¹Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙŠ ØªØ¯Ø®Ù„Ù‡Ø§ ÙˆØ§Ù„Ø·Ù‚Ø³.</small><small class="helper-text">ØªÙØ±Ø³Ù„ Ø§Ù„ØµÙˆØ± ÙˆØ§Ù„Ù„Ù‚Ø·Ø§Øª Ø¥Ù„Ù‰ Anthropic ÙÙ‚Ø· Ø¹Ù†Ø¯ Ø¶ØºØ· Â«ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… ClaudeÂ».</small>${claudeAvailabilityMarkup()}</div>
+      ${selectField('أ™â€ أ™ث†أکآ¹ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'panelType', [['monocrystalline', 'أکآ£أکآ­أکآ§أکآ¯أ™إ أکآ© أکآ§أ™â€‍أکآ¨أ™â€‍أ™ث†أکآ±أکآ©'], ['polycrystalline', 'أ™â€¦أکآھأکآ¹أکآ¯أکآ¯أکآ© أکآ§أ™â€‍أکآ¨أ™â€‍أ™ث†أکآ±أکآ§أکآھ'], ['thin-film', 'أکآ£أکآ؛أکآ´أ™إ أکآ© أکآ±أ™â€ڑأ™إ أ™â€ڑأکآ©'], ['unknown', 'أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ']])}
+      ${field('أ™ئ’أ™آپأکآ§أکآ،أکآ© أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­ (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )', 'efficiency', { type: 'number', suffix: '%', placeholder: '21', min: '1', max: '40', step: '.1' })}
+      ${field('أ™â€¦أکآ¹أکآ§أ™â€¦أ™â€‍ أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )', 'coefficient', { type: 'number', suffix: '%/أ‚آ°أ™â€¦', placeholder: '-0.35', step: '.01', hint: 'أکآ؛أکآ§أ™â€‍أکآ¨أکآ§أ™â€¹ أکآ¨أ™إ أ™â€  أ¢â‚¬إ½-0.25 أ™ث†أ¢â‚¬إ½-0.50 أ™â€‍أ™ئ’أ™â€‍ أکآ¯أکآ±أکآ¬أکآ©.' })}
+      ${field('أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­ أکآ§أ™â€‍أ™ث†أکآ§أکآ­أکآ¯ (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )', 'ratedPower', { type: 'number', suffix: 'أ™ث†أکآ§أکآ·', placeholder: '450', min: '1' })}
+      <div class="field full"><span class="field-label">أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­</span>${uploadBlock('panels', 'أکآ£أکآ¶أ™آپ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™â€¦أ™â€ڑأکآ·أکآ¹أکآ§أ™â€¹ أ™â€ڑأکآµأ™إ أکآ±أکآ§أ™â€¹', 'أکآµأ™ث†أکآ±أکآ© أ™ث†أکآ§أکآ¶أکآ­أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€¦أ™â€  5 أکآ¥أ™â€‍أ™â€° 10 أکآ«أ™ث†أکآ§أ™â€ أ™آچ أ‚آ· أکآ­أکآھأ™â€° 6 أ™â€¦أ™â€‍أ™آپأکآ§أکآھأکإ’ 25 أ™â€¦أ™إ أکآ؛أکآ§أکآ¨أکآ§أ™إ أکآھ أ™â€‍أ™â€‍أ™â€¦أ™â€‍أ™آپ', 'image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm', true)}<small class="helper-text">أ™إ أ™آپأکآ­أکآµ Claude أکآµأ™ث†أکآ±أکآ§أ™â€¹ أ™ث†أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أ™â€¦أکآ®أکآھأکآ§أکآ±أکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآ§أکآ·أکآ¹أکإ’ أکآ­أکآھأ™â€° 8 أکآµأ™ث†أکآ± أ™آپأ™إ  أکآ§أ™â€‍أکآ·أ™â€‍أکآ¨. أ™â€‍أکآ§ أ™إ أ™آپأکآ­أکآµ أکآ§أ™â€‍أکآµأ™ث†أکآھ أکآ£أ™ث† أ™ئ’أ™â€‍ أکآ¥أکآ·أکآ§أکآ±أکآ§أکآھ أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث†.</small><small class="helper-text">أ™â€‍أکآ§ أ™إ أ™â€¦أ™ئ’أ™â€  أ™â€ڑأ™إ أکآ§أکآ³ أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ³أکآ·أکآ­ أکآ£أ™ث† أکآ²أکآ§أ™ث†أ™إ أکآ© أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أ™â€ڑأ™إ أ™â€ڑأکآ© أ™â€¦أ™â€  أکآµأ™ث†أکآ±أکآ© أکآ¹أکآ§أکآ¯أ™إ أکآ©أکâ€؛ أ™إ أکآ¹أکآھأ™â€¦أکآ¯ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآھأ™إ  أکآھأکآ¯أکآ®أ™â€‍أ™â€،أکآ§ أ™ث†أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³.</small><small class="helper-text">أکآھأ™آڈأکآ±أکآ³أ™â€‍ أکآ§أ™â€‍أکآµأ™ث†أکآ± أ™ث†أکآ§أ™â€‍أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أکآ¥أ™â€‍أ™â€° Anthropic أ™آپأ™â€ڑأکآ· أکآ¹أ™â€ أکآ¯ أکآ¶أکآ؛أکآ· أ‚آ«أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claudeأ‚آ».</small>${claudeAvailabilityMarkup()}</div>
       </div>`;
   } else if (currentStep === 2) {
     target.innerHTML = `<h2 class="step-title">${STEPS[2].title}</h2><p class="step-description">${STEPS[2].description}</p><div class="field-grid">
-      ${field('Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'invoice', { type: 'number', suffix: 'Ø±.Ø¹', placeholder: '25.000', min: '0', step: '.001' })}
-      ${field('Ø§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'consumption', { type: 'number', suffix: 'kWh', placeholder: '950', min: '0', step: '.1', hint: 'Ø¥Ù† ØªÙˆÙØ±ØŒ Ù†Ø³ØªØ®Ø¯Ù…Ù‡ Ù„Ø§Ø´ØªÙ‚Ø§Ù‚ ØªØ¹Ø±ÙØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ Ø§Ù„ØªÙ‚Ø±ÙŠØ¨ÙŠØ©.' })}
-      ${field('ØªØ¹Ø±ÙØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'tariff', { type: 'number', suffix: 'Ø±.Ø¹/kWh', placeholder: 'Ù…Ø«Ø§Ù„: 0.025', min: '0', step: '.001', hint: ui('Ø£Ø¯Ø®Ù„ Ø³Ø¹Ø± ÙˆØ­Ø¯Ø© Ø§Ù„Ø·Ø§Ù‚Ø© ÙÙ‚Ø·ØŒ Ø¯ÙˆÙ† Ø§Ù„Ø±Ø³ÙˆÙ… ÙˆØ§Ù„Ø¶Ø±Ø§Ø¦Ø¨Ø› ÙŠÙ„Ø²Ù… Ù„Ø­Ø³Ø§Ø¨ Ù‚ÙŠÙ…Ø© Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±.', 'Enter the energy unit rate excluding fees and taxes; this is needed to value the monthly deficit.') })}
-      ${field('Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'billMonth', { type: 'month' })}
-      ${field('Ø¥Ù†ØªØ§Ø¬ Ù…ØªÙˆÙ‚Ø¹ Ù„Ù„Ø´Ù‡Ø± (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'expectedMonthlyKwh', { type: 'number', suffix: 'kWh', min: '0', step: '.1', hint: 'Ø§Ø³ØªØ®Ø¯Ù… Ø®Ø· Ø£Ø³Ø§Ø³ Ù…ÙˆØ«ÙˆÙ‚Ø§Ù‹ Ù„Ù„Ù†Ø¸Ø§Ù…. ÙŠØ¬Ø¨ Ø£Ù† ÙŠØºØ·ÙŠ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ Ø§Ù„ÙØªØ±Ø© Ù†ÙØ³Ù‡Ø§.' })}
-      ${field('Ø¥Ù†ØªØ§Ø¬ ÙØ¹Ù„ÙŠ Ù„Ù„Ø´Ù‡Ø± (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'actualMonthlyKwh', { type: 'number', suffix: 'kWh', min: '0', step: '.1', hint: 'Ù‚Ø±Ø§Ø¡Ø© Ø¹Ø¯Ù‘Ø§Ø¯ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø£Ùˆ Ø§Ù„Ø¹Ø§ÙƒØ³Ø› Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„ÙŠØ³ Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.' })}
-      <p class="helper-text field full">${ui('Ù„Ù„Ø´Ù‡Ø± Ø§Ù„Ø­Ø§Ù„ÙŠ: Ø£Ø¯Ø®Ù„ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø­ØªÙ‰ Ù†Ù‡Ø§ÙŠØ© Ø£Ù…Ø³ ÙÙŠ Ø§Ù„Ø­Ù‚Ù„ÙŠÙ†. Ù„Ù„Ø£Ø´Ù‡Ø± Ø§Ù„Ù…Ø§Ø¶ÙŠØ©: Ø£Ø¯Ø®Ù„ Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø´Ù‡Ø± Ø§Ù„ÙƒØ§Ù…Ù„.', 'For the current month, enter generation through the end of yesterday in both fields. For past months, enter full-month totals.')}</p>
-      <div class="field full"><span class="field-label">ØµÙˆØ±Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)</span>${uploadBlock('bill', 'Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©', ui('JPG Ø£Ùˆ PNG Ø£Ùˆ WEBP Â· Ø­ØªÙ‰ 25 Ù…ÙŠØºØ§Ø¨Ø§ÙŠØª', 'JPG, PNG or WEBP Â· up to 25 MB'), 'image/jpeg,image/png,image/webp')}<p class="helper-text">Ù‚Ø¯ ØªØªØ¶Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø´Ø®ØµÙŠØ©Ø› Ø§Ø­Ø¬Ø¨ Ù…Ø§ Ù„Ø§ ÙŠÙ„Ø²Ù…. Ù„Ù† ØªÙØ±Ø³Ù„ Ø¥Ù„Ù‰ Anthropic Ø¥Ù„Ø§ Ø¹Ù†Ø¯ Ø¶ØºØ· Ø²Ø± ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø©.</p>${claudeAvailabilityMarkup()}<button class="button button-outline invoice-ai-button" type="button" id="analyze-invoice" aria-busy="${invoiceBusy}" ${invoiceBusy || claudeEnabled !== true || !mediaFor('bill').length ? 'disabled' : ''}>${invoiceBusy ? 'Ø¬Ø§Ø±Ù Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©â€¦' : 'ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ai'}</button>${invoiceReviewMarkup()}</div>
+      ${field('أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©', 'invoice', { type: 'number', suffix: 'أکآ±.أکآ¹', placeholder: '25.000', min: '0', step: '.001' })}
+      ${field('أکآ§أ™â€‍أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’ أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )', 'consumption', { type: 'number', suffix: 'kWh', placeholder: '950', min: '0', step: '.1', hint: 'أکآ¥أ™â€  أکآھأ™ث†أ™آپأکآ±أکإ’ أ™â€ أکآ³أکآھأکآ®أکآ¯أ™â€¦أ™â€، أ™â€‍أکآ§أکآ´أکآھأ™â€ڑأکآ§أ™â€ڑ أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ، أکآ§أ™â€‍أکآھأ™â€ڑأکآ±أ™إ أکآ¨أ™إ أکآ©.' })}
+      ${field('أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ، (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )', 'tariff', { type: 'number', suffix: 'أکآ±.أکآ¹/kWh', placeholder: 'أ™â€¦أکآ«أکآ§أ™â€‍: 0.025', min: '0', step: '.001', hint: ui('أکآ£أکآ¯أکآ®أ™â€‍ أکآ³أکآ¹أکآ± أ™ث†أکآ­أکآ¯أکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أ™آپأ™â€ڑأکآ·أکإ’ أکآ¯أ™ث†أ™â€  أکآ§أ™â€‍أکآ±أکآ³أ™ث†أ™â€¦ أ™ث†أکآ§أ™â€‍أکآ¶أکآ±أکآ§أکآ¦أکآ¨أکâ€؛ أ™إ أ™â€‍أکآ²أ™â€¦ أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™â€ڑأ™إ أ™â€¦أکآ© أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ´أ™â€،أکآ±.', 'Enter the energy unit rate excluding fees and taxes; this is needed to value the monthly deficit.') })}
+      ${field('أکآ´أ™â€،أکآ± أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©', 'billMonth', { type: 'month' })}
+      ${field('أکآ¥أ™â€ أکآھأکآ§أکآ¬ أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™â€‍أ™â€‍أکآ´أ™â€،أکآ± (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )', 'expectedMonthlyKwh', { type: 'number', suffix: 'kWh', min: '0', step: '.1', hint: 'أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ أکآ®أکآ· أکآ£أکآ³أکآ§أکآ³ أ™â€¦أ™ث†أکآ«أ™ث†أ™â€ڑأکآ§أ™â€¹ أ™â€‍أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦. أ™إ أکآ¬أکآ¨ أکآ£أ™â€  أ™إ أکآ؛أکآ·أ™إ  أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™ث†أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ  أکآ§أ™â€‍أ™آپأکآھأکآ±أکآ© أ™â€ أ™آپأکآ³أ™â€،أکآ§.' })}
+      ${field('أکآ¥أ™â€ أکآھأکآ§أکآ¬ أ™آپأکآ¹أ™â€‍أ™إ  أ™â€‍أ™â€‍أکآ´أ™â€،أکآ± (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )', 'actualMonthlyKwh', { type: 'number', suffix: 'kWh', min: '0', step: '.1', hint: 'أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ¹أکآ¯أ™â€کأکآ§أکآ¯ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ£أ™ث† أکآ§أ™â€‍أکآ¹أکآ§أ™ئ’أکآ³أکâ€؛ أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™â€‍أ™إ أکآ³ أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­.' })}
+      <p class="helper-text field full">${ui('أ™â€‍أ™â€‍أکآ´أ™â€،أکآ± أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ : أکآ£أکآ¯أکآ®أ™â€‍ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ­أکآھأ™â€° أ™â€ أ™â€،أکآ§أ™إ أکآ© أکآ£أ™â€¦أکآ³ أ™آپأ™إ  أکآ§أ™â€‍أکآ­أ™â€ڑأ™â€‍أ™إ أ™â€ . أ™â€‍أ™â€‍أکآ£أکآ´أ™â€،أکآ± أکآ§أ™â€‍أ™â€¦أکآ§أکآ¶أ™إ أکآ©: أکآ£أکآ¯أکآ®أ™â€‍ أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ  أکآ§أ™â€‍أکآ´أ™â€،أکآ± أکآ§أ™â€‍أ™ئ’أکآ§أ™â€¦أ™â€‍.', 'For the current month, enter generation through the end of yesterday in both fields. For past months, enter full-month totals.')}</p>
+      <div class="field full"><span class="field-label">أکآµأ™ث†أکآ±أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© (أکآ§أکآ®أکآھأ™إ أکآ§أکآ±أ™إ )</span>${uploadBlock('bill', 'أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©', ui('JPG أکآ£أ™ث† PNG أکآ£أ™ث† WEBP أ‚آ· أکآ­أکآھأ™â€° 25 أ™â€¦أ™إ أکآ؛أکآ§أکآ¨أکآ§أ™إ أکآھ', 'JPG, PNG or WEBP أ‚آ· up to 25 MB'), 'image/jpeg,image/png,image/webp')}<p class="helper-text">أ™â€ڑأکآ¯ أکآھأکآھأکآ¶أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ´أکآ®أکآµأ™إ أکآ©أکâ€؛ أکآ§أکآ­أکآ¬أکآ¨ أ™â€¦أکآ§ أ™â€‍أکآ§ أ™إ أ™â€‍أکآ²أ™â€¦. أ™â€‍أ™â€  أکآھأ™آڈأکآ±أکآ³أ™â€‍ أکآ¥أ™â€‍أ™â€° Anthropic أکآ¥أ™â€‍أکآ§ أکآ¹أ™â€ أکآ¯ أکآ¶أکآ؛أکآ· أکآ²أکآ± أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©.</p>${claudeAvailabilityMarkup()}<button class="button button-outline invoice-ai-button" type="button" id="analyze-invoice" aria-busy="${invoiceBusy}" ${invoiceBusy || claudeEnabled !== true || !mediaFor('bill').length ? 'disabled' : ''}>${invoiceBusy ? 'أکآ¬أکآ§أکآ±أ™آچ أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©أ¢â‚¬آ¦' : 'أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Ai'}</button>${invoiceReviewMarkup()}</div>
       </div>`;
   } else {
     const f = state.form; const attachments = mediaFor('panels').length;
     const reviewLocale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
     const reviewMaintenance = parseIsoDate(f.lastMaintenanceAt);
-    const summary = [['Ø§Ø³Ù… ØµØ§Ø­Ø¨ Ø§Ù„Ù†Ø¸Ø§Ù…', f.name || 'â€”'], ['Ø§Ù„Ù…ÙˆÙ‚Ø¹', f.location || 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯'], ['Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', f.panels ? `${f.panels} Ù„ÙˆØ­` : 'â€”'], ['Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ©', f.power ? `${f.power} ÙˆØ§Ø·` : 'â€”'], ['Ø§Ù„Ù†ÙˆØ¹', ({ monocrystalline: 'Ø£Ø­Ø§Ø¯ÙŠØ© Ø§Ù„Ø¨Ù„ÙˆØ±Ø©', polycrystalline: 'Ù…ØªØ¹Ø¯Ø¯Ø© Ø§Ù„Ø¨Ù„ÙˆØ±Ø§Øª', 'thin-film': 'Ø£ØºØ´ÙŠØ© Ø±Ù‚ÙŠÙ‚Ø©', unknown: 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ' })[f.panelType]], ['Ø´Ø±ÙƒØ© Ø§Ù„Ø£Ù„ÙˆØ§Ø­', f.company || 'â€”'], ['Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©', reviewMaintenance ? maintenanceDateLabel(reviewMaintenance, reviewLocale) : 'Ù„Ù… ØªÙØ³Ø¬Ù„'], ['Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø§Ù„Ø´Ù‡Ø±ÙŠØ©', f.invoice ? `${f.invoice} Ø±.Ø¹` : 'Ù„Ù… ØªÙØ¶Ù'], ['Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø©', f.billMonth || 'â€”'], ['Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª', attachments ? `${attachments} Ù…Ù„Ù Ù„Ù„Ø£Ù„ÙˆØ§Ø­` : 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØµÙˆØ±Ø©/ÙÙŠØ¯ÙŠÙˆ']];
-    target.innerHTML = `<h2 class="step-title">${STEPS[3].title}</h2><p class="step-description">${STEPS[3].description}</p><div class="confirmation-grid">${summary.map(([label, value]) => `<div class="confirm-card"><small>${label}</small><b>${escapeHtml(value)}</b></div>`).join('')}</div><div class="confirmation-callout">${ui('Ø­ÙØ¸ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙŠØ­Ø³Ø¨ ØªÙ‚Ø¯ÙŠØ± Ø§Ù„Ø¥Ø¯Ø®Ø§Ù„Ø§Øª ÙˆØ§Ù„Ø´Ù‡Ø±. ÙŠÙ…ÙƒÙ†Ùƒ Ø¨Ø¹Ø¯ Ø§Ù„Ø­ÙØ¸ Ø·Ù„Ø¨ ÙØ­Øµ Claude Ù…Ù† Ø§Ù„Ø²Ø± Ø§Ù„Ù…Ø®ØµØµ ÙÙŠ Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©. Ù†Ø³Ø¨Ø© Ø§Ù„ØªØºØ·ÙŠØ© Ø§Ù„Ù…Ø±Ø¦ÙŠØ© Ù„Ø§ ØªØ³Ø§ÙˆÙŠ Ù†Ø³Ø¨Ø© Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø©Ø› Ø­Ø³Ø§Ø¨ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø± ÙŠØ­ØªØ§Ø¬ Ø¥Ù†ØªØ§Ø¬Ø§Ù‹ ÙØ¹Ù„ÙŠØ§Ù‹ ÙˆØ®Ø· Ø£Ø³Ø§Ø³ Ù…ØªÙˆÙ‚Ø¹Ø§Ù‹ Ø£Ùˆ ØªÙ‚Ø¯ÙŠØ±Ø§Ù‹ Ù…Ù† Ø·Ù‚Ø³ Ø§Ù„ÙØªØ±Ø©.', 'Saving details calculates the input estimate and monthly assessment. After saving, request Claude from its button on the home page. Visible coverage is not energy loss; monthly losses need actual generation and an expected baseline or a period weather model.')} ${attachments ? 'ØªÙØ±Ø³Ù„ Ø§Ù„ØµÙˆØ± ÙˆØ§Ù„Ù„Ù‚Ø·Ø§Øª Ø¥Ù„Ù‰ Anthropic ÙÙ‚Ø· Ø¹Ù†Ø¯ Ø¶ØºØ· Â«ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… ClaudeÂ».' : 'Ø£Ø¶Ù ØµÙˆØ±Ø© Ù„Ù„Ø£Ù„ÙˆØ§Ø­ ÙÙŠ Ø§Ù„Ø®Ø·ÙˆØ© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø© Ù„ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¨ØµØ±ÙŠ.'}</div>${claudeAvailabilityMarkup()}`;
+    const summary = [['أکآ§أکآ³أ™â€¦ أکآµأکآ§أکآ­أکآ¨ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦', f.name || 'أ¢â‚¬â€‌'], ['أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹', f.location || 'أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ¯أکآ¯'], ['أکآ¹أکآ¯أکآ¯ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', f.panels ? `${f.panels} أ™â€‍أ™ث†أکآ­` : 'أ¢â‚¬â€‌'], ['أکآ§أ™â€‍أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ أکآ©', f.power ? `${f.power} أ™ث†أکآ§أکآ·` : 'أ¢â‚¬â€‌'], ['أکآ§أ™â€‍أ™â€ أ™ث†أکآ¹', ({ monocrystalline: 'أکآ£أکآ­أکآ§أکآ¯أ™إ أکآ© أکآ§أ™â€‍أکآ¨أ™â€‍أ™ث†أکآ±أکآ©', polycrystalline: 'أ™â€¦أکآھأکآ¹أکآ¯أکآ¯أکآ© أکآ§أ™â€‍أکآ¨أ™â€‍أ™ث†أکآ±أکآ§أکآھ', 'thin-film': 'أکآ£أکآ؛أکآ´أ™إ أکآ© أکآ±أ™â€ڑأ™إ أ™â€ڑأکآ©', unknown: 'أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ' })[f.panelType]], ['أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', f.company || 'أ¢â‚¬â€‌'], ['أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ©', reviewMaintenance ? maintenanceDateLabel(reviewMaintenance, reviewLocale) : 'أ™â€‍أ™â€¦ أکآھأ™آڈأکآ³أکآ¬أ™â€‍'], ['أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ§أ™â€‍أکآ´أ™â€،أکآ±أ™إ أکآ©', f.invoice ? `${f.invoice} أکآ±.أکآ¹` : 'أ™â€‍أ™â€¦ أکآھأ™آڈأکآ¶أ™آپ'], ['أکآ´أ™â€،أکآ± أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©', f.billMonth || 'أ¢â‚¬â€‌'], ['أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھ', attachments ? `${attachments} أ™â€¦أ™â€‍أ™آپ أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­` : 'أ™â€‍أکآ§ أکآھأ™ث†أکآ¬أکآ¯ أکآµأ™ث†أکآ±أکآ©/أ™آپأ™إ أکآ¯أ™إ أ™ث†']];
+    target.innerHTML = `<h2 class="step-title">${STEPS[3].title}</h2><p class="step-description">${STEPS[3].description}</p><div class="confirmation-grid">${summary.map(([label, value]) => `<div class="confirm-card"><small>${label}</small><b>${escapeHtml(value)}</b></div>`).join('')}</div><div class="confirmation-callout">${ui('أکآ­أ™آپأکآ¸ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™إ أکآ­أکآ³أکآ¨ أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ¥أکآ¯أکآ®أکآ§أ™â€‍أکآ§أکآھ أ™ث†أکآ§أ™â€‍أکآ´أ™â€،أکآ±. أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أکآ¨أکآ¹أکآ¯ أکآ§أ™â€‍أکآ­أ™آپأکآ¸ أکآ·أ™â€‍أکآ¨ أ™آپأکآ­أکآµ Claude أ™â€¦أ™â€  أکآ§أ™â€‍أکآ²أکآ± أکآ§أ™â€‍أ™â€¦أکآ®أکآµأکآµ أ™آپأ™إ  أکآ§أ™â€‍أکآ±أکآ¦أ™إ أکآ³أ™إ أکآ©. أ™â€ أکآ³أکآ¨أکآ© أکآ§أ™â€‍أکآھأکآ؛أکآ·أ™إ أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أکآ¦أ™إ أکآ© أ™â€‍أکآ§ أکآھأکآ³أکآ§أ™ث†أ™إ  أ™â€ أکآ³أکآ¨أکآ© أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ©أکâ€؛ أکآ­أکآ³أکآ§أکآ¨ أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ´أ™â€،أکآ± أ™إ أکآ­أکآھأکآ§أکآ¬ أکآ¥أ™â€ أکآھأکآ§أکآ¬أکآ§أ™â€¹ أ™آپأکآ¹أ™â€‍أ™إ أکآ§أ™â€¹ أ™ث†أکآ®أکآ· أکآ£أکآ³أکآ§أکآ³ أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹أکآ§أ™â€¹ أکآ£أ™ث† أکآھأ™â€ڑأکآ¯أ™إ أکآ±أکآ§أ™â€¹ أ™â€¦أ™â€  أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أ™آپأکآھأکآ±أکآ©.', 'Saving details calculates the input estimate and monthly assessment. After saving, request Claude from its button on the home page. Visible coverage is not energy loss; monthly losses need actual generation and an expected baseline or a period weather model.')} ${attachments ? 'أکآھأ™آڈأکآ±أکآ³أ™â€‍ أکآ§أ™â€‍أکآµأ™ث†أکآ± أ™ث†أکآ§أ™â€‍أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أکآ¥أ™â€‍أ™â€° Anthropic أ™آپأ™â€ڑأکآ· أکآ¹أ™â€ أکآ¯ أکآ¶أکآ؛أکآ· أ‚آ«أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claudeأ‚آ».' : 'أکآ£أکآ¶أ™آپ أکآµأ™ث†أکآ±أکآ© أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™آپأ™إ  أکآ§أ™â€‍أکآ®أکآ·أ™ث†أکآ© أکآ§أ™â€‍أکآ³أکآ§أکآ¨أ™â€ڑأکآ© أ™â€‍أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¨أکآµأکآ±أ™إ .'}</div>${claudeAvailabilityMarkup()}`;
   }
   target.querySelectorAll('[data-field]').forEach((input) => input.addEventListener('input', () => saveFormField(input)));
   target.querySelectorAll('[data-field]').forEach((input) => input.addEventListener('change', () => saveFormField(input)));
@@ -1482,13 +1482,13 @@ function showStepError(key, message) {
 }
 function gpsNoticeText(code) {
   const messages = {
-    unsupported: ['Ù…ØªØµÙØ­Ùƒ Ù„Ø§ ÙŠØ¯Ø¹Ù… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹Ø› Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†ØªÙƒ Ù…Ù† Ø­Ù‚Ù„ Ø§Ù„Ø¨Ø­Ø« Ø¨Ø§Ù„Ø£Ø³ÙÙ„.', 'Your browser does not support location; search for your city below.'],
-    insecure: ['ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙŠØ­ØªØ§Ø¬ Ø§ØªØµØ§Ù„Ø§Ù‹ Ø¢Ù…Ù†Ø§Ù‹ (HTTPS). Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†ØªÙƒ Ù…Ù† Ø­Ù‚Ù„ Ø§Ù„Ø¨Ø­Ø« Ø¨Ø§Ù„Ø£Ø³ÙÙ„.', 'Location needs a secure connection (HTTPS). Search for your city below.'],
-    denied: ['ØªÙ… Ø±ÙØ¶ Ø¥Ø°Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹. ÙØ¹Ù‘Ù„ Ø§Ù„Ø¥Ø°Ù† Ù…Ù† Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ù…ØªØµÙØ­ Ø«Ù… Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©ØŒ Ø£Ùˆ Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†ØªÙƒ.', 'Location permission was denied. Allow it in your browser settings and retry, or search for your city.'],
-    unavailable: ['ØªØ¹Ø°Ø± ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹Ùƒ Ø§Ù„Ø¢Ù†. Ø¬Ø±Ù‘Ø¨ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰ Ø£Ùˆ Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†ØªÙƒ.', 'Could not determine your location now. Try again or search for your city.'],
-    timeout: ['Ø§Ø³ØªØºØ±Ù‚ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆÙ‚ØªØ§Ù‹ Ø·ÙˆÙŠÙ„Ø§Ù‹. Ø¬Ø±Ù‘Ø¨ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰ ÙÙŠ Ù…ÙƒØ§Ù† Ù…ÙƒØ´ÙˆÙ.', 'Locating took too long. Try again in an open area.'],
-    busy: ['Ø¬Ø§Ø±Ù ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹Ùƒ ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³â€¦', 'Getting your location and updating weatherâ€¦'],
-    granted: ['ØªÙ… ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹Ùƒ ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³ Ø¨Ù†Ø¬Ø§Ø­.', 'Location set and weather updated successfully.'],
+    unsupported: ['أ™â€¦أکآھأکآµأ™آپأکآ­أ™ئ’ أ™â€‍أکآ§ أ™إ أکآ¯أکآ¹أ™â€¦ أکآھأکآ­أکآ¯أ™إ أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹أکâ€؛ أکآ§أکآ¨أکآ­أکآ« أکآ¹أ™â€  أ™â€¦أکآ¯أ™إ أ™â€ أکآھأ™ئ’ أ™â€¦أ™â€  أکآ­أ™â€ڑأ™â€‍ أکآ§أ™â€‍أکآ¨أکآ­أکآ« أکآ¨أکآ§أ™â€‍أکآ£أکآ³أ™آپأ™â€‍.', 'Your browser does not support location; search for your city below.'],
+    insecure: ['أکآھأکآ­أکآ¯أ™إ أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™إ أکآ­أکآھأکآ§أکآ¬ أکآ§أکآھأکآµأکآ§أ™â€‍أکآ§أ™â€¹ أکآ¢أ™â€¦أ™â€ أکآ§أ™â€¹ (HTTPS). أکآ§أکآ¨أکآ­أکآ« أکآ¹أ™â€  أ™â€¦أکآ¯أ™إ أ™â€ أکآھأ™ئ’ أ™â€¦أ™â€  أکآ­أ™â€ڑأ™â€‍ أکآ§أ™â€‍أکآ¨أکآ­أکآ« أکآ¨أکآ§أ™â€‍أکآ£أکآ³أ™آپأ™â€‍.', 'Location needs a secure connection (HTTPS). Search for your city below.'],
+    denied: ['أکآھأ™â€¦ أکآ±أ™آپأکآ¶ أکآ¥أکآ°أ™â€  أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹. أ™آپأکآ¹أ™â€کأ™â€‍ أکآ§أ™â€‍أکآ¥أکآ°أ™â€  أ™â€¦أ™â€  أکآ¥أکآ¹أکآ¯أکآ§أکآ¯أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­ أکآ«أ™â€¦ أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أ™â€¦أکآ­أکآ§أ™ث†أ™â€‍أکآ©أکإ’ أکآ£أ™ث† أکآ§أکآ¨أکآ­أکآ« أکآ¹أ™â€  أ™â€¦أکآ¯أ™إ أ™â€ أکآھأ™ئ’.', 'Location permission was denied. Allow it in your browser settings and retry, or search for your city.'],
+    unavailable: ['أکآھأکآ¹أکآ°أکآ± أکآھأکآ­أکآ¯أ™إ أکآ¯ أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™ئ’ أکآ§أ™â€‍أکآ¢أ™â€ . أکآ¬أکآ±أ™â€کأکآ¨ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€° أکآ£أ™ث† أکآ§أکآ¨أکآ­أکآ« أکآ¹أ™â€  أ™â€¦أکآ¯أ™إ أ™â€ أکآھأ™ئ’.', 'Could not determine your location now. Try again or search for your city.'],
+    timeout: ['أکآ§أکآ³أکآھأکآ؛أکآ±أ™â€ڑ أکآھأکآ­أکآ¯أ™إ أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™ث†أ™â€ڑأکآھأکآ§أ™â€¹ أکآ·أ™ث†أ™إ أ™â€‍أکآ§أ™â€¹. أکآ¬أکآ±أ™â€کأکآ¨ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€° أ™آپأ™إ  أ™â€¦أ™ئ’أکآ§أ™â€  أ™â€¦أ™ئ’أکآ´أ™ث†أ™آپ.', 'Locating took too long. Try again in an open area.'],
+    busy: ['أکآ¬أکآ§أکآ±أ™آچ أکآھأکآ­أکآ¯أ™إ أکآ¯ أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™ئ’ أ™ث†أکآھأکآ­أکآ¯أ™إ أکآ« أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³أ¢â‚¬آ¦', 'Getting your location and updating weatherأ¢â‚¬آ¦'],
+    granted: ['أکآھأ™â€¦ أکآھأکآ­أکآ¯أ™إ أکآ¯ أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™ئ’ أ™ث†أکآھأکآ­أکآ¯أ™إ أکآ« أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ¨أ™â€ أکآ¬أکآ§أکآ­.', 'Location set and weather updated successfully.'],
   };
   return messages[code] ? ui(...messages[code]) : '';
 }
@@ -1505,17 +1505,17 @@ function validateStep() {
   const f = state.form;
   const invalid = (key, message) => { showStepError(key, message); return false; };
   if (currentStep === 0) {
-    if (!f.panels || Number(f.panels) < 1) return invalid('panels', 'Ø£Ø¯Ø®Ù„ Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£ÙˆÙ„Ø§Ù‹.');
-    if (f.ambientTemp !== '' && (Number(f.ambientTemp) < -10 || Number(f.ambientTemp) > 65)) return invalid('ambientTemp', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø¯Ø±Ø¬Ø© Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ.');
-    if (f.humidity !== '' && (Number(f.humidity) < 0 || Number(f.humidity) > 100)) return invalid('humidity', 'Ø§Ù„Ø±Ø·ÙˆØ¨Ø© ÙŠØ¬Ø¨ Ø£Ù† ØªÙƒÙˆÙ† Ø¨ÙŠÙ† 0 Ùˆ100%.');
+    if (!f.panels || Number(f.panels) < 1) return invalid('panels', 'أکآ£أکآ¯أکآ®أ™â€‍ أکآ¹أکآ¯أکآ¯ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹.');
+    if (f.ambientTemp !== '' && (Number(f.ambientTemp) < -10 || Number(f.ambientTemp) > 65)) return invalid('ambientTemp', 'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآ¯أکآ±أکآ¬أکآ© أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ¬أ™ث†.');
+    if (f.humidity !== '' && (Number(f.humidity) < 0 || Number(f.humidity) > 100)) return invalid('humidity', 'أکآ§أ™â€‍أکآ±أکآ·أ™ث†أکآ¨أکآ© أ™إ أکآ¬أکآ¨ أکآ£أ™â€  أکآھأ™ئ’أ™ث†أ™â€  أکآ¨أ™إ أ™â€  0 أ™ث†100%.');
   }
-  if (currentStep === 1 && (!f.power || Number(f.power) <= 0)) return invalid('power', 'Ø£Ø¯Ø®Ù„ Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù†Ø¸Ø§Ù….');
-  if (currentStep === 1 && f.tilt !== '' && (!Number.isFinite(Number(f.tilt)) || Number(f.tilt) < 0 || Number(f.tilt) > 90)) return invalid('tilt', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ù…ÙŠÙ„ Ø¨ÙŠÙ† 0 Ùˆ90 Ø¯Ø±Ø¬Ø©.');
-  if (currentStep === 1 && f.panelAzimuth !== '' && (!Number.isFinite(Number(f.panelAzimuth)) || Number(f.panelAzimuth) < 0 || Number(f.panelAzimuth) > 360)) return invalid('panelAzimuth', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨ÙŠÙ† 0 Ùˆ360 Ø¯Ø±Ø¬Ø©.');
-  if (currentStep === 1 && f.captureAt && !captureTimeIso()) return invalid('captureAt', 'ØªØ£ÙƒØ¯ Ù…Ù† ÙˆÙ‚Øª Ø§Ù„ØªØµÙˆÙŠØ±.');
-  if (currentStep === 2 && !/^\d{4}-\d{2}$/.test(f.billMonth || '')) return invalid('billMonth', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø´Ù‡Ø± ÙˆØ§Ù„Ø£Ø±Ù‚Ø§Ù… Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø©.');
-  if (currentStep === 2) for (const key of ['expectedMonthlyKwh', 'actualMonthlyKwh']) { if (f[key] !== '' && (!Number.isFinite(Number(f[key])) || Number(f[key]) < 0)) return invalid(key, 'ØªØ£ÙƒØ¯ Ù…Ù† Ù‚ÙŠÙ…Ø© Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ù‘Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ.'); }
-  if (currentStep === 2 && f.consumption && !f.invoice) return invalid('invoice', 'Ø£Ø¶Ù Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„Ø­Ø³Ø§Ø¨ Ø§Ù„ØªØ¹Ø±ÙØ© Ø§Ù„ØªÙ‚Ø±ÙŠØ¨ÙŠØ©.');
+  if (currentStep === 1 && (!f.power || Number(f.power) <= 0)) return invalid('power', 'أکآ£أکآ¯أکآ®أ™â€‍ أکآ§أ™â€‍أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ أکآ© أ™â€‍أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦.');
+  if (currentStep === 1 && f.tilt !== '' && (!Number.isFinite(Number(f.tilt)) || Number(f.tilt) < 0 || Number(f.tilt) > 90)) return invalid('tilt', 'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أکآ¨أ™إ أ™â€  0 أ™ث†90 أکآ¯أکآ±أکآ¬أکآ©.');
+  if (currentStep === 1 && f.panelAzimuth !== '' && (!Number.isFinite(Number(f.panelAzimuth)) || Number(f.panelAzimuth) < 0 || Number(f.panelAzimuth) > 360)) return invalid('panelAzimuth', 'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أ™إ أ™â€  0 أ™ث†360 أکآ¯أکآ±أکآ¬أکآ©.');
+  if (currentStep === 1 && f.captureAt && !captureTimeIso()) return invalid('captureAt', 'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآھأکآµأ™ث†أ™إ أکآ±.');
+  if (currentStep === 2 && !/^\d{4}-\d{2}$/.test(f.billMonth || '')) return invalid('billMonth', 'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ´أ™â€،أکآ± أ™ث†أکآ§أ™â€‍أکآ£أکآ±أ™â€ڑأکآ§أ™â€¦ أ™â€ڑأکآ¨أ™â€‍ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©.');
+  if (currentStep === 2) for (const key of ['expectedMonthlyKwh', 'actualMonthlyKwh']) { if (f[key] !== '' && (!Number.isFinite(Number(f[key])) || Number(f[key]) < 0)) return invalid(key, 'أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأ™â€کأکآ¹ أ™ث†أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ .'); }
+  if (currentStep === 2 && f.consumption && !f.invoice) return invalid('invoice', 'أکآ£أکآ¶أ™آپ أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ§أ™â€‍أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أکآھأ™â€ڑأکآ±أ™إ أکآ¨أ™إ أکآ©.');
   return true;
 }
 function nextStep() {
@@ -1532,16 +1532,16 @@ function nextStep() {
 function previousStep() { if (currentStep > 0) { currentStep -= 1; renderCurrentStep(); } }
 async function handleUploads(category, files) {
   const accountId = currentAccount?.id;
-  if (!accountId) return showFormAlert('Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø£ÙˆÙ„Ø§Ù‹.');
+  if (!accountId) return showFormAlert('أکآ³أکآ¬أ™â€کأ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹.');
   if (category === 'bill') { invoiceReview = null; invoiceSequence += 1; invoiceController?.abort(); invoiceBusy = false; }
   const chosen = category === 'bill' ? files.slice(0, 1) : files;
-  if (category === 'panels' && mediaFor(category).length + chosen.length > 6) { showFormAlert('ÙŠÙ…ÙƒÙ†Ùƒ Ø¥Ø¶Ø§ÙØ© 6 Ù…Ù„ÙØ§Øª ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰.'); return; }
+  if (category === 'panels' && mediaFor(category).length + chosen.length > 6) { showFormAlert('أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أکآ¥أکآ¶أکآ§أ™آپأکآ© 6 أ™â€¦أ™â€‍أ™آپأکآ§أکآھ أ™ئ’أکآ­أکآ¯ أکآ£أ™â€ڑأکآµأ™â€°.'); return; }
   for (const file of chosen) {
     const supportedImage = ['image/jpeg', 'image/png', 'image/webp'].includes(file.type);
     const supportedVideo = ['video/mp4', 'video/webm', 'video/quicktime'].includes(file.type);
-    if (!supportedImage && !supportedVideo) { showFormAlert('Ø§Ø®ØªØ± JPG Ø£Ùˆ PNG Ø£Ùˆ WEBP Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ MP4 Ø£Ùˆ WEBM Ø£Ùˆ MOV.'); continue; }
-    if (category === 'bill' && !file.type.startsWith('image/')) { showFormAlert('ÙŠÙ…ÙƒÙ† Ø¥Ø±ÙØ§Ù‚ Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙƒØµÙˆØ±Ø©.'); continue; }
-    if (file.size > 25 * 1024 * 1024) { showFormAlert('ÙŠØ¬Ø¨ Ø£Ù„Ø§ ÙŠØªØ¬Ø§ÙˆØ² Ø­Ø¬Ù… Ø§Ù„Ù…Ù„Ù 25 Ù…ÙŠØºØ§Ø¨Ø§ÙŠØª.'); continue; }
+    if (!supportedImage && !supportedVideo) { showFormAlert('أکآ§أکآ®أکآھأکآ± JPG أکآ£أ™ث† PNG أکآ£أ™ث† WEBP أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† MP4 أکآ£أ™ث† WEBM أکآ£أ™ث† MOV.'); continue; }
+    if (category === 'bill' && !file.type.startsWith('image/')) { showFormAlert('أ™إ أ™â€¦أ™ئ’أ™â€  أکآ¥أکآ±أ™آپأکآ§أ™â€ڑ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™ئ’أکآµأ™ث†أکآ±أکآ©.'); continue; }
+    if (file.size > 25 * 1024 * 1024) { showFormAlert('أ™إ أکآ¬أکآ¨ أکآ£أ™â€‍أکآ§ أ™إ أکآھأکآ¬أکآ§أ™ث†أکآ² أکآ­أکآ¬أ™â€¦ أکآ§أ™â€‍أ™â€¦أ™â€‍أ™آپ 25 أ™â€¦أ™إ أکآ؛أکآ§أکآ¨أکآ§أ™إ أکآھ.'); continue; }
     const blob = file.type.startsWith('image/') ? await compressImage(file, category === 'bill' ? 1600 : 1500) : file;
     if (accountId !== currentAccount?.id) return;
     if (category === 'bill') {
@@ -1550,11 +1550,11 @@ async function handleUploads(category, files) {
     }
     const item = { id: crypto.randomUUID(), accountId, category, name: file.name, type: blob.type || file.type, blob, updatedAt: Date.now() };
     try { await dbRequest('readwrite', (store) => store.put(item)); media.push(item); if (category === 'panels') clearVisualAssessment(); }
-    catch { showFormAlert('ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ù…Ù„Ù Ù…Ø­Ù„ÙŠØ§Ù‹Ø› Ø¬Ø±Ù‘Ø¨ Ù…Ù„ÙØ§Ù‹ Ø£ØµØºØ±.'); }
+    catch { showFormAlert('أکآھأکآ¹أکآ°أکآ± أکآ­أ™آپأکآ¸ أکآ§أ™â€‍أ™â€¦أ™â€‍أ™آپ أ™â€¦أکآ­أ™â€‍أ™إ أکآ§أ™â€¹أکâ€؛ أکآ¬أکآ±أ™â€کأکآ¨ أ™â€¦أ™â€‍أ™آپأکآ§أ™â€¹ أکآ£أکآµأکآ؛أکآ±.'); }
   }
   if (accountId !== currentAccount?.id) return;
   persist();
-  if (currentAccount) await syncAccountMedia().catch((error) => showFormAlert(error.message || 'ØªØ¹Ø°Ø± Ø±ÙØ¹ Ø§Ù„Ù…Ø±ÙÙ‚Ø§ØªØ› Ø­ÙÙØ¸Øª Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².'));
+  if (currentAccount) await syncAccountMedia().catch((error) => showFormAlert(error.message || 'أکآھأکآ¹أکآ°أکآ± أکآ±أ™آپأکآ¹ أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھأکâ€؛ أکآ­أ™آڈأ™آپأکآ¸أکآھ أکآ¹أ™â€‍أ™â€° أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ².'));
   renderCurrentStep();
 }
 function compressImage(file, maxSide) {
@@ -1576,8 +1576,8 @@ async function removeMedia(id) {
     try {
       const response = await authenticatedFetch('/api/account/media/' + encodeURIComponent(id), { method: 'DELETE' });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø­Ø°Ù Ø§Ù„Ù…Ø±ÙÙ‚ Ù…Ù† Ø§Ù„Ø­Ø³Ø§Ø¨.');
-    } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± Ø­Ø°Ù Ø§Ù„Ù…Ø±ÙÙ‚ Ù…Ù† Ø§Ù„Ø­Ø³Ø§Ø¨.'); return; }
+      if (!response.ok) throw new Error(data.error || 'أکآھأکآ¹أکآ°أکآ± أکآ­أکآ°أ™آپ أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨.');
+    } catch (error) { showToast(error.message || 'أکآھأکآ¹أکآ°أکآ± أکآ­أکآ°أ™آپ أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨.'); return; }
   }
   try { await dbRequest('readwrite', (store) => store.delete(id)); } catch { /* remove visible reference anyway */ }
   media = media.filter((item) => item.id !== id); if (selected?.category === 'panels') clearVisualAssessment(); persist(); renderCurrentStep();
@@ -1591,7 +1591,7 @@ async function analyzeInvoice() {
   if (accountId !== currentAccount?.id || mediaFor('bill')[0]?.id !== item.id) return;
   if (!config.claudeEnabled) {
     invoiceBusy = false; renderCurrentStep();
-    return showToast(claudeEnabled === false ? 'Claude ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„ Ø¨Ø¹Ø¯. ÙŠØ³ØªØ·ÙŠØ¹ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØªÙØ¹ÙŠÙ„Ù‡ Ø¨Ù…ÙØªØ§Ø­ Anthropic.' : 'ØªØ¹Ø°Ø± Ù…Ø¹Ø±ÙØ© Ø­Ø§Ù„Ø© ClaudeØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.');
+    return showToast(claudeEnabled === false ? 'Claude أکآ؛أ™إ أکآ± أ™â€¦أ™آپأکآ¹أ™â€کأ™â€‍ أکآ¨أکآ¹أکآ¯. أ™إ أکآ³أکآھأکآ·أ™إ أکآ¹ أ™â€¦أکآ³أکآ¤أ™ث†أ™â€‍ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآھأ™آپأکآ¹أ™إ أ™â€‍أ™â€، أکآ¨أ™â€¦أ™آپأکآھأکآ§أکآ­ Anthropic.' : 'أکآھأکآ¹أکآ°أکآ± أ™â€¦أکآ¹أکآ±أ™آپأکآ© أکآ­أکآ§أ™â€‍أکآ© Claudeأکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€°.');
   }
   invoiceController?.abort(); invoiceController = new AbortController();
   const sequence = ++invoiceSequence;
@@ -1605,28 +1605,28 @@ async function analyzeInvoice() {
       body: JSON.stringify({ image, billMonth: month, language }),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(claudeError(data, 'ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©. Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ÙˆØ¶Ø­.'));
+    if (!response.ok) throw new Error(claudeError(data, 'أکآھأکآ¹أکآ°أکآ± أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©. أکآ¬أکآ±أ™â€کأکآ¨ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث†أکآ¶أکآ­.'));
     if (sequence !== invoiceSequence || accountId !== currentAccount?.id || month !== state.form.billMonth || language !== state.settings.language || mediaFor('bill')[0]?.id !== item.id) return;
-    if (!data.invoice || typeof data.invoice !== 'object') throw new Error('ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©. Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ÙˆØ¶Ø­.');
+    if (!data.invoice || typeof data.invoice !== 'object') throw new Error('أکآھأکآ¹أکآ°أکآ± أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©. أکآ¬أکآ±أ™â€کأکآ¨ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث†أکآ¶أکآ­.');
     invoiceReview = { accountId, mediaId: item.id, month, invoice: { ...data.invoice }, model: data.model };
-  } catch (error) { if (error.name !== 'AbortError' && sequence === invoiceSequence && accountId === currentAccount?.id) showToast(error.message || 'ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©. Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ÙˆØ¶Ø­.'); }
+  } catch (error) { if (error.name !== 'AbortError' && sequence === invoiceSequence && accountId === currentAccount?.id) showToast(error.message || 'أکآھأکآ¹أکآ°أکآ± أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©. أکآ¬أکآ±أ™â€کأکآ¨ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث†أکآ¶أکآ­.'); }
   finally { if (sequence === invoiceSequence && accountId === currentAccount?.id) { invoiceBusy = false; if (currentStep === 2 && !el('page-wizard').hidden) renderCurrentStep(); } }
 }
 function applyInvoiceReview() {
   const draft = invoiceReview;
   if (!draft || draft.accountId !== currentAccount?.id || draft.mediaId !== mediaFor('bill')[0]?.id || draft.month !== state.form.billMonth) { invoiceReview = null; renderCurrentStep(); return; }
   const values = draft.invoice;
-  if (String(values.currency || '').trim().toUpperCase() !== 'OMR') return showToast('Ø­Ø³Ø§Ø¨ Ø§Ù„Ù‚ÙŠÙ…Ø© Ù‡Ù†Ø§ ÙŠØ¯Ø¹Ù… Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø¹ÙÙ…Ø§Ù†ÙŠØ› Ø£Ø¯Ø®Ù„ ØªØ¹Ø±ÙØ© Ø¨Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø¹ÙÙ…Ø§Ù†ÙŠ ÙŠØ¯ÙˆÙŠØ§Ù‹ Ù„Ù‡Ø°Ù‡ Ø§Ù„ÙØ§ØªÙˆØ±Ø©.');
-  if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(values.billingMonth || '')) return showToast('ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø´Ù‡Ø± ÙˆØ§Ù„Ø£Ø±Ù‚Ø§Ù… Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø©.');
+  if (String(values.currency || '').trim().toUpperCase() !== 'OMR') return showToast('أکآ­أکآ³أکآ§أکآ¨ أکآ§أ™â€‍أ™â€ڑأ™إ أ™â€¦أکآ© أ™â€،أ™â€ أکآ§ أ™إ أکآ¯أکآ¹أ™â€¦ أکآ§أ™â€‍أکآ±أ™إ أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¹أ™آڈأ™â€¦أکآ§أ™â€ أ™إ أکâ€؛ أکآ£أکآ¯أکآ®أ™â€‍ أکآھأکآ¹أکآ±أ™آپأکآ© أکآ¨أکآ§أ™â€‍أکآ±أ™إ أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¹أ™آڈأ™â€¦أکآ§أ™â€ أ™إ  أ™إ أکآ¯أ™ث†أ™إ أکآ§أ™â€¹ أ™â€‍أ™â€،أکآ°أ™â€، أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©.');
+  if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(values.billingMonth || '')) return showToast('أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ´أ™â€،أکآ± أ™ث†أکآ§أ™â€‍أکآ£أکآ±أ™â€ڑأکآ§أ™â€¦ أ™â€ڑأکآ¨أ™â€‍ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©.');
   for (const key of ['totalAmount', 'consumptionKwh', 'energyTariffPerKwh']) {
-    if (values[key] !== null && values[key] !== undefined && values[key] !== '' && (!Number.isFinite(Number(values[key])) || Number(values[key]) < 0)) return showToast('ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø´Ù‡Ø± ÙˆØ§Ù„Ø£Ø±Ù‚Ø§Ù… Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø©.');
+    if (values[key] !== null && values[key] !== undefined && values[key] !== '' && (!Number.isFinite(Number(values[key])) || Number(values[key]) < 0)) return showToast('أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ´أ™â€،أکآ± أ™ث†أکآ§أ™â€‍أکآ£أکآ±أ™â€ڑأکآ§أ™â€¦ أ™â€ڑأکآ¨أ™â€‍ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©.');
   }
   for (const [source, destination] of [['totalAmount', 'invoice'], ['consumptionKwh', 'consumption'], ['energyTariffPerKwh', 'tariff']]) {
     state.form[destination] = values[source] !== null && values[source] !== undefined && values[source] !== '' ? String(Number(values[source])) : '';
   }
   if (values.billingMonth !== state.form.billMonth) { state.form.expectedMonthlyKwh = ''; state.form.actualMonthlyKwh = ''; }
   state.form.billMonth = values.billingMonth; state.monthlyLoss = null;
-  invoiceReview = null; persist(); renderCurrentStep(); showToast('ØªÙ… Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø§Ù„ØªÙŠ Ø±Ø§Ø¬Ø¹ØªÙ‡Ø§.');
+  invoiceReview = null; persist(); renderCurrentStep(); showToast('أکآھأ™â€¦ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآ§أ™â€‍أکآھأ™إ  أکآ±أکآ§أکآ¬أکآ¹أکآھأ™â€،أکآ§.');
 }
 function getLocation() {
   const accountId = currentAccount?.id;
@@ -1635,8 +1635,8 @@ function getLocation() {
   if (!window.isSecureContext && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') { setGpsNotice('error', 'insecure'); showFormAlert(gpsNoticeText('insecure')); return; }
   if (!button || button.disabled) return;
   setGpsNotice('busy', 'busy');
-  button.textContent = ui('Ø¬Ø§Ø±Ù ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹â€¦', 'Getting locationâ€¦'); button.disabled = true;
-  const restoreButton = () => { if (button.isConnected) { button.textContent = ui('âŒ– Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…ÙˆÙ‚Ø¹Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠ', 'âŒ– Use your current location'); button.disabled = false; } };
+  button.textContent = ui('أکآ¬أکآ§أکآ±أ™آچ أکآھأکآ­أکآ¯أ™إ أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹أ¢â‚¬آ¦', 'Getting locationأ¢â‚¬آ¦'); button.disabled = true;
+  const restoreButton = () => { if (button.isConnected) { button.textContent = ui('أ¢إ’â€“ أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™ئ’ أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ ', 'أ¢إ’â€“ Use your current location'); button.disabled = false; } };
   navigator.geolocation.getCurrentPosition(async (position) => {
     if (accountId !== currentAccount?.id) return;
     clearVisualAssessment();
@@ -1658,24 +1658,24 @@ function getLocation() {
 async function searchCity() {
   const accountId = currentAccount?.id;
   const input = el('city-search'); const results = el('search-results'); const name = input?.value.trim();
-  if (!name) return showToast('Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ù…Ø¯ÙŠÙ†Ø© Ù„Ù„Ø¨Ø­Ø«.');
-  results.innerHTML = '<small class="helper-text">Ø¬Ø§Ø±Ù Ø§Ù„Ø¨Ø­Ø«â€¦</small>';
+  if (!name) return showToast('أکآ§أ™ئ’أکآھأکآ¨ أکآ§أکآ³أ™â€¦ أ™â€¦أکآ¯أ™إ أ™â€ أکآ© أ™â€‍أ™â€‍أکآ¨أکآ­أکآ«.');
+  results.innerHTML = '<small class="helper-text">أکآ¬أکآ§أکآ±أ™آچ أکآ§أ™â€‍أکآ¨أکآ­أکآ«أ¢â‚¬آ¦</small>';
   try {
     const response = await fetch(`/api/geocode?name=${encodeURIComponent(name)}`); const data = await response.json();
     if (!response.ok) throw new Error(data.error);
     if (accountId !== currentAccount?.id) return;
-    if (!data.results.length) { results.innerHTML = '<small class="helper-text">Ù„Ù… Ù†Ø¹Ø«Ø± Ø¹Ù„Ù‰ Ù†ØªØ§Ø¦Ø¬. Ø¬Ø±Ù‘Ø¨ ÙƒØªØ§Ø¨Ø© Ø§Ù„Ø§Ø³Ù… Ø¨Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©.</small>'; return; }
-    results.innerHTML = data.results.map((place, index) => `<button type="button" class="search-result" data-place="${index}">${escapeHtml([place.name, place.admin1, place.country].filter(Boolean).join('ØŒ '))}</button>`).join('');
+    if (!data.results.length) { results.innerHTML = '<small class="helper-text">أ™â€‍أ™â€¦ أ™â€ أکآ¹أکآ«أکآ± أکآ¹أ™â€‍أ™â€° أ™â€ أکآھأکآ§أکآ¦أکآ¬. أکآ¬أکآ±أ™â€کأکآ¨ أ™ئ’أکآھأکآ§أکآ¨أکآ© أکآ§أ™â€‍أکآ§أکآ³أ™â€¦ أکآ¨أکآ§أ™â€‍أکآ¥أ™â€ أکآ¬أ™â€‍أ™إ أکآ²أ™إ أکآ©.</small>'; return; }
+    results.innerHTML = data.results.map((place, index) => `<button type="button" class="search-result" data-place="${index}">${escapeHtml([place.name, place.admin1, place.country].filter(Boolean).join('أکإ’ '))}</button>`).join('');
     results.querySelectorAll('[data-place]').forEach((button) => button.addEventListener('click', async () => {
       if (accountId !== currentAccount?.id) return;
       clearVisualAssessment();
-      const place = data.results[Number(button.dataset.place)]; state.form.location = [place.name, place.admin1].filter(Boolean).join('ØŒ '); state.form.latitude = place.latitude; state.form.longitude = place.longitude;
+      const place = data.results[Number(button.dataset.place)]; state.form.location = [place.name, place.admin1].filter(Boolean).join('أکإ’ '); state.form.latitude = place.latitude; state.form.longitude = place.longitude;
       state.solarContext = null; state.monthlyLoss = null;
       gpsNotice = null;
       clearWeatherForLocation();
-      persist(); refreshWeatherFieldChecks(); input.value = state.form.location; results.innerHTML = ''; showToast(`ØªÙ… Ø§Ø®ØªÙŠØ§Ø± ${state.form.location}.`); await loadWeather({ forcePrefill: true });
+      persist(); refreshWeatherFieldChecks(); input.value = state.form.location; results.innerHTML = ''; showToast(`أکآھأ™â€¦ أکآ§أکآ®أکآھأ™إ أکآ§أکآ± ${state.form.location}.`); await loadWeather({ forcePrefill: true });
     }));
-  } catch (error) { results.innerHTML = `<small class="helper-text">${escapeHtml(error.message || 'ØªØ¹Ø°Ø± Ø§Ù„Ø¨Ø­Ø«. ØªØ£ÙƒØ¯ Ù…Ù† ØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù….')}</small>`; }
+  } catch (error) { results.innerHTML = `<small class="helper-text">${escapeHtml(error.message || 'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآ¨أکآ­أکآ«. أکآھأکآ£أ™ئ’أکآ¯ أ™â€¦أ™â€  أکآھأکآ´أکآ؛أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.')}</small>`; }
 }
 async function fetchWeatherResponse(url, timeoutMs) {
   // Use a controller and timer so this also works in Safari versions without AbortSignal.timeout.
@@ -1696,7 +1696,7 @@ async function fetchWeatherResponse(url, timeoutMs) {
 function assertWeatherCoordinates(latitude, longitude) {
   const validCoordinate = (value, min, max) => (typeof value === 'number' || typeof value === 'string')
     && String(value).trim() !== '' && Number.isFinite(Number(value)) && Number(value) >= min && Number(value) <= max;
-  if (!validCoordinate(latitude, -90, 90) || !validCoordinate(longitude, -180, 180)) throw new Error('Ø¥Ø­Ø¯Ø§Ø«ÙŠØ§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØºÙŠØ± ØµØ§Ù„Ø­Ø©.');
+  if (!validCoordinate(latitude, -90, 90) || !validCoordinate(longitude, -180, 180)) throw new Error('أکآ¥أکآ­أکآ¯أکآ§أکآ«أ™إ أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ؛أ™إ أکآ± أکآµأکآ§أ™â€‍أکآ­أکآ©.');
 }
 function hasUsableWeatherCurrent(snapshot) {
   const validReading = (value, min, max) => (typeof value === 'number' || typeof value === 'string')
@@ -1757,9 +1757,9 @@ async function requestWeatherSnapshot(latitude, longitude) {
     return snapshot;
   } catch (error) {
     // A bad request is a coordinate/input issue, not a reason to request another provider path.
-    if (error.status === 400) throw new Error('Ø¥Ø­Ø¯Ø§Ø«ÙŠØ§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØºÙŠØ± ØµØ§Ù„Ø­Ø©.');
+    if (error.status === 400) throw new Error('أکآ¥أکآ­أکآ¯أکآ§أکآ«أ™إ أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ؛أ™إ أکآ± أکآµأکآ§أ™â€‍أکآ­أکآ©.');
     try { return await fetchDirectWeatherSnapshot(latitude, longitude); }
-    catch { throw new Error('ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø¢Ù†. Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰ Ø¨Ø¹Ø¯ Ù‚Ù„ÙŠÙ„ Ø£Ùˆ Ø£Ø¯Ø®Ù„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙŠØ¯ÙˆÙŠÙ‹Ø§.'); }
+    catch { throw new Error('أکآھأکآ¹أکآ°أکآ± أکآ¬أ™â€‍أکآ¨ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أکآ¢أ™â€ . أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€° أکآ¨أکآ¹أکآ¯ أ™â€ڑأ™â€‍أ™إ أ™â€‍ أکآ£أ™ث† أکآ£أکآ¯أکآ®أ™â€‍ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™إ أکآ¯أ™ث†أ™إ أ™â€¹أکآ§.'); }
   }
 }
 function renderWeatherStatus() {
@@ -1770,24 +1770,24 @@ function renderWeatherStatus() {
   if (state.weather?.fetchedAt) {
     const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
     const time = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(state.weather.fetchedAt));
-    node.textContent = ui(`Ø¢Ø®Ø± ØªØ­Ø¯ÙŠØ« Ù„Ù„Ø·Ù‚Ø³ ${time}${state.weather.cached ? ' (Ù†Ø³Ø®Ø© Ù…Ø­ÙÙˆØ¸Ø©)' : ''}.`, `Weather updated ${time}${state.weather.cached ? ' (cached)' : ''}.`);
+    node.textContent = ui(`أکآ¢أکآ®أکآ± أکآھأکآ­أکآ¯أ™إ أکآ« أ™â€‍أ™â€‍أکآ·أ™â€ڑأکآ³ ${time}${state.weather.cached ? ' (أ™â€ أکآ³أکآ®أکآ© أ™â€¦أکآ­أ™آپأ™ث†أکآ¸أکآ©)' : ''}.`, `Weather updated ${time}${state.weather.cached ? ' (cached)' : ''}.`);
   } else if (state.form.latitude !== null && state.form.latitude !== '' && state.form.longitude !== null && state.form.longitude !== '') {
-    node.textContent = ui('Ù„Ù… ÙŠØªÙ… Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ Ø¨Ø¹Ø¯Ø› Ø§Ø¶ØºØ· Â«ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³Â».', 'Weather has not been fetched yet; press â€œUpdate weatherâ€.');
+    node.textContent = ui('أ™â€‍أ™â€¦ أ™إ أکآھأ™â€¦ أکآ¬أ™â€‍أکآ¨ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ¨أکآ¹أکآ¯أکâ€؛ أکآ§أکآ¶أکآ؛أکآ· أ‚آ«أکآھأکآ­أکآ¯أ™إ أکآ« أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³أ‚آ».', 'Weather has not been fetched yet; press أ¢â‚¬إ“Update weatherأ¢â‚¬آ‌.');
   } else {
-    node.textContent = ui('Ø­Ø¯Ù‘Ø¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù… Ù„Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.', 'Set the system location to fetch weather automatically.');
+    node.textContent = ui('أکآ­أکآ¯أ™â€کأکآ¯ أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™â€‍أکآ¬أ™â€‍أکآ¨ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآھأ™â€‍أ™â€ڑأکآ§أکآ¦أ™إ أکآ§أ™â€¹.', 'Set the system location to fetch weather automatically.');
   }
 }
 async function loadWeather({ forcePrefill = false } = {}) {
   const { latitude, longitude } = state.form;
   const accountId = currentAccount?.id;
   if (latitude === null || longitude === null || latitude === '' || longitude === '' || !Number.isFinite(Number(latitude)) || !Number.isFinite(Number(longitude))) {
-    weatherNotice = { type: 'error', message: ui('Ø­Ø¯Ù‘Ø¯ Ù…Ø¯ÙŠÙ†Ø© Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… GPS Ø£ÙˆÙ„Ø§Ù‹.', 'Choose a city or use GPS first.') };
-    renderWeatherStatus(); showToast(ui('Ø­Ø¯Ù‘Ø¯ Ù…Ø¯ÙŠÙ†Ø© Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… GPS Ø£ÙˆÙ„Ø§Ù‹.', 'Choose a city or use GPS first.')); return;
+    weatherNotice = { type: 'error', message: ui('أکآ­أکآ¯أ™â€کأکآ¯ أ™â€¦أکآ¯أ™إ أ™â€ أکآ© أکآ£أ™ث† أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ GPS أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹.', 'Choose a city or use GPS first.') };
+    renderWeatherStatus(); showToast(ui('أکآ­أکآ¯أ™â€کأکآ¯ أ™â€¦أکآ¯أ™إ أ™â€ أکآ© أکآ£أ™ث† أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ GPS أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹.', 'Choose a city or use GPS first.')); return;
   }
   const requestId = ++weatherSequence;
   const refreshButton = el('refresh-weather');
   if (refreshButton) { refreshButton.disabled = true; refreshButton.setAttribute('aria-busy', 'true'); }
-  weatherNotice = { type: 'loading', message: ui('Ø¬Ø§Ø±Ù ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³â€¦', 'Updating weatherâ€¦') };
+  weatherNotice = { type: 'loading', message: ui('أکآ¬أکآ§أکآ±أ™آچ أکآھأکآ­أکآ¯أ™إ أکآ« أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³أ¢â‚¬آ¦', 'Updating weatherأ¢â‚¬آ¦') };
   renderWeatherStatus();
   const before = Object.fromEntries(Object.keys(DEFAULT_STATE.weatherPrefill).map((key) => [key, state.form[key]]));
   const beforeMarkers = { ...state.weatherPrefill };
@@ -1824,8 +1824,8 @@ async function loadWeather({ forcePrefill = false } = {}) {
     renderDashboard();
   } catch (error) {
     if (requestId === weatherSequence && accountId === currentAccount?.id) {
-      const message = error.message || ui('ØªØ¹Ø°Ø± ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³.', 'Could not update weather.');
-      weatherNotice = { type: 'error', message: `${message} ${ui('ÙŠÙ…ÙƒÙ†Ùƒ Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ø£Ùˆ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙŠØ¯ÙˆÙŠØ§Ù‹.', 'You can retry or enter the data manually.')}` };
+      const message = error.message || ui('أکآھأکآ¹أکآ°أکآ± أکآھأکآ­أکآ¯أ™إ أکآ« أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³.', 'Could not update weather.');
+      weatherNotice = { type: 'error', message: `${message} ${ui('أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أکآ¥أکآ¹أکآ§أکآ¯أکآ© أکآ§أ™â€‍أ™â€¦أکآ­أکآ§أ™ث†أ™â€‍أکآ© أکآ£أ™ث† أکآ¥أکآ¯أکآ®أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™إ أکآ¯أ™ث†أ™إ أکآ§أ™â€¹.', 'You can retry or enter the data manually.')}` };
       renderWeatherStatus(); showToast(message);
     }
   } finally {
@@ -1833,9 +1833,9 @@ async function loadWeather({ forcePrefill = false } = {}) {
   }
 }
 function weatherText(code) {
-  if (code === 0) return 'Ø³Ù…Ø§Ø¡ ØµØ§ÙÙŠØ©'; if ([1, 2, 3].includes(code)) return 'ØºØ§Ø¦Ù… Ø¬Ø²Ø¦ÙŠØ§Ù‹'; if ([45, 48].includes(code)) return 'Ø¶Ø¨Ø§Ø¨';
-  if ([51, 53, 55, 56, 57].includes(code)) return 'Ø±Ø°Ø§Ø°'; if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return 'Ø£Ù…Ø·Ø§Ø±';
-  if ([71, 73, 75, 77, 85, 86].includes(code)) return 'Ø«Ù„ÙˆØ¬'; if ([95, 96, 99].includes(code)) return 'Ø¹ÙˆØ§ØµÙ Ø±Ø¹Ø¯ÙŠØ©'; return 'Ø­Ø§Ù„Ø© Ù…ØªØºÙŠØ±Ø©';
+  if (code === 0) return 'أکآ³أ™â€¦أکآ§أکآ، أکآµأکآ§أ™آپأ™إ أکآ©'; if ([1, 2, 3].includes(code)) return 'أکآ؛أکآ§أکآ¦أ™â€¦ أکآ¬أکآ²أکآ¦أ™إ أکآ§أ™â€¹'; if ([45, 48].includes(code)) return 'أکآ¶أکآ¨أکآ§أکآ¨';
+  if ([51, 53, 55, 56, 57].includes(code)) return 'أکآ±أکآ°أکآ§أکآ°'; if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return 'أکآ£أ™â€¦أکآ·أکآ§أکآ±';
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return 'أکآ«أ™â€‍أ™ث†أکآ¬'; if ([95, 96, 99].includes(code)) return 'أکآ¹أ™ث†أکآ§أکآµأ™آپ أکآ±أکآ¹أکآ¯أ™إ أکآ©'; return 'أکآ­أکآ§أ™â€‍أکآ© أ™â€¦أکآھأکآ؛أ™إ أکآ±أکآ©';
 }
 function calculateLoss() {
   const f = state.form; const current = state.weather?.current || {};
@@ -1866,7 +1866,7 @@ function calculateLoss() {
   const lostKwh = possibleKwh * (totalPercent / 100);
   const consumption = Number(f.consumption || 0); const bill = Number(f.invoice || 0); const tariff = Number(f.tariff || 0);
   const price = tariff > 0 ? tariff : consumption > 0 && bill > 0 ? bill / consumption : .025;
-  const priceBasis = tariff > 0 ? 'Ø§Ù„ØªØ¹Ø±ÙØ© Ø§Ù„ØªÙŠ Ø£Ø¯Ø®Ù„ØªÙ‡Ø§' : consumption > 0 && bill > 0 ? 'Ù…Ø´ØªÙ‚Ø© Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙˆØ§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ' : 'ØªØ¹Ø±ÙØ© Ù…Ø±Ø¬Ø¹ÙŠØ© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØºÙŠÙŠØ±';
+  const priceBasis = tariff > 0 ? 'أکآ§أ™â€‍أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أکآھأ™إ  أکآ£أکآ¯أکآ®أ™â€‍أکآھأ™â€،أکآ§' : consumption > 0 && bill > 0 ? 'أ™â€¦أکآ´أکآھأ™â€ڑأکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™ث†أکآ§أ™â€‍أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’' : 'أکآھأکآ¹أکآ±أ™آپأکآ© أ™â€¦أکآ±أکآ¬أکآ¹أ™إ أکآ© أ™â€ڑأکآ§أکآ¨أ™â€‍أکآ© أ™â€‍أ™â€‍أکآھأکآ؛أ™إ أ™إ أکآ±';
   return { percent: totalPercent, totalPercent, heatPercent, heatEstimateUnavailable: heatPercent === null, soilingPercent: dustPercent, dustPercent, shadePercent, possibleKwh, lostKwh, lostMoney: lostKwh * price, priceBasis, sunHours, airTemp, tariffOmrPerKwh: price };
 }
 function applyStoredReport(result, report) {
@@ -1895,9 +1895,9 @@ function applyStoredReport(result, report) {
 }
 function waitForVideoEvent(video, eventName) {
   return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => finish(new Error('ØªØ¹Ø°Ø± ÙØªØ­ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­Ø› Ø¬Ø±Ù‘Ø¨ MP4 Ø£Ùˆ Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ù…Ù† Ø§Ù„Ù…Ù‚Ø·Ø¹.')), 12000);
+    const timeout = setTimeout(() => finish(new Error('أکآھأکآ¹أکآ°أکآ± أ™آپأکآھأکآ­ أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™آپأ™إ  أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­أکâ€؛ أکآ¬أکآ±أ™â€کأکآ¨ MP4 أکآ£أ™ث† أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ§أ™â€¹ أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآ·أکآ¹.')), 12000);
     const success = () => finish();
-    const error = () => finish(new Error('ØªØ¹Ø°Ø± ÙØªØ­ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­Ø› Ø¬Ø±Ù‘Ø¨ MP4 Ø£Ùˆ Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ù…Ù† Ø§Ù„Ù…Ù‚Ø·Ø¹.'));
+    const error = () => finish(new Error('أکآھأکآ¹أکآ°أکآ± أ™آپأکآھأکآ­ أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™آپأ™إ  أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­أکâ€؛ أکآ¬أکآ±أ™â€کأکآ¨ MP4 أکآ£أ™ث† أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ§أ™â€¹ أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآ·أکآ¹.'));
     function finish(failure) { clearTimeout(timeout); video.removeEventListener(eventName, success); video.removeEventListener('error', error); failure ? reject(failure) : resolve(); }
     video.addEventListener(eventName, success, { once: true }); video.addEventListener('error', error, { once: true });
   });
@@ -1907,7 +1907,7 @@ async function framesFromVideo(blob, count, mediaId) {
   try {
     if (video.readyState < 1) await waitForVideoEvent(video, 'loadedmetadata');
     const duration = video.duration;
-    if (!Number.isFinite(duration) || duration <= 0 || !video.videoWidth || !video.videoHeight) throw new Error('ØªØ¹Ø°Ø± ÙØªØ­ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­Ø› Ø¬Ø±Ù‘Ø¨ MP4 Ø£Ùˆ Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ù…Ù† Ø§Ù„Ù…Ù‚Ø·Ø¹.');
+    if (!Number.isFinite(duration) || duration <= 0 || !video.videoWidth || !video.videoHeight) throw new Error('أکآھأکآ¹أکآ°أکآ± أ™آپأکآھأکآ­ أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™آپأ™إ  أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­أکâ€؛ أکآ¬أکآ±أ™â€کأکآ¨ MP4 أکآ£أ™ث† أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ§أ™â€¹ أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآ·أکآ¹.');
     const times = Array.from({ length: count }, (_, index) => duration * (index + .5) / count);
     const frames = [];
     for (const time of times) {
@@ -1943,7 +1943,7 @@ async function collectFrames() {
     const count = Math.floor(budget / videos.length) + (index < budget % videos.length ? 1 : 0);
     try { frames.push(...await framesFromVideo(item.blob, Math.max(1, count), item.id)); } catch { failures.push(item.name); }
   }
-  if (!images.length && !frames.length) throw new Error('Ù„Ø§ ØªÙˆØ¬Ø¯ Ù„Ù‚Ø·Ø§Øª Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØ­Ù„ÙŠÙ„Ø› Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© ÙˆØ§Ø¶Ø­Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ø¯Ø¹ÙˆÙ…Ø§Ù‹.');
+  if (!images.length && !frames.length) throw new Error('أ™â€‍أکآ§ أکآھأ™ث†أکآ¬أکآ¯ أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أ™â€ڑأکآ§أکآ¨أ™â€‍أکآ© أ™â€‍أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍أکâ€؛ أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أ™ث†أکآ§أکآ¶أکآ­أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€¦أکآ¯أکآ¹أ™ث†أ™â€¦أکآ§أ™â€¹.');
   return { images, frames, failures };
 }
 function analysisFacts(result = calculateLoss()) {
@@ -1968,22 +1968,22 @@ function monthlyReportInput(result = calculateLoss()) {
 }
 function claudeError(data, fallback) {
   const messages = {
-    claude_config: ['Ø¥Ø¹Ø¯Ø§Ø¯ Ø®Ø¯Ù…Ø© Claude ØºÙŠØ± ØµØ§Ù„Ø­Ø› ÙŠØ­ØªØ§Ø¬ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ù…Ø±Ø§Ø¬Ø¹ØªÙ‡.', 'Claude configuration is invalid; the site administrator needs to check it.'],
-    claude_not_configured: ['Claude ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„ Ø¨Ø¹Ø¯. ÙŠØ³ØªØ·ÙŠØ¹ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØªÙØ¹ÙŠÙ„Ù‡ Ø¨Ù…ÙØªØ§Ø­ Anthropic.', 'Claude is not enabled yet. The site administrator can enable it with an Anthropic key.'],
-    claude_billing: ['ÙŠÙ„Ø²Ù… ØªÙØ¹ÙŠÙ„ Ø±ØµÙŠØ¯ Ø®Ø¯Ù…Ø© Claude Ù„Ø¯Ù‰ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹.', 'The site administrator needs to activate Claude API credits.'],
-    claude_auth: ['ØªØ¹Ø°Ø± Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø­Ø³Ø§Ø¨ ClaudeØ› ÙŠØ­ØªØ§Ø¬ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ø±Ø¨Ø·.', 'Could not authenticate Claude; the site administrator needs to check the connection.'],
-    claude_rate_limit: ['Ø®Ø¯Ù…Ø© Claude Ù…Ø´ØºÙˆÙ„Ø©Ø› Ø§Ù†ØªØ¸Ø± Ù‚Ù„ÙŠÙ„Ø§Ù‹ Ø«Ù… Ø£Ø¹Ø¯ Ø§Ù„ØªØ­Ù„ÙŠÙ„.', 'Claude is busy; wait a little and try again.'],
-    claude_timeout: ['Ø§Ø³ØªØºØ±Ù‚ Claude ÙˆÙ‚ØªØ§Ù‹ Ø·ÙˆÙŠÙ„Ø§Ù‹Ø› Ø£Ø¹Ø¯ Ø§Ù„Ø·Ù„Ø¨ Ø£Ùˆ Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ø£ÙˆØ¶Ø­.', 'Claude took too long; retry or attach clearer photos.'],
-    claude_refusal: ['Ù„Ù… ÙŠØ³ØªØ·Ø¹ Claude ØªÙ‚Ø¯ÙŠÙ… Ù‡Ø°Ø§ Ø§Ù„ØªØ­Ù„ÙŠÙ„Ø› Ø£Ø±ÙÙ‚ ØµÙˆØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£Ùˆ Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙÙ‚Ø·.', 'Claude could not provide this assessment; attach only panel or bill images.'],
-    claude_invalid_output: ['Ù„Ù… ÙŠØµÙ„ ØªØ­Ù„ÙŠÙ„ Ù…ÙƒØªÙ…Ù„ Ù…Ù† ClaudeØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.', 'Claude did not return a complete assessment; try again.'],
-    claude_image_size: ['Ø§Ù„ØµÙˆØ±Ø© ÙƒØ¨ÙŠØ±Ø© Ù„Ù„ØªØ­Ù„ÙŠÙ„Ø› Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ØµØºØ± Ø£Ùˆ Ø£Ù‚Ù„ Ø¯Ù‚Ø©.', 'The image is too large for assessment; try a smaller or lower-resolution image.'],
-    claude_image_format: ['ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ØµÙˆØ±Ø©Ø› Ø§Ø³ØªØ®Ø¯Ù… JPG Ø£Ùˆ PNG Ø£Ùˆ WEBP.', 'Could not read the image; use JPG, PNG or WEBP.'],
-    claude_images_required: ['Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© ÙˆØ§Ø¶Ø­Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ø¯Ø¹ÙˆÙ…Ø§Ù‹ Ù‚Ø¨Ù„ Ø§Ù„ØªØ­Ù„ÙŠÙ„.', 'Attach a clear image or supported video before assessment.'],
-    claude_frame_time: ['ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© ØªÙˆÙ‚ÙŠØª Ù„Ù‚Ø·Ø© Ø§Ù„ÙÙŠØ¯ÙŠÙˆØ› Ø£Ø¹Ø¯ Ø¥Ø±ÙØ§Ù‚ Ø§Ù„Ù…Ù‚Ø·Ø¹.', 'Could not read a video frame timestamp; attach the clip again.'],
-    claude_model: ['Ù†Ù…ÙˆØ°Ø¬ Claude Ø§Ù„Ù…Ø­Ø¯Ø¯ ØºÙŠØ± Ù…ØªØ§Ø­Ø› ÙŠØ­ØªØ§Ø¬ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯.', 'The selected Claude model is unavailable; the site administrator needs to check it.'],
-    claude_request: ['ØªØ¹Ø°Ø± ØªÙ†ÙÙŠØ° Ø·Ù„Ø¨ ClaudeØ› Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ÙˆØ¶Ø­ Ø£Ùˆ Ø£Ø¹Ø¯ Ø§Ù„Ø·Ù„Ø¨.', 'Could not process the Claude request; try a clearer image or submit again.'],
-    claude_unavailable: ['Ø®Ø¯Ù…Ø© Claude ØºÙŠØ± Ù…ØªØ§Ø­Ø© Ø§Ù„Ø¢Ù†Ø› Ø­Ø§ÙˆÙ„ Ù„Ø§Ø­Ù‚Ø§Ù‹.', 'Claude is unavailable right now; try later.'],
-    claude_network: ['ØªØ¹Ø°Ø± Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø®Ø¯Ù…Ø© ClaudeØ› Ø­Ø§ÙˆÙ„ Ù„Ø§Ø­Ù‚Ø§Ù‹.', 'Could not connect to Claude; try later.'],
+    claude_config: ['أکآ¥أکآ¹أکآ¯أکآ§أکآ¯ أکآ®أکآ¯أ™â€¦أکآ© Claude أکآ؛أ™إ أکآ± أکآµأکآ§أ™â€‍أکآ­أکâ€؛ أ™إ أکآ­أکآھأکآ§أکآ¬ أ™â€¦أکآ³أکآ¤أ™ث†أ™â€‍ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™â€¦أکآ±أکآ§أکآ¬أکآ¹أکآھأ™â€،.', 'Claude configuration is invalid; the site administrator needs to check it.'],
+    claude_not_configured: ['Claude أکآ؛أ™إ أکآ± أ™â€¦أ™آپأکآ¹أ™â€کأ™â€‍ أکآ¨أکآ¹أکآ¯. أ™إ أکآ³أکآھأکآ·أ™إ أکآ¹ أ™â€¦أکآ³أکآ¤أ™ث†أ™â€‍ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآھأ™آپأکآ¹أ™إ أ™â€‍أ™â€، أکآ¨أ™â€¦أ™آپأکآھأکآ§أکآ­ Anthropic.', 'Claude is not enabled yet. The site administrator can enable it with an Anthropic key.'],
+    claude_billing: ['أ™إ أ™â€‍أکآ²أ™â€¦ أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ±أکآµأ™إ أکآ¯ أکآ®أکآ¯أ™â€¦أکآ© Claude أ™â€‍أکآ¯أ™â€° أ™â€¦أکآ³أکآ¤أ™ث†أ™â€‍ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹.', 'The site administrator needs to activate Claude API credits.'],
+    claude_auth: ['أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآ§أکآھأکآµأکآ§أ™â€‍ أکآ¨أکآ­أکآ³أکآ§أکآ¨ Claudeأکâ€؛ أ™إ أکآ­أکآھأکآ§أکآ¬ أ™â€¦أکآ³أکآ¤أ™ث†أ™â€‍ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™â€¦أکآ±أکآ§أکآ¬أکآ¹أکآ© أکآ§أ™â€‍أکآ±أکآ¨أکآ·.', 'Could not authenticate Claude; the site administrator needs to check the connection.'],
+    claude_rate_limit: ['أکآ®أکآ¯أ™â€¦أکآ© Claude أ™â€¦أکآ´أکآ؛أ™ث†أ™â€‍أکآ©أکâ€؛ أکآ§أ™â€ أکآھأکآ¸أکآ± أ™â€ڑأ™â€‍أ™إ أ™â€‍أکآ§أ™â€¹ أکآ«أ™â€¦ أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍.', 'Claude is busy; wait a little and try again.'],
+    claude_timeout: ['أکآ§أکآ³أکآھأکآ؛أکآ±أ™â€ڑ Claude أ™ث†أ™â€ڑأکآھأکآ§أ™â€¹ أکآ·أ™ث†أ™إ أ™â€‍أکآ§أ™â€¹أکâ€؛ أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أکآ·أ™â€‍أکآ¨ أکآ£أ™ث† أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ§أ™â€¹ أکآ£أ™ث†أکآ¶أکآ­.', 'Claude took too long; retry or attach clearer photos.'],
+    claude_refusal: ['أ™â€‍أ™â€¦ أ™إ أکآ³أکآھأکآ·أکآ¹ Claude أکآھأ™â€ڑأکآ¯أ™إ أ™â€¦ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍أکâ€؛ أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ± أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ£أ™ث† أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™آپأ™â€ڑأکآ·.', 'Claude could not provide this assessment; attach only panel or bill images.'],
+    claude_invalid_output: ['أ™â€‍أ™â€¦ أ™إ أکآµأ™â€‍ أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أ™â€¦أ™ئ’أکآھأ™â€¦أ™â€‍ أ™â€¦أ™â€  Claudeأکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€°.', 'Claude did not return a complete assessment; try again.'],
+    claude_image_size: ['أکآ§أ™â€‍أکآµأ™ث†أکآ±أکآ© أ™ئ’أکآ¨أ™إ أکآ±أکآ© أ™â€‍أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍أکâ€؛ أکآ¬أکآ±أ™â€کأکآ¨ أکآµأ™ث†أکآ±أکآ© أکآ£أکآµأکآ؛أکآ± أکآ£أ™ث† أکآ£أ™â€ڑأ™â€‍ أکآ¯أ™â€ڑأکآ©.', 'The image is too large for assessment; try a smaller or lower-resolution image.'],
+    claude_image_format: ['أکآھأکآ¹أکآ°أکآ± أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أکآµأ™ث†أکآ±أکآ©أکâ€؛ أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ JPG أکآ£أ™ث† PNG أکآ£أ™ث† WEBP.', 'Could not read the image; use JPG, PNG or WEBP.'],
+    claude_images_required: ['أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أ™ث†أکآ§أکآ¶أکآ­أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€¦أکآ¯أکآ¹أ™ث†أ™â€¦أکآ§أ™â€¹ أ™â€ڑأکآ¨أ™â€‍ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍.', 'Attach a clear image or supported video before assessment.'],
+    claude_frame_time: ['أکآھأکآ¹أکآ°أکآ± أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآھأ™ث†أ™â€ڑأ™إ أکآھ أ™â€‍أ™â€ڑأکآ·أکآ© أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث†أکâ€؛ أکآ£أکآ¹أکآ¯ أکآ¥أکآ±أ™آپأکآ§أ™â€ڑ أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآ·أکآ¹.', 'Could not read a video frame timestamp; attach the clip again.'],
+    claude_model: ['أ™â€ أ™â€¦أ™ث†أکآ°أکآ¬ Claude أکآ§أ™â€‍أ™â€¦أکآ­أکآ¯أکآ¯ أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ§أکآ­أکâ€؛ أ™إ أکآ­أکآھأکآ§أکآ¬ أ™â€¦أکآ³أکآ¤أ™ث†أ™â€‍ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™â€¦أکآ±أکآ§أکآ¬أکآ¹أکآ© أکآ§أ™â€‍أکآ¥أکآ¹أکآ¯أکآ§أکآ¯.', 'The selected Claude model is unavailable; the site administrator needs to check it.'],
+    claude_request: ['أکآھأکآ¹أکآ°أکآ± أکآھأ™â€ أ™آپأ™إ أکآ° أکآ·أ™â€‍أکآ¨ Claudeأکâ€؛ أکآ¬أکآ±أ™â€کأکآ¨ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث†أکآ¶أکآ­ أکآ£أ™ث† أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أکآ·أ™â€‍أکآ¨.', 'Could not process the Claude request; try a clearer image or submit again.'],
+    claude_unavailable: ['أکآ®أکآ¯أ™â€¦أکآ© Claude أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ§أکآ­أکآ© أکآ§أ™â€‍أکآ¢أ™â€ أکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€‍أکآ§أکآ­أ™â€ڑأکآ§أ™â€¹.', 'Claude is unavailable right now; try later.'],
+    claude_network: ['أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآ§أکآھأکآµأکآ§أ™â€‍ أکآ¨أکآ®أکآ¯أ™â€¦أکآ© Claudeأکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€‍أکآ§أکآ­أ™â€ڑأکآ§أ™â€¹.', 'Could not connect to Claude; try later.'],
   };
   return messages[data.code] ? ui(...messages[data.code]) : state.settings.language === 'en' ? translateText(data.error || fallback) : data.error || fallback;
 }
@@ -1993,7 +1993,7 @@ async function requestMonthlyAssessment(signal) {
     body: JSON.stringify({ facts: analysisFacts(), reportInput: monthlyReportInput(), language: state.settings.language }),
   });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.error || ui('ØªØ¹Ø°Ø± Ø­Ø³Ø§Ø¨ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±.', 'Could not calculate monthly losses.'));
+  if (!response.ok) throw new Error(data.error || ui('أکآھأکآ¹أکآ°أکآ± أکآ­أکآ³أکآ§أکآ¨ أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ´أ™â€،أکآ±.', 'Could not calculate monthly losses.'));
   return data;
 }
 async function updateMonthlyAssessment() {
@@ -2016,12 +2016,12 @@ async function runAnalysis({ useClaude = false } = {}) {
   if (!currentAccount?.id) return;
   analysisController?.abort(); analysisController = new AbortController();
   analysisBusy = useClaude;
-  const panelButton = el('analyze-panels'); if (panelButton) panelButton.textContent = ui('ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude', 'Panel assessment with Claude');
+  const panelButton = el('analyze-panels'); if (panelButton) panelButton.textContent = ui('أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claude', 'Panel assessment with Claude');
   const sequence = ++analysisSequence; const accountId = currentAccount.id; const fingerprint = analysisFingerprint();
   const stillCurrent = () => sequence === analysisSequence && accountId === currentAccount?.id && fingerprint === analysisFingerprint();
   const button = useClaude ? el('analyze-panels') : el('start-setup'); const original = button?.innerHTML;
-  if (button) { button.disabled = true; button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('ÙŠØ¬Ø±ÙŠ Ø§Ù„ØªØ­Ù„ÙŠÙ„â€¦', 'Assessingâ€¦')}</span>`; }
-  el('status-title').textContent = ui('Ø³ÙŠØ§Ø¬ ÙŠØ±Ø§Ø¬Ø¹ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª', 'Siyaj is reviewing your details');
+  if (button) { button.disabled = true; button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('أ™إ أکآ¬أکآ±أ™إ  أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍أ¢â‚¬آ¦', 'Assessingأ¢â‚¬آ¦')}</span>`; }
+  el('status-title').textContent = ui('أکآ³أ™إ أکآ§أکآ¬ أ™إ أکآ±أکآ§أکآ¬أکآ¹ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ', 'Siyaj is reviewing your details');
   let analysisError = ''; let storedReport = null; let ai = null; let aiModel = null; let solarContext = null; let monthlyLoss = null;
   try {
     await loadAppSettings(); const config = await loadAiConfig();
@@ -2036,13 +2036,13 @@ async function runAnalysis({ useClaude = false } = {}) {
           body: JSON.stringify({ images: collected.images, frames: collected.frames, language: state.settings.language, facts: analysisFacts(baseResult), reportInput: monthlyReportInput(baseResult) }),
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(claudeError(data, 'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø°ÙƒÙŠ.'));
+        if (!response.ok) throw new Error(claudeError(data, 'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ°أ™ئ’أ™إ .'));
         ai = data.analysis; aiModel = data.model || 'Claude'; storedReport = data.report || null;
         solarContext = data.solarContext || null; monthlyLoss = data.monthlyLoss || null;
-        if (collected.failures.length) analysisError = ui(`Ù„Ù… ØªÙÙ‚Ø±Ø£ Ù‡Ø°Ù‡ Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª: ${collected.failures.join('ØŒ ')}. ØªÙ… ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª Ø§Ù„Ù…ØªØ§Ø­Ø© ÙÙ‚Ø·.`, `These attachments could not be read: ${collected.failures.join(', ')}. Only readable attachments were assessed.`);
-      } catch (error) { if (error.name === 'AbortError') return; analysisError = error.message || 'ØªØ¹Ø°Ø± ØªØ­Ù„ÙŠÙ„ Ø§Ù„ØµÙˆØ±.'; }
-    } else if (useClaude) analysisError = config.claudeEnabled ? 'Ø£Ø¶Ù ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù„ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¨ØµØ±ÙŠ Ø¨Ø§Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„Ø§ØµØ·Ù†Ø§Ø¹ÙŠ.' : claudeEnabled === false ? 'Claude ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„ Ø¨Ø¹Ø¯. ÙŠØ³ØªØ·ÙŠØ¹ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØªÙØ¹ÙŠÙ„Ù‡ Ø¨Ù…ÙØªØ§Ø­ Anthropic.' : 'ØªØ¹Ø°Ø± Ù…Ø¹Ø±ÙØ© Ø­Ø§Ù„Ø© ClaudeØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.';
-    if (!stillCurrent()) { if (accountId === currentAccount?.id) showToast('ØªØºÙŠØ±Øª Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„ØªØ­Ù„ÙŠÙ„. Ø£Ø¹Ø¯ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø§Ù„ÙŠØ©.'); return; }
+        if (collected.failures.length) analysisError = ui(`أ™â€‍أ™â€¦ أکآھأ™آڈأ™â€ڑأکآ±أکآ£ أ™â€،أکآ°أ™â€، أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھ: ${collected.failures.join('أکإ’ ')}. أکآھأ™â€¦ أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھ أکآ§أ™â€‍أ™â€¦أکآھأکآ§أکآ­أکآ© أ™آپأ™â€ڑأکآ·.`, `These attachments could not be read: ${collected.failures.join(', ')}. Only readable attachments were assessed.`);
+      } catch (error) { if (error.name === 'AbortError') return; analysisError = error.message || 'أکآھأکآ¹أکآ°أکآ± أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآµأ™ث†أکآ±.'; }
+    } else if (useClaude) analysisError = config.claudeEnabled ? 'أکآ£أکآ¶أ™آپ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™â€‍أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¨أکآµأکآ±أ™إ  أکآ¨أکآ§أ™â€‍أکآ°أ™ئ’أکآ§أکآ، أکآ§أ™â€‍أکآ§أکآµأکآ·أ™â€ أکآ§أکآ¹أ™إ .' : claudeEnabled === false ? 'Claude أکآ؛أ™إ أکآ± أ™â€¦أ™آپأکآ¹أ™â€کأ™â€‍ أکآ¨أکآ¹أکآ¯. أ™إ أکآ³أکآھأکآ·أ™إ أکآ¹ أ™â€¦أکآ³أکآ¤أ™ث†أ™â€‍ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآھأ™آپأکآ¹أ™إ أ™â€‍أ™â€، أکآ¨أ™â€¦أ™آپأکآھأکآ§أکآ­ Anthropic.' : 'أکآھأکآ¹أکآ°أکآ± أ™â€¦أکآ¹أکآ±أ™آپأکآ© أکآ­أکآ§أ™â€‍أکآ© Claudeأکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€°.';
+    if (!stillCurrent()) { if (accountId === currentAccount?.id) showToast('أکآھأکآ؛أ™إ أکآ±أکآھ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ£أکآ«أ™â€ أکآ§أکآ، أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍. أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أکآ·أ™â€‍أکآ¨ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ©.'); return; }
     if (!monthlyLoss) {
       try { const data = await requestMonthlyAssessment(analysisController.signal); solarContext = data.solarContext || solarContext; monthlyLoss = data.monthlyLoss || null; }
       catch (error) { if (error.name === 'AbortError') return; analysisError += ` ${error.message}`; }
@@ -2053,68 +2053,68 @@ async function runAnalysis({ useClaude = false } = {}) {
     else {
       try {
         const response = await authenticatedFetch('/api/panel/analysis', { method: 'POST', signal: analysisController.signal, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(monthlyReportInput(result)) });
-        const data = await response.json(); if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø­Ø³Ø§Ø¨ ØªÙØµÙŠÙ„ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ø­Ø§Ù„ÙŠØ§Ù‹.');
+        const data = await response.json(); if (!response.ok) throw new Error(data.error || 'أکآھأکآ¹أکآ°أکآ± أکآ­أکآ³أکآ§أکآ¨ أکآھأ™آپأکآµأ™إ أ™â€‍ أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© أکآ­أکآ§أ™â€‍أ™إ أکآ§أ™â€¹.');
         if (data.analysis) applyStoredReport(result, data.analysis);
       } catch (error) { if (error.name === 'AbortError') return; result.heatLossPercent = null; result.heatLossOmr = null; result.dustLossOmr = null; if (!analysisError) analysisError = error.message; }
     }
     if (!stillCurrent()) return;
     state.ai = ai; state.aiLanguage = ai ? state.settings.language : null; state.aiModel = aiModel;
     state.solarContext = solarContext; state.monthlyLoss = monthlyLoss; state.result = result; state.updatedAt = new Date().toISOString();
-    const item = { ...result, id: crypto.randomUUID(), createdAt: state.updatedAt, temperature: result.airTemp, location: state.form.location || 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯', ai: !!ai, visualAssessment: ai, aiLanguage: state.aiLanguage, aiModel, solarContext, monthlyLoss };
+    const item = { ...result, id: crypto.randomUUID(), createdAt: state.updatedAt, temperature: result.airTemp, location: state.form.location || 'أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ¯أکآ¯', ai: !!ai, visualAssessment: ai, aiLanguage: state.aiLanguage, aiModel, solarContext, monthlyLoss };
     state.history.unshift(item); state.history = state.history.slice(0, 50);
     renderDashboard(analysisError); persist();
   } finally {
     if (sequence === analysisSequence && accountId === currentAccount?.id) {
       analysisBusy = false;
-      if (button) { button.disabled = false; button.innerHTML = original || (useClaude ? ui('ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude', 'Panel assessment with Claude') : 'Ø¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù… <span>â†</span>'); }
+      if (button) { button.disabled = false; button.innerHTML = original || (useClaude ? ui('أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claude', 'Panel assessment with Claude') : 'أکآ¥أکآ¹أکآ¯أکآ§أکآ¯ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ <span>أ¢â€ آگ</span>'); }
       if (panelButton) panelButton.disabled = claudeEnabled !== true || !mediaFor('panels').length;
-      if (!stillCurrent()) renderDashboard(ui('ØªØºÙŠØ±Øª Ø§Ù„Ø¨ÙŠØ§Ù†Ø§ØªØ› Ø£Ø¹Ø¯ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø¥Ø°Ø§ Ø£Ø±Ø¯Øª Ù†ØªÙŠØ¬Ø© Ù…Ø­Ø¯Ø«Ø©.', 'Details changed; run analysis again for an updated assessment.'));
+      if (!stillCurrent()) renderDashboard(ui('أکآھأکآ؛أ™إ أکآ±أکآھ أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھأکâ€؛ أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ¥أکآ°أکآ§ أکآ£أکآ±أکآ¯أکآھ أ™â€ أکآھأ™إ أکآ¬أکآ© أ™â€¦أکآ­أکآ¯أکآ«أکآ©.', 'Details changed; run analysis again for an updated assessment.'));
     }
   }
 }
-function money(value) { return `${Number(value || 0).toFixed(3)} Ø±.Ø¹`; }
+function money(value) { return `${Number(value || 0).toFixed(3)} أکآ±.أکآ¹`; }
 function assessmentValue(value, suffix = '', decimals = 1) {
-  return value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value)) ? `${Number(value).toFixed(decimals)}${suffix}` : 'â€”';
+  return value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value)) ? `${Number(value).toFixed(decimals)}${suffix}` : 'أ¢â‚¬â€‌';
 }
 function confidenceText(value) {
-  return ({ high: ui('Ù…Ø±ØªÙØ¹Ø©', 'High'), medium: ui('Ù…ØªÙˆØ³Ø·Ø©', 'Medium'), low: ui('Ù…Ù†Ø®ÙØ¶Ø©', 'Low'), unavailable: ui('ØºÙŠØ± Ù…ØªØ§Ø­Ø©', 'Unavailable') })[value] || ui('ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©', 'Not specified');
+  return ({ high: ui('أ™â€¦أکآ±أکآھأ™آپأکآ¹أکآ©', 'High'), medium: ui('أ™â€¦أکآھأ™ث†أکآ³أکآ·أکآ©', 'Medium'), low: ui('أ™â€¦أ™â€ أکآ®أ™آپأکآ¶أکآ©', 'Low'), unavailable: ui('أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ§أکآ­أکآ©', 'Unavailable') })[value] || ui('أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ¯أکآ¯أکآ©', 'Not specified');
 }
 function assessmentMetric(label, value, hint = '') {
   return `<div class="assessment-metric"><small>${escapeHtml(label)}</small><b>${escapeHtml(value)}</b>${hint ? `<span>${escapeHtml(hint)}</span>` : ''}</div>`;
 }
 function assessmentNote(key) {
   const notes = {
-    missing_location: ['Ø£Ø¶Ù Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù… Ù„Ø­Ø³Ø§Ø¨ Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø´Ù…Ø³.', 'Add the system location to calculate sun direction.'],
-    missing_capture_time_with_timezone: ['Ø£Ø¶Ù ÙˆÙ‚Øª Ø§Ù„ØªØµÙˆÙŠØ± Ù„Ø­Ø³Ø§Ø¨ Ù…ÙˆØ¶Ø¹ Ø§Ù„Ø´Ù…Ø³.', 'Add the capture time to calculate the sun position.'],
-    missing_measured_panel_tilt: ['Ø£Ø¯Ø®Ù„ Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø§Ù„Ù…Ù‚Ø§Ø³Ø› Ù„Ø§ Ù†Ø³ØªØ®Ø±Ø¬Ù‡ Ø¨Ø¯Ù‚Ø© Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆ.', 'Enter measured panel tilt; video does not establish it precisely.'],
-    missing_measured_panel_azimuth: ['Ø£Ø¯Ø®Ù„ Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ù…Ù† Ù‚Ø±Ø§Ø¡Ø© Ø¨ÙˆØµÙ„Ø©.', 'Enter the panel direction from a compass reading.'],
-    approximate_position_without_atmospheric_refraction: ['Ù…ÙˆØ¶Ø¹ Ø§Ù„Ø´Ù…Ø³ Ø­Ø³Ø§Ø¨ ØªÙ‚Ø±ÙŠØ¨ÙŠ Ù…Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙˆÙ‚Øª.', 'Sun position is an approximation from location and time.'],
-    reduced_solar_position_accuracy_at_high_latitude: ['Ø¯Ù‚Ø© Ø­Ø³Ø§Ø¨ Ø§Ù„Ø´Ù…Ø³ Ø£Ù‚Ù„ Ø¹Ù†Ø¯ Ø®Ø·ÙˆØ· Ø§Ù„Ø¹Ø±Ø¶ Ø§Ù„Ø¹Ø§Ù„ÙŠØ©.', 'Sun position accuracy is lower at high latitudes.'],
-    cell_temperature_model_requires_matching_capture_time_and_nominal_wind_mounting: ['Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø®Ù„Ø§ÙŠØ§ ØªÙ‚Ø¯ÙŠØ± Ù†Ù…ÙˆØ°Ø¬ÙŠ ÙŠÙØªØ±Ø¶ ØªÙˆØ§ÙÙ‚ ÙˆÙ‚Øª Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§Ù„ØªØµÙˆÙŠØ± ÙˆØ¸Ø±ÙˆÙ ØªØ±ÙƒÙŠØ¨ ÙˆØ±ÙŠØ§Ø­ Ø§Ø³Ù…ÙŠØ©.', 'Cell temperature is modeled and assumes matching weather and capture time, with nominal mounting and wind conditions.'],
-    rgb_and_sun_direction_do_not_measure_panel_temperature: ['ØµÙˆØ±Ø© Ø¹Ø§Ø¯ÙŠØ© ÙˆØ§ØªØ¬Ø§Ù‡ Ø§Ù„Ø´Ù…Ø³ Ù„Ø§ ÙŠÙ‚ÙŠØ³Ø§Ù† Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ù„ÙˆØ­. ÙŠÙ„Ø²Ù… Ù…Ø³ØªØ´Ø¹Ø± Ø­Ø±Ø§Ø±Ø© Ø£Ùˆ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø±Ø§Ø±ÙŠØ© Ù…Ù†Ø§Ø³Ø¨Ø©.', 'An ordinary image and sun direction do not measure panel temperature. A temperature sensor or suitable thermal data is needed.'],
-    missing_confirmed_omr_energy_tariff: ['Ø£Ø¯Ø®Ù„ ØªØ¹Ø±ÙØ© Ø·Ø§Ù‚Ø© Ù…Ø¤ÙƒØ¯Ø© Ø¨Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø¹ÙÙ…Ø§Ù†ÙŠ Ù„Ø¥Ø¸Ù‡Ø§Ø± Ù‚ÙŠÙ…Ø© Ø§Ù„Ø®Ø³Ø§Ø±Ø©.', 'Enter a confirmed OMR energy tariff to show the value of the deficit.'],
-    missing_timezone_using_utc_until_weather_resolves_local_timezone: ['Ø§Ù„Ù…Ù†Ø·Ù‚Ø© Ø§Ù„Ø²Ù…Ù†ÙŠØ© ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©Ø› Ù‚Ø¯ ØªÙØ³ØªØ®Ø¯Ù… UTC Ø­ØªÙ‰ ÙŠØªÙˆÙØ± Ø·Ù‚Ø³ Ø§Ù„Ù…ÙˆÙ‚Ø¹.', 'The time zone is not set; UTC may be used until location weather is available.'],
-    invalid_selected_month: ['Ø­Ø¯Ù‘Ø¯ Ø´Ù‡Ø±Ø§Ù‹ ØµØ­ÙŠØ­Ø§Ù‹.', 'Select a valid month.'],
-    selected_month_has_no_completed_days: ['Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£ÙŠØ§Ù… Ù…ÙƒØªÙ…Ù„Ø© ÙÙŠ Ø§Ù„Ø´Ù‡Ø± Ø§Ù„Ù…Ø­Ø¯Ø¯ Ø­ØªÙ‰ Ø§Ù„Ø¢Ù†.', 'The selected month has no completed days yet.'],
-    invoice_month_differs_from_selected_month: ['Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù…Ø®ØªÙ„Ù Ø¹Ù† Ø´Ù‡Ø± Ø§Ù„ØªØ­Ù„ÙŠÙ„.', 'The bill month differs from the assessment month.'],
-    bill_grid_consumption_is_not_solar_production: ['Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø´Ø¨ÙƒØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ ÙÙŠ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„ÙŠØ³ Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.', 'Grid consumption on the bill is not solar generation.'],
-    visible_surface_coverage_is_not_energy_loss: ['Ù†Ø³Ø¨Ø© ØªØºØ·ÙŠØ© Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„ Ù„Ø§ ØªØ³Ø§ÙˆÙŠ Ù†Ø³Ø¨Ø© ÙÙ‚Ø¯ Ø§Ù„Ø·Ø§Ù‚Ø©.', 'Dust and shade coverage is not the percentage of energy loss.'],
-    monthly_model_requires_location: ['Ø£Ø¶Ù Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù… Ù„ØªÙ‚Ø¯ÙŠØ± Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ø´Ù‡Ø± Ù…Ù† Ø§Ù„Ø·Ù‚Ø³.', 'Add the system location to model monthly generation from weather.'],
-    monthly_model_requires_measured_tilt_and_azimuth: ['Ø£Ø¯Ø®Ù„ Ø§Ù„Ù…ÙŠÙ„ ÙˆØ§Ù„Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ù…Ù‚Ø§Ø³ÙŠÙ† Ù„ØªÙ‚Ø¯ÙŠØ± Ø§Ù„Ø¥Ù†ØªØ§Ø¬.', 'Enter measured tilt and facing direction to model generation.'],
-    monthly_model_requires_installed_power: ['Ø£Ø¯Ø®Ù„ Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù†Ø¸Ø§Ù… Ù„ØªÙ‚Ø¯ÙŠØ± Ø§Ù„Ø¥Ù†ØªØ§Ø¬.', 'Enter total system capacity to model generation.'],
-    weather_model_is_not_metered_site_generation: ['Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ Ù…Ø³ØªÙ…Ø¯ Ù…Ù† Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„Ø·Ù‚Ø³ØŒ ÙˆÙ„ÙŠØ³ Ù‚Ø±Ø§Ø¡Ø© Ø¹Ø¯Ù‘Ø§Ø¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹.', 'Expected generation comes from a weather model, not a site meter reading.'],
-    incomplete_monthly_weather_no_full_period_estimate: ['Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø·Ù‚Ø³ ØºÙŠØ± Ù…ÙƒØªÙ…Ù„Ø©Ø› Ù„Ù… ÙŠÙØ­Ø³Ø¨ ØªÙ‚Ø¯ÙŠØ± ÙƒØ§Ù…Ù„ Ù„Ù„ÙØªØ±Ø©.', 'Weather data is incomplete; no complete-period estimate was calculated.'],
-    monthly_weather_unavailable: ['Ø·Ù‚Ø³ Ø§Ù„Ø´Ù‡Ø± ØºÙŠØ± Ù…ØªØ§Ø­ Ø§Ù„Ø¢Ù†Ø› ÙŠÙ…ÙƒÙ†Ùƒ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙŠØ¯ÙˆÙŠØ§Ù‹.', 'Monthly weather is unavailable; you can enter expected generation manually.'],
-    current_month_includes_completed_days_only_align_inverter_reading_to_end_of_yesterday: ['ÙŠØ´Ù…Ù„ Ø§Ù„Ø´Ù‡Ø± Ø§Ù„Ø­Ø§Ù„ÙŠ Ø§Ù„Ø£ÙŠØ§Ù… Ø§Ù„Ù…ÙƒØªÙ…Ù„Ø© Ø­ØªÙ‰ Ù†Ù‡Ø§ÙŠØ© Ø£Ù…Ø³ ÙÙ‚Ø·Ø› Ø£Ø¯Ø®Ù„ Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ø¹Ø§ÙƒØ³ Ù„Ù„ÙØªØ±Ø© Ù†ÙØ³Ù‡Ø§.', 'The current month includes completed days through yesterday only; enter the inverter reading for that period.'],
-    actual_inverter_generation_required_for_monthly_loss: ['Ø£Ø¯Ø®Ù„ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„ÙØ¹Ù„ÙŠ Ù…Ù† Ø¹Ø¯Ù‘Ø§Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£Ùˆ Ø§Ù„Ø¹Ø§ÙƒØ³ Ù„Ø­Ø³Ø§Ø¨ ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬.', 'Enter actual PV meter or inverter generation to calculate the generation deficit.'],
-    generation_deficit_cannot_be_attributed_to_dust_shade_heat_without_additional_measurements: ['ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ù„Ø§ ÙŠØ­Ø¯Ø¯ ÙˆØ­Ø¯Ù‡ ÙƒÙ… Ø®Ø³Ø±Øª Ø¨Ø³Ø¨Ø¨ Ø§Ù„ØºØ¨Ø§Ø± Ø£Ùˆ Ø§Ù„Ø¸Ù„ Ø£Ùˆ Ø§Ù„Ø­Ø±Ø§Ø±Ø©Ø› ÙŠÙ„Ø²Ù… Ù‚ÙŠØ§Ø³ Ø¥Ø¶Ø§ÙÙŠ.', 'The generation deficit alone cannot separate dust, shade or heat losses; further measurements are needed.'],
-    actual_generation_exceeds_reference_no_positive_deficit: ['Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„ÙØ¹Ù„ÙŠ ÙŠØªØ¬Ø§ÙˆØ² Ø§Ù„Ù…Ø±Ø¬Ø¹Ø› Ù„Ø§ ÙŠÙˆØ¬Ø¯ ÙØ±Ù‚ Ø¥Ù†ØªØ§Ø¬ Ù…ÙˆØ¬Ø¨ Ù…Ø­Ø³ÙˆØ¨.', 'Actual generation exceeds the reference; no positive deficit is calculated.'],
-    expected_and_actual_pv_generation_refer_to_same_selected_period: ['Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Ù† ÙŠÙØªØ±Ø¶ Ø£Ù†Ù‡Ù…Ø§ ÙŠØºØ·ÙŠØ§Ù† Ø§Ù„ÙØªØ±Ø© Ù†ÙØ³Ù‡Ø§.', 'Entered expected and actual PV generation are assumed to cover the same period.'],
-    expected_generation_equals_installed_kw_times_plane_of_array_kwh_per_m2_times_performance_ratio: ['Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù†Ù…ÙˆØ°Ø¬ÙŠ = Ù‚Ø¯Ø±Ø© Ø§Ù„Ù†Ø¸Ø§Ù… Ã— Ø§Ù„Ø¥Ø´Ø¹Ø§Ø¹ Ø¹Ù„Ù‰ Ù…Ø³ØªÙˆÙ‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ã— Ù…Ø¹Ø§Ù…Ù„ Ø§Ù„Ø£Ø¯Ø§Ø¡.', 'Modeled generation = system capacity Ã— panel-plane irradiation Ã— performance ratio.'],
-    performance_ratio_is_aggregate_and_includes_temperature_inverter_and_other_losses: ['Ù…Ø¹Ø§Ù…Ù„ Ø§Ù„Ø£Ø¯Ø§Ø¡ ÙŠØ´Ù…Ù„ Ø£Ø«Ø± Ø§Ù„Ø­Ø±Ø§Ø±Ø© ÙˆØ§Ù„Ø¹Ø§ÙƒØ³ ÙˆØ®Ø³Ø§Ø¦Ø± Ø£Ø®Ø±Ù‰Ø› Ù„Ø§ ØªÙØ¶Ø§Ù Ù…Ø±Ø© Ø«Ø§Ù†ÙŠØ©.', 'The performance ratio includes temperature, inverter and other losses; they are not added again.'],
-    open_meteo_isotropic_sky_and_ground_albedo_0_2: ['ÙŠØ¹ØªÙ…Ø¯ Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„Ø¥Ø´Ø¹Ø§Ø¹ Ø¹Ù„Ù‰ Open-Meteo ÙˆØ§ÙØªØ±Ø§Ø¶ Ø§Ù†Ø¹ÙƒØ§Ø³ Ø£Ø±Ø¶ÙŠ 0.2.', 'The irradiation model uses Open-Meteo and an assumed ground albedo of 0.2.'],
-    default_performance_ratio_0_8_not_a_site_calibration: ['Ù…Ø¹Ø§Ù…Ù„ Ø§Ù„Ø£Ø¯Ø§Ø¡ Ø§Ù„Ù…ÙØªØ±Ø¶ 0.8ØŒ ÙˆÙ„Ù… ØªØªÙ… Ù…Ø¹Ø§ÙŠØ±ØªÙ‡ Ù„Ù†Ø¸Ø§Ù…Ùƒ.', 'The assumed performance ratio is 0.8 and is not calibrated for your system.'],
-    energy_value_uses_constant_confirmed_omr_tariff_not_bill_total_or_tax: ['Ø§Ù„Ù‚ÙŠÙ…Ø© Ø§Ù„Ù…Ø­Ø³ÙˆØ¨Ø© ØªØ³ØªØ®Ø¯Ù… ØªØ¹Ø±ÙØ© Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ù…Ø¤ÙƒØ¯Ø© ÙÙ‚Ø·Ø› Ù„Ø§ ØªØ´Ù…Ù„ Ø§Ù„Ø±Ø³ÙˆÙ… Ø§Ù„Ø«Ø§Ø¨ØªØ© Ø£Ùˆ Ø§Ù„Ø¶Ø±Ø§Ø¦Ø¨.', 'The calculated value uses the confirmed energy tariff only; fixed fees and taxes are excluded.'],
+    missing_location: ['أکآ£أکآ¶أ™آپ أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أکآ´أ™â€¦أکآ³.', 'Add the system location to calculate sun direction.'],
+    missing_capture_time_with_timezone: ['أکآ£أکآ¶أ™آپ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآھأکآµأ™ث†أ™إ أکآ± أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™â€¦أ™ث†أکآ¶أکآ¹ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³.', 'Add the capture time to calculate the sun position.'],
+    missing_measured_panel_tilt: ['أکآ£أکآ¯أکآ®أ™â€‍ أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآ§أکآ³أکâ€؛ أ™â€‍أکآ§ أ™â€ أکآ³أکآھأکآ®أکآ±أکآ¬أ™â€، أکآ¨أکآ¯أ™â€ڑأکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث†.', 'Enter measured panel tilt; video does not establish it precisely.'],
+    missing_measured_panel_azimuth: ['أکآ£أکآ¯أکآ®أ™â€‍ أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™â€¦أ™â€  أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ¨أ™ث†أکآµأ™â€‍أکآ©.', 'Enter the panel direction from a compass reading.'],
+    approximate_position_without_atmospheric_refraction: ['أ™â€¦أ™ث†أکآ¶أکآ¹ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أکآ­أکآ³أکآ§أکآ¨ أکآھأ™â€ڑأکآ±أ™إ أکآ¨أ™إ  أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™ث†أکآ§أ™â€‍أ™ث†أ™â€ڑأکآھ.', 'Sun position is an approximation from location and time.'],
+    reduced_solar_position_accuracy_at_high_latitude: ['أکآ¯أ™â€ڑأکآ© أکآ­أکآ³أکآ§أکآ¨ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أکآ£أ™â€ڑأ™â€‍ أکآ¹أ™â€ أکآ¯ أکآ®أکآ·أ™ث†أکآ· أکآ§أ™â€‍أکآ¹أکآ±أکآ¶ أکآ§أ™â€‍أکآ¹أکآ§أ™â€‍أ™إ أکآ©.', 'Sun position accuracy is lower at high latitudes.'],
+    cell_temperature_model_requires_matching_capture_time_and_nominal_wind_mounting: ['أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ®أ™â€‍أکآ§أ™إ أکآ§ أکآھأ™â€ڑأکآ¯أ™إ أکآ± أ™â€ أ™â€¦أ™ث†أکآ°أکآ¬أ™إ  أ™إ أ™آپأکآھأکآ±أکآ¶ أکآھأ™ث†أکآ§أ™آپأ™â€ڑ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أ™ث†أکآ§أ™â€‍أکآھأکآµأ™ث†أ™إ أکآ± أ™ث†أکآ¸أکآ±أ™ث†أ™آپ أکآھأکآ±أ™ئ’أ™إ أکآ¨ أ™ث†أکآ±أ™إ أکآ§أکآ­ أکآ§أکآ³أ™â€¦أ™إ أکآ©.', 'Cell temperature is modeled and assumes matching weather and capture time, with nominal mounting and wind conditions.'],
+    rgb_and_sun_direction_do_not_measure_panel_temperature: ['أکآµأ™ث†أکآ±أکآ© أکآ¹أکآ§أکآ¯أ™إ أکآ© أ™ث†أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أ™â€‍أکآ§ أ™إ أ™â€ڑأ™إ أکآ³أکآ§أ™â€  أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­. أ™إ أ™â€‍أکآ²أ™â€¦ أ™â€¦أکآ³أکآھأکآ´أکآ¹أکآ± أکآ­أکآ±أکآ§أکآ±أکآ© أکآ£أ™ث† أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ­أکآ±أکآ§أکآ±أ™إ أکآ© أ™â€¦أ™â€ أکآ§أکآ³أکآ¨أکآ©.', 'An ordinary image and sun direction do not measure panel temperature. A temperature sensor or suitable thermal data is needed.'],
+    missing_confirmed_omr_energy_tariff: ['أکآ£أکآ¯أکآ®أ™â€‍ أکآھأکآ¹أکآ±أ™آپأکآ© أکآ·أکآ§أ™â€ڑأکآ© أ™â€¦أکآ¤أ™ئ’أکآ¯أکآ© أکآ¨أکآ§أ™â€‍أکآ±أ™إ أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¹أ™آڈأ™â€¦أکآ§أ™â€ أ™إ  أ™â€‍أکآ¥أکآ¸أ™â€،أکآ§أکآ± أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أکآ®أکآ³أکآ§أکآ±أکآ©.', 'Enter a confirmed OMR energy tariff to show the value of the deficit.'],
+    missing_timezone_using_utc_until_weather_resolves_local_timezone: ['أکآ§أ™â€‍أ™â€¦أ™â€ أکآ·أ™â€ڑأکآ© أکآ§أ™â€‍أکآ²أ™â€¦أ™â€ أ™إ أکآ© أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ¯أکآ¯أکآ©أکâ€؛ أ™â€ڑأکآ¯ أکآھأ™آڈأکآ³أکآھأکآ®أکآ¯أ™â€¦ UTC أکآ­أکآھأ™â€° أ™إ أکآھأ™ث†أ™آپأکآ± أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹.', 'The time zone is not set; UTC may be used until location weather is available.'],
+    invalid_selected_month: ['أکآ­أکآ¯أ™â€کأکآ¯ أکآ´أ™â€،أکآ±أکآ§أ™â€¹ أکآµأکآ­أ™إ أکآ­أکآ§أ™â€¹.', 'Select a valid month.'],
+    selected_month_has_no_completed_days: ['أ™â€‍أکآ§ أکآھأ™ث†أکآ¬أکآ¯ أکآ£أ™إ أکآ§أ™â€¦ أ™â€¦أ™ئ’أکآھأ™â€¦أ™â€‍أکآ© أ™آپأ™إ  أکآ§أ™â€‍أکآ´أ™â€،أکآ± أکآ§أ™â€‍أ™â€¦أکآ­أکآ¯أکآ¯ أکآ­أکآھأ™â€° أکآ§أ™â€‍أکآ¢أ™â€ .', 'The selected month has no completed days yet.'],
+    invoice_month_differs_from_selected_month: ['أکآ´أ™â€،أکآ± أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™â€¦أکآ®أکآھأ™â€‍أ™آپ أکآ¹أ™â€  أکآ´أ™â€،أکآ± أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍.', 'The bill month differs from the assessment month.'],
+    bill_grid_consumption_is_not_solar_production: ['أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’ أکآ´أکآ¨أ™ئ’أکآ© أکآ§أ™â€‍أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ، أ™آپأ™إ  أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™â€‍أ™إ أکآ³ أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­.', 'Grid consumption on the bill is not solar generation.'],
+    visible_surface_coverage_is_not_energy_loss: ['أ™â€ أکآ³أکآ¨أکآ© أکآھأکآ؛أکآ·أ™إ أکآ© أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أ™â€‍أکآ¸أ™â€‍ أ™â€‍أکآ§ أکآھأکآ³أکآ§أ™ث†أ™إ  أ™â€ أکآ³أکآ¨أکآ© أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ©.', 'Dust and shade coverage is not the percentage of energy loss.'],
+    monthly_model_requires_location: ['أکآ£أکآ¶أ™آپ أ™â€¦أ™ث†أ™â€ڑأکآ¹ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أکآ´أ™â€،أکآ± أ™â€¦أ™â€  أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³.', 'Add the system location to model monthly generation from weather.'],
+    monthly_model_requires_measured_tilt_and_azimuth: ['أکآ£أکآ¯أکآ®أ™â€‍ أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أ™ث†أکآ§أ™â€‍أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآ§أکآ³أ™إ أ™â€  أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬.', 'Enter measured tilt and facing direction to model generation.'],
+    monthly_model_requires_installed_power: ['أکآ£أکآ¯أکآ®أ™â€‍ أکآ§أ™â€‍أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ أکآ© أ™â€‍أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬.', 'Enter total system capacity to model generation.'],
+    weather_model_is_not_metered_site_generation: ['أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™â€¦أکآ³أکآھأ™â€¦أکآ¯ أ™â€¦أ™â€  أ™â€ أ™â€¦أ™ث†أکآ°أکآ¬ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³أکإ’ أ™ث†أ™â€‍أ™إ أکآ³ أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ¹أکآ¯أ™â€کأکآ§أکآ¯ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹.', 'Expected generation comes from a weather model, not a site meter reading.'],
+    incomplete_monthly_weather_no_full_period_estimate: ['أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ؛أ™إ أکآ± أ™â€¦أ™ئ’أکآھأ™â€¦أ™â€‍أکآ©أکâ€؛ أ™â€‍أ™â€¦ أ™إ أ™آڈأکآ­أکآ³أکآ¨ أکآھأ™â€ڑأکآ¯أ™إ أکآ± أ™ئ’أکآ§أ™â€¦أ™â€‍ أ™â€‍أ™â€‍أ™آپأکآھأکآ±أکآ©.', 'Weather data is incomplete; no complete-period estimate was calculated.'],
+    monthly_weather_unavailable: ['أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أکآ´أ™â€،أکآ± أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ§أکآ­ أکآ§أ™â€‍أکآ¢أ™â€ أکâ€؛ أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أکآ¥أکآ¯أکآ®أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™إ أکآ¯أ™ث†أ™إ أکآ§أ™â€¹.', 'Monthly weather is unavailable; you can enter expected generation manually.'],
+    current_month_includes_completed_days_only_align_inverter_reading_to_end_of_yesterday: ['أ™إ أکآ´أ™â€¦أ™â€‍ أکآ§أ™â€‍أکآ´أ™â€،أکآ± أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ  أکآ§أ™â€‍أکآ£أ™إ أکآ§أ™â€¦ أکآ§أ™â€‍أ™â€¦أ™ئ’أکآھأ™â€¦أ™â€‍أکآ© أکآ­أکآھأ™â€° أ™â€ أ™â€،أکآ§أ™إ أکآ© أکآ£أ™â€¦أکآ³ أ™آپأ™â€ڑأکآ·أکâ€؛ أکآ£أکآ¯أکآ®أ™â€‍ أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أکآ¹أکآ§أ™ئ’أکآ³ أ™â€‍أ™â€‍أ™آپأکآھأکآ±أکآ© أ™â€ أ™آپأکآ³أ™â€،أکآ§.', 'The current month includes completed days through yesterday only; enter the inverter reading for that period.'],
+    actual_inverter_generation_required_for_monthly_loss: ['أکآ£أکآ¯أکآ®أ™â€‍ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ  أ™â€¦أ™â€  أکآ¹أکآ¯أ™â€کأکآ§أکآ¯ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ£أ™ث† أکآ§أ™â€‍أکآ¹أکآ§أ™ئ’أکآ³ أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™آپأکآ±أ™â€ڑ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬.', 'Enter actual PV meter or inverter generation to calculate the generation deficit.'],
+    generation_deficit_cannot_be_attributed_to_dust_shade_heat_without_additional_measurements: ['أ™آپأکآ±أ™â€ڑ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أ™â€‍أکآ§ أ™إ أکآ­أکآ¯أکآ¯ أ™ث†أکآ­أکآ¯أ™â€، أ™ئ’أ™â€¦ أکآ®أکآ³أکآ±أکآھ أکآ¨أکآ³أکآ¨أکآ¨ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ£أ™ث† أکآ§أ™â€‍أکآ¸أ™â€‍ أکآ£أ™ث† أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ©أکâ€؛ أ™إ أ™â€‍أکآ²أ™â€¦ أ™â€ڑأ™إ أکآ§أکآ³ أکآ¥أکآ¶أکآ§أ™آپأ™إ .', 'The generation deficit alone cannot separate dust, shade or heat losses; further measurements are needed.'],
+    actual_generation_exceeds_reference_no_positive_deficit: ['أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ  أ™إ أکآھأکآ¬أکآ§أ™ث†أکآ² أکآ§أ™â€‍أ™â€¦أکآ±أکآ¬أکآ¹أکâ€؛ أ™â€‍أکآ§ أ™إ أ™ث†أکآ¬أکآ¯ أ™آپأکآ±أ™â€ڑ أکآ¥أ™â€ أکآھأکآ§أکآ¬ أ™â€¦أ™ث†أکآ¬أکآ¨ أ™â€¦أکآ­أکآ³أ™ث†أکآ¨.', 'Actual generation exceeds the reference; no positive deficit is calculated.'],
+    expected_and_actual_pv_generation_refer_to_same_selected_period: ['أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™ث†أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ  أکآ§أ™â€‍أ™â€¦أکآ¯أکآ®أ™â€‍أکآ§أ™â€  أ™إ أ™آپأکآھأکآ±أکآ¶ أکآ£أ™â€ أ™â€،أ™â€¦أکآ§ أ™إ أکآ؛أکآ·أ™إ أکآ§أ™â€  أکآ§أ™â€‍أ™آپأکآھأکآ±أکآ© أ™â€ أ™آپأکآ³أ™â€،أکآ§.', 'Entered expected and actual PV generation are assumed to cover the same period.'],
+    expected_generation_equals_installed_kw_times_plane_of_array_kwh_per_m2_times_performance_ratio: ['أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€ أ™â€¦أ™ث†أکآ°أکآ¬أ™إ  = أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أƒâ€” أکآ§أ™â€‍أکآ¥أکآ´أکآ¹أکآ§أکآ¹ أکآ¹أ™â€‍أ™â€° أ™â€¦أکآ³أکآھأ™ث†أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أƒâ€” أ™â€¦أکآ¹أکآ§أ™â€¦أ™â€‍ أکآ§أ™â€‍أکآ£أکآ¯أکآ§أکآ،.', 'Modeled generation = system capacity أƒâ€” panel-plane irradiation أƒâ€” performance ratio.'],
+    performance_ratio_is_aggregate_and_includes_temperature_inverter_and_other_losses: ['أ™â€¦أکآ¹أکآ§أ™â€¦أ™â€‍ أکآ§أ™â€‍أکآ£أکآ¯أکآ§أکآ، أ™إ أکآ´أ™â€¦أ™â€‍ أکآ£أکآ«أکآ± أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© أ™ث†أکآ§أ™â€‍أکآ¹أکآ§أ™ئ’أکآ³ أ™ث†أکآ®أکآ³أکآ§أکآ¦أکآ± أکآ£أکآ®أکآ±أ™â€°أکâ€؛ أ™â€‍أکآ§ أکآھأ™آڈأکآ¶أکآ§أ™آپ أ™â€¦أکآ±أکآ© أکآ«أکآ§أ™â€ أ™إ أکآ©.', 'The performance ratio includes temperature, inverter and other losses; they are not added again.'],
+    open_meteo_isotropic_sky_and_ground_albedo_0_2: ['أ™إ أکآ¹أکآھأ™â€¦أکآ¯ أ™â€ أ™â€¦أ™ث†أکآ°أکآ¬ أکآ§أ™â€‍أکآ¥أکآ´أکآ¹أکآ§أکآ¹ أکآ¹أ™â€‍أ™â€° Open-Meteo أ™ث†أکآ§أ™آپأکآھأکآ±أکآ§أکآ¶ أکآ§أ™â€ أکآ¹أ™ئ’أکآ§أکآ³ أکآ£أکآ±أکآ¶أ™إ  0.2.', 'The irradiation model uses Open-Meteo and an assumed ground albedo of 0.2.'],
+    default_performance_ratio_0_8_not_a_site_calibration: ['أ™â€¦أکآ¹أکآ§أ™â€¦أ™â€‍ أکآ§أ™â€‍أکآ£أکآ¯أکآ§أکآ، أکآ§أ™â€‍أ™â€¦أ™آپأکآھأکآ±أکآ¶ 0.8أکإ’ أ™ث†أ™â€‍أ™â€¦ أکآھأکآھأ™â€¦ أ™â€¦أکآ¹أکآ§أ™إ أکآ±أکآھأ™â€، أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’.', 'The assumed performance ratio is 0.8 and is not calibrated for your system.'],
+    energy_value_uses_constant_confirmed_omr_tariff_not_bill_total_or_tax: ['أکآ§أ™â€‍أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أ™â€¦أکآ­أکآ³أ™ث†أکآ¨أکآ© أکآھأکآ³أکآھأکآ®أکآ¯أ™â€¦ أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أ™â€¦أکآ¤أ™ئ’أکآ¯أکآ© أ™آپأ™â€ڑأکآ·أکâ€؛ أ™â€‍أکآ§ أکآھأکآ´أ™â€¦أ™â€‍ أکآ§أ™â€‍أکآ±أکآ³أ™ث†أ™â€¦ أکآ§أ™â€‍أکآ«أکآ§أکآ¨أکآھأکآ© أکآ£أ™ث† أکآ§أ™â€‍أکآ¶أکآ±أکآ§أکآ¦أکآ¨.', 'The calculated value uses the confirmed energy tariff only; fixed fees and taxes are excluded.'],
   };
   return notes[key] ? ui(...notes[key]) : typeof key === 'string' ? key : '';
 }
@@ -2124,39 +2124,39 @@ function renderAnalysisDetails(snapshot = state) {
   const panelButton = el('analyze-panels'); panelButton.disabled = analysisBusy || claudeEnabled !== true || !currentAccount?.id || !mediaFor('panels').length;
   if (ai && snapshot.aiLanguage === state.settings.language) {
     const readings = [
-      assessmentMetric(ui('ØªØºØ·ÙŠØ© Ø§Ù„ØºØ¨Ø§Ø± Ø§Ù„Ù…Ø±Ø¦ÙŠØ©', 'Visible dust coverage'), assessmentValue(ai.dustCoveragePercent, '%'), `${ui('Ø§Ù„Ø«Ù‚Ø©', 'Confidence')}: ${confidenceText(ai.dustConfidence)}`),
-      assessmentMetric(ui('ØªØºØ·ÙŠØ© Ø§Ù„Ø¸Ù„ Ø§Ù„Ù…Ø±Ø¦ÙŠØ©', 'Visible shade coverage'), assessmentValue(ai.shadeCoveragePercent, '%'), `${ui('Ø§Ù„Ø«Ù‚Ø©', 'Confidence')}: ${confidenceText(ai.shadeConfidence)}`),
+      assessmentMetric(ui('أکآھأکآ؛أکآ·أ™إ أکآ© أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ§أ™â€‍أ™â€¦أکآ±أکآ¦أ™إ أکآ©', 'Visible dust coverage'), assessmentValue(ai.dustCoveragePercent, '%'), `${ui('أکآ§أ™â€‍أکآ«أ™â€ڑأکآ©', 'Confidence')}: ${confidenceText(ai.dustConfidence)}`),
+      assessmentMetric(ui('أکآھأکآ؛أکآ·أ™إ أکآ© أکآ§أ™â€‍أکآ¸أ™â€‍ أکآ§أ™â€‍أ™â€¦أکآ±أکآ¦أ™إ أکآ©', 'Visible shade coverage'), assessmentValue(ai.shadeCoveragePercent, '%'), `${ui('أکآ§أ™â€‍أکآ«أ™â€ڑأکآ©', 'Confidence')}: ${confidenceText(ai.shadeConfidence)}`),
     ].join('');
     const observations = [ai.summary, ai.dustEvidence, ai.shadeEvidence, ai.tiltObservation, ai.azimuthObservation].filter((value) => typeof value === 'string' && value);
     const missing = (ai.missingMeasurements || []).filter((value) => typeof value === 'string');
     const frames = (ai.frameFindings || []).filter((value) => value && typeof value.observation === 'string').sort((a, b) => Number(a.frameIndex || 0) - Number(b.frameIndex || 0));
-    visual.innerHTML = `<p class="assessment-provider">${escapeHtml(snapshot.aiModel || 'Claude')}</p>${ai.panelDetected === false ? `<p>${ui('Ù„Ù… ÙŠØªØ¹Ø±Ù Claude Ø¹Ù„Ù‰ Ø£Ù„ÙˆØ§Ø­ ÙˆØ§Ø¶Ø­Ø© ÙÙŠ Ø§Ù„Ù…Ø±ÙÙ‚.', 'Claude did not identify clear panels in the attachment.')}</p>` : ''}<div class="assessment-metrics">${readings}</div><ul class="assessment-notes">${observations.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul><p class="helper-text">${ui('Ù‡Ø°Ù‡ ØªØºØ·ÙŠØ© Ù…Ø±Ø¦ÙŠØ© ØªÙ‚Ø¯ÙŠØ±ÙŠØ©ØŒ ÙˆÙ„ÙŠØ³Øª Ù‚ÙŠØ§Ø³Ø§Ù‹ Ù„Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø© Ø£Ùˆ Ø­Ø±Ø§Ø±Ø© Ø³Ø·Ø­ Ø§Ù„Ù„ÙˆØ­.', 'This is estimated visible coverage, not a measurement of energy loss or panel surface temperature.')}</p>${missing.length ? `<details><summary>${ui('Ø§Ù„Ù‚ÙŠØ§Ø³Ø§Øª Ø§Ù„Ù†Ø§Ù‚ØµØ©', 'Missing measurements')}</summary><ul class="assessment-notes">${missing.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul></details>` : ''}${frames.length ? `<details><summary>${ui('Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„Ù„Ù‚Ø·Ø§Øª Ø¨Ø§Ù„ØªØ±ØªÙŠØ¨', 'Frame observations in sequence')}</summary><ol class="frame-findings">${frames.map((frame) => `<li>${frame.timestampSeconds !== null && frame.timestampSeconds !== undefined ? `<b>${assessmentValue(frame.timestampSeconds, ui(' Ø«Ø§Ù†ÙŠØ©', ' s'))}</b> Â· ` : ''}${escapeHtml(frame.observation)}</li>`).join('')}</ol></details>` : ''}`;
-  } else visual.innerHTML = `${claudeAvailabilityMarkup()}<p class="helper-text">${ai ? ui('Ø§Ù„Ù†ØªÙŠØ¬Ø© Ø§Ù„Ù…Ø­ÙÙˆØ¸Ø© Ø¨Ù„ØºØ© Ø£Ø®Ø±Ù‰Ø› Ø£Ø¹Ø¯ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ù„Ù‚Ø±Ø§Ø¡ØªÙ‡Ø§ Ø¨Ø§Ù„Ù„ØºØ© Ø§Ù„Ø­Ø§Ù„ÙŠØ©.', 'The saved assessment is in another language; run analysis again for the current language.') : ui('Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ø«Ù… Ø§Ø¶ØºØ· Â«ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… ClaudeÂ». ØªÙØ­Ù„Ù„ Ù„Ù‚Ø·Ø§Øª Ù…ÙˆØ²Ø¹Ø© Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆØŒ ÙˆÙ„ÙŠØ³ Ø§Ù„ØµÙˆØª Ø£Ùˆ ÙƒÙ„ Ø§Ù„Ø¥Ø·Ø§Ø±Ø§Øª.', 'Attach panel photos or a video, then choose â€œPanel assessment with Claudeâ€. Frames sampled across the clip are assessed, not audio or every frame.')}</p>`;
+    visual.innerHTML = `<p class="assessment-provider">${escapeHtml(snapshot.aiModel || 'Claude')}</p>${ai.panelDetected === false ? `<p>${ui('أ™â€‍أ™â€¦ أ™إ أکآھأکآ¹أکآ±أ™آپ Claude أکآ¹أ™â€‍أ™â€° أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أکآ§أکآ¶أکآ­أکآ© أ™آپأ™إ  أکآ§أ™â€‍أ™â€¦أکآ±أ™آپأ™â€ڑ.', 'Claude did not identify clear panels in the attachment.')}</p>` : ''}<div class="assessment-metrics">${readings}</div><ul class="assessment-notes">${observations.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul><p class="helper-text">${ui('أ™â€،أکآ°أ™â€، أکآھأکآ؛أکآ·أ™إ أکآ© أ™â€¦أکآ±أکآ¦أ™إ أکآ© أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ©أکإ’ أ™ث†أ™â€‍أ™إ أکآ³أکآھ أ™â€ڑأ™إ أکآ§أکآ³أکآ§أ™â€¹ أ™â€‍أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ£أ™ث† أکآ­أکآ±أکآ§أکآ±أکآ© أکآ³أکآ·أکآ­ أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­.', 'This is estimated visible coverage, not a measurement of energy loss or panel surface temperature.')}</p>${missing.length ? `<details><summary>${ui('أکآ§أ™â€‍أ™â€ڑأ™إ أکآ§أکآ³أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ§أ™â€ڑأکآµأکآ©', 'Missing measurements')}</summary><ul class="assessment-notes">${missing.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul></details>` : ''}${frames.length ? `<details><summary>${ui('أ™â€¦أ™â€‍أکآ§أکآ­أکآ¸أکآ§أکآھ أکآ§أ™â€‍أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أکآ¨أکآ§أ™â€‍أکآھأکآ±أکآھأ™إ أکآ¨', 'Frame observations in sequence')}</summary><ol class="frame-findings">${frames.map((frame) => `<li>${frame.timestampSeconds !== null && frame.timestampSeconds !== undefined ? `<b>${assessmentValue(frame.timestampSeconds, ui(' أکآ«أکآ§أ™â€ أ™إ أکآ©', ' s'))}</b> أ‚آ· ` : ''}${escapeHtml(frame.observation)}</li>`).join('')}</ol></details>` : ''}`;
+  } else visual.innerHTML = `${claudeAvailabilityMarkup()}<p class="helper-text">${ai ? ui('أکآ§أ™â€‍أ™â€ أکآھأ™إ أکآ¬أکآ© أکآ§أ™â€‍أ™â€¦أکآ­أ™آپأ™ث†أکآ¸أکآ© أکآ¨أ™â€‍أکآ؛أکآ© أکآ£أکآ®أکآ±أ™â€°أکâ€؛ أکآ£أکآ¹أکآ¯ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أ™â€‍أ™â€ڑأکآ±أکآ§أکآ،أکآھأ™â€،أکآ§ أکآ¨أکآ§أ™â€‍أ™â€‍أکآ؛أکآ© أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ©.', 'The saved assessment is in another language; run analysis again for the current language.') : ui('أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ§أ™â€¹ أکآ£أ™ث† أ™آپأ™إ أکآ¯أ™إ أ™ث† أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ«أ™â€¦ أکآ§أکآ¶أکآ؛أکآ· أ‚آ«أکآھأکآ­أ™â€‍أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claudeأ‚آ». أکآھأ™آڈأکآ­أ™â€‍أ™â€‍ أ™â€‍أ™â€ڑأکآ·أکآ§أکآھ أ™â€¦أ™ث†أکآ²أکآ¹أکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أ™آپأ™إ أکآ¯أ™إ أ™ث†أکإ’ أ™ث†أ™â€‍أ™إ أکآ³ أکآ§أ™â€‍أکآµأ™ث†أکآھ أکآ£أ™ث† أ™ئ’أ™â€‍ أکآ§أ™â€‍أکآ¥أکآ·أکآ§أکآ±أکآ§أکآھ.', 'Attach panel photos or a video, then choose أ¢â‚¬إ“Panel assessment with Claudeأ¢â‚¬آ‌. Frames sampled across the clip are assessed, not audio or every frame.')}</p>`;
   const solar = el('solar-assessment-content');
   const solarMetrics = context ? [
-    assessmentMetric(ui('Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø´Ù…Ø³ Ø§Ù„Ù…Ø­Ø³ÙˆØ¨', 'Calculated sun azimuth'), assessmentValue(context.sun?.azimuthDegrees, 'Â°')),
-    assessmentMetric(ui('Ø§Ø±ØªÙØ§Ø¹ Ø§Ù„Ø´Ù…Ø³ Ø¹Ù† Ø§Ù„Ø£ÙÙ‚', 'Sun elevation above horizon'), assessmentValue(context.sun?.elevationDegrees, 'Â°'), context.sun?.daylight === false ? ui('Ø§Ù„Ø´Ù…Ø³ ØªØ­Øª Ø§Ù„Ø£ÙÙ‚', 'Sun is below the horizon') : ''),
-    assessmentMetric(ui('Ø²Ø§ÙˆÙŠØ© Ø³Ù‚ÙˆØ· Ø§Ù„Ø´Ù…Ø³ Ø¹Ù„Ù‰ Ø§Ù„Ù„ÙˆØ­', 'Sun incidence angle on panel'), assessmentValue(context.panel?.incidenceAngleDegrees, 'Â°'), ui('Ù…Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙˆÙ‚Øª ÙˆØ§Ù„Ù…ÙŠÙ„ ÙˆØ§Ù„Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ù…Ø¯Ø®Ù„', 'From entered location, time, tilt and direction')),
-    assessmentMetric(ui('Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø®Ù„Ø§ÙŠØ§ Ø§Ù„Ù…Ù‚Ø¯Ø±Ø©', 'Estimated cell temperature'), assessmentValue(context.temperature?.estimatedCellTemperatureC, ui('Â°Ù…', 'Â°C')), context.temperature?.source === 'NOCT_model' ? ui('ØªÙ‚Ø¯ÙŠØ± Ù†Ù…ÙˆØ°Ø¬ÙŠØŒ ÙˆÙ„ÙŠØ³ Ù‚ÙŠØ§Ø³Ø§Ù‹ Ø­Ø±Ø§Ø±ÙŠØ§Ù‹', 'Modeled estimate, not a thermal measurement') : ui('Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù‚ÙŠØ§Ø³ Ø­Ø±Ø§Ø±ÙŠ Ù„Ù„Ø³Ø·Ø­', 'No thermal surface measurement')),
+    assessmentMetric(ui('أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أکآ§أ™â€‍أ™â€¦أکآ­أکآ³أ™ث†أکآ¨', 'Calculated sun azimuth'), assessmentValue(context.sun?.azimuthDegrees, 'أ‚آ°')),
+    assessmentMetric(ui('أکآ§أکآ±أکآھأ™آپأکآ§أکآ¹ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أکآ¹أ™â€  أکآ§أ™â€‍أکآ£أ™آپأ™â€ڑ', 'Sun elevation above horizon'), assessmentValue(context.sun?.elevationDegrees, 'أ‚آ°'), context.sun?.daylight === false ? ui('أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أکآھأکآ­أکآھ أکآ§أ™â€‍أکآ£أ™آپأ™â€ڑ', 'Sun is below the horizon') : ''),
+    assessmentMetric(ui('أکآ²أکآ§أ™ث†أ™إ أکآ© أکآ³أ™â€ڑأ™ث†أکآ· أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­', 'Sun incidence angle on panel'), assessmentValue(context.panel?.incidenceAngleDegrees, 'أ‚آ°'), ui('أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™ث†أکآ§أ™â€‍أ™ث†أ™â€ڑأکآھ أ™ث†أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍ أ™ث†أکآ§أ™â€‍أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أ™â€¦أکآ¯أکآ®أ™â€‍', 'From entered location, time, tilt and direction')),
+    assessmentMetric(ui('أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ®أ™â€‍أکآ§أ™إ أکآ§ أکآ§أ™â€‍أ™â€¦أ™â€ڑأکآ¯أکآ±أکآ©', 'Estimated cell temperature'), assessmentValue(context.temperature?.estimatedCellTemperatureC, ui('أ‚آ°أ™â€¦', 'أ‚آ°C')), context.temperature?.source === 'NOCT_model' ? ui('أکآھأ™â€ڑأکآ¯أ™إ أکآ± أ™â€ أ™â€¦أ™ث†أکآ°أکآ¬أ™إ أکإ’ أ™ث†أ™â€‍أ™إ أکآ³ أ™â€ڑأ™إ أکآ§أکآ³أکآ§أ™â€¹ أکآ­أکآ±أکآ§أکآ±أ™إ أکآ§أ™â€¹', 'Modeled estimate, not a thermal measurement') : ui('أ™â€‍أکآ§ أ™إ أ™ث†أکآ¬أکآ¯ أ™â€ڑأ™إ أکآ§أکآ³ أکآ­أکآ±أکآ§أکآ±أ™إ  أ™â€‍أ™â€‍أکآ³أکآ·أکآ­', 'No thermal surface measurement')),
   ].join('') : '';
-  solar.innerHTML = `<h3>${ui('Ù‡Ù†Ø¯Ø³Ø© Ø§Ù„Ø´Ù…Ø³ ÙˆØ­Ø±Ø§Ø±Ø© Ø§Ù„Ù„ÙˆØ­', 'Sun geometry and panel temperature')}</h3>${context ? `<div class="assessment-metrics">${solarMetrics}</div><ul class="assessment-notes">${(context.limitations || []).map((key) => `<li>${escapeHtml(assessmentNote(key))}</li>`).join('')}</ul>` : `<p class="helper-text">${ui('Ø£Ø¯Ø®Ù„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆÙˆÙ‚Øª Ø§Ù„ØªØµÙˆÙŠØ± ÙˆÙ…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆØ§ØªØ¬Ø§Ù‡Ù‡Ø§ Ù„Ø­Ø³Ø§Ø¨ Ø¹Ù„Ø§Ù‚ØªÙ‡Ø§ Ø¨Ø§Ù„Ø´Ù…Ø³. Ø§Ù„ØµÙˆØ±Ø© Ø§Ù„Ø¹Ø§Ø¯ÙŠØ© Ù„Ø§ ØªÙ‚ÙŠØ³ Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ù„ÙˆØ­.', 'Enter location, capture time, measured panel tilt and facing direction to calculate sun geometry. An ordinary image does not measure panel temperature.')}</p>`}`;
+  solar.innerHTML = `<h3>${ui('أ™â€،أ™â€ أکآ¯أکآ³أکآ© أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أ™ث†أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­', 'Sun geometry and panel temperature')}</h3>${context ? `<div class="assessment-metrics">${solarMetrics}</div><ul class="assessment-notes">${(context.limitations || []).map((key) => `<li>${escapeHtml(assessmentNote(key))}</li>`).join('')}</ul>` : `<p class="helper-text">${ui('أکآ£أکآ¯أکآ®أ™â€‍ أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹ أ™ث†أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآھأکآµأ™ث†أ™إ أکآ± أ™ث†أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أکآ§أکآھأکآ¬أکآ§أ™â€،أ™â€،أکآ§ أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ¹أ™â€‍أکآ§أ™â€ڑأکآھأ™â€،أکآ§ أکآ¨أکآ§أ™â€‍أکآ´أ™â€¦أکآ³. أکآ§أ™â€‍أکآµأ™ث†أکآ±أکآ© أکآ§أ™â€‍أکآ¹أکآ§أکآ¯أ™إ أکآ© أ™â€‍أکآ§ أکآھأ™â€ڑأ™إ أکآ³ أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أ™â€‍أ™ث†أکآ­.', 'Enter location, capture time, measured panel tilt and facing direction to calculate sun geometry. An ordinary image does not measure panel temperature.')}</p>`}`;
   const host = el('monthly-assessment-content'); const monthInput = el('dashboard-bill-month');
   if (document.activeElement !== monthInput) monthInput.value = monthly?.month || state.form.billMonth || '';
   if (!monthly) {
-    host.innerHTML = `<p class="helper-text">${ui('Ø­Ø¯Ù‘Ø¯ Ø§Ù„Ø´Ù‡Ø± Ø«Ù… Ø­Ø¯Ù‘Ø« ØªØ­Ù„ÙŠÙ„Ù‡. Ø£Ø¶Ù Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø§Ù„ÙØ¹Ù„ÙŠ Ù…Ù† Ø§Ù„Ø¹Ø§ÙƒØ³ ÙˆØªØ¹Ø±ÙØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ ÙÙŠ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… Ù„Ø­Ø³Ø§Ø¨ Ù‚ÙŠÙ…Ø© ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬.', 'Select a month and update its assessment. Add actual inverter generation and the electricity tariff in system details to calculate the value of the deficit.')}</p>`;
+    host.innerHTML = `<p class="helper-text">${ui('أکآ­أکآ¯أ™â€کأکآ¯ أکآ§أ™â€‍أکآ´أ™â€،أکآ± أکآ«أ™â€¦ أکآ­أکآ¯أ™â€کأکآ« أکآھأکآ­أ™â€‍أ™إ أ™â€‍أ™â€،. أکآ£أکآ¶أ™آپ أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ  أ™â€¦أ™â€  أکآ§أ™â€‍أکآ¹أکآ§أ™ئ’أکآ³ أ™ث†أکآھأکآ¹أکآ±أ™آپأکآ© أکآ§أ™â€‍أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ، أ™آپأ™إ  أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™â€ڑأ™إ أ™â€¦أکآ© أ™آپأکآ±أ™â€ڑ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬.', 'Select a month and update its assessment. Add actual inverter generation and the electricity tariff in system details to calculate the value of the deficit.')}</p>`;
     return;
   }
   const period = monthly.period; const entered = monthly.method === 'provided_expected_generation';
-  const heading = monthly.status === 'unavailable' ? ui('Ù„Ø§ ØªÙƒÙÙŠ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ù„Ø­Ø³Ø§Ø¨ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±', 'Insufficient data for monthly losses') : monthly.lostKwh === null || monthly.lostKwh === undefined ? ui('Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙÙ‚Ø·Ø› Ø§Ù„Ø®Ø³Ø§Ø±Ø© ØºÙŠØ± Ù…Ø­Ø³ÙˆØ¨Ø©', 'Expected generation only; deficit unavailable') : entered ? ui('ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ù…Ù‚Ø§Ø¨Ù„ Ø§Ù„Ø®Ø· Ø§Ù„Ø£Ø³Ø§Ø³ÙŠ Ø§Ù„Ø°ÙŠ Ø£Ø¯Ø®Ù„ØªÙ‡', 'Generation deficit against your entered baseline') : ui('ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ù…Ù‚Ø§Ø¨Ù„ ØªÙ‚Ø¯ÙŠØ± Ø·Ù‚Ø³ Ø§Ù„Ø´Ù‡Ø±', 'Generation deficit against modeled monthly weather');
-  const items = [assessmentMetric(ui('Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹', 'Expected generation'), assessmentValue(monthly.expectedKwh, ' kWh', 2)), assessmentMetric(ui('Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„ÙØ¹Ù„ÙŠ Ø§Ù„Ù…Ø¯Ø®Ù„', 'Entered actual generation'), assessmentValue(monthly.actualKwh, ' kWh', 2)), assessmentMetric(ui('ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬', 'Generation deficit'), assessmentValue(monthly.lostKwh, ' kWh', 2)), assessmentMetric(ui('Ù‚ÙŠÙ…Ø© Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ù…ÙÙ‚ÙˆØ¯Ø©', 'Value of generation deficit'), monthly.lossMoney !== null && monthly.lossMoney !== undefined ? `${assessmentValue(monthly.lossMoney, '', 3)} ${ui('Ø±.Ø¹', 'OMR')}` : 'â€”')].join('');
+  const heading = monthly.status === 'unavailable' ? ui('أ™â€‍أکآ§ أکآھأ™ئ’أ™آپأ™إ  أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ´أ™â€،أکآ±', 'Insufficient data for monthly losses') : monthly.lostKwh === null || monthly.lostKwh === undefined ? ui('أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™آپأ™â€ڑأکآ·أکâ€؛ أکآ§أ™â€‍أکآ®أکآ³أکآ§أکآ±أکآ© أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ³أ™ث†أکآ¨أکآ©', 'Expected generation only; deficit unavailable') : entered ? ui('أ™آپأکآ±أ™â€ڑ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أ™â€¦أ™â€ڑأکآ§أکآ¨أ™â€‍ أکآ§أ™â€‍أکآ®أکآ· أکآ§أ™â€‍أکآ£أکآ³أکآ§أکآ³أ™إ  أکآ§أ™â€‍أکآ°أ™إ  أکآ£أکآ¯أکآ®أ™â€‍أکآھأ™â€،', 'Generation deficit against your entered baseline') : ui('أ™آپأکآ±أ™â€ڑ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أ™â€¦أ™â€ڑأکآ§أکآ¨أ™â€‍ أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ·أ™â€ڑأکآ³ أکآ§أ™â€‍أکآ´أ™â€،أکآ±', 'Generation deficit against modeled monthly weather');
+  const items = [assessmentMetric(ui('أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹', 'Expected generation'), assessmentValue(monthly.expectedKwh, ' kWh', 2)), assessmentMetric(ui('أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ  أکآ§أ™â€‍أ™â€¦أکآ¯أکآ®أ™â€‍', 'Entered actual generation'), assessmentValue(monthly.actualKwh, ' kWh', 2)), assessmentMetric(ui('أ™آپأکآ±أ™â€ڑ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬', 'Generation deficit'), assessmentValue(monthly.lostKwh, ' kWh', 2)), assessmentMetric(ui('أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أ™â€¦أ™آپأ™â€ڑأ™ث†أکآ¯أکآ©', 'Value of generation deficit'), monthly.lossMoney !== null && monthly.lossMoney !== undefined ? `${assessmentValue(monthly.lossMoney, '', 3)} ${ui('أکآ±.أکآ¹', 'OMR')}` : 'أ¢â‚¬â€‌')].join('');
   const notes = [...new Set([...(monthly.warnings || []), ...(monthly.assumptions || [])])];
-  host.innerHTML = `<h3>${heading}</h3>${period ? `<p class="assessment-period">${escapeHtml(period.startDate || 'â€”')} â€” ${escapeHtml(period.endDate || 'â€”')} Â· ${escapeHtml(period.daysIncluded ?? 0)} ${ui('ÙŠÙˆÙ…Ø§Ù‹', 'days')}${period.complete ? '' : ` Â· ${ui('Ø­ØªÙ‰ Ù†Ù‡Ø§ÙŠØ© Ø£Ù…Ø³', 'through yesterday')}`}</p>` : ''}<div class="assessment-metrics">${items}</div><p class="helper-text">${ui('Ø§Ù„ÙØ§ØªÙˆØ±Ø© ØªÙØ³ØªØ®Ø¯Ù… Ù„Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ ÙˆØ§Ù„ØªØ¹Ø±ÙØ©Ø› Ù„Ø§ ØªØ«Ø¨Øª ÙˆØ­Ø¯Ù‡Ø§ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­. Ù„Ø§ Ù†Ø¶Ø§Ø¹Ù Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙÙŠ Ù†Ø³Ø¨Ø© Ø§Ù„ØºØ¨Ø§Ø± Ø£Ùˆ Ø§Ù„Ø¸Ù„.', 'The bill provides consumption and tariff details; it cannot establish panel losses by itself. Bill total is not multiplied by dust or shade coverage.')}</p>${notes.length ? `<details open><summary>${ui('Ù…ØµØ§Ø¯Ø± Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ­Ø¯ÙˆØ¯Ù‡', 'Calculation sources and limitations')}</summary><ul class="assessment-notes">${notes.map((key) => `<li>${escapeHtml(assessmentNote(key))}</li>`).join('')}</ul></details>` : ''}`;
+  host.innerHTML = `<h3>${heading}</h3>${period ? `<p class="assessment-period">${escapeHtml(period.startDate || 'أ¢â‚¬â€‌')} أ¢â‚¬â€‌ ${escapeHtml(period.endDate || 'أ¢â‚¬â€‌')} أ‚آ· ${escapeHtml(period.daysIncluded ?? 0)} ${ui('أ™إ أ™ث†أ™â€¦أکآ§أ™â€¹', 'days')}${period.complete ? '' : ` أ‚آ· ${ui('أکآ­أکآھأ™â€° أ™â€ أ™â€،أکآ§أ™إ أکآ© أکآ£أ™â€¦أکآ³', 'through yesterday')}`}</p>` : ''}<div class="assessment-metrics">${items}</div><p class="helper-text">${ui('أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أکآھأ™آڈأکآ³أکآھأکآ®أکآ¯أ™â€¦ أ™â€‍أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ§أ™â€‍أکآ§أکآ³أکآھأ™â€،أ™â€‍أکآ§أ™ئ’ أ™ث†أکآ§أ™â€‍أکآھأکآ¹أکآ±أ™آپأکآ©أکâ€؛ أ™â€‍أکآ§ أکآھأکآ«أکآ¨أکآھ أ™ث†أکآ­أکآ¯أ™â€،أکآ§ أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­. أ™â€‍أکآ§ أ™â€ أکآ¶أکآ§أکآ¹أ™آپ أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ  أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ© أ™آپأ™إ  أ™â€ أکآ³أکآ¨أکآ© أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أکآ£أ™ث† أکآ§أ™â€‍أکآ¸أ™â€‍.', 'The bill provides consumption and tariff details; it cannot establish panel losses by itself. Bill total is not multiplied by dust or shade coverage.')}</p>${notes.length ? `<details open><summary>${ui('أ™â€¦أکآµأکآ§أکآ¯أکآ± أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™ث†أکآ­أکآ¯أ™ث†أکآ¯أ™â€،', 'Calculation sources and limitations')}</summary><ul class="assessment-notes">${notes.map((key) => `<li>${escapeHtml(assessmentNote(key))}</li>`).join('')}</ul></details>` : ''}`;
 }
 function hasLossEstimate(result) {
   return !!result && !(result.heatEstimateUnavailable === true && !(Number(result.soilingPercent) > 0));
 }
-// Ù†ØªØ§Ø¦Ø¬ Ù…Ø­ÙÙˆØ¸Ø© Ù‚Ø¨Ù„ Ø¥Ø¶Ø§ÙØ© ØªÙØµÙŠÙ„ Ø§Ù„Ø£Ø³Ø¨Ø§Ø¨: Ù†ÙƒÙ…Ù„ Ø­Ù‚ÙˆÙ„ Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„ ÙˆØ§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ù…Ù† Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª
-// Ø§Ù„Ø­Ø§Ù„ÙŠØ© Ù…Ø±Ø© ÙˆØ§Ø­Ø¯Ø©ØŒ Ø«Ù… ØªØµØ¨Ø­ Ø§Ù„ÙˆØ§Ø¬Ù‡Ø© ÙˆØ§Ù„ØªÙ‚Ø±ÙŠØ± Ù…ØªØ³Ù‚ÙŠÙ†.
+// أ™â€ أکآھأکآ§أکآ¦أکآ¬ أ™â€¦أکآ­أ™آپأ™ث†أکآ¸أکآ© أ™â€ڑأکآ¨أ™â€‍ أکآ¥أکآ¶أکآ§أ™آپأکآ© أکآھأ™آپأکآµأ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أکآ³أکآ¨أکآ§أکآ¨: أ™â€ أ™ئ’أ™â€¦أ™â€‍ أکآ­أ™â€ڑأ™ث†أ™â€‍ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أ™â€‍أکآ¸أ™â€‍ أ™ث†أکآ§أ™â€‍أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ  أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€¦أکآ¯أکآ®أ™â€‍أکآ§أکآھ
+// أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ© أ™â€¦أکآ±أکآ© أ™ث†أکآ§أکآ­أکآ¯أکآ©أکإ’ أکآ«أ™â€¦ أکآھأکآµأکآ¨أکآ­ أکآ§أ™â€‍أ™ث†أکآ§أکآ¬أ™â€،أکآ© أ™ث†أکآ§أ™â€‍أکآھأ™â€ڑأکآ±أ™إ أکآ± أ™â€¦أکآھأکآ³أ™â€ڑأ™إ أ™â€ .
 function ensureLossBreakdown(result) {
   if (!result || result.dustPercent !== undefined) return result;
   const fresh = calculateLoss();
@@ -2184,28 +2184,28 @@ function renderLossBreakdown(result) {
   const hasAny = heat !== null || dust !== null || shade > 0;
   if (!hasAny) { box.hidden = true; return; }
   box.hidden = false;
-  const row = (variant, label, value) => `<div class="loss-row ${variant}"><span><i></i>${escapeHtml(label)}</span><b>${value === null ? 'â€”' : `${Math.round(value)}%`}</b></div>`;
+  const row = (variant, label, value) => `<div class="loss-row ${variant}"><span><i></i>${escapeHtml(label)}</span><b>${value === null ? 'أ¢â‚¬â€‌' : `${Math.round(value)}%`}</b></div>`;
   el('loss-components').innerHTML = [
-    row('heat', ui('Ø§Ù„Ø­Ø±Ø§Ø±Ø©', 'Heat'), heat),
-    row('dust', ui('Ø§Ù„ØºØ¨Ø§Ø±', 'Dust'), dust),
-    row('shade', ui('Ø§Ù„Ø¸Ù„', 'Shade'), shade),
-    `<div class="loss-row loss-total"><span>${ui('Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±', 'Estimated total')}</span><b>${total}%</b></div>`,
+    row('heat', ui('أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ©', 'Heat'), heat),
+    row('dust', ui('أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±', 'Dust'), dust),
+    row('shade', ui('أکآ§أ™â€‍أکآ¸أ™â€‍', 'Shade'), shade),
+    `<div class="loss-row loss-total"><span>${ui('أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ  أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±', 'Estimated total')}</span><b>${total}%</b></div>`,
   ].join('');
   const instant = el('loss-instant');
-  if (instant) instant.innerHTML = `<h4>${ui('Ø§Ù„ÙÙ‚Ø¯ Ø§Ù„Ù„Ø­Ø¸ÙŠ', 'Instantaneous loss')}</h4><b>${heat === null ? 'â€”' : `${Math.round(heat)}%`}</b><p>${ui('Ø¨Ø³Ø¨Ø¨ Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ‚Øª Ø§Ù„ÙØ­ØµØŒ Ù…Ù† Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ ÙˆØ§Ù„Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„Ø­Ø±Ø§Ø±ÙŠ.', 'From panel heat at inspection time, based on air temperature and the heat model.')}</p>`;
+  if (instant) instant.innerHTML = `<h4>${ui('أکآ§أ™â€‍أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أ™â€‍أکآ­أکآ¸أ™إ ', 'Instantaneous loss')}</h4><b>${heat === null ? 'أ¢â‚¬â€‌' : `${Math.round(heat)}%`}</b><p>${ui('أکآ¨أکآ³أکآ¨أکآ¨ أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أ™آپأکآ­أکآµأکإ’ أ™â€¦أ™â€  أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ¬أ™ث† أ™ث†أکآ§أ™â€‍أ™â€ أ™â€¦أ™ث†أکآ°أکآ¬ أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أ™إ .', 'From panel heat at inspection time, based on air temperature and the heat model.')}</p>`;
   const monthly = result.monthlyLoss || state.monthlyLoss;
   const monthlyNode = el('loss-monthly');
   if (monthlyNode) {
     if (monthly && monthly.lostKwh !== null && monthly.lostKwh !== undefined) {
       const value = `${Number(monthly.lostKwh).toFixed(2)}<span class="unit"> kWh</span>`;
-      const value2 = monthly.lossMoney !== null && monthly.lossMoney !== undefined ? ` Â· ${money(monthly.lossMoney)}` : '';
-      monthlyNode.innerHTML = `<h4>${ui('Ø§Ù„Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±ÙŠØ©', 'Monthly loss')}</h4><b>${value}</b><p>${ui('Ø§Ù„ÙØ±Ù‚ Ø¨ÙŠÙ† Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„ÙØ¹Ù„ÙŠ', 'Expected minus actual generation')}${value2}.</p>`;
+      const value2 = monthly.lossMoney !== null && monthly.lossMoney !== undefined ? ` أ‚آ· ${money(monthly.lossMoney)}` : '';
+      monthlyNode.innerHTML = `<h4>${ui('أکآ§أ™â€‍أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ´أ™â€،أکآ±أ™إ أکآ©', 'Monthly loss')}</h4><b>${value}</b><p>${ui('أکآ§أ™â€‍أ™آپأکآ±أ™â€ڑ أکآ¨أ™إ أ™â€  أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™ث†أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ ', 'Expected minus actual generation')}${value2}.</p>`;
     } else {
-      monthlyNode.innerHTML = `<h4>${ui('Ø§Ù„Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±ÙŠØ©', 'Monthly loss')}</h4><b>â€”</b><p>${ui('Ø£Ø¶Ù Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ Ù„Ø­Ø³Ø§Ø¨ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±.', 'Add expected and actual generation to calculate the monthly loss.')}</p>`;
+      monthlyNode.innerHTML = `<h4>${ui('أکآ§أ™â€‍أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ´أ™â€،أکآ±أ™إ أکآ©', 'Monthly loss')}</h4><b>أ¢â‚¬â€‌</b><p>${ui('أکآ£أکآ¶أ™آپ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™ث†أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ  أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ´أ™â€،أکآ±.', 'Add expected and actual generation to calculate the monthly loss.')}</p>`;
     }
   }
   const note = el('loss-breakdown-note');
-  if (note) note.textContent = ui('Ø§Ù„Ù†Ø³Ø¨ Ø£Ø¹Ù„Ø§Ù‡ ØªÙ‚Ø¯ÙŠØ±ÙŠØ©: Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ù…Ù† Ø§Ù„Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„Ø­Ø±Ø§Ø±ÙŠØŒ ÙˆØ§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„ Ù…Ù† Ø§Ù„ØªØºØ·ÙŠØ© Ø§Ù„Ù…Ø±Ø¦ÙŠØ© Ø£Ùˆ Ø§Ù„Ù…Ø¤Ø´Ø± Ø§Ù„Ø¬ÙˆÙŠØŒ ÙˆÙ„ÙŠØ³Øª Ù‚ÙŠØ§Ø³Ø§Ù‹ ÙƒÙ‡Ø±Ø¨Ø§Ø¦ÙŠØ§Ù‹ Ù…Ø¨Ø§Ø´Ø±Ø§Ù‹.', 'The percentages above are estimates: heat from the heat model, dust and shade from visible coverage or the air index, not direct electrical measurements.');
+  if (note) note.textContent = ui('أکآ§أ™â€‍أ™â€ أکآ³أکآ¨ أکآ£أکآ¹أ™â€‍أکآ§أ™â€، أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ©: أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© أ™â€¦أ™â€  أکآ§أ™â€‍أ™â€ أ™â€¦أ™ث†أکآ°أکآ¬ أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أ™إ أکإ’ أ™ث†أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™ث†أکآ§أ™â€‍أکآ¸أ™â€‍ أ™â€¦أ™â€  أکآ§أ™â€‍أکآھأکآ؛أکآ·أ™إ أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أکآ¦أ™إ أکآ© أکآ£أ™ث† أکآ§أ™â€‍أ™â€¦أکآ¤أکآ´أکآ± أکآ§أ™â€‍أکآ¬أ™ث†أ™إ أکإ’ أ™ث†أ™â€‍أ™إ أکآ³أکآھ أ™â€ڑأ™إ أکآ§أکآ³أکآ§أ™â€¹ أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ¦أ™إ أکآ§أ™â€¹ أ™â€¦أکآ¨أکآ§أکآ´أکآ±أکآ§أ™â€¹.', 'The percentages above are estimates: heat from the heat model, dust and shade from visible coverage or the air index, not direct electrical measurements.');
 }
 function renderDashboard(note = '') {
   const f = state.form; const result = state.result || (f.power ? calculateLoss() : null); const current = state.weather?.current;
@@ -2214,61 +2214,61 @@ function renderDashboard(note = '') {
   renderAnalysisDetails();
   renderMaintenance();
   renderPanelVisual();
-  el('user-name').textContent = f.name ? escapeHtml(f.name) : 'ÙŠØ§ ØµØ¯ÙŠÙ‚ Ø§Ù„Ø´Ù…Ø³';
+  el('user-name').textContent = f.name ? escapeHtml(f.name) : 'أ™إ أکآ§ أکآµأکآ¯أ™إ أ™â€ڑ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³';
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   el('today-date').textContent = new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
   el('footer-year').textContent = new Date().getFullYear(); syncHeader();
   if (current) {
-    el('metric-temp').textContent = `${Math.round(current.temperature_2m)}Â°`;
+    el('metric-temp').textContent = `${Math.round(current.temperature_2m)}أ‚آ°`;
     el('metric-humidity').textContent = `${Math.round(current.relative_humidity_2m)}%`;
-    el('gauge-temp').textContent = `${Math.round(current.temperature_2m)}Â°Ù…`;
-    el('weather-summary').textContent = `${weatherText(current.weather_code)} Â· ${Math.round(current.temperature_2m)}Â°Ù…`;
-    el('weather-icon').textContent = current.is_day ? 'â˜€' : 'â˜¾';
+    el('gauge-temp').textContent = `${Math.round(current.temperature_2m)}أ‚آ°أ™â€¦`;
+    el('weather-summary').textContent = `${weatherText(current.weather_code)} أ‚آ· ${Math.round(current.temperature_2m)}أ‚آ°أ™â€¦`;
+    el('weather-icon').textContent = current.is_day ? 'أ¢ثœâ‚¬' : 'أ¢ثœآ¾';
   } else {
-    el('metric-temp').textContent = f.ambientTemp ? `${f.ambientTemp}Â°` : 'â€”Â°'; el('metric-humidity').textContent = f.humidity ? `${f.humidity}%` : 'â€”%';
-    el('gauge-temp').textContent = f.ambientTemp ? `${Math.round(f.ambientTemp)}Â°Ù…` : 'â€”Â°'; el('weather-summary').textContent = 'Ø§Ù„Ø·Ù‚Ø³ ØºÙŠØ± Ù…ØªØ§Ø­';
+    el('metric-temp').textContent = f.ambientTemp ? `${f.ambientTemp}أ‚آ°` : 'أ¢â‚¬â€‌أ‚آ°'; el('metric-humidity').textContent = f.humidity ? `${f.humidity}%` : 'أ¢â‚¬â€‌%';
+    el('gauge-temp').textContent = f.ambientTemp ? `${Math.round(f.ambientTemp)}أ‚آ°أ™â€¦` : 'أ¢â‚¬â€‌أ‚آ°'; el('weather-summary').textContent = 'أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ§أکآ­';
   }
   const airDust = f.airDustPercent !== null && f.airDustPercent !== '' && f.airDustPercent !== undefined ? Number(f.airDustPercent) : NaN;
   const dustReading = airborneDustReading(state.weather);
-  el('metric-dust').textContent = Number.isFinite(airDust) ? `${Math.round(airDust)}%` : 'â€”%';
-  el('dust-caption').textContent = f.airDustManual ? ui('Ù…Ø¤Ø´Ø± Ø¬ÙˆÙŠ Ù…Ø¹Ø¯Ù‘Ù„ ÙŠØ¯ÙˆÙŠØ§Ù‹', 'Manually adjusted air index') : dustReading ? `${dustReading.source === 'pm10' ? 'PM10' : ui('ØºØ¨Ø§Ø± Ø¬ÙˆÙŠ', 'Airborne dust')} ${dustReading.concentration.toFixed(1)} Âµg/mÂ³ Â· ${ui('Ù…Ø¤Ø´Ø± Ù†Ø³Ø¨ÙŠ', 'Relative index')}` : ui('Ø§Ù„ØºØ¨Ø§Ø± ÙÙŠ Ø§Ù„Ø¬Ùˆ ØºÙŠØ± Ù…ØªØ§Ø­', 'Airborne dust unavailable');
+  el('metric-dust').textContent = Number.isFinite(airDust) ? `${Math.round(airDust)}%` : 'أ¢â‚¬â€‌%';
+  el('dust-caption').textContent = f.airDustManual ? ui('أ™â€¦أکآ¤أکآ´أکآ± أکآ¬أ™ث†أ™إ  أ™â€¦أکآ¹أکآ¯أ™â€کأ™â€‍ أ™إ أکآ¯أ™ث†أ™إ أکآ§أ™â€¹', 'Manually adjusted air index') : dustReading ? `${dustReading.source === 'pm10' ? 'PM10' : ui('أکآ؛أکآ¨أکآ§أکآ± أکآ¬أ™ث†أ™إ ', 'Airborne dust')} ${dustReading.concentration.toFixed(1)} أ‚آµg/mأ‚آ³ أ‚آ· ${ui('أ™â€¦أکآ¤أکآ´أکآ± أ™â€ أکآ³أکآ¨أ™إ ', 'Relative index')}` : ui('أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™آپأ™إ  أکآ§أ™â€‍أکآ¬أ™ث† أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ§أکآ­', 'Airborne dust unavailable');
   if (hasLossEstimate(result)) {
     el('loss-percent').textContent = `${result.percent}%`;
     const valuePath = el('gauge-value'); const pathLength = 302; valuePath.style.strokeDashoffset = String(pathLength - pathLength * Math.min(100, result.percent) / 100);
     valuePath.style.stroke = result.percent > 30 ? 'var(--orange)' : result.percent > 15 ? '#e9824b' : '#a79370';
     el('metric-loss').textContent = `${result.lostKwh.toFixed(2)} kWh`;
-    el('loss-caption').textContent = `${money(result.lostMoney)} ØªÙ‚Ø±ÙŠØ¨Ø§Ù‹ Â· ${result.priceBasis}`;
-    el('status-title').textContent = result.percent >= 30 ? 'ÙŠØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ø§Ù†ØªØ¨Ø§Ù‡' : result.percent >= 15 ? 'Ù…Ø³ØªÙˆÙ‰ Ù…ØªÙˆØ³Ø·' : 'Ø£Ø¯Ø§Ø¡ Ù…Ø·Ù…Ø¦Ù†';
-    el('status-pill').innerHTML = `<i></i> ${result.percent >= 30 ? 'Ø§Ù†ØªØ¨Ø§Ù‡' : result.percent >= 15 ? 'Ù…Ø±Ø§Ù‚Ø¨Ø©' : 'Ø¬ÙŠØ¯'}`;
+    el('loss-caption').textContent = `${money(result.lostMoney)} أکآھأ™â€ڑأکآ±أ™إ أکآ¨أکآ§أ™â€¹ أ‚آ· ${result.priceBasis}`;
+    el('status-title').textContent = result.percent >= 30 ? 'أ™إ أکآ­أکآھأکآ§أکآ¬ أکآ¥أ™â€‍أ™â€° أکآ§أ™â€ أکآھأکآ¨أکآ§أ™â€،' : result.percent >= 15 ? 'أ™â€¦أکآ³أکآھأ™ث†أ™â€° أ™â€¦أکآھأ™ث†أکآ³أکآ·' : 'أکآ£أکآ¯أکآ§أکآ، أ™â€¦أکآ·أ™â€¦أکآ¦أ™â€ ';
+    el('status-pill').innerHTML = `<i></i> ${result.percent >= 30 ? 'أکآ§أ™â€ أکآھأکآ¨أکآ§أ™â€،' : result.percent >= 15 ? 'أ™â€¦أکآ±أکآ§أ™â€ڑأکآ¨أکآ©' : 'أکآ¬أ™إ أکآ¯'}`;
     el('status-pill').className = `status-pill ${result.percent < 15 ? 'good' : ''}`;
-    el('status-summary').textContent = state.ai ? ui('ÙØ­Øµ Ø¨ØµØ±ÙŠ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude', 'Visual assessment with Claude') : 'ØªÙ‚Ø¯ÙŠØ± Ø£ÙˆÙ„ÙŠ Ù„Ø£Ø¯Ø§Ø¡ Ø§Ù„Ù†Ø¸Ø§Ù…';
+    el('status-summary').textContent = state.ai ? ui('أ™آپأکآ­أکآµ أکآ¨أکآµأکآ±أ™إ  أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Claude', 'Visual assessment with Claude') : 'أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ£أ™ث†أ™â€‍أ™إ  أ™â€‍أکآ£أکآ¯أکآ§أکآ، أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦';
     const heatShare = result.heatPercent === null || result.heatPercent === undefined ? null : Math.round(result.heatPercent);
     const dustShare = result.dustPercent === null || result.dustPercent === undefined ? null : Math.round(result.dustPercent);
     const shadeShare = Number.isFinite(Number(result.shadePercent)) ? Math.round(Number(result.shadePercent)) : 0;
     const estimateDescription = heatShare === null && dustShare === null
-      ? ui('ÙŠÙˆÙ…ÙŠØ§Ù‹Ø› Ù„Ø§ ØªØªÙˆÙØ± Ù†Ø³Ø¨ Ù…ÙØµÙ„Ø© Ù„Ù‡Ø°Ù‡ Ø§Ù„Ù‚Ø±Ø§Ø¡Ø©.', 'per day; no detailed percentages are available for this reading.')
-      : ui(`ÙŠÙˆÙ…ÙŠØ§Ù‹: Ø§Ù„Ø­Ø±Ø§Ø±Ø© ${heatShare ?? 'â€”'}% Â· Ø§Ù„ØºØ¨Ø§Ø± ${dustShare ?? 'â€”'}% Â· Ø§Ù„Ø¸Ù„ ${shadeShare}% (Ø¥Ø¬Ù…Ø§Ù„ÙŠ ${result.totalPercent ?? result.percent}%).`, `per day: heat ${heatShare ?? 'â€”'}% Â· dust ${dustShare ?? 'â€”'}% Â· shade ${shadeShare}% (total ${result.totalPercent ?? result.percent}%).`);
-    el('status-description').textContent = (note ? `${note} Ø§Ù„Ù†ØªÙŠØ¬Ø© Ø§Ù„Ø­Ø§Ù„ÙŠØ© ØªÙ‚Ø¯ÙŠØ±ÙŠØ© ÙˆØªØ¹ØªÙ…Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙŠ Ø£Ø¯Ø®Ù„ØªÙ‡Ø§.` : `Ù‚Ø¯ ÙŠÙÙ‚Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù… Ù†Ø­Ùˆ ${result.lostKwh.toFixed(2)} kWh ${estimateDescription}`)
-      + (result.heatEstimateUnavailable ? ui(' Ù„Ø§ ØªØªÙˆÙØ± Ø¨ÙŠØ§Ù†Ø§Øª ÙƒØ§ÙÙŠØ© Ù„ØªÙ‚Ø¯ÙŠØ± Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø©.', ' There is not enough data to estimate energy losses.') : '');
-    el('recommendation-title').textContent = dustShare >= 15 ? 'Ù‚Ø¯ ÙŠÙƒÙˆÙ† ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ù…ÙÙŠØ¯Ø§Ù‹' : heatShare > 10 ? 'Ø±Ø§Ù‚Ø¨ Ø£Ø«Ø± Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­' : 'Ø­Ø§ÙØ¸ Ø¹Ù„Ù‰ Ù…ØªØ§Ø¨Ø¹Ø© Ø¯ÙˆØ±ÙŠØ©';
+      ? ui('أ™إ أ™ث†أ™â€¦أ™إ أکآ§أ™â€¹أکâ€؛ أ™â€‍أکآ§ أکآھأکآھأ™ث†أ™آپأکآ± أ™â€ أکآ³أکآ¨ أ™â€¦أ™آپأکآµأ™â€‍أکآ© أ™â€‍أ™â€،أکآ°أ™â€، أکآ§أ™â€‍أ™â€ڑأکآ±أکآ§أکآ،أکآ©.', 'per day; no detailed percentages are available for this reading.')
+      : ui(`أ™إ أ™ث†أ™â€¦أ™إ أکآ§أ™â€¹: أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© ${heatShare ?? 'أ¢â‚¬â€‌'}% أ‚آ· أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± ${dustShare ?? 'أ¢â‚¬â€‌'}% أ‚آ· أکآ§أ™â€‍أکآ¸أ™â€‍ ${shadeShare}% (أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ  ${result.totalPercent ?? result.percent}%).`, `per day: heat ${heatShare ?? 'أ¢â‚¬â€‌'}% أ‚آ· dust ${dustShare ?? 'أ¢â‚¬â€‌'}% أ‚آ· shade ${shadeShare}% (total ${result.totalPercent ?? result.percent}%).`);
+    el('status-description').textContent = (note ? `${note} أکآ§أ™â€‍أ™â€ أکآھأ™إ أکآ¬أکآ© أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أ™إ أکآ© أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ© أ™ث†أکآھأکآ¹أکآھأ™â€¦أکآ¯ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآھأ™إ  أکآ£أکآ¯أکآ®أ™â€‍أکآھأ™â€،أکآ§.` : `أ™â€ڑأکآ¯ أ™إ أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™â€ أکآ­أ™ث† ${result.lostKwh.toFixed(2)} kWh ${estimateDescription}`)
+      + (result.heatEstimateUnavailable ? ui(' أ™â€‍أکآ§ أکآھأکآھأ™ث†أ™آپأکآ± أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™ئ’أکآ§أ™آپأ™إ أکآ© أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ©.', ' There is not enough data to estimate energy losses.') : '');
+    el('recommendation-title').textContent = dustShare >= 15 ? 'أ™â€ڑأکآ¯ أ™إ أ™ئ’أ™ث†أ™â€  أکآھأ™â€ أکآ¸أ™إ أ™آپ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™â€¦أ™آپأ™إ أکآ¯أکآ§أ™â€¹' : heatShare > 10 ? 'أکآ±أکآ§أ™â€ڑأکآ¨ أکآ£أکآ«أکآ± أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ© أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­' : 'أکآ­أکآ§أ™آپأکآ¸ أکآ¹أ™â€‍أ™â€° أ™â€¦أکآھأکآ§أکآ¨أکآ¹أکآ© أکآ¯أ™ث†أکآ±أ™إ أکآ©';
     const aiRecommendation = state.aiLanguage === state.settings.language ? state.ai?.recommendations?.[0] : '';
-    el('recommendation-text').textContent = aiRecommendation || (dustShare >= 15 ? 'ÙŠØ¸Ù‡Ø± ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ù…Ø±ØªÙØ¹Ø§Ù‹Ø› ØªØ­Ù‚Ù‚ Ø¨ØµØ±ÙŠØ§Ù‹ Ù…Ù† Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ†Ø¸Ù‘ÙÙ‡Ø§ Ø¹Ù†Ø¯ Ø§Ù„Ø­Ø§Ø¬Ø© ÙˆØ¨Ø·Ø±ÙŠÙ‚Ø© Ø¢Ù…Ù†Ø©.' : heatShare > 10 ? 'Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ù‚Ø¯ ØªØ®ÙØ¶ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ ÙˆÙ‚Øª Ø§Ù„Ø°Ø±ÙˆØ©Ø› Ø±Ø§Ù‚Ø¨ Ø§Ù„ØªÙ‡ÙˆÙŠØ© ÙˆØªØ¬Ù†Ù‘Ø¨ Ø§Ù„Ø¹Ù…Ù„ Ø¹Ù„Ù‰ Ø§Ù„Ø³Ø·Ø­ ÙˆÙ‚Øª Ø§Ù„Ø¸Ù‡ÙŠØ±Ø©.' : 'ØªØ§Ø¨Ø¹ Ø§Ù„ØªØºÙŠØ±Ø§Øª ÙÙŠ Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§ÙØ­Øµ Ø³Ø·Ø­ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù„Ø¹ÙˆØ§ØµÙ Ø£Ùˆ ÙØªØ±Ø§Øª Ø§Ù„ØºØ¨Ø§Ø±.');
+    el('recommendation-text').textContent = aiRecommendation || (dustShare >= 15 ? 'أ™إ أکآ¸أ™â€،أکآ± أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ± أ™â€¦أکآ±أکآھأ™آپأکآ¹أکآ§أ™â€¹أکâ€؛ أکآھأکآ­أ™â€ڑأ™â€ڑ أکآ¨أکآµأکآ±أ™إ أکآ§أ™â€¹ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أ™â€ أکآ¸أ™â€کأ™آپأ™â€،أکآ§ أکآ¹أ™â€ أکآ¯ أکآ§أ™â€‍أکآ­أکآ§أکآ¬أکآ© أ™ث†أکآ¨أکآ·أکآ±أ™إ أ™â€ڑأکآ© أکآ¢أ™â€¦أ™â€ أکآ©.' : heatShare > 10 ? 'أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™â€ڑأکآ¯ أکآھأکآ®أ™آپأکآ¶ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآ°أکآ±أ™ث†أکآ©أکâ€؛ أکآ±أکآ§أ™â€ڑأکآ¨ أکآ§أ™â€‍أکآھأ™â€،أ™ث†أ™إ أکآ© أ™ث†أکآھأکآ¬أ™â€ أ™â€کأکآ¨ أکآ§أ™â€‍أکآ¹أ™â€¦أ™â€‍ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ³أکآ·أکآ­ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآ¸أ™â€،أ™إ أکآ±أکآ©.' : 'أکآھأکآ§أکآ¨أکآ¹ أکآ§أ™â€‍أکآھأکآ؛أ™إ أکآ±أکآ§أکآھ أ™آپأ™إ  أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أ™ث†أکآ§أ™آپأکآ­أکآµ أکآ³أکآ·أکآ­ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ¹أکآ¯ أکآ§أ™â€‍أکآ¹أ™ث†أکآ§أکآµأ™آپ أکآ£أ™ث† أ™آپأکآھأکآ±أکآ§أکآھ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±.');
   } else {
-    el('loss-percent').textContent = 'â€”%'; el('metric-loss').textContent = 'â€”'; el('loss-caption').textContent = 'Ø£Ø¶Ù Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… Ø£ÙˆÙ„Ø§Ù‹';
-    el('status-title').textContent = 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø¨ÙŠØ§Ù†Ø§Øª Ù†Ø¸Ø§Ù…Ùƒ'; el('status-pill').innerHTML = '<i></i> Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ­Ù„ÙŠÙ„'; el('status-pill').className = 'status-pill';
-    el('status-summary').textContent = 'Ù†Ø­ØªØ§Ø¬ Ø¨Ø¹Ø¶ Ø§Ù„ØªÙØ§ØµÙŠÙ„ Ø£ÙˆÙ„Ø§Ù‹'; el('status-description').textContent = 'Ø£Ø¯Ø®Ù„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù„Ù„Ø­ØµÙˆÙ„ Ø¹Ù„Ù‰ Ù‚Ø±Ø§Ø¡Ø© Ø£ÙˆØ¶Ø­.';
+    el('loss-percent').textContent = 'أ¢â‚¬â€‌%'; el('metric-loss').textContent = 'أ¢â‚¬â€‌'; el('loss-caption').textContent = 'أکآ£أکآ¶أ™آپ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹';
+    el('status-title').textContent = 'أکآ¨أکآ§أ™â€ أکآھأکآ¸أکآ§أکآ± أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’'; el('status-pill').innerHTML = '<i></i> أکآ§أکآ¨أکآ¯أکآ£ أکآ§أ™â€‍أکآھأکآ­أ™â€‍أ™إ أ™â€‍'; el('status-pill').className = 'status-pill';
+    el('status-summary').textContent = 'أ™â€ أکآ­أکآھأکآ§أکآ¬ أکآ¨أکآ¹أکآ¶ أکآ§أ™â€‍أکآھأ™آپأکآ§أکآµأ™إ أ™â€‍ أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹'; el('status-description').textContent = 'أکآ£أکآ¯أکآ®أ™â€‍ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™ث†أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أکآ£أ™ث† أ™â€¦أ™â€ڑأکآ·أکآ¹أکآ§أ™â€¹ أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™â€‍أ™â€‍أکآ­أکآµأ™ث†أ™â€‍ أکآ¹أ™â€‍أ™â€° أ™â€ڑأکآ±أکآ§أکآ،أکآ© أکآ£أ™ث†أکآ¶أکآ­.';
   }
   const alert = el('weather-alert');
   if (current) {
     const temp = Number(current.temperature_2m); const gust = Number(current.wind_gusts_10m); const rain = Number(state.weather?.daily?.precipitation_probability_max?.[0]);
     let alertMessage = '';
-    if (temp >= 43) alertMessage = `Ø­Ø±Ø§Ø±Ø© Ù…Ø±ØªÙØ¹Ø© (${Math.round(temp)}Â°Ù…) ÙÙŠ Ù…ÙˆÙ‚Ø¹ÙƒØ› ØªØ¬Ù†Ø¨ Ù„Ù…Ø³ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ‚Øª Ø§Ù„Ø¸Ù‡ÙŠØ±Ø©.`;
-    else if (gust >= 55) alertMessage = `Ù‡Ø¨Ø§Øª Ø±ÙŠØ§Ø­ Ù‚ÙˆÙŠØ© ØªØµÙ„ Ø¥Ù„Ù‰ ${Math.round(gust)} ÙƒÙ…/Ø³Ø› Ø£Ø¬Ù‘Ù„ Ø§Ù„ØµØ¹ÙˆØ¯ Ø¥Ù„Ù‰ Ø§Ù„Ø³Ø·Ø­ Ø­ØªÙ‰ ØªÙ‡Ø¯Ø£.`;
-    else if (rain >= 75) alertMessage = `Ø§Ø­ØªÙ…Ø§Ù„ Ù‡Ø·ÙˆÙ„ Ù…Ø±ØªÙØ¹ (${rain}%)Ø› Ø±Ø§Ù‚Ø¨ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù†Ù‚Ø¶Ø§Ø¡ Ø§Ù„Ø·Ù‚Ø³.`;
+    if (temp >= 43) alertMessage = `أکآ­أکآ±أکآ§أکآ±أکآ© أ™â€¦أکآ±أکآھأ™آپأکآ¹أکآ© (${Math.round(temp)}أ‚آ°أ™â€¦) أ™آپأ™إ  أ™â€¦أ™ث†أ™â€ڑأکآ¹أ™ئ’أکâ€؛ أکآھأکآ¬أ™â€ أکآ¨ أ™â€‍أ™â€¦أکآ³ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآ¸أ™â€،أ™إ أکآ±أکآ©.`;
+    else if (gust >= 55) alertMessage = `أ™â€،أکآ¨أکآ§أکآھ أکآ±أ™إ أکآ§أکآ­ أ™â€ڑأ™ث†أ™إ أکآ© أکآھأکآµأ™â€‍ أکآ¥أ™â€‍أ™â€° ${Math.round(gust)} أ™ئ’أ™â€¦/أکآ³أکâ€؛ أکآ£أکآ¬أ™â€کأ™â€‍ أکآ§أ™â€‍أکآµأکآ¹أ™ث†أکآ¯ أکآ¥أ™â€‍أ™â€° أکآ§أ™â€‍أکآ³أکآ·أکآ­ أکآ­أکآھأ™â€° أکآھأ™â€،أکآ¯أکآ£.`;
+    else if (rain >= 75) alertMessage = `أکآ§أکآ­أکآھأ™â€¦أکآ§أ™â€‍ أ™â€،أکآ·أ™ث†أ™â€‍ أ™â€¦أکآ±أکآھأ™آپأکآ¹ (${rain}%)أکâ€؛ أکآ±أکآ§أ™â€ڑأکآ¨ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ¹أکآ¯ أکآ§أ™â€ أ™â€ڑأکآ¶أکآ§أکآ، أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³.`;
     alert.textContent = alertMessage; alert.hidden = !alertMessage;
   } else alert.hidden = true;
-  el('last-updated').textContent = state.updatedAt ? new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(state.updatedAt)) : 'â€”';
-  const systemItems = [['Ø§Ù„Ù‚Ø¯Ø±Ø©', f.power ? `${f.power} ÙˆØ§Ø·` : 'â€”'], ['Ø§Ù„Ø£Ù„ÙˆØ§Ø­', f.panels ? `${f.panels} Ù„ÙˆØ­` : 'â€”'], ['Ø§Ù„Ø´Ø±ÙƒØ©', f.company || 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©'], ['Ø§Ù„Ù…ÙˆÙ‚Ø¹', f.location || 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯'], ['Ø§Ù„Ù…ÙŠÙ„', f.tilt ? `${f.tilt}Â°` : 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯'], ['Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©', f.lastMaintenanceAt ? maintenanceDateLabel(parseIsoDate(f.lastMaintenanceAt), locale) : ui('Ù„Ù… ØªÙØ³Ø¬Ù„', 'Not recorded')]];
+  el('last-updated').textContent = state.updatedAt ? new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(state.updatedAt)) : 'أ¢â‚¬â€‌';
+  const systemItems = [['أکآ§أ™â€‍أ™â€ڑأکآ¯أکآ±أکآ©', f.power ? `${f.power} أ™ث†أکآ§أکآ·` : 'أ¢â‚¬â€‌'], ['أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', f.panels ? `${f.panels} أ™â€‍أ™ث†أکآ­` : 'أ¢â‚¬â€‌'], ['أکآ§أ™â€‍أکآ´أکآ±أ™ئ’أکآ©', f.company || 'أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ¯أکآ¯أکآ©'], ['أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹', f.location || 'أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ¯أکآ¯'], ['أکآ§أ™â€‍أ™â€¦أ™إ أ™â€‍', f.tilt ? `${f.tilt}أ‚آ°` : 'أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ¯أکآ¯'], ['أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ©', f.lastMaintenanceAt ? maintenanceDateLabel(parseIsoDate(f.lastMaintenanceAt), locale) : ui('أ™â€‍أ™â€¦ أکآھأ™آڈأکآ³أکآ¬أ™â€‍', 'Not recorded')]];
   el('system-summary').innerHTML = systemItems.map(([label, value]) => `<div class="system-item"><small>${label}</small><b>${escapeHtml(value)}</b></div>`).join('');
   renderWeatherStatus();
   drawChart(result); applyLanguage();
@@ -2276,20 +2276,20 @@ function renderDashboard(note = '') {
 function weatherConditionLabel(code, english) {
   const value = Number(code);
   const table = [
-    [[0], 'ØµØ§ÙÙ', 'Clear'],
-    [[1], 'ØµØ§ÙÙ ØºØ§Ù„Ø¨Ù‹Ø§', 'Mainly clear'],
-    [[2], 'ØºØ§Ø¦Ù… Ø¬Ø²Ø¦ÙŠÙ‹Ø§', 'Partly cloudy'],
-    [[3], 'ØºØ§Ø¦Ù…', 'Overcast'],
-    [[45, 48], 'Ø¶Ø¨Ø§Ø¨', 'Fog'],
-    [[51, 53, 55, 56, 57], 'Ø±Ø°Ø§Ø°', 'Drizzle'],
-    [[61, 63, 65, 66, 67], 'Ù…Ø·Ø±', 'Rain'],
-    [[71, 73, 75, 77], 'Ø«Ù„Ø¬', 'Snow'],
-    [[80, 81, 82], 'Ø²Ø®Ø§Øª Ù…Ø·Ø±', 'Rain showers'],
-    [[85, 86], 'Ø²Ø®Ø§Øª Ø«Ù„Ø¬', 'Snow showers'],
-    [[95, 96, 99], 'Ø¹ÙˆØ§ØµÙ Ø±Ø¹Ø¯ÙŠØ©', 'Thunderstorm'],
+    [[0], 'أکآµأکآ§أ™آپأ™آچ', 'Clear'],
+    [[1], 'أکآµأکآ§أ™آپأ™آچ أکآ؛أکآ§أ™â€‍أکآ¨أ™â€¹أکآ§', 'Mainly clear'],
+    [[2], 'أکآ؛أکآ§أکآ¦أ™â€¦ أکآ¬أکآ²أکآ¦أ™إ أ™â€¹أکآ§', 'Partly cloudy'],
+    [[3], 'أکآ؛أکآ§أکآ¦أ™â€¦', 'Overcast'],
+    [[45, 48], 'أکآ¶أکآ¨أکآ§أکآ¨', 'Fog'],
+    [[51, 53, 55, 56, 57], 'أکآ±أکآ°أکآ§أکآ°', 'Drizzle'],
+    [[61, 63, 65, 66, 67], 'أ™â€¦أکآ·أکآ±', 'Rain'],
+    [[71, 73, 75, 77], 'أکآ«أ™â€‍أکآ¬', 'Snow'],
+    [[80, 81, 82], 'أکآ²أکآ®أکآ§أکآھ أ™â€¦أکآ·أکآ±', 'Rain showers'],
+    [[85, 86], 'أکآ²أکآ®أکآ§أکآھ أکآ«أ™â€‍أکآ¬', 'Snow showers'],
+    [[95, 96, 99], 'أکآ¹أ™ث†أکآ§أکآµأ™آپ أکآ±أکآ¹أکآ¯أ™إ أکآ©', 'Thunderstorm'],
   ];
   for (const [codes, arabic, englishWord] of table) if (codes.includes(value)) return english ? englishWord : arabic;
-  return english ? 'Variable' : 'Ù…ØªØºÙŠÙ‘Ø±';
+  return english ? 'Variable' : 'أ™â€¦أکآھأکآ؛أ™إ أ™â€کأکآ±';
 }
 function weeklyProductionSeries() {
   const daily = state.weather?.daily || {};
@@ -2319,7 +2319,7 @@ function weeklyProductionSeries() {
 function weeklyProductionDays(english) {
   const weekdays = english
     ? ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    : ['Ø§Ù„Ø£Ø­Ø¯', 'Ø§Ù„Ø¥Ø«Ù†ÙŠÙ†', 'Ø§Ù„Ø«Ù„Ø§Ø«Ø§Ø¡', 'Ø§Ù„Ø£Ø±Ø¨Ø¹Ø§Ø¡', 'Ø§Ù„Ø®Ù…ÙŠØ³', 'Ø§Ù„Ø¬Ù…Ø¹Ø©', 'Ø§Ù„Ø³Ø¨Øª'];
+    : ['أکآ§أ™â€‍أکآ£أکآ­أکآ¯', 'أکآ§أ™â€‍أکآ¥أکآ«أ™â€ أ™إ أ™â€ ', 'أکآ§أ™â€‍أکآ«أ™â€‍أکآ§أکآ«أکآ§أکآ،', 'أکآ§أ™â€‍أکآ£أکآ±أکآ¨أکآ¹أکآ§أکآ،', 'أکآ§أ™â€‍أکآ®أ™â€¦أ™إ أکآ³', 'أکآ§أ™â€‍أکآ¬أ™â€¦أکآ¹أکآ©', 'أکآ§أ™â€‍أکآ³أکآ¨أکآھ'];
   const dateFormat = new Intl.DateTimeFormat(english ? 'en-OM' : 'ar-OM', { day: 'numeric', month: 'short' });
   const now = new Date();
   return Array.from({ length: 7 }, (_, index) => {
@@ -2336,24 +2336,24 @@ function drawChart(result) {
     const codes = state.weather?.daily?.weather_code || [];
     chart.innerHTML = values.map((value, index) => {
       const day = days[index];
-      const label = day.today ? (english ? 'Today' : 'Ø§Ù„ÙŠÙˆÙ…') : day.name;
+      const label = day.today ? (english ? 'Today' : 'أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦') : day.name;
       const condition = weatherConditionLabel(codes[index], english);
-      const caption = `${label} Â· ${day.date} Â· ${condition} Â· ${english ? 'expected output' : 'Ø¥Ù†ØªØ§Ø¬ Ù…ØªÙˆÙ‚Ø¹'} ${value}%`;
+      const caption = `${label} أ‚آ· ${day.date} أ‚آ· ${condition} أ‚آ· ${english ? 'expected output' : 'أکآ¥أ™â€ أکآھأکآ§أکآ¬ أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹'} ${value}%`;
       return `<div class="chart-day${day.today ? ' is-today' : ''}" title="${escapeHtml(caption)}" aria-label="${escapeHtml(caption)}"><div class="chart-plot"><div class="chart-bar" style="height:${value}%"><span class="chart-value">${value}%</span></div></div><span class="chart-label">${escapeHtml(label)}</span></div>`;
     }).join('');
   }
   const caption = el('chart-caption');
-  if (caption) caption.textContent = hasLossEstimate(result) ? `ÙÙ‚Ø¯ Ø§Ù„ÙŠÙˆÙ… ${result.percent}% Â· Ø¥Ø´Ø¹Ø§Ø¹ Ø§Ù„Ø´Ù…Ø³ ÙŠØªØºÙŠØ± Ø­Ø³Ø¨ Ø§Ù„Ø·Ù‚Ø³` : 'ØªÙ‚Ø¯ÙŠØ±Ø§Øª Ø£ÙˆÙ„ÙŠØ© ØªØªØ­Ø¯Ø« Ù…Ø¹ Ø§Ù„Ø·Ù‚Ø³';
+  if (caption) caption.textContent = hasLossEstimate(result) ? `أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦ ${result.percent}% أ‚آ· أکآ¥أکآ´أکآ¹أکآ§أکآ¹ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³ أ™إ أکآھأکآ؛أ™إ أکآ± أکآ­أکآ³أکآ¨ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³` : 'أکآھأ™â€ڑأکآ¯أ™إ أکآ±أکآ§أکآھ أکآ£أ™ث†أ™â€‍أ™إ أکآ© أکآھأکآھأکآ­أکآ¯أکآ« أ™â€¦أکآ¹ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³';
 }
 function renderHistory() {
   const host = el('history-list');
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
-  if (!state.history.length) { host.innerHTML = '<div class="history-empty"><div class="empty-icon">â˜¼</div><h3>Ù„Ø§ ØªÙˆØ¬Ø¯ ÙØ­ÙˆØµØ§Øª Ù…Ø­ÙÙˆØ¸Ø© Ø¨Ø¹Ø¯</h3><p>Ø¨Ø¹Ø¯ Ø¥Ø¹Ø¯Ø§Ø¯ Ù†Ø¸Ø§Ù…Ùƒ Ø³ÙŠØ¸Ù‡Ø± Ù‡Ù†Ø§ Ø³Ø¬Ù„ Ø§Ù„ÙØ­ÙˆØµØ§Øª.</p><button class="button button-primary" id="history-empty-new">Ø¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù…</button></div>'; el('history-empty-new')?.addEventListener('click', () => openWizard(0)); applyLanguage(); return; }
-  host.innerHTML = state.history.map((item) => `<div class="history-row"><div class="history-date"><b>${new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(item.createdAt))}</b><small>${new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(item.createdAt))} Â· ${escapeHtml(item.location)}</small></div><div class="history-cell">Ø§Ù„ÙÙ‚Ø¯ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ <b>${hasLossEstimate(item) ? `${item.percent}%` : 'â€”'}</b></div><div class="history-cell">${hasLossEstimate(item) ? `${Number(item.lostKwh).toFixed(2)} kWh` : 'â€”'}</div><div><span class="history-badge">${item.ai ? 'ÙØ­Øµ Ø¨ØµØ±ÙŠ' : 'ØªÙ‚Ø¯ÙŠØ± Ø£ÙˆÙ„ÙŠ'}</span></div><button data-history-open="${item.id}">Ø¹Ø±Ø¶</button></div>`).join('');
+  if (!state.history.length) { host.innerHTML = '<div class="history-empty"><div class="empty-icon">أ¢ثœآ¼</div><h3>أ™â€‍أکآ§ أکآھأ™ث†أکآ¬أکآ¯ أ™آپأکآ­أ™ث†أکآµأکآ§أکآھ أ™â€¦أکآ­أ™آپأ™ث†أکآ¸أکآ© أکآ¨أکآ¹أکآ¯</h3><p>أکآ¨أکآ¹أکآ¯ أکآ¥أکآ¹أکآ¯أکآ§أکآ¯ أ™â€ أکآ¸أکآ§أ™â€¦أ™ئ’ أکآ³أ™إ أکآ¸أ™â€،أکآ± أ™â€،أ™â€ أکآ§ أکآ³أکآ¬أ™â€‍ أکآ§أ™â€‍أ™آپأکآ­أ™ث†أکآµأکآ§أکآھ.</p><button class="button button-primary" id="history-empty-new">أکآ¥أکآ¹أکآ¯أکآ§أکآ¯ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦</button></div>'; el('history-empty-new')?.addEventListener('click', () => openWizard(0)); applyLanguage(); return; }
+  host.innerHTML = state.history.map((item) => `<div class="history-row"><div class="history-date"><b>${new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(item.createdAt))}</b><small>${new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(item.createdAt))} أ‚آ· ${escapeHtml(item.location)}</small></div><div class="history-cell">أکآ§أ™â€‍أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ  <b>${hasLossEstimate(item) ? `${item.percent}%` : 'أ¢â‚¬â€‌'}</b></div><div class="history-cell">${hasLossEstimate(item) ? `${Number(item.lostKwh).toFixed(2)} kWh` : 'أ¢â‚¬â€‌'}</div><div><span class="history-badge">${item.ai ? 'أ™آپأکآ­أکآµ أکآ¨أکآµأکآ±أ™إ ' : 'أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ£أ™ث†أ™â€‍أ™إ '}</span></div><button data-history-open="${item.id}">أکآ¹أکآ±أکآ¶</button></div>`).join('');
   host.querySelectorAll('[data-history-open]').forEach((button) => button.addEventListener('click', () => {
     const item = state.history.find((row) => row.id === button.dataset.historyOpen); if (!item) return;
-    showPage('dashboard'); el('loss-percent').textContent = hasLossEstimate(item) ? `${item.percent}%` : 'â€”%'; el('metric-loss').textContent = hasLossEstimate(item) ? `${Number(item.lostKwh).toFixed(2)} kWh` : 'â€”';
-    el('status-title').textContent = 'ÙØ­Øµ Ù…Ø­ÙÙˆØ¸'; el('status-description').textContent = hasLossEstimate(item) ? `ÙÙ‚Ø¯ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ Ø­ÙŠÙ†Ù‡Ø§: ${money(item.lostMoney)}.` : ui('Ù„Ù… ØªØªÙˆÙØ± Ø¨ÙŠØ§Ù†Ø§Øª ÙƒØ§ÙÙŠØ© Ù„ØªÙ‚Ø¯ÙŠØ± Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø© ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„ÙØ­Øµ.', 'This inspection had insufficient data to estimate energy losses.');
+    showPage('dashboard'); el('loss-percent').textContent = hasLossEstimate(item) ? `${item.percent}%` : 'أ¢â‚¬â€‌%'; el('metric-loss').textContent = hasLossEstimate(item) ? `${Number(item.lostKwh).toFixed(2)} kWh` : 'أ¢â‚¬â€‌';
+    el('status-title').textContent = 'أ™آپأکآ­أکآµ أ™â€¦أکآ­أ™آپأ™ث†أکآ¸'; el('status-description').textContent = hasLossEstimate(item) ? `أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ  أکآ­أ™إ أ™â€ أ™â€،أکآ§: ${money(item.lostMoney)}.` : ui('أ™â€‍أ™â€¦ أکآھأکآھأ™ث†أ™آپأکآ± أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أ™ئ’أکآ§أ™آپأ™إ أکآ© أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ± أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أ™آپأ™إ  أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أ™آپأکآ­أکآµ.', 'This inspection had insufficient data to estimate energy losses.');
     renderLossBreakdown(item);
     renderAnalysisDetails({ ai: item.visualAssessment || null, aiLanguage: item.aiLanguage, aiModel: item.aiModel, solarContext: item.solarContext, monthlyLoss: item.monthlyLoss });
     applyLanguage();
@@ -2365,19 +2365,19 @@ function renderSettings() {
   el('setting-notifications').disabled = devicePushBusy || !currentAccount;
   el('setting-dark').checked = !!state.settings.dark; el('setting-sound').checked = !!state.settings.sound; el('setting-language').value = state.settings.language || 'ar';
   const cooldown = Number(appSettings?.dust_alert_cooldown_days);
-  const deviceStatus = devicePushStateKnown ? (devicePushEnabled ? 'Ù…ÙØ¹Ù‘Ù„Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø²' : 'ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø²') : 'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².';
-  el('notification-hint').textContent = `ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø² ÙÙ‚Ø· Â· ${deviceStatus}${Number.isFinite(cooldown) ? ` Â· ÙƒÙ„ ${cooldown} ÙŠÙˆÙ…Ø§Ù‹ ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰` : ''}`;
+  const deviceStatus = devicePushStateKnown ? (devicePushEnabled ? 'أ™â€¦أ™آپأکآ¹أ™â€کأ™â€‍أکآ© أکآ¹أ™â€‍أ™â€° أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ²' : 'أکآ؛أ™إ أکآ± أ™â€¦أ™آپأکآ¹أ™â€کأ™â€‍أکآ© أکآ¹أ™â€‍أ™â€° أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ²') : 'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ².';
+  el('notification-hint').textContent = `أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ² أ™آپأ™â€ڑأکآ· أ‚آ· ${deviceStatus}${Number.isFinite(cooldown) ? ` أ‚آ· أ™ئ’أ™â€‍ ${cooldown} أ™إ أ™ث†أ™â€¦أکآ§أ™â€¹ أ™ئ’أکآ­أکآ¯ أکآ£أ™â€ڑأکآµأ™â€°` : ''}`;
   applyLanguage();
 }
-// ---------- Ø§Ù„Ø¨Ù„Ø§ØºØ§Øª ÙˆØ§Ù„Ø´ÙƒØ§ÙˆÙ‰ ----------
+// ---------- أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛أکآ§أکآھ أ™ث†أکآ§أ™â€‍أکآ´أ™ئ’أکآ§أ™ث†أ™â€° ----------
 const COMPLAINT_CATEGORIES = {
-  performance: ['Ø¶Ø¹Ù ÙÙŠ Ø§Ù„Ø¥Ù†ØªØ§Ø¬', 'Low generation'],
-  dust: ['ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Dust on panels'],
-  heat: ['Ø­Ø±Ø§Ø±Ø© Ù…Ø±ØªÙØ¹Ø©', 'High heat'],
-  shade: ['ØªØ¸Ù„ÙŠÙ„ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel shading'],
-  electrical: ['Ù…Ø´ÙƒÙ„Ø© ÙƒÙ‡Ø±Ø¨Ø§Ø¦ÙŠØ©', 'Electrical problem'],
-  service: ['Ø·Ù„Ø¨ ØµÙŠØ§Ù†Ø©', 'Maintenance request'],
-  other: ['Ø£Ø®Ø±Ù‰', 'Other'],
+  performance: ['أکآ¶أکآ¹أ™آپ أ™آپأ™إ  أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬', 'Low generation'],
+  dust: ['أکآ؛أکآ¨أکآ§أکآ± أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'Dust on panels'],
+  heat: ['أکآ­أکآ±أکآ§أکآ±أکآ© أ™â€¦أکآ±أکآھأ™آپأکآ¹أکآ©', 'High heat'],
+  shade: ['أکآھأکآ¸أ™â€‍أ™إ أ™â€‍ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'Panel shading'],
+  electrical: ['أ™â€¦أکآ´أ™ئ’أ™â€‍أکآ© أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ¦أ™إ أکآ©', 'Electrical problem'],
+  service: ['أکآ·أ™â€‍أکآ¨ أکآµأ™إ أکآ§أ™â€ أکآ©', 'Maintenance request'],
+  other: ['أکآ£أکآ®أکآ±أ™â€°', 'Other'],
 };
 function complaintCategoryLabel(value) {
   const entry = COMPLAINT_CATEGORIES[value] || COMPLAINT_CATEGORIES.other;
@@ -2387,8 +2387,8 @@ function renderReports() {
   const note = el('complaint-email-note');
   if (note) {
     note.textContent = complaintConfig.delivery
-      ? ui(`Ø³ÙŠÙØ±Ø³Ù„ Ø§Ù„Ø¨Ù„Ø§Øº Ù…Ø¨Ø§Ø´Ø±Ø© Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø¹Ù„Ù‰ ${complaintConfig.email}.`, `Your complaint is sent directly to the maintenance team at ${complaintConfig.email}.`)
-      : ui(`Ø³ÙŠÙØ¬Ù‡ÙŽÙ‘Ø² Ø§Ù„Ø¨Ù„Ø§Øº ÙˆÙŠÙØªØ­ Ø¨Ø±ÙŠØ¯Ùƒ Ù„Ø¥Ø±Ø³Ø§Ù„Ù‡ Ø¥Ù„Ù‰ ${complaintConfig.email}ØŒ Ø£Ùˆ ÙŠÙ…ÙƒÙ†Ùƒ Ù†Ø³Ø®Ù‡ ÙˆÙ…Ø´Ø§Ø±ÙƒØªÙ‡.`, `Your complaint is prepared and your mail app opens to send it to ${complaintConfig.email}; you can also copy and share it.`);
+      ? ui(`أکآ³أ™إ أ™آڈأکآ±أکآ³أ™â€‍ أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛ أ™â€¦أکآ¨أکآ§أکآ´أکآ±أکآ© أکآ¥أ™â€‍أ™â€° أ™آپأکآ±أ™إ أ™â€ڑ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ¹أ™â€‍أ™â€° ${complaintConfig.email}.`, `Your complaint is sent directly to the maintenance team at ${complaintConfig.email}.`)
+      : ui(`أکآ³أ™إ أ™آڈأکآ¬أ™â€،أ™إ½أ™â€کأکآ² أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛ أ™ث†أ™إ أ™آپأکآھأکآ­ أکآ¨أکآ±أ™إ أکآ¯أ™ئ’ أ™â€‍أکآ¥أکآ±أکآ³أکآ§أ™â€‍أ™â€، أکآ¥أ™â€‍أ™â€° ${complaintConfig.email}أکإ’ أکآ£أ™ث† أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أ™â€ أکآ³أکآ®أ™â€، أ™ث†أ™â€¦أکآ´أکآ§أکآ±أ™ئ’أکآھأ™â€،.`, `Your complaint is prepared and your mail app opens to send it to ${complaintConfig.email}; you can also copy and share it.`);
   }
   const name = el('complaint-name');
   if (name && !name.value) name.value = state.form.name || state.user?.username || '';
@@ -2400,14 +2400,14 @@ function renderComplaintHistory() {
   if (!host) return;
   const list = Array.isArray(state.complaints) ? state.complaints : [];
   if (!list.length) {
-    host.innerHTML = `<div class="empty-state"><div class="empty-icon">âœŽ</div><h3>${ui('Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¨Ù„Ø§ØºØ§Øª Ø¨Ø¹Ø¯', 'No complaints yet')}</h3><p>${ui('Ø¹Ù†Ø¯ Ø¥Ø±Ø³Ø§Ù„ Ø¨Ù„Ø§Øº Ø³ÙŠØ¸Ù‡Ø± Ù‡Ù†Ø§ Ù…Ø¹ ØªØ§Ø±ÙŠØ®Ù‡ ÙˆØ­Ø§Ù„ØªÙ‡.', 'When you send a complaint it appears here with its date and status.')}</p></div>`;
+    host.innerHTML = `<div class="empty-state"><div class="empty-icon">أ¢إ“إ½</div><h3>${ui('أ™â€‍أکآ§ أکآھأ™ث†أکآ¬أکآ¯ أکآ¨أ™â€‍أکآ§أکآ؛أکآ§أکآھ أکآ¨أکآ¹أکآ¯', 'No complaints yet')}</h3><p>${ui('أکآ¹أ™â€ أکآ¯ أکآ¥أکآ±أکآ³أکآ§أ™â€‍ أکآ¨أ™â€‍أکآ§أکآ؛ أکآ³أ™إ أکآ¸أ™â€،أکآ± أ™â€،أ™â€ أکآ§ أ™â€¦أکآ¹ أکآھأکآ§أکآ±أ™إ أکآ®أ™â€، أ™ث†أکآ­أکآ§أ™â€‍أکآھأ™â€،.', 'When you send a complaint it appears here with its date and status.')}</p></div>`;
     return;
   }
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   host.innerHTML = `<div class="complaint-list">${list.map((item) => {
-    const delivered = item.delivered ? ui('Ø£ÙØ±Ø³Ù„ Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø©', 'Sent to the maintenance team') : ui('Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ø¥Ø±Ø³Ø§Ù„ Ù…Ù† Ø¨Ø±ÙŠØ¯Ùƒ', 'Pending sending from your mail');
+    const delivered = item.delivered ? ui('أکآ£أ™آڈأکآ±أکآ³أ™â€‍ أکآ¥أ™â€‍أ™â€° أ™آپأکآ±أ™إ أ™â€ڑ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ©', 'Sent to the maintenance team') : ui('أکآ¨أکآ§أ™â€ أکآھأکآ¸أکآ§أکآ± أکآ§أ™â€‍أکآ¥أکآ±أکآ³أکآ§أ™â€‍ أ™â€¦أ™â€  أکآ¨أکآ±أ™إ أکآ¯أ™ئ’', 'Pending sending from your mail');
     const when = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }).format(new Date(item.createdAt));
-    return `<div class="complaint-row"><div class="complaint-row-top"><b>${escapeHtml(complaintCategoryLabel(item.category))}${item.subject ? ` Â· ${escapeHtml(item.subject)}` : ''}</b><span class="history-badge">${escapeHtml(delivered)}</span></div><div class="complaint-row-meta">${when} Â· ${ui('Ø±Ù‚Ù…', 'No.')} ${escapeHtml(String(item.id || '').slice(0, 8))}</div><p>${escapeHtml(item.message)}</p></div>`;
+    return `<div class="complaint-row"><div class="complaint-row-top"><b>${escapeHtml(complaintCategoryLabel(item.category))}${item.subject ? ` أ‚آ· ${escapeHtml(item.subject)}` : ''}</b><span class="history-badge">${escapeHtml(delivered)}</span></div><div class="complaint-row-meta">${when} أ‚آ· ${ui('أکآ±أ™â€ڑأ™â€¦', 'No.')} ${escapeHtml(String(item.id || '').slice(0, 8))}</div><p>${escapeHtml(item.message)}</p></div>`;
   }).join('')}</div>`;
 }
 function openMailto(url) {
@@ -2420,13 +2420,13 @@ function openMailto(url) {
 }
 function complaintMailtoFallback(payload) {
   const lines = [
-    `${ui('Ù†ÙˆØ¹ Ø§Ù„Ø¨Ù„Ø§Øº', 'Complaint type')}: ${complaintCategoryLabel(payload.category)}`,
-    payload.name ? `${ui('Ø§Ù„Ø§Ø³Ù…', 'Name')}: ${payload.name}` : '',
-    `${ui('ÙˆØ³ÙŠÙ„Ø© Ø§Ù„ØªÙˆØ§ØµÙ„', 'Contact')}: ${payload.contact}`,
-    payload.location ? `${ui('Ø§Ù„Ù…ÙˆÙ‚Ø¹', 'Location')}: ${payload.location}` : '',
+    `${ui('أ™â€ أ™ث†أکآ¹ أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛', 'Complaint type')}: ${complaintCategoryLabel(payload.category)}`,
+    payload.name ? `${ui('أکآ§أ™â€‍أکآ§أکآ³أ™â€¦', 'Name')}: ${payload.name}` : '',
+    `${ui('أ™ث†أکآ³أ™إ أ™â€‍أکآ© أکآ§أ™â€‍أکآھأ™ث†أکآ§أکآµأ™â€‍', 'Contact')}: ${payload.contact}`,
+    payload.location ? `${ui('أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹', 'Location')}: ${payload.location}` : '',
     '', payload.message,
   ].filter((line) => line !== '');
-  return `mailto:${encodeURIComponent(complaintConfig.email)}?subject=${encodeURIComponent(payload.subject || ui('Ø¨Ù„Ø§Øº Ø³ÙŠØ§Ø¬', 'Siyaj complaint'))}&body=${encodeURIComponent(lines.join('\n'))}`;
+  return `mailto:${encodeURIComponent(complaintConfig.email)}?subject=${encodeURIComponent(payload.subject || ui('أکآ¨أ™â€‍أکآ§أکآ؛ أکآ³أ™إ أکآ§أکآ¬', 'Siyaj complaint'))}&body=${encodeURIComponent(lines.join('\n'))}`;
 }
 async function submitComplaint() {
   const alertBox = el('complaint-alert');
@@ -2444,17 +2444,17 @@ async function submitComplaint() {
     account: currentAccount?.username || '',
   };
   const fail = (message) => { if (alertBox) { alertBox.textContent = message; alertBox.hidden = false; } };
-  if (!payload.contact) return fail(ui('Ø£Ø¯Ø®Ù„ Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ù‡Ø§ØªÙÙƒ Ù„Ù„ØªÙˆØ§ØµÙ„.', 'Enter your email or phone number for contact.'));
-  if (payload.message.length < 10) return fail(ui('Ø§ÙƒØªØ¨ ÙˆØµÙØ§Ù‹ Ù„Ù„Ø¨Ù„Ø§Øº (10 Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„).', 'Describe the complaint (at least 10 characters).'));
-  if (button) { button.disabled = true; button.dataset.original = button.innerHTML; button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('Ø¬Ø§Ø±Ù Ø§Ù„Ø¥Ø±Ø³Ø§Ù„â€¦', 'Sendingâ€¦')}</span>`; }
+  if (!payload.contact) return fail(ui('أکآ£أکآ¯أکآ®أ™â€‍ أکآ¨أکآ±أ™إ أکآ¯أ™ئ’ أکآ§أ™â€‍أکآ¥أ™â€‍أ™ئ’أکآھأکآ±أ™ث†أ™â€ أ™إ  أکآ£أ™ث† أکآ±أ™â€ڑأ™â€¦ أ™â€،أکآ§أکآھأ™آپأ™ئ’ أ™â€‍أ™â€‍أکآھأ™ث†أکآ§أکآµأ™â€‍.', 'Enter your email or phone number for contact.'));
+  if (payload.message.length < 10) return fail(ui('أکآ§أ™ئ’أکآھأکآ¨ أ™ث†أکآµأ™آپأکآ§أ™â€¹ أ™â€‍أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛ (10 أکآ£أکآ­أکآ±أ™آپ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€ڑأ™â€‍).', 'Describe the complaint (at least 10 characters).'));
+  if (button) { button.disabled = true; button.dataset.original = button.innerHTML; button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('أکآ¬أکآ§أکآ±أ™آچ أکآ§أ™â€‍أکآ¥أکآ±أکآ³أکآ§أ™â€‍أ¢â‚¬آ¦', 'Sendingأ¢â‚¬آ¦')}</span>`; }
   let result = null;
   try {
     const response = await authenticatedFetch('/api/complaints', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || ui('ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¨Ù„Ø§ØºØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.', 'Could not send the complaint; try again.'));
+    if (!response.ok) throw new Error(data.error || ui('أکآھأکآ¹أکآ°أکآ± أکآ¥أکآ±أکآ³أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛أکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€°.', 'Could not send the complaint; try again.'));
     result = data;
   } catch (error) {
-    fail(error.message || ui('ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¨Ù„Ø§ØºØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.', 'Could not send the complaint; try again.'));
+    fail(error.message || ui('أکآھأکآ¹أکآ°أکآ± أکآ¥أکآ±أکآ³أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛أکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€°.', 'Could not send the complaint; try again.'));
     if (button) { button.disabled = false; if (button.dataset.original) button.innerHTML = button.dataset.original; }
     return;
   }
@@ -2463,17 +2463,17 @@ async function submitComplaint() {
   persist(); renderComplaintHistory();
   if (success) {
     if (result.delivered) {
-      success.innerHTML = ui(`âœ… ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø¨Ù„Ø§ØºÙƒ Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø¹Ù„Ù‰ ${complaintConfig.email}.`, `âœ… Your complaint was sent to the maintenance team at ${complaintConfig.email}.`);
+      success.innerHTML = ui(`أ¢إ“â€¦ أکآھأ™â€¦ أکآ¥أکآ±أکآ³أکآ§أ™â€‍ أکآ¨أ™â€‍أکآ§أکآ؛أ™ئ’ أکآ¥أ™â€‍أ™â€° أ™آپأکآ±أ™إ أ™â€ڑ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ¹أ™â€‍أ™â€° ${complaintConfig.email}.`, `أ¢إ“â€¦ Your complaint was sent to the maintenance team at ${complaintConfig.email}.`);
     } else {
       const mailto = result.mailto || complaintMailtoFallback(payload);
-      success.innerHTML = ui('ØªÙ… ØªØ¬Ù‡ÙŠØ² Ø¨Ù„Ø§ØºÙƒ. Ø¥Ù† Ù„Ù… ÙŠÙØªØ­ Ø¨Ø±ÙŠØ¯Ùƒ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ ÙØ§Ø¶ØºØ· Ø§Ù„Ø±Ø§Ø¨Ø· Ø§Ù„ØªØ§Ù„ÙŠØŒ Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… Â«Ù…Ø´Ø§Ø±ÙƒØ© / Ù†Ø³Ø® Ø§Ù„Ø¨Ù„Ø§ØºÂ».', 'Your complaint is ready. If your mail app did not open automatically, use the link below, or â€œShare / copy complaintâ€.');
-      success.innerHTML += ` <a href="${mailto}">${ui('ÙØªØ­ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ù„Ø¥Ø±Ø³Ø§Ù„Ù‡', 'Open mail to send')}</a>`;
+      success.innerHTML = ui('أکآھأ™â€¦ أکآھأکآ¬أ™â€،أ™إ أکآ² أکآ¨أ™â€‍أکآ§أکآ؛أ™ئ’. أکآ¥أ™â€  أ™â€‍أ™â€¦ أ™إ أ™آپأکآھأکآ­ أکآ¨أکآ±أ™إ أکآ¯أ™ئ’ أکآھأ™â€‍أ™â€ڑأکآ§أکآ¦أ™إ أکآ§أ™â€¹ أ™آپأکآ§أکآ¶أکآ؛أکآ· أکآ§أ™â€‍أکآ±أکآ§أکآ¨أکآ· أکآ§أ™â€‍أکآھأکآ§أ™â€‍أ™إ أکإ’ أکآ£أ™ث† أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ أ‚آ«أ™â€¦أکآ´أکآ§أکآ±أ™ئ’أکآ© / أ™â€ أکآ³أکآ® أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛أ‚آ».', 'Your complaint is ready. If your mail app did not open automatically, use the link below, or أ¢â‚¬إ“Share / copy complaintأ¢â‚¬آ‌.');
+      success.innerHTML += ` <a href="${mailto}">${ui('أ™آپأکآھأکآ­ أکآ§أ™â€‍أکآ¨أکآ±أ™إ أکآ¯ أ™â€‍أکآ¥أکآ±أکآ³أکآ§أ™â€‍أ™â€،', 'Open mail to send')}</a>`;
       openMailto(mailto);
     }
     success.hidden = false;
   }
   if (button) { button.disabled = false; if (button.dataset.original) button.innerHTML = button.dataset.original; }
-  showToast(result.delivered ? ui('ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¨Ù„Ø§Øº.', 'Complaint sent.') : ui('ØªÙ… ØªØ¬Ù‡ÙŠØ² Ø§Ù„Ø¨Ù„Ø§Øº Ù„Ù„Ø¥Ø±Ø³Ø§Ù„.', 'Complaint prepared for sending.'));
+  showToast(result.delivered ? ui('أکآھأ™â€¦ أکآ¥أکآ±أکآ³أکآ§أ™â€‍ أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛.', 'Complaint sent.') : ui('أکآھأ™â€¦ أکآھأکآ¬أ™â€،أ™إ أکآ² أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛ أ™â€‍أ™â€‍أکآ¥أکآ±أکآ³أکآ§أ™â€‍.', 'Complaint prepared for sending.'));
 }
 async function shareComplaint() {
   const payload = {
@@ -2483,31 +2483,31 @@ async function shareComplaint() {
     name: (el('complaint-name')?.value || '').trim(),
     contact: (el('complaint-contact')?.value || '').trim(),
   };
-  if (payload.message.length < 10) { const alertBox = el('complaint-alert'); if (alertBox) { alertBox.textContent = ui('Ø§ÙƒØªØ¨ ÙˆØµÙØ§Ù‹ Ù„Ù„Ø¨Ù„Ø§Øº Ù‚Ø¨Ù„ Ù…Ø´Ø§Ø±ÙƒØªÙ‡.', 'Describe the complaint before sharing it.'); alertBox.hidden = false; } return; }
-  const text = `${ui('Ø¨Ù„Ø§Øº Ø³ÙŠØ§Ø¬', 'Siyaj complaint')} â€” ${complaintCategoryLabel(payload.category)}\n${payload.subject ? `${payload.subject}\n` : ''}${payload.message}\n${ui('Ø§Ù„ØªÙˆØ§ØµÙ„', 'Contact')}: ${payload.contact || 'â€”'}\n${ui('Ø¥Ù„Ù‰', 'To')}: ${complaintConfig.email}`;
-  if (navigator.share) { try { await navigator.share({ title: ui('Ø¨Ù„Ø§Øº Ø³ÙŠØ§Ø¬', 'Siyaj complaint'), text }); return; } catch { /* fall through to copy */ } }
-  try { await navigator.clipboard.writeText(text); showToast(ui('ØªÙ… Ù†Ø³Ø® Ù†Øµ Ø§Ù„Ø¨Ù„Ø§Øº.', 'Complaint text copied.')); }
-  catch { showToast(ui('ØªØ¹Ø°Ø± Ø§Ù„Ù†Ø³Ø®Ø› Ø­Ø¯Ù‘Ø¯ Ø§Ù„Ù†Øµ ÙŠØ¯ÙˆÙŠØ§Ù‹.', 'Copy failed; select the text manually.')); }
+  if (payload.message.length < 10) { const alertBox = el('complaint-alert'); if (alertBox) { alertBox.textContent = ui('أکآ§أ™ئ’أکآھأکآ¨ أ™ث†أکآµأ™آپأکآ§أ™â€¹ أ™â€‍أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛ أ™â€ڑأکآ¨أ™â€‍ أ™â€¦أکآ´أکآ§أکآ±أ™ئ’أکآھأ™â€،.', 'Describe the complaint before sharing it.'); alertBox.hidden = false; } return; }
+  const text = `${ui('أکآ¨أ™â€‍أکآ§أکآ؛ أکآ³أ™إ أکآ§أکآ¬', 'Siyaj complaint')} أ¢â‚¬â€‌ ${complaintCategoryLabel(payload.category)}\n${payload.subject ? `${payload.subject}\n` : ''}${payload.message}\n${ui('أکآ§أ™â€‍أکآھأ™ث†أکآ§أکآµأ™â€‍', 'Contact')}: ${payload.contact || 'أ¢â‚¬â€‌'}\n${ui('أکآ¥أ™â€‍أ™â€°', 'To')}: ${complaintConfig.email}`;
+  if (navigator.share) { try { await navigator.share({ title: ui('أکآ¨أ™â€‍أکآ§أکآ؛ أکآ³أ™إ أکآ§أکآ¬', 'Siyaj complaint'), text }); return; } catch { /* fall through to copy */ } }
+  try { await navigator.clipboard.writeText(text); showToast(ui('أکآھأ™â€¦ أ™â€ أکآ³أکآ® أ™â€ أکآµ أکآ§أ™â€‍أکآ¨أ™â€‍أکآ§أکآ؛.', 'Complaint text copied.')); }
+  catch { showToast(ui('أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أ™â€ أکآ³أکآ®أکâ€؛ أکآ­أکآ¯أ™â€کأکآ¯ أکآ§أ™â€‍أ™â€ أکآµ أ™إ أکآ¯أ™ث†أ™إ أکآ§أ™â€¹.', 'Copy failed; select the text manually.')); }
 }
 
-// ---------- ØªÙ‚Ø±ÙŠØ± Ø§Ù„Ù†Ø¸Ø§Ù… ----------
+// ---------- أکآھأ™â€ڑأکآ±أ™إ أکآ± أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ ----------
 function reportSystemRows(f) {
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   const maintenance = maintenanceStatus();
   return [
-    [ui('Ø§Ø³Ù… ØµØ§Ø­Ø¨ Ø§Ù„Ù†Ø¸Ø§Ù…', 'System owner'), f.name || 'â€”'],
-    [ui('Ø§Ù„Ù…ÙˆÙ‚Ø¹', 'Location'), f.location || ui('ØºÙŠØ± Ù…Ø­Ø¯Ø¯', 'Not set')],
-    [ui('Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel count'), f.panels ? `${f.panels}` : 'â€”'],
-    [ui('Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ©', 'Total capacity'), f.power ? `${f.power} ${ui('ÙˆØ§Ø·', 'W')}` : 'â€”'],
-    [ui('Ù†ÙˆØ¹ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel type'), ({ monocrystalline: ui('Ø£Ø­Ø§Ø¯ÙŠØ© Ø§Ù„Ø¨Ù„ÙˆØ±Ø©', 'Monocrystalline'), polycrystalline: ui('Ù…ØªØ¹Ø¯Ø¯Ø© Ø§Ù„Ø¨Ù„ÙˆØ±Ø§Øª', 'Polycrystalline'), 'thin-film': ui('Ø£ØºØ´ÙŠØ© Ø±Ù‚ÙŠÙ‚Ø©', 'Thin film'), unknown: ui('ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ', 'Unknown') })[f.panelType] || 'â€”'],
-    [ui('Ø´Ø±ÙƒØ© Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel company'), f.company || 'â€”'],
-    [ui('Ø§Ù„Ù…ØµÙ†Ø¹', 'Manufacturer'), f.brand || 'â€”'],
-    [ui('Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel tilt'), f.tilt !== '' && f.tilt !== null ? `${f.tilt}Â°` : 'â€”'],
-    [ui('Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel azimuth'), f.panelAzimuth !== '' && f.panelAzimuth !== null ? `${f.panelAzimuth}Â°` : 'â€”'],
-    [ui('Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©', 'Last maintenance'), maintenance ? maintenanceDateLabel(maintenance.last, locale) : ui('Ù„Ù… ØªÙØ³Ø¬Ù„', 'Not recorded')],
-    [ui('Ù…ÙˆØ¹Ø¯ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©', 'Next maintenance'), maintenance ? `${maintenanceDateLabel(maintenance.due, locale)} Â· ${maintenanceRemainingLabel(maintenance)}` : ui('Ø£Ø¶Ù ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©', 'Add the last maintenance date')],
-    [ui('Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'Bill amount'), f.invoice ? `${f.invoice} ${ui('Ø±.Ø¹', 'OMR')}` : 'â€”'],
-    [ui('Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'Bill month'), f.billMonth || 'â€”'],
+    [ui('أکآ§أکآ³أ™â€¦ أکآµأکآ§أکآ­أکآ¨ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦', 'System owner'), f.name || 'أ¢â‚¬â€‌'],
+    [ui('أکآ§أ™â€‍أ™â€¦أ™ث†أ™â€ڑأکآ¹', 'Location'), f.location || ui('أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ¯أکآ¯', 'Not set')],
+    [ui('أکآ¹أکآ¯أکآ¯ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'Panel count'), f.panels ? `${f.panels}` : 'أ¢â‚¬â€‌'],
+    [ui('أکآ§أ™â€‍أ™â€ڑأکآ¯أکآ±أکآ© أکآ§أ™â€‍أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ أکآ©', 'Total capacity'), f.power ? `${f.power} ${ui('أ™ث†أکآ§أکآ·', 'W')}` : 'أ¢â‚¬â€‌'],
+    [ui('أ™â€ أ™ث†أکآ¹ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'Panel type'), ({ monocrystalline: ui('أکآ£أکآ­أکآ§أکآ¯أ™إ أکآ© أکآ§أ™â€‍أکآ¨أ™â€‍أ™ث†أکآ±أکآ©', 'Monocrystalline'), polycrystalline: ui('أ™â€¦أکآھأکآ¹أکآ¯أکآ¯أکآ© أکآ§أ™â€‍أکآ¨أ™â€‍أ™ث†أکآ±أکآ§أکآھ', 'Polycrystalline'), 'thin-film': ui('أکآ£أکآ؛أکآ´أ™إ أکآ© أکآ±أ™â€ڑأ™إ أ™â€ڑأکآ©', 'Thin film'), unknown: ui('أکآ؛أ™إ أکآ± أ™â€¦أکآ¹أکآ±أ™ث†أ™آپ', 'Unknown') })[f.panelType] || 'أ¢â‚¬â€‌'],
+    [ui('أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'Panel company'), f.company || 'أ¢â‚¬â€‌'],
+    [ui('أکآ§أ™â€‍أ™â€¦أکآµأ™â€ أکآ¹', 'Manufacturer'), f.brand || 'أ¢â‚¬â€‌'],
+    [ui('أ™â€¦أ™إ أ™â€‍ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'Panel tilt'), f.tilt !== '' && f.tilt !== null ? `${f.tilt}أ‚آ°` : 'أ¢â‚¬â€‌'],
+    [ui('أکآ§أکآھأکآ¬أکآ§أ™â€، أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­', 'Panel azimuth'), f.panelAzimuth !== '' && f.panelAzimuth !== null ? `${f.panelAzimuth}أ‚آ°` : 'أ¢â‚¬â€‌'],
+    [ui('أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ©', 'Last maintenance'), maintenance ? maintenanceDateLabel(maintenance.last, locale) : ui('أ™â€‍أ™â€¦ أکآھأ™آڈأکآ³أکآ¬أ™â€‍', 'Not recorded')],
+    [ui('أ™â€¦أ™ث†أکآ¹أکآ¯ أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ© أکآ§أ™â€‍أ™â€ڑأکآ§أکآ¯أ™â€¦أکآ©', 'Next maintenance'), maintenance ? `${maintenanceDateLabel(maintenance.due, locale)} أ‚آ· ${maintenanceRemainingLabel(maintenance)}` : ui('أکآ£أکآ¶أ™آپ أکآھأکآ§أکآ±أ™إ أکآ® أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ©', 'Add the last maintenance date')],
+    [ui('أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©', 'Bill amount'), f.invoice ? `${f.invoice} ${ui('أکآ±.أکآ¹', 'OMR')}` : 'أ¢â‚¬â€‌'],
+    [ui('أکآ´أ™â€،أکآ± أکآ§أ™â€‍أ™آپأکآ§أکآھأ™ث†أکآ±أکآ©', 'Bill month'), f.billMonth || 'أ¢â‚¬â€‌'],
   ];
 }
 function renderSystemReport() {
@@ -2521,68 +2521,68 @@ function renderSystemReport() {
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   const generated = new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeStyle: 'short' }).format(new Date());
   const heat = result?.heatPercent === null || result?.heatPercent === undefined ? null : Math.round(Number(result.heatPercent));
-  const dust = result?.dustPercent === null || result?.dustPercent === undefined ? 'â€”' : `${Math.round(Number(result.dustPercent))}%`;
+  const dust = result?.dustPercent === null || result?.dustPercent === undefined ? 'أ¢â‚¬â€‌' : `${Math.round(Number(result.dustPercent))}%`;
   const shade = Number.isFinite(Number(result?.shadePercent)) ? `${Math.round(Number(result.shadePercent))}%` : '0%';
-  const total = Number.isFinite(Number(result?.totalPercent)) ? Number(result.totalPercent) : 'â€”';
-  const lossDay = result && Number.isFinite(Number(result.lostKwh)) ? `${result.lostKwh.toFixed(2)} kWh` : 'â€”';
-  const lossMoney = result && Number.isFinite(Number(result.lostMoney)) ? money(result.lostMoney) : 'â€”';
-  const owner = state.user?.username || f.name || ui('Ù…Ø³ØªØ®Ø¯Ù… Ø³ÙŠØ§Ø¬', 'Siyaj user');
+  const total = Number.isFinite(Number(result?.totalPercent)) ? Number(result.totalPercent) : 'أ¢â‚¬â€‌';
+  const lossDay = result && Number.isFinite(Number(result.lostKwh)) ? `${result.lostKwh.toFixed(2)} kWh` : 'أ¢â‚¬â€‌';
+  const lossMoney = result && Number.isFinite(Number(result.lostMoney)) ? money(result.lostMoney) : 'أ¢â‚¬â€‌';
+  const owner = state.user?.username || f.name || ui('أ™â€¦أکآ³أکآھأکآ®أکآ¯أ™â€¦ أکآ³أ™إ أکآ§أکآ¬', 'Siyaj user');
   const monthlyLine = monthly && monthly.lostKwh !== null && monthly.lostKwh !== undefined
-    ? `${Number(monthly.lostKwh).toFixed(2)} kWh${monthly.lossMoney !== null && monthly.lossMoney !== undefined ? ` Â· ${money(monthly.lossMoney)}` : ''}`
-    : ui('ØºÙŠØ± Ù…Ø­Ø³ÙˆØ¨Ø© (Ø£Ø¶Ù Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ)', 'Not calculated (add expected and actual generation)');
+    ? `${Number(monthly.lostKwh).toFixed(2)} kWh${monthly.lossMoney !== null && monthly.lossMoney !== undefined ? ` أ‚آ· ${money(monthly.lossMoney)}` : ''}`
+    : ui('أکآ؛أ™إ أکآ± أ™â€¦أکآ­أکآ³أ™ث†أکآ¨أکآ© (أکآ£أکآ¶أ™آپ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬ أکآ§أ™â€‍أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ™ث†أکآ§أ™â€‍أ™آپأکآ¹أ™â€‍أ™إ )', 'Not calculated (add expected and actual generation)');
   const weatherRows = current ? [
-    [ui('Ø§Ù„Ø­Ø±Ø§Ø±Ø©', 'Temperature'), `${Math.round(current.temperature_2m)}Â°${ui('Ù…', 'C')}`],
-    [ui('Ø§Ù„Ø±Ø·ÙˆØ¨Ø©', 'Humidity'), `${Math.round(current.relative_humidity_2m)}%`],
-    [ui('Ø§Ù„Ø­Ø§Ù„Ø©', 'Condition'), weatherText(current.weather_code)],
-    [ui('Ø§Ù„Ù…Ù†Ø·Ù‚Ø© Ø§Ù„Ø²Ù…Ù†ÙŠØ©', 'Time zone'), state.weather?.timezone || 'â€”'],
-  ] : [[ui('Ø§Ù„Ø·Ù‚Ø³', 'Weather'), ui('ØºÙŠØ± Ù…ØªØ§Ø­', 'Unavailable')]];
+    [ui('أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ©', 'Temperature'), `${Math.round(current.temperature_2m)}أ‚آ°${ui('أ™â€¦', 'C')}`],
+    [ui('أکآ§أ™â€‍أکآ±أکآ·أ™ث†أکآ¨أکآ©', 'Humidity'), `${Math.round(current.relative_humidity_2m)}%`],
+    [ui('أکآ§أ™â€‍أکآ­أکآ§أ™â€‍أکآ©', 'Condition'), weatherText(current.weather_code)],
+    [ui('أکآ§أ™â€‍أ™â€¦أ™â€ أکآ·أ™â€ڑأکآ© أکآ§أ™â€‍أکآ²أ™â€¦أ™â€ أ™إ أکآ©', 'Time zone'), state.weather?.timezone || 'أ¢â‚¬â€‌'],
+  ] : [[ui('أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³', 'Weather'), ui('أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ§أکآ­', 'Unavailable')]];
   const advice = result && !result.heatEstimateUnavailable
     ? [
-      heat !== null && heat >= 10 ? [ui('Ø§Ù„Ø­Ø±Ø§Ø±Ø©', 'Heat'), ui('Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø§Ù„Ù…Ø±ØªÙØ¹Ø© ØªØ®ÙØ¶ Ø§Ù„Ø¥Ù†ØªØ§Ø¬Ø› Ø±Ø§Ù‚Ø¨ Ø§Ù„ØªÙ‡ÙˆÙŠØ© ÙˆÙˆÙ‚Øª Ø§Ù„ØªØ´ØºÙŠÙ„ ÙˆØªØ¬Ù†Ø¨ Ø§Ù„Ø¹Ù…Ù„ ÙˆÙ‚Øª Ø§Ù„Ø°Ø±ÙˆØ©.', 'High panel heat lowers output; check ventilation and avoid working at peak heat.')] : null,
-      Number(result.dustPercent) >= 15 ? [ui('Ø§Ù„ØºØ¨Ø§Ø±', 'Dust'), ui('ÙŠØ¸Ù‡Ø± ØªØ±Ø§ÙƒÙ… ØºØ¨Ø§Ø± Ù…Ù„Ø­ÙˆØ¸Ø› Ù†Ø¸Ù‘Ù Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø£Ù…Ø§Ù† ÙˆÙƒØ±Ù‘Ø± Ø§Ù„ÙØ­Øµ.', 'Notable dust is shown; clean the panels safely and re-inspect.')] : null,
-      [ui('Ø§Ù„ØªÙˆØµÙŠØ©', 'Recommendation'), ui('Ø­Ø§ÙØ¸ Ø¹Ù„Ù‰ ÙØ­Øµ Ø¯ÙˆØ±ÙŠ Ù„Ù„Ø·Ù‚Ø³ ÙˆØ³Ø·Ø­ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù„Ø¹ÙˆØ§ØµÙ Ø£Ùˆ ÙØªØ±Ø§Øª Ø§Ù„ØºØ¨Ø§Ø±.', 'Keep checking weather and panel surfaces after storms or dusty periods.')],
-    ].filter(Boolean) : [[ui('Ø§Ù„ØªÙˆØµÙŠØ©', 'Recommendation'), ui('Ø£Ø¯Ø®Ù„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù„Ù„Ø­ØµÙˆÙ„ Ø¹Ù„Ù‰ ØªÙ‚Ø±ÙŠØ± Ø£Ø¯Ù‚.', 'Enter system data and attach a panel photo for a more accurate report.')]];
+      heat !== null && heat >= 10 ? [ui('أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ©', 'Heat'), ui('أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ§أ™â€‍أ™â€¦أکآ±أکآھأ™آپأکآ¹أکآ© أکآھأکآ®أ™آپأکآ¶ أکآ§أ™â€‍أکآ¥أ™â€ أکآھأکآ§أکآ¬أکâ€؛ أکآ±أکآ§أ™â€ڑأکآ¨ أکآ§أ™â€‍أکآھأ™â€،أ™ث†أ™إ أکآ© أ™ث†أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآھأکآ´أکآ؛أ™إ أ™â€‍ أ™ث†أکآھأکآ¬أ™â€ أکآ¨ أکآ§أ™â€‍أکآ¹أ™â€¦أ™â€‍ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآ°أکآ±أ™ث†أکآ©.', 'High panel heat lowers output; check ventilation and avoid working at peak heat.')] : null,
+      Number(result.dustPercent) >= 15 ? [ui('أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±', 'Dust'), ui('أ™إ أکآ¸أ™â€،أکآ± أکآھأکآ±أکآ§أ™ئ’أ™â€¦ أکآ؛أکآ¨أکآ§أکآ± أ™â€¦أ™â€‍أکآ­أ™ث†أکآ¸أکâ€؛ أ™â€ أکآ¸أ™â€کأ™آپ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ£أ™â€¦أکآ§أ™â€  أ™ث†أ™ئ’أکآ±أ™â€کأکآ± أکآ§أ™â€‍أ™آپأکآ­أکآµ.', 'Notable dust is shown; clean the panels safely and re-inspect.')] : null,
+      [ui('أکآ§أ™â€‍أکآھأ™ث†أکآµأ™إ أکآ©', 'Recommendation'), ui('أکآ­أکآ§أ™آپأکآ¸ أکآ¹أ™â€‍أ™â€° أ™آپأکآ­أکآµ أکآ¯أ™ث†أکآ±أ™إ  أ™â€‍أ™â€‍أکآ·أ™â€ڑأکآ³ أ™ث†أکآ³أکآ·أکآ­ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أکآ¨أکآ¹أکآ¯ أکآ§أ™â€‍أکآ¹أ™ث†أکآ§أکآµأ™آپ أکآ£أ™ث† أ™آپأکآھأکآ±أکآ§أکآھ أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±.', 'Keep checking weather and panel surfaces after storms or dusty periods.')],
+    ].filter(Boolean) : [[ui('أکآ§أ™â€‍أکآھأ™ث†أکآµأ™إ أکآ©', 'Recommendation'), ui('أکآ£أکآ¯أکآ®أ™â€‍ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أ™ث†أکآ£أکآ±أ™آپأ™â€ڑ أکآµأ™ث†أکآ±أکآ© أ™â€‍أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™â€‍أ™â€‍أکآ­أکآµأ™ث†أ™â€‍ أکآ¹أ™â€‍أ™â€° أکآھأ™â€ڑأکآ±أ™إ أکآ± أکآ£أکآ¯أ™â€ڑ.', 'Enter system data and attach a panel photo for a more accurate report.')]];
   host.innerHTML = `
     <div class="report-header">
       <div>
-        <p class="eyebrow">${ui('Ø³ÙŠØ§Ø¬ Â· Ø±ÙÙŠÙ‚ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ø´Ù…Ø³ÙŠØ©', 'Siyaj Â· Solar companion')}</p>
-        <h2>${ui('ØªÙ‚Ø±ÙŠØ± Ø­Ø§Ù„Ø© Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø´Ù…Ø³ÙŠ', 'Solar system status report')}</h2>
-        <p>${ui('ØµØ¯Ø± ÙÙŠ', 'Generated on')} ${escapeHtml(generated)} Â· ${ui('Ø§Ù„Ø­Ø³Ø§Ø¨', 'Account')}: ${escapeHtml(owner)}</p>
+        <p class="eyebrow">${ui('أکآ³أ™إ أکآ§أکآ¬ أ‚آ· أکآ±أ™آپأ™إ أ™â€ڑ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ أکآ©', 'Siyaj أ‚آ· Solar companion')}</p>
+        <h2>${ui('أکآھأ™â€ڑأکآ±أ™إ أکآ± أکآ­أکآ§أ™â€‍أکآ© أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ ', 'Solar system status report')}</h2>
+        <p>${ui('أکآµأکآ¯أکآ± أ™آپأ™إ ', 'Generated on')} ${escapeHtml(generated)} أ‚آ· ${ui('أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨', 'Account')}: ${escapeHtml(owner)}</p>
       </div>
       <span class="report-logo"><img src="/assets/logo.png" alt=""></span>
     </div>
     <section class="report-section">
-      <h3>${ui('Ù…Ù„Ø®Øµ Ø§Ù„Ø£Ø¯Ø§Ø¡', 'Performance summary')}</h3>
+      <h3>${ui('أ™â€¦أ™â€‍أکآ®أکآµ أکآ§أ™â€‍أکآ£أکآ¯أکآ§أکآ،', 'Performance summary')}</h3>
       <div class="report-highlight">
-        <div><small>${ui('Ù†Ø³Ø¨Ø© Ø§Ù„ÙÙ‚Ø¯ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©', 'Estimated loss ratio')}</small><b>${total === 'â€”' ? 'â€”' : `${total}%`}</b></div>
-        <div><small>${ui('Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ù…ÙÙ‚ÙˆØ¯Ø© ÙŠÙˆÙ…ÙŠØ§Ù‹', 'Energy lost per day')}</small><b>${escapeHtml(lossDay)}</b></div>
-        <div><small>${ui('Ø§Ù„Ù‚ÙŠÙ…Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©', 'Estimated value')}</small><b>${escapeHtml(lossMoney)}</b></div>
+        <div><small>${ui('أ™â€ أکآ³أکآ¨أکآ© أکآ§أ™â€‍أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ©', 'Estimated loss ratio')}</small><b>${total === 'أ¢â‚¬â€‌' ? 'أ¢â‚¬â€‌' : `${total}%`}</b></div>
+        <div><small>${ui('أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أ™â€¦أ™آپأ™â€ڑأ™ث†أکآ¯أکآ© أ™إ أ™ث†أ™â€¦أ™إ أکآ§أ™â€¹', 'Energy lost per day')}</small><b>${escapeHtml(lossDay)}</b></div>
+        <div><small>${ui('أکآ§أ™â€‍أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ©', 'Estimated value')}</small><b>${escapeHtml(lossMoney)}</b></div>
       </div>
     </section>
     <section class="report-section">
-      <h3>${ui('Ø£Ø³Ø¨Ø§Ø¨ Ø§Ù„ÙÙ‚Ø¯', 'Loss breakdown')}</h3>
+      <h3>${ui('أکآ£أکآ³أکآ¨أکآ§أکآ¨ أکآ§أ™â€‍أ™آپأ™â€ڑأکآ¯', 'Loss breakdown')}</h3>
       <table class="report-table">
-        <tr><th>${ui('Ø§Ù„Ù…ØµØ¯Ø±', 'Source')}</th><th>${ui('Ø§Ù„Ù†Ø³Ø¨Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©', 'Estimated share')}</th></tr>
-        <tr><td>${ui('Ø§Ù„Ø­Ø±Ø§Ø±Ø©', 'Heat')}</td><td>${heat === null ? 'â€”' : `${heat}%`}</td></tr>
-        <tr><td>${ui('Ø§Ù„ØºØ¨Ø§Ø±', 'Dust')}</td><td>${escapeHtml(dust)}</td></tr>
-        <tr><td>${ui('Ø§Ù„Ø¸Ù„', 'Shade')}</td><td>${shade}</td></tr>
-        <tr><td><b>${ui('Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ', 'Total')}</b></td><td><b>${total === 'â€”' ? 'â€”' : `${total}%`}</b></td></tr>
+        <tr><th>${ui('أکآ§أ™â€‍أ™â€¦أکآµأکآ¯أکآ±', 'Source')}</th><th>${ui('أکآ§أ™â€‍أ™â€ أکآ³أکآ¨أکآ© أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ©', 'Estimated share')}</th></tr>
+        <tr><td>${ui('أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ©', 'Heat')}</td><td>${heat === null ? 'أ¢â‚¬â€‌' : `${heat}%`}</td></tr>
+        <tr><td>${ui('أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±', 'Dust')}</td><td>${escapeHtml(dust)}</td></tr>
+        <tr><td>${ui('أکآ§أ™â€‍أکآ¸أ™â€‍', 'Shade')}</td><td>${shade}</td></tr>
+        <tr><td><b>${ui('أکآ§أ™â€‍أکآ¥أکآ¬أ™â€¦أکآ§أ™â€‍أ™إ ', 'Total')}</b></td><td><b>${total === 'أ¢â‚¬â€‌' ? 'أ¢â‚¬â€‌' : `${total}%`}</b></td></tr>
       </table>
-      <p class="report-advice-note" style="margin-top:12px">${ui('Ø§Ù„ÙÙ‚Ø¯ Ø§Ù„Ù„Ø­Ø¸ÙŠ Ø¨Ø³Ø¨Ø¨ Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ‚Øª Ø§Ù„ÙØ­Øµ: ', 'Instantaneous loss from panel heat at inspection: ')}<b>${heat === null ? 'â€”' : `${heat}%`}</b> Â· ${ui('Ø§Ù„Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±ÙŠØ© (Ù…ØªÙˆÙ‚Ø¹ âˆ’ ÙØ¹Ù„ÙŠ): ', 'Monthly loss (expected âˆ’ actual): ')}<b>${escapeHtml(monthlyLine)}</b></p>
+      <p class="report-advice-note" style="margin-top:12px">${ui('أکآ§أ™â€‍أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أ™â€‍أکآ­أکآ¸أ™إ  أکآ¨أکآ³أکآ¨أکآ¨ أکآ­أکآ±أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أ™آپأکآ­أکآµ: ', 'Instantaneous loss from panel heat at inspection: ')}<b>${heat === null ? 'أ¢â‚¬â€‌' : `${heat}%`}</b> أ‚آ· ${ui('أکآ§أ™â€‍أکآ®أکآ³أکآ§أکآ±أکآ© أکآ§أ™â€‍أکآ´أ™â€،أکآ±أ™إ أکآ© (أ™â€¦أکآھأ™ث†أ™â€ڑأکآ¹ أ¢ث†â€™ أ™آپأکآ¹أ™â€‍أ™إ ): ', 'Monthly loss (expected أ¢ث†â€™ actual): ')}<b>${escapeHtml(monthlyLine)}</b></p>
     </section>
     <section class="report-section">
-      <h3>${ui('Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù…', 'System details')}</h3>
+      <h3>${ui('أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦', 'System details')}</h3>
       <table class="report-table">${reportSystemRows(f).map(([label, value]) => `<tr><th>${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`).join('')}</table>
     </section>
     <section class="report-section">
-      <h3>${ui('Ø§Ù„Ø·Ù‚Ø³ ÙˆÙ‚Øª Ø§Ù„ØªÙ‚Ø±ÙŠØ±', 'Weather at report time')}</h3>
+      <h3>${ui('أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³ أ™ث†أ™â€ڑأکآھ أکآ§أ™â€‍أکآھأ™â€ڑأکآ±أ™إ أکآ±', 'Weather at report time')}</h3>
       <table class="report-table">${weatherRows.map(([label, value]) => `<tr><th>${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`).join('')}</table>
     </section>
     <section class="report-section">
-      <h3>${ui('Ø§Ù„ØªÙˆØµÙŠØ©', 'Recommendation')}</h3>
-      <div class="report-advice">${advice.map(([label, text]) => `<h4>${escapeHtml(label)}</h4><p>${escapeHtml(text)}</p>`).join('')}<p class="report-advice-note">${ui('Ù‡Ø°Ø§ Ø§Ù„ØªÙ‚Ø±ÙŠØ± ØªÙ‚Ø¯ÙŠØ±ÙŠ ÙˆÙŠØ³ØªÙ†Ø¯ Ø¥Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø¯Ø®Ù„Ø© ÙˆÙ†Ù…Ø§Ø°Ø¬ Ø§Ù„Ø·Ù‚Ø³ØŒ ÙˆÙ„ÙŠØ³ Ù‚ÙŠØ§Ø³Ø§Ù‹ ÙƒÙ‡Ø±Ø¨Ø§Ø¦ÙŠØ§Ù‹ Ù…Ø¨Ø§Ø´Ø±Ø§Ù‹. ÙŠÙ…ÙƒÙ† Ù…Ø´Ø§Ø±ÙƒØªÙ‡ Ù…Ø¹ Ø´Ø±ÙƒØ© Ø§Ù„ØµÙŠØ§Ù†Ø©.', 'This report is an estimate based on entered data and weather models, not a direct electrical measurement. It can be shared with a maintenance company.')}</p></div>
+      <h3>${ui('أکآ§أ™â€‍أکآھأ™ث†أکآµأ™إ أکآ©', 'Recommendation')}</h3>
+      <div class="report-advice">${advice.map(([label, text]) => `<h4>${escapeHtml(label)}</h4><p>${escapeHtml(text)}</p>`).join('')}<p class="report-advice-note">${ui('أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآھأ™â€ڑأکآ±أ™إ أکآ± أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ  أ™ث†أ™إ أکآ³أکآھأ™â€ أکآ¯ أکآ¥أ™â€‍أ™â€° أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أ™â€¦أکآ¯أکآ®أ™â€‍أکآ© أ™ث†أ™â€ أ™â€¦أکآ§أکآ°أکآ¬ أکآ§أ™â€‍أکآ·أ™â€ڑأکآ³أکإ’ أ™ث†أ™â€‍أ™إ أکآ³ أ™â€ڑأ™إ أکآ§أکآ³أکآ§أ™â€¹ أ™ئ’أ™â€،أکآ±أکآ¨أکآ§أکآ¦أ™إ أکآ§أ™â€¹ أ™â€¦أکآ¨أکآ§أکآ´أکآ±أکآ§أ™â€¹. أ™إ أ™â€¦أ™ئ’أ™â€  أ™â€¦أکآ´أکآ§أکآ±أ™ئ’أکآھأ™â€، أ™â€¦أکآ¹ أکآ´أکآ±أ™ئ’أکآ© أکآ§أ™â€‍أکآµأ™إ أکآ§أ™â€ أکآ©.', 'This report is an estimate based on entered data and weather models, not a direct electrical measurement. It can be shared with a maintenance company.')}</p></div>
     </section>
-    <div class="report-footer"><span>${ui('Ø³ÙŠØ§Ø¬ | Ø±ÙÙŠÙ‚ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ø´Ù…Ø³ÙŠØ©', 'Siyaj | Solar companion')}</span></div>`;
+    <div class="report-footer"><span>${ui('أکآ³أ™إ أکآ§أکآ¬ | أکآ±أ™آپأ™إ أ™â€ڑ أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ أکآ©', 'Siyaj | Solar companion')}</span></div>`;
   applyLanguage();
 }
 function reportPlainText() {
@@ -2591,16 +2591,16 @@ function reportPlainText() {
   ensureLossBreakdown(result);
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   const lines = [
-    ui('ØªÙ‚Ø±ÙŠØ± Ø­Ø§Ù„Ø© Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø´Ù…Ø³ÙŠ â€” Ø³ÙŠØ§Ø¬', 'Solar system status report â€” Siyaj'),
-    `${ui('ØµØ¯Ø± ÙÙŠ', 'Generated on')} ${new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeStyle: 'short' }).format(new Date())}`,
+    ui('أکآھأ™â€ڑأکآ±أ™إ أکآ± أکآ­أکآ§أ™â€‍أکآ© أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ  أ¢â‚¬â€‌ أکآ³أ™إ أکآ§أکآ¬', 'Solar system status report أ¢â‚¬â€‌ Siyaj'),
+    `${ui('أکآµأکآ¯أکآ± أ™آپأ™إ ', 'Generated on')} ${new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeStyle: 'short' }).format(new Date())}`,
     '',
-    `${ui('Ù†Ø³Ø¨Ø© Ø§Ù„ÙÙ‚Ø¯ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©', 'Estimated loss ratio')}: ${result ? `${result.percent}%` : 'â€”'}`,
-    `${ui('Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ù…ÙÙ‚ÙˆØ¯Ø© ÙŠÙˆÙ…ÙŠØ§Ù‹', 'Energy lost per day')}: ${result && Number.isFinite(Number(result.lostKwh)) ? `${result.lostKwh.toFixed(2)} kWh` : 'â€”'}`,
-    `${ui('Ø§Ù„Ù‚ÙŠÙ…Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©', 'Estimated value')}: ${result && Number.isFinite(Number(result.lostMoney)) ? money(result.lostMoney) : 'â€”'}`,
+    `${ui('أ™â€ أکآ³أکآ¨أکآ© أکآ§أ™â€‍أ™آپأ™â€ڑأکآ¯ أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ©', 'Estimated loss ratio')}: ${result ? `${result.percent}%` : 'أ¢â‚¬â€‌'}`,
+    `${ui('أکآ§أ™â€‍أکآ·أکآ§أ™â€ڑأکآ© أکآ§أ™â€‍أ™â€¦أ™آپأ™â€ڑأ™ث†أکآ¯أکآ© أ™إ أ™ث†أ™â€¦أ™إ أکآ§أ™â€¹', 'Energy lost per day')}: ${result && Number.isFinite(Number(result.lostKwh)) ? `${result.lostKwh.toFixed(2)} kWh` : 'أ¢â‚¬â€‌'}`,
+    `${ui('أکآ§أ™â€‍أ™â€ڑأ™إ أ™â€¦أکآ© أکآ§أ™â€‍أکآھأ™â€ڑأکآ¯أ™إ أکآ±أ™إ أکآ©', 'Estimated value')}: ${result && Number.isFinite(Number(result.lostMoney)) ? money(result.lostMoney) : 'أ¢â‚¬â€‌'}`,
     '',
-    `${ui('Ø§Ù„Ø­Ø±Ø§Ø±Ø©', 'Heat')}: ${result && result.heatPercent !== null && result.heatPercent !== undefined ? `${Math.round(result.heatPercent)}%` : 'â€”'}`,
-    `${ui('Ø§Ù„ØºØ¨Ø§Ø±', 'Dust')}: ${result && result.dustPercent !== null && result.dustPercent !== undefined ? `${Math.round(result.dustPercent)}%` : 'â€”'}`,
-    `${ui('Ø§Ù„Ø¸Ù„', 'Shade')}: ${result && Number.isFinite(Number(result.shadePercent)) ? `${Math.round(result.shadePercent)}%` : '0%'}`,
+    `${ui('أکآ§أ™â€‍أکآ­أکآ±أکآ§أکآ±أکآ©', 'Heat')}: ${result && result.heatPercent !== null && result.heatPercent !== undefined ? `${Math.round(result.heatPercent)}%` : 'أ¢â‚¬â€‌'}`,
+    `${ui('أکآ§أ™â€‍أکآ؛أکآ¨أکآ§أکآ±', 'Dust')}: ${result && result.dustPercent !== null && result.dustPercent !== undefined ? `${Math.round(result.dustPercent)}%` : 'أ¢â‚¬â€‌'}`,
+    `${ui('أکآ§أ™â€‍أکآ¸أ™â€‍', 'Shade')}: ${result && Number.isFinite(Number(result.shadePercent)) ? `${Math.round(result.shadePercent)}%` : '0%'}`,
     '',
     ...reportSystemRows(f).map(([label, value]) => `${label}: ${value}`),
   ];
@@ -2612,21 +2612,21 @@ function downloadReport() {
   const previousTitle = document.title;
   const stamp = new Date().toISOString().slice(0, 10);
   document.body.classList.add('print-report');
-  // ÙŠØ³ØªØ®Ø¯Ù… Ø§Ù„Ù…ØªØµÙØ­ Ø¹Ù†ÙˆØ§Ù† Ø§Ù„ØµÙØ­Ø© ÙƒØ§Ø³Ù… Ù…Ù‚ØªØ±Ø­ Ù„Ù…Ù„Ù PDF Ø¹Ù†Ø¯ Ø§Ù„Ø­ÙØ¸.
+  // أ™إ أکآ³أکآھأکآ®أکآ¯أ™â€¦ أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­ أکآ¹أ™â€ أ™ث†أکآ§أ™â€  أکآ§أ™â€‍أکآµأ™آپأکآ­أکآ© أ™ئ’أکآ§أکآ³أ™â€¦ أ™â€¦أ™â€ڑأکآھأکآ±أکآ­ أ™â€‍أ™â€¦أ™â€‍أ™آپ PDF أکآ¹أ™â€ أکآ¯ أکآ§أ™â€‍أکآ­أ™آپأکآ¸.
   document.title = `Siyaj-report-${stamp}`;
   const cleanup = () => {
     document.title = previousTitle;
     if (!previous) document.body.classList.remove('print-report');
   };
   window.addEventListener('afterprint', cleanup, { once: true });
-  try { window.print(); } catch { showToast(ui('ØªØ¹Ø°Ø± ÙØªØ­ Ù†Ø§ÙØ°Ø© Ø§Ù„Ø·Ø¨Ø§Ø¹Ø©.', 'Could not open the print dialog.')); }
+  try { window.print(); } catch { showToast(ui('أکآھأکآ¹أکآ°أکآ± أ™آپأکآھأکآ­ أ™â€ أکآ§أ™آپأکآ°أکآ© أکآ§أ™â€‍أکآ·أکآ¨أکآ§أکآ¹أکآ©.', 'Could not open the print dialog.')); }
   setTimeout(cleanup, 1500);
 }
 async function shareReport() {
   const text = reportPlainText();
-  if (navigator.share) { try { await navigator.share({ title: ui('ØªÙ‚Ø±ÙŠØ± Ø­Ø§Ù„Ø© Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø´Ù…Ø³ÙŠ â€” Ø³ÙŠØ§Ø¬', 'Solar system status report â€” Siyaj'), text }); return; } catch { /* fall through to copy */ } }
-  try { await navigator.clipboard.writeText(text); showToast(ui('ØªÙ… Ù†Ø³Ø® Ø§Ù„ØªÙ‚Ø±ÙŠØ±Ø› ÙŠÙ…ÙƒÙ†Ùƒ Ù„ØµÙ‚Ù‡ ÙÙŠ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø£Ùˆ ÙˆØ§ØªØ³Ø§Ø¨.', 'Report copied; paste it into email or WhatsApp.')); }
-  catch { showToast(ui('ØªØ¹Ø°Ø± Ø§Ù„Ù†Ø³Ø®Ø› Ø§Ø³ØªØ®Ø¯Ù… Â«ØªÙ†Ø²ÙŠÙ„ PDFÂ».', 'Copy failed; use â€œDownload PDFâ€.')); }
+  if (navigator.share) { try { await navigator.share({ title: ui('أکآھأ™â€ڑأکآ±أ™إ أکآ± أکآ­أکآ§أ™â€‍أکآ© أکآ§أ™â€‍أ™â€ أکآ¸أکآ§أ™â€¦ أکآ§أ™â€‍أکآ´أ™â€¦أکآ³أ™إ  أ¢â‚¬â€‌ أکآ³أ™إ أکآ§أکآ¬', 'Solar system status report أ¢â‚¬â€‌ Siyaj'), text }); return; } catch { /* fall through to copy */ } }
+  try { await navigator.clipboard.writeText(text); showToast(ui('أکآھأ™â€¦ أ™â€ أکآ³أکآ® أکآ§أ™â€‍أکآھأ™â€ڑأکآ±أ™إ أکآ±أکâ€؛ أ™إ أ™â€¦أ™ئ’أ™â€ أ™ئ’ أ™â€‍أکآµأ™â€ڑأ™â€، أ™آپأ™إ  أکآ§أ™â€‍أکآ¨أکآ±أ™إ أکآ¯ أکآ£أ™ث† أ™ث†أکآ§أکآھأکآ³أکآ§أکآ¨.', 'Report copied; paste it into email or WhatsApp.')); }
+  catch { showToast(ui('أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أ™â€ أکآ³أکآ®أکâ€؛ أکآ§أکآ³أکآھأکآ®أکآ¯أ™â€¦ أ‚آ«أکآھأ™â€ أکآ²أ™إ أ™â€‍ PDFأ‚آ».', 'Copy failed; use أ¢â‚¬إ“Download PDFأ¢â‚¬آ‌.')); }
 }
 function decodeVapidKey(value) {
   const padding = '='.repeat((4 - value.length % 4) % 4);
@@ -2650,7 +2650,7 @@ async function refreshDevicePushState() {
       body: JSON.stringify({ endpoint: subscription.endpoint }),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².');
+    if (!response.ok) throw new Error(data.error || 'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ².');
     enabled = !!data.subscribed;
   }
   if (accountId !== currentAccount?.id) return;
@@ -2658,12 +2658,12 @@ async function refreshDevicePushState() {
   if (!el('page-settings').hidden) renderSettings();
 }
 async function enablePushNotifications() {
-  if (!currentAccount?.id) throw new Error('Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø£ÙˆÙ„Ø§Ù‹ Ù„ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.');
-  if (!('Notification' in window) || !('serviceWorker' in navigator)) throw new Error('Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­ Ù„Ø§ ÙŠØ¯Ø¹Ù… ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Push.');
+  if (!currentAccount?.id) throw new Error('أکآ³أکآ¬أ™â€کأ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹ أ™â€‍أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ.');
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) throw new Error('أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أ™â€¦أکآھأکآµأ™آپأکآ­ أ™â€‍أکآ§ أ™إ أکآ¯أکآ¹أ™â€¦ أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ Push.');
   const configResponse = await fetch('/api/push/config');
   const config = await configResponse.json();
-  if (!configResponse.ok || !config.enabled || !config.publicKey) throw new Error('Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª ØªØ¹Ù…Ù„ Ø¨Ø¹Ø¯ Ø¥Ø¶Ø§ÙØ© Ù…ÙØ§ØªÙŠØ­ VAPID ÙˆØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù….');
-  if (Notification.permission !== 'granted' && await Notification.requestPermission() !== 'granted') throw new Error('Ù„Ù… ÙŠØªÙ… ØªÙØ¹ÙŠÙ„ Ø¥Ø°Ù† Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.');
+  if (!configResponse.ok || !config.enabled || !config.publicKey) throw new Error('أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أکآھأکآ¹أ™â€¦أ™â€‍ أکآ¨أکآ¹أکآ¯ أکآ¥أکآ¶أکآ§أ™آپأکآ© أ™â€¦أ™آپأکآ§أکآھأ™إ أکآ­ VAPID أ™ث†أکآھأکآ´أکآ؛أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.');
+  if (Notification.permission !== 'granted' && await Notification.requestPermission() !== 'granted') throw new Error('أ™â€‍أ™â€¦ أ™إ أکآھأ™â€¦ أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ¥أکآ°أ™â€  أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ.');
   await navigator.serviceWorker.register('/sw.js');
   const registration = await navigator.serviceWorker.ready;
   let subscription = await registration.pushManager.getSubscription();
@@ -2673,7 +2673,7 @@ async function enablePushNotifications() {
     body: JSON.stringify({ subscription: subscription.toJSON() }),
   });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ø§Ø´ØªØ±Ø§Ùƒ Ø¨Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.');
+  if (!response.ok) throw new Error(data.error || 'أکآھأکآ¹أکآ°أکآ± أکآ­أ™آپأکآ¸ أکآ§أ™â€‍أکآ§أکآ´أکآھأکآ±أکآ§أ™ئ’ أکآ¨أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ.');
   devicePushEnabled = true; devicePushStateKnown = true;
 }
 async function disablePushNotifications() {
@@ -2684,9 +2684,9 @@ async function disablePushNotifications() {
     body: JSON.stringify({ endpoint: subscription.endpoint }),
   });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø¥ÙŠÙ‚Ø§Ù ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².');
+  if (!response.ok) throw new Error(data.error || 'أکآھأکآ¹أکآ°أکآ± أکآ¥أ™إ أ™â€ڑأکآ§أ™آپ أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ².');
   devicePushEnabled = false; devicePushStateKnown = true;
-  if (!await subscription.unsubscribe()) throw new Error('ØªØ¹Ø°Ø± Ø¥ÙŠÙ‚Ø§Ù ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².');
+  if (!await subscription.unsubscribe()) throw new Error('أکآھأکآ¹أکآ°أکآ± أکآ¥أ™إ أ™â€ڑأکآ§أ™آپ أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ².');
 }
 let authMode = 'login';
 const ACCOUNTS_KEY = 'siyaj.localAccounts.v1';
@@ -2727,7 +2727,7 @@ function makeUniqueUsername(value, usedNames) {
 }
 function bytesToHex(bytes) { return [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join(''); }
 async function passwordDigest(password, saltHex) {
-  if (!crypto.subtle) throw new Error('ÙŠØªØ·Ù„Ø¨ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø³Ø§Ø¨ Ù…ØªØµÙØ­Ø§Ù‹ Ø¢Ù…Ù†Ø§Ù‹ Ù…Ø«Ù„ localhost.');
+  if (!crypto.subtle) throw new Error('أ™إ أکآھأکآ·أ™â€‍أکآ¨ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™â€¦أکآھأکآµأ™آپأکآ­أکآ§أ™â€¹ أکآ¢أ™â€¦أ™â€ أکآ§أ™â€¹ أ™â€¦أکآ«أ™â€‍ localhost.');
   const salt = Uint8Array.from(saltHex.match(/.{1,2}/g) || [], (byte) => parseInt(byte, 16));
   const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
   const digest = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt, iterations: 120000, hash: 'SHA-256' }, key, 256);
@@ -2758,7 +2758,7 @@ async function finishServerAuth(session, seedState = null, legacyAccountId = '')
   try { await moveLegacyMedia(legacyAccountId, session.user.id); } catch { /* keep server sign-in available if local files cannot be moved */ }
   currentAccount = session.user;
   const remoteResponse = await authenticatedFetch('/api/account/state');
-  if (!remoteResponse.ok) throw new Error((await remoteResponse.json()).error || 'ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨.');
+  if (!remoteResponse.ok) throw new Error((await remoteResponse.json()).error || 'أکآھأکآ¹أکآ°أکآ± أکآھأکآ­أ™â€¦أ™إ أ™â€‍ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨.');
   const remote = await remoteResponse.json();
   state = normalizeState(remote.state || seedState);
   state.user = { ...session.user };
@@ -2783,20 +2783,20 @@ async function handleSignup(event) {
   const phoneKey = normalizedPhone(phone);
   const password = el('signup-password').value;
   const confirmPassword = el('signup-confirm').value;
-  if (!/^[\p{L}\p{N}._-]{3,24}$/u.test(username)) return showToast('Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù…Ù† 3 Ø¥Ù„Ù‰ 24 Ø­Ø±ÙØ§Ù‹ Ø£Ùˆ Ø±Ù‚Ù…Ø§Ù‹ØŒ ÙˆÙŠÙ…ÙƒÙ† Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ù†Ù‚Ø·Ø© ÙˆØ§Ù„Ø´Ø±Ø·Ø© Ø§Ù„Ø³ÙÙ„ÙŠØ© ÙÙ‚Ø·.');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showToast('Ø£Ø¯Ø®Ù„ Ø¨Ø±ÙŠØ¯Ø§Ù‹ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ§Ù‹ ØµØ§Ù„Ø­Ø§Ù‹.');
-  if (phoneKey.replace(/\D/g, '').length < 7) return showToast('Ø£Ø¯Ø®Ù„ Ø±Ù‚Ù… Ù‡Ø§ØªÙ ØµØ§Ù„Ø­Ø§Ù‹.');
-  if (password.length < 8) return showToast('ÙŠØ¬Ø¨ Ø£Ù† ØªØªÙƒÙˆÙ† ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ù…Ù† 8 Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„.');
-  if (password !== confirmPassword) return showToast('ÙƒÙ„Ù…ØªØ§ Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± Ù…ØªØ·Ø§Ø¨Ù‚ØªÙŠÙ†.');
+  if (!/^[\p{L}\p{N}._-]{3,24}$/u.test(username)) return showToast('أکآ§أکآ³أ™â€¦ أکآ§أ™â€‍أ™â€¦أکآ³أکآھأکآ®أکآ¯أ™â€¦ أ™â€¦أ™â€  3 أکآ¥أ™â€‍أ™â€° 24 أکآ­أکآ±أ™آپأکآ§أ™â€¹ أکآ£أ™ث† أکآ±أ™â€ڑأ™â€¦أکآ§أ™â€¹أکإ’ أ™ث†أ™إ أ™â€¦أ™ئ’أ™â€  أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ أکآ§أ™â€‍أ™â€ أ™â€ڑأکآ·أکآ© أ™ث†أکآ§أ™â€‍أکآ´أکآ±أکآ·أکآ© أکآ§أ™â€‍أکآ³أ™آپأ™â€‍أ™إ أکآ© أ™آپأ™â€ڑأکآ·.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showToast('أکآ£أکآ¯أکآ®أ™â€‍ أکآ¨أکآ±أ™إ أکآ¯أکآ§أ™â€¹ أکآ¥أ™â€‍أ™ئ’أکآھأکآ±أ™ث†أ™â€ أ™إ أکآ§أ™â€¹ أکآµأکآ§أ™â€‍أکآ­أکآ§أ™â€¹.');
+  if (phoneKey.replace(/\D/g, '').length < 7) return showToast('أکآ£أکآ¯أکآ®أ™â€‍ أکآ±أ™â€ڑأ™â€¦ أ™â€،أکآ§أکآھأ™آپ أکآµأکآ§أ™â€‍أکآ­أکآ§أ™â€¹.');
+  if (password.length < 8) return showToast('أ™إ أکآ¬أکآ¨ أکآ£أ™â€  أکآھأکآھأ™ئ’أ™ث†أ™â€  أ™ئ’أ™â€‍أ™â€¦أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أ™ث†أکآ± أ™â€¦أ™â€  8 أکآ£أکآ­أکآ±أ™آپ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ£أ™â€ڑأ™â€‍.');
+  if (password !== confirmPassword) return showToast('أ™ئ’أ™â€‍أ™â€¦أکآھأکآ§ أکآ§أ™â€‍أ™â€¦أکآ±أ™ث†أکآ± أکآ؛أ™إ أکآ± أ™â€¦أکآھأکآ·أکآ§أکآ¨أ™â€ڑأکآھأ™إ أ™â€ .');
   try {
     const response = await fetch('/api/auth/signup', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, phone, password }),
     });
     const session = await response.json();
-    if (!response.ok) throw new Error(session.error || 'ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨.');
-    await finishServerAuth(session, state); const signupDev = session?.user?.role === 'developer'; showToast(signupDev ? 'Welcome dev' : ('ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ­ÙØ¸Ù‡ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….')); await continueAfterAuth();
-  } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨.'); }
+    if (!response.ok) throw new Error(session.error || 'أکآھأکآ¹أکآ°أکآ± أکآ¥أ™â€ أکآ´أکآ§أکآ، أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨.');
+    await finishServerAuth(session, state); const signupDev = session?.user?.role === 'developer'; showToast(signupDev ? 'Welcome dev' : ('أکآھأ™â€¦ أکآ¥أ™â€ أکآ´أکآ§أکآ، أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™ث†أکآ­أ™آپأکآ¸أ™â€، أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.')); await continueAfterAuth();
+  } catch (error) { showToast(error.message || 'أکآھأکآ¹أکآ°أکآ± أکآ¥أ™â€ أکآ´أکآ§أکآ، أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨.'); }
 }
 async function handleLogin(event) {
   event.preventDefault();
@@ -2814,20 +2814,20 @@ async function handleLogin(event) {
       const legacy = readAccounts().find((item) => item.email === identifier.toLowerCase() || item.phoneKey === normalizedPhone(identifier) || item.usernameKey === normalized);
       if (legacy?.salt && legacy?.hash) {
         const legacyHash = await passwordDigest(password, legacy.salt);
-        if (legacyHash !== legacy.hash) return showToast('ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± ØµØ­ÙŠØ­Ø©.');
+        if (legacyHash !== legacy.hash) return showToast('أ™ئ’أ™â€‍أ™â€¦أکآ© أکآ§أ™â€‍أ™â€¦أکآ±أ™ث†أکآ± أکآ؛أ™إ أکآ± أکآµأکآ­أ™إ أکآ­أکآ©.');
         seedState = loadState(accountStorageKey(legacy.id));
         const migration = await fetch('/api/auth/signup', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: legacy.username, email: legacy.email, phone: legacy.phone, password }),
         });
         session = await migration.json();
-        if (!migration.ok) throw new Error(session.error || 'ØªØ¹Ø°Ø± Ù†Ù‚Ù„ Ø§Ù„Ø­Ø³Ø§Ø¨ Ø¥Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….');
-      } else if (legacy && !legacy.salt) return showToast('Ù‡Ø°Ø§ Ø§Ù„Ø­Ø³Ø§Ø¨ Ù…Ø±ØªØ¨Ø· Ø¨Ù€ GoogleØ› ØªØ§Ø¨Ø¹ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google.');
-      else throw new Error(session.error || 'Ù„Ù… Ù†Ø¹Ø«Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø­Ø³Ø§Ø¨. Ø£Ù†Ø´Ø¦ Ø­Ø³Ø§Ø¨Ø§Ù‹ Ø¬Ø¯ÙŠØ¯Ø§Ù‹.');
-    } else if (!response.ok) throw new Error(session.error || 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.');
+        if (!migration.ok) throw new Error(session.error || 'أکآھأکآ¹أکآ°أکآ± أ™â€ أ™â€ڑأ™â€‍ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أکآ¥أ™â€‍أ™â€° أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.');
+      } else if (legacy && !legacy.salt) return showToast('أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™â€¦أکآ±أکآھأکآ¨أکآ· أکآ¨أ™â‚¬ Googleأکâ€؛ أکآھأکآ§أکآ¨أکآ¹ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Google.');
+      else throw new Error(session.error || 'أ™â€‍أ™â€¦ أ™â€ أکآ¹أکآ«أکآ± أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨. أکآ£أ™â€ أکآ´أکآ¦ أکآ­أکآ³أکآ§أکآ¨أکآ§أ™â€¹ أکآ¬أکآ¯أ™إ أکآ¯أکآ§أ™â€¹.');
+    } else if (!response.ok) throw new Error(session.error || 'أکآھأکآ¹أکآ°أکآ± أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍.');
     const legacy = readAccounts().find((item) => item.email === identifier.toLowerCase() || item.phoneKey === normalizedPhone(identifier) || item.usernameKey === normalizedUsername(identifier));
     await finishServerAuth(session, seedState, legacy?.id); const loginDev = session?.user?.role === 'developer'; showToast(loginDev ? 'Welcome dev' : 'Login successful.'); await continueAfterAuth();
-  } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.'); }
+  } catch (error) { showToast(error.message || 'أکآھأکآ¹أکآ°أکآ± أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍.'); }
 }
 let googleSignInReady = false;
 function renderGoogleButtons() {
@@ -2848,11 +2848,11 @@ async function handleGoogleCredential(response) {
       body: JSON.stringify({ credential: response?.credential || '' }),
     });
     const data = await verification.json();
-    if (!verification.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø­Ø³Ø§Ø¨ Google.');
+    if (!verification.ok) throw new Error(data.error || 'أکآھأکآ¹أکآ°أکآ± أکآ§أ™â€‍أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآ­أکآ³أکآ§أکآ¨ Google.');
     const legacy = readAccounts().find((item) => item.email === data.user?.email);
     const seedState = legacy ? loadState(accountStorageKey(legacy.id)) : null;
-    await finishServerAuth(data, seedState, legacy?.id); showToast('ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google ÙˆÙ…Ø²Ø§Ù…Ù†Ø© Ø¨ÙŠØ§Ù†Ø§ØªÙƒ.'); await continueAfterAuth();
-  } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google.'); }
+    await finishServerAuth(data, seedState, legacy?.id); showToast('أکآھأ™â€¦ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Google أ™ث†أ™â€¦أکآ²أکآ§أ™â€¦أ™â€ أکآ© أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھأ™ئ’.'); await continueAfterAuth();
+  } catch (error) { showToast(error.message || 'أکآھأکآ¹أکآ°أکآ± أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أکآ¨أکآ§أکآ³أکآھأکآ®أکآ¯أکآ§أ™â€¦ Google.'); }
 }
 async function initializeGoogleButtons() {
   try {
@@ -2919,7 +2919,7 @@ function setupEvents() {
   el('mobile-menu').addEventListener('click', () => document.body.classList.toggle('mobile-nav-open'));
   el('language-toggle').addEventListener('click', () => {
     state.settings.language = state.settings.language === 'en' ? 'ar' : 'en'; persist();
-    renderDashboard(); renderCurrentStep(); renderHistory(); renderSettings(); renderAuth(); showToast(state.settings.language === 'en' ? 'Language changed to English.' : 'ØªÙ… ØªØºÙŠÙŠØ± Ø§Ù„Ù„ØºØ© Ø¥Ù„Ù‰ Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©.');
+    renderDashboard(); renderCurrentStep(); renderHistory(); renderSettings(); renderAuth(); showToast(state.settings.language === 'en' ? 'Language changed to English.' : 'أکآھأ™â€¦ أکآھأکآ؛أ™إ أ™إ أکآ± أکآ§أ™â€‍أ™â€‍أکآ؛أکآ© أکآ¥أ™â€‍أ™â€° أکآ§أ™â€‍أکآ¹أکآ±أکآ¨أ™إ أکآ©.');
     renderGoogleButtons();
   });
   el('auth-tab-login').addEventListener('click', () => setAuthMode('login'));
@@ -2941,16 +2941,16 @@ function setupEvents() {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint }),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬Ø› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.');
+      if (!response.ok) throw new Error(data.error || 'أکآھأکآ¹أکآ°أکآ± أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ±أ™ث†أکآ¬أکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€°.');
       currentAccount = null; devicePushEnabled = false; devicePushStateKnown = true;
       state = loadState(`${STORAGE_KEY}.guest`); media = []; currentStep = 0; authMode = 'login';
-      applyTheme(); showPage('auth'); renderAuth(); syncHeader(); showToast('ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬.');
-    } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬Ø› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.'); }
+      applyTheme(); showPage('auth'); renderAuth(); syncHeader(); showToast('أکآھأ™â€¦ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ±أ™ث†أکآ¬.');
+    } catch (error) { showToast(error.message || 'أکآھأکآ¹أکآ°أکآ± أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآ§أ™â€‍أکآ®أکآ±أ™ث†أکآ¬أکâ€؛ أکآ­أکآ§أ™ث†أ™â€‍ أ™â€¦أکآ±أکآ© أکآ£أکآ®أکآ±أ™â€°.'); }
     finally { button.disabled = false; }
   });
   document.querySelectorAll('[data-google-signin]').forEach((button) => {
-    button.addEventListener('click', () => { if (!googleSignInReady) showToast('ØªØ³Ø¬ÙŠÙ„ Google ÙŠØ­ØªØ§Ø¬ Ø¥Ø¶Ø§ÙØ© GOOGLE_CLIENT_ID Ø¥Ù„Ù‰ Ù…Ù„Ù .env.'); });
-    button.addEventListener('keydown', (event) => { if (!googleSignInReady && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); showToast('ØªØ³Ø¬ÙŠÙ„ Google ÙŠØ­ØªØ§Ø¬ Ø¥Ø¶Ø§ÙØ© GOOGLE_CLIENT_ID Ø¥Ù„Ù‰ Ù…Ù„Ù .env.'); } });
+    button.addEventListener('click', () => { if (!googleSignInReady) showToast('أکآھأکآ³أکآ¬أ™إ أ™â€‍ Google أ™إ أکآ­أکآھأکآ§أکآ¬ أکآ¥أکآ¶أکآ§أ™آپأکآ© GOOGLE_CLIENT_ID أکآ¥أ™â€‍أ™â€° أ™â€¦أ™â€‍أ™آپ .env.'); });
+    button.addEventListener('keydown', (event) => { if (!googleSignInReady && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); showToast('أکآھأکآ³أکآ¬أ™إ أ™â€‍ Google أ™إ أکآ­أکآھأکآ§أکآ¬ أکآ¥أکآ¶أکآ§أ™آپأکآ© GOOGLE_CLIENT_ID أکآ¥أ™â€‍أ™â€° أ™â€¦أ™â€‍أ™آپ .env.'); } });
   });
   el('start-setup').addEventListener('click', () => openWizard(0)); el('edit-data').addEventListener('click', () => openWizard(0)); el('system-edit').addEventListener('click', () => openWizard(0));
   el('step-next').addEventListener('click', nextStep); el('step-back').addEventListener('click', previousStep); el('start-setup').addEventListener('keydown', (event) => { if (event.key === 'Enter') openWizard(0); });
@@ -2964,13 +2964,13 @@ function setupEvents() {
     state.form.billMonth = month; state.monthlyLoss = null; invoiceReview = null; persist(); renderAnalysisDetails(); applyLanguage();
   });
   el('cleaned-button').addEventListener('click', async () => {
-    if (!currentAccount?.id) { showToast('Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø£ÙˆÙ„Ø§Ù‹.'); return; }
+    if (!currentAccount?.id) { showToast('أکآ³أکآ¬أ™â€کأ™â€‍ أکآ§أ™â€‍أکآ¯أکآ®أ™ث†أ™â€‍ أکآ£أ™ث†أ™â€‍أکآ§أ™â€¹.'); return; }
     const button = el('cleaned-button'); button.disabled = true;
     const accountId = currentAccount.id;
     try {
       const response = await authenticatedFetch('/api/panel/cleaned', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
       const data = await response.json();
-      if (!response.ok || !Number.isFinite(Date.parse(data.lastCleanedAt || ''))) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø³Ø¬Ù„ Ø§Ù„ØªÙ†Ø¸ÙŠÙ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….');
+      if (!response.ok || !Number.isFinite(Date.parse(data.lastCleanedAt || ''))) throw new Error(data.error || 'أکآھأکآ¹أکآ°أکآ± أکآ­أ™آپأکآ¸ أکآ³أکآ¬أ™â€‍ أکآ§أ™â€‍أکآھأ™â€ أکآ¸أ™إ أ™آپ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.');
       if (accountId !== currentAccount?.id) return;
       state.lastCleanedAt = data.lastCleanedAt;
       state.form.dust = null; state.form.dustManual = false;
@@ -2987,8 +2987,8 @@ function setupEvents() {
         state.result.dustLossPercent = state.result.soilingPercent;
         state.result.dustLossOmr = null;
       }
-      state.updatedAt = new Date().toISOString(); persist(); renderDashboard(); showToast(ui('ØªÙ… ØªØ³Ø¬ÙŠÙ„ ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.', 'Panel cleaning was recorded.'));
-    } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø³Ø¬Ù„ Ø§Ù„ØªÙ†Ø¸ÙŠÙ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….'); }
+      state.updatedAt = new Date().toISOString(); persist(); renderDashboard(); showToast(ui('أکآھأ™â€¦ أکآھأکآ³أکآ¬أ™إ أ™â€‍ أکآھأ™â€ أکآ¸أ™إ أ™آپ أکآ§أ™â€‍أکآ£أ™â€‍أ™ث†أکآ§أکآ­.', 'Panel cleaning was recorded.'));
+    } catch (error) { showToast(error.message || 'أکآھأکآ¹أکآ°أکآ± أکآ­أ™آپأکآ¸ أکآ³أکآ¬أ™â€‍ أکآ§أ™â€‍أکآھأ™â€ أکآ¸أ™إ أ™آپ أکآ¹أ™â€‍أ™â€° أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.'); }
     finally { button.disabled = false; }
   });
   el('maintenance-done')?.addEventListener('click', () => {
@@ -2996,7 +2996,7 @@ function setupEvents() {
     state.updatedAt = new Date().toISOString();
     persist();
     renderDashboard();
-    showToast(ui('ØªÙ… ØªØ­Ø¯ÙŠØ« ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ø¥Ù„Ù‰ Ø§Ù„ÙŠÙˆÙ….', 'Last maintenance date updated to today.'));
+    showToast(ui('أکآھأ™â€¦ أکآھأکآ­أکآ¯أ™إ أکآ« أکآھأکآ§أکآ±أ™إ أکآ® أکآ¢أکآ®أکآ± أکآµأ™إ أکآ§أ™â€ أکآ© أکآ¥أ™â€‍أ™â€° أکآ§أ™â€‍أ™إ أ™ث†أ™â€¦.', 'Last maintenance date updated to today.'));
   });
   setInterval(() => { if (document.visibilityState !== 'hidden') renderMaintenance(); }, 60 * 60 * 1000);
   el('setting-dark').addEventListener('change', () => { state.settings.dark = el('setting-dark').checked; persist(); });
@@ -3008,24 +3008,24 @@ function setupEvents() {
     try {
       if (enable) { await enablePushNotifications(); state.settings.notifications = true; persist(); }
       else await disablePushNotifications();
-      showToast(enable ? 'ØªÙ… ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.' : 'ØªÙ… Ø¥ÙŠÙ‚Ø§Ù Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.');
+      showToast(enable ? 'أکآھأ™â€¦ أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ.' : 'أکآھأ™â€¦ أکآ¥أ™إ أ™â€ڑأکآ§أ™آپ أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ.');
     } catch (error) {
       await refreshDevicePushState().catch(() => { devicePushStateKnown = false; });
-      showToast(error.message || (enable ? 'ØªØ¹Ø°Ø± ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§ØªØ› ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¥Ø°Ù† ÙˆØ§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù….' : 'ØªØ¹Ø°Ø± Ø¥ÙŠÙ‚Ø§Ù ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².'));
+      showToast(error.message || (enable ? 'أکآھأکآ¹أکآ°أکآ± أکآھأ™آپأکآ¹أ™إ أ™â€‍ أکآ§أ™â€‍أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھأکâ€؛ أکآھأکآ­أ™â€ڑأ™â€ڑ أ™â€¦أ™â€  أکآ§أ™â€‍أکآ¥أکآ°أ™â€  أ™ث†أکآ§أ™â€‍أکآ§أکآھأکآµأکآ§أ™â€‍ أکآ¨أکآ§أ™â€‍أکآ®أکآ§أکآ¯أ™â€¦.' : 'أکآھأکآ¹أکآ°أکآ± أکآ¥أ™إ أ™â€ڑأکآ§أ™آپ أکآھأ™â€ أکآ¨أ™إ أ™â€،أکآ§أکآھ أ™â€،أکآ°أکآ§ أکآ§أ™â€‍أکآ¬أ™â€،أکآ§أکآ².'));
     } finally { devicePushBusy = false; renderSettings(); }
   });
   el('reset-data').addEventListener('click', async () => {
-    if (!confirm('Ù‡Ù„ ØªØ±ÙŠØ¯ Ù…Ø³Ø­ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆÙ…Ø±ÙÙ‚Ø§ØªÙ‡ Ù…Ù† Ø¬Ù…ÙŠØ¹ Ø£Ø¬Ù‡Ø²ØªÙƒØŸ')) return;
+    if (!confirm('أ™â€،أ™â€‍ أکآھأکآ±أ™إ أکآ¯ أ™â€¦أکآ³أکآ­ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ§أ™â€‍أکآ­أکآ³أکآ§أکآ¨ أ™ث†أ™â€¦أکآ±أ™آپأ™â€ڑأکآ§أکآھأ™â€، أ™â€¦أ™â€  أکآ¬أ™â€¦أ™إ أکآ¹ أکآ£أکآ¬أ™â€،أکآ²أکآھأ™ئ’أکإ¸')) return;
     resetAiRequests();
     const user = state.user; const currentKey = accountStorageKey(); const accountId = currentAccount?.id;
     localStorage.removeItem(currentKey); state = structuredClone(DEFAULT_STATE); state.user = user; media = [];
     try { if (accountId) await deleteMediaForAccount(accountId); } catch { /* database may not be available */ }
     try { if (accountId) await authenticatedFetch('/api/panel/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) }); } catch { /* local reset still completes */ }
-    persist(); renderDashboard(); renderSettings(); showToast('ØªÙ… Ù…Ø³Ø­ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø¨Ùƒ.');
+    persist(); renderDashboard(); renderSettings(); showToast('أکآھأ™â€¦ أ™â€¦أکآ³أکآ­ أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ أکآ­أکآ³أکآ§أکآ¨أ™ئ’.');
   });
   el('export-data').addEventListener('click', () => {
     const payload = { savedAt: new Date().toISOString(), state, attachments: media.map(({ id, category, name, type }) => ({ id, category, name, type })) };
-    const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })); const link = document.createElement('a'); link.href = url; link.download = 'siyaj-data.json'; link.click(); URL.revokeObjectURL(url); showToast('ØªÙ… ØªÙ†Ø²ÙŠÙ„ Ù†Ø³Ø®Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª.');
+    const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })); const link = document.createElement('a'); link.href = url; link.download = 'siyaj-data.json'; link.click(); URL.revokeObjectURL(url); showToast('أکآھأ™â€¦ أکآھأ™â€ أکآ²أ™إ أ™â€‍ أ™â€ أکآ³أکآ®أکآ© أکآ§أ™â€‍أکآ¨أ™إ أکآ§أ™â€ أکآ§أکآھ.');
   });
   el('complaint-submit')?.addEventListener('click', submitComplaint);
   el('complaint-share')?.addEventListener('click', shareComplaint);
