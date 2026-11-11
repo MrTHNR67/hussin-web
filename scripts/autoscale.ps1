@@ -65,6 +65,18 @@ function Stop-Instance([int]$Port) {
     Write-Host ("  - stopped instance on {0}" -f $Port)
 }
 
+function Wait-Ready([int]$Port, [int]$TimeoutSeconds = 15) {
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    while ((Get-Date) -lt $deadline) {
+        try {
+            $response = Invoke-RestMethod -Uri ("http://127.0.0.1:{0}/readyz" -f $Port) -TimeoutSec 2
+            if ($response.status -eq 'ready') { return $true }
+        } catch { }
+        Start-Sleep -Milliseconds 500
+    }
+    return $false
+}
+
 function Write-NginxConfig([int[]]$Ports) {
     if (-not $NginxDir) {
         Write-Host '  (nginx not updated: pass -NginxDir C:\nginx to rewrite the upstream list)'
@@ -94,6 +106,7 @@ $upstreamLines
     server {
         listen 8080;
         server_name localhost;
+        location = /nginx_status { return 404; }
         location / {
             proxy_pass http://siyaj_upstream;
             proxy_http_version 1.1;
@@ -103,6 +116,18 @@ $upstreamLines
             proxy_set_header X-Forwarded-Proto `$scheme;
             proxy_next_upstream error timeout http_502 http_503;
         }
+    }
+
+    # Monitoring endpoint: loopback only, never exposed through the public listener.
+    server {
+        listen 127.0.0.1:8081;
+        server_name localhost;
+        location /nginx_status {
+            stub_status;
+            allow 127.0.0.1;
+            deny all;
+        }
+        location / { return 404; }
     }
 }
 "@
@@ -162,9 +187,10 @@ while ($true) {
         $used = @($instances | ForEach-Object { $_.Port })
         $nextPort = $FirstPort
         while ($used -contains $nextPort) { $nextPort += 1 }
-        Write-Host ("  scale-out: p95 proxy exceeded {0}ms for {1} samples" -f $HighMs, $Samples)
+        Write-Host ("  scale-out: average latency exceeded {0}ms for {1} samples" -f $HighMs, $Samples)
         Start-Instance $nextPort
-        Start-Sleep -Seconds 2
+        $ready = Wait-Ready $nextPort 15
+        if (-not $ready) { Write-Warning ("  instance on {0} did not become ready in time" -f $nextPort) }
         Write-NginxConfig (@(Get-ActiveInstances | ForEach-Object { $_.Port }))
         $highStreak = 0
     } elseif ($lowStreak -ge $Samples -and $count -gt $MinInstances) {
