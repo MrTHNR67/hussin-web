@@ -1,309 +1,309 @@
-const STORAGE_KEY = 'siyaj.solarGuardian.v1';
+﻿const STORAGE_KEY = 'siyaj.solarGuardian.v1';
 const DB_NAME = 'siyaj-local-media';
 const DB_STORE = 'attachments';
 const STEPS = [
-  { title: 'بيانات البيئة والموقع', short: 'البيئة والموقع', description: 'أخبرنا عن موقع النظام والظروف المحيطة بالألواح.' },
-  { title: 'بيانات الألواح', short: 'الألواح', description: 'أضف معلومات الألواح وأرفق صورة أو مقطعاً قصيراً لفحصها بصرياً.' },
-  { title: 'فاتورة الكهرباء', short: 'الفاتورة', description: 'تساعدنا بيانات الفاتورة على تقدير قيمة الطاقة التي قد تفقدها.' },
-  { title: 'تأكيد البيانات', short: 'التأكيد', description: 'راجع ملخص المعلومات قبل أن يبدأ سياج بتحليل نظامك.' },
+  { title: 'Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¨ÙŠØ¦Ø© ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹', short: 'Ø§Ù„Ø¨ÙŠØ¦Ø© ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹', description: 'Ø£Ø®Ø¨Ø±Ù†Ø§ Ø¹Ù† Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ§Ù„Ø¸Ø±ÙˆÙ Ø§Ù„Ù…Ø­ÙŠØ·Ø© Ø¨Ø§Ù„Ø£Ù„ÙˆØ§Ø­.' },
+  { title: 'Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø£Ù„ÙˆØ§Ø­', short: 'Ø§Ù„Ø£Ù„ÙˆØ§Ø­', description: 'Ø£Ø¶Ù Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆØ£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù‚ØµÙŠØ±Ø§Ù‹ Ù„ÙØ­ØµÙ‡Ø§ Ø¨ØµØ±ÙŠØ§Ù‹.' },
+  { title: 'ÙØ§ØªÙˆØ±Ø© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡', short: 'Ø§Ù„ÙØ§ØªÙˆØ±Ø©', description: 'ØªØ³Ø§Ø¹Ø¯Ù†Ø§ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¹Ù„Ù‰ ØªÙ‚Ø¯ÙŠØ± Ù‚ÙŠÙ…Ø© Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙŠ Ù‚Ø¯ ØªÙÙ‚Ø¯Ù‡Ø§.' },
+  { title: 'ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª', short: 'Ø§Ù„ØªØ£ÙƒÙŠØ¯', description: 'Ø±Ø§Ø¬Ø¹ Ù…Ù„Ø®Øµ Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ù‚Ø¨Ù„ Ø£Ù† ÙŠØ¨Ø¯Ø£ Ø³ÙŠØ§Ø¬ Ø¨ØªØ­Ù„ÙŠÙ„ Ù†Ø¸Ø§Ù…Ùƒ.' },
 ];
 // Search aliases support familiar spellings; free text also accepts unlisted and legacy brands.
 const PANEL_MANUFACTURERS = [
-  ['Sheida Solar', ['Sheida', 'شيدا', 'شيدة']],
-  ['Desert Technologies', ['DT', 'ديزرت تكنولوجيز', 'تقنيات الصحراء']],
-  ['Philadelphia Solar', ['Philadelphia', 'فيلادلفيا', 'فيلادلفيا سولار']],
-  ['DuSol', ['Dusol', 'دو سول', 'دوسول']],
-  ['JinkoSolar', ['Jinko', 'Jinko Solar', 'جينكو', 'جنكو']],
-  ['JA Solar', ['JASolar', 'JA', 'جي اي', 'جي إيه', 'جا سولار']],
-  ['LONGi Solar', ['LONGi', 'لونجي', 'لونغي', 'لونجى']],
-  ['Trina Solar', ['Trina', 'Trinasolar', 'ترينا']],
-  ['Canadian Solar', ['Canadian', 'CSI Solar', 'كنديان', 'كاناديان', 'كندي']],
-  ['Qcells', ['Q Cells', 'Q-Cells', 'Hanwha', 'كيو سيلز', 'هانوا']],
-  ['REC', ['REC Group', 'ار اي سي', 'آر إي سي', 'ريك']],
-  ['Maxeon', ['Maxeon Solar', 'ماكسيون', 'ماكسون']],
-  ['SunPower', ['Sun Power', 'صن باور', 'سان باور']],
-  ['First Solar', ['First', 'فيرست سولار', 'فيرست']],
-  ['Astronergy', ['CHINT', 'Chint Solar', 'Astro Energy', 'أسترونرجي', 'استرونرجي', 'شينت']],
-  ['Risen Energy', ['Risen', 'ريزن', 'رايزن']],
-  ['Tongwei Solar', ['TW Solar', 'Tongwei', 'تونغوي', 'تونجوي', 'تي دبليو']],
-  ['DMEGC Solar', ['DMEGC', 'Hengdian', 'دي ام اي جي سي', 'دي إم إي جي سي']],
-  ['AIKO', ['Aiko Solar', 'Aiko Energy', 'أيكو', 'ايكو']],
-  ['DAS Solar', ['DAS', 'داس', 'داس سولار']],
-  ['Huasun', ['Huasun Solar', 'هواسن', 'هواسان']],
-  ['Seraphim', ['Seraphim Solar', 'سيرافيم', 'سرافيم']],
-  ['PHONO Solar', ['Phono', 'SUMEC', 'فونو', 'فونو سولار']],
-  ['Talesun', ['Talesun Solar', 'تايلسن', 'تاليسن']],
-  ['Suntech', ['Suntech Power', 'Sun Tech', 'صن تك', 'سانتك', 'سنتك']],
-  ['Yingli Solar', ['Yingli', 'ينجلي', 'ينغلي']],
-  ['GCL System Integration', ['GCL', 'GCL SI', 'GCL Solar', 'جي سي ال', 'جي سي إل']],
-  ['EGing PV', ['Eging', 'ايجينج', 'إيجينغ']],
-  ['Jolywood', ['Jolywood Solar', 'جولي وود', 'جوليوود']],
-  ['ZNShine Solar', ['Znshine', 'زينشاين', 'زد ان شاين']],
-  ['Sunova Solar', ['Sunova', 'صنوفا', 'سانوفا']],
-  ['URE', ['United Renewable Energy', 'يو آر إي', 'يو ار اي']],
-  ['VSUN', ['VSUN Solar', 'Vietnam Sunergy', 'في صن', 'في سان']],
-  ['Sharp', ['Sharp Solar', 'شارب']],
-  ['Waaree', ['Waaree Energies', 'واري', 'واريي']],
-  ['Vikram Solar', ['Vikram', 'فيكرام']],
-  ['Adani Solar', ['Adani', 'أداني', 'اداني']],
-  ['Tata Power Solar', ['Tata', 'TP Solar', 'Tata Solar', 'تاتا', 'تاتا باور']],
-  ['RenewSys', ['Renew Sys', 'رينيو سيس', 'رينيوسيس']],
-  ['Goldi Solar', ['Goldi', 'جولدي', 'غولدي']],
-  ['Premier Energies', ['Premier', 'بريمير', 'بريميير']],
-  ['Emmvee', ['Emmvee Solar', 'إمفي', 'امفي']],
-  ['Saatvik', ['Saatvik Green Energy', 'ساتفيك']],
-  ['Rayzon Solar', ['Rayzon', 'رايزون', 'ريزون']],
-  ['AESOLAR', ['AE Solar', 'AE-Solar', 'اي اي سولار', 'إيه إي سولار']],
-  ['Solarwatt', ['Solar Watt', 'سولار وات', 'سولاروات']],
-  ['SoliTek', ['سوليتك', 'سولي تك']],
-  ['Eurener', ['يورينر', 'يورينير']],
-  ['Silfab Solar', ['Silfab', 'سيلفاب']],
-  ['Mission Solar', ['Mission Solar Energy', 'Mission', 'ميشن سولار', 'ميشن']],
-  ['SEG Solar', ['SEG', 'اس اي جي', 'إس إي جي']],
-  ['Heliene', ['هيليين', 'هيليان']],
-  ['Qn-SOLAR', ['Qn Solar', 'كيو ان سولار']],
-  ['Osda', ['Osda Solar', 'أوسدا', 'اوسدا']],
-  ['Bluesun Solar', ['Bluesun', 'Blue Sun', 'بلو صن', 'بلوسن']],
-  ['Luxen Solar', ['Luxen', 'لوكسن', 'لوكسين']],
-  ['CW Enerji', ['CW Energy', 'سي دبليو', 'سي دبليو إنرجي']],
+  ['Sheida Solar', ['Sheida', 'Ø´ÙŠØ¯Ø§', 'Ø´ÙŠØ¯Ø©']],
+  ['Desert Technologies', ['DT', 'Ø¯ÙŠØ²Ø±Øª ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ²', 'ØªÙ‚Ù†ÙŠØ§Øª Ø§Ù„ØµØ­Ø±Ø§Ø¡']],
+  ['Philadelphia Solar', ['Philadelphia', 'ÙÙŠÙ„Ø§Ø¯Ù„ÙÙŠØ§', 'ÙÙŠÙ„Ø§Ø¯Ù„ÙÙŠØ§ Ø³ÙˆÙ„Ø§Ø±']],
+  ['DuSol', ['Dusol', 'Ø¯Ùˆ Ø³ÙˆÙ„', 'Ø¯ÙˆØ³ÙˆÙ„']],
+  ['JinkoSolar', ['Jinko', 'Jinko Solar', 'Ø¬ÙŠÙ†ÙƒÙˆ', 'Ø¬Ù†ÙƒÙˆ']],
+  ['JA Solar', ['JASolar', 'JA', 'Ø¬ÙŠ Ø§ÙŠ', 'Ø¬ÙŠ Ø¥ÙŠÙ‡', 'Ø¬Ø§ Ø³ÙˆÙ„Ø§Ø±']],
+  ['LONGi Solar', ['LONGi', 'Ù„ÙˆÙ†Ø¬ÙŠ', 'Ù„ÙˆÙ†ØºÙŠ', 'Ù„ÙˆÙ†Ø¬Ù‰']],
+  ['Trina Solar', ['Trina', 'Trinasolar', 'ØªØ±ÙŠÙ†Ø§']],
+  ['Canadian Solar', ['Canadian', 'CSI Solar', 'ÙƒÙ†Ø¯ÙŠØ§Ù†', 'ÙƒØ§Ù†Ø§Ø¯ÙŠØ§Ù†', 'ÙƒÙ†Ø¯ÙŠ']],
+  ['Qcells', ['Q Cells', 'Q-Cells', 'Hanwha', 'ÙƒÙŠÙˆ Ø³ÙŠÙ„Ø²', 'Ù‡Ø§Ù†ÙˆØ§']],
+  ['REC', ['REC Group', 'Ø§Ø± Ø§ÙŠ Ø³ÙŠ', 'Ø¢Ø± Ø¥ÙŠ Ø³ÙŠ', 'Ø±ÙŠÙƒ']],
+  ['Maxeon', ['Maxeon Solar', 'Ù…Ø§ÙƒØ³ÙŠÙˆÙ†', 'Ù…Ø§ÙƒØ³ÙˆÙ†']],
+  ['SunPower', ['Sun Power', 'ØµÙ† Ø¨Ø§ÙˆØ±', 'Ø³Ø§Ù† Ø¨Ø§ÙˆØ±']],
+  ['First Solar', ['First', 'ÙÙŠØ±Ø³Øª Ø³ÙˆÙ„Ø§Ø±', 'ÙÙŠØ±Ø³Øª']],
+  ['Astronergy', ['CHINT', 'Chint Solar', 'Astro Energy', 'Ø£Ø³ØªØ±ÙˆÙ†Ø±Ø¬ÙŠ', 'Ø§Ø³ØªØ±ÙˆÙ†Ø±Ø¬ÙŠ', 'Ø´ÙŠÙ†Øª']],
+  ['Risen Energy', ['Risen', 'Ø±ÙŠØ²Ù†', 'Ø±Ø§ÙŠØ²Ù†']],
+  ['Tongwei Solar', ['TW Solar', 'Tongwei', 'ØªÙˆÙ†ØºÙˆÙŠ', 'ØªÙˆÙ†Ø¬ÙˆÙŠ', 'ØªÙŠ Ø¯Ø¨Ù„ÙŠÙˆ']],
+  ['DMEGC Solar', ['DMEGC', 'Hengdian', 'Ø¯ÙŠ Ø§Ù… Ø§ÙŠ Ø¬ÙŠ Ø³ÙŠ', 'Ø¯ÙŠ Ø¥Ù… Ø¥ÙŠ Ø¬ÙŠ Ø³ÙŠ']],
+  ['AIKO', ['Aiko Solar', 'Aiko Energy', 'Ø£ÙŠÙƒÙˆ', 'Ø§ÙŠÙƒÙˆ']],
+  ['DAS Solar', ['DAS', 'Ø¯Ø§Ø³', 'Ø¯Ø§Ø³ Ø³ÙˆÙ„Ø§Ø±']],
+  ['Huasun', ['Huasun Solar', 'Ù‡ÙˆØ§Ø³Ù†', 'Ù‡ÙˆØ§Ø³Ø§Ù†']],
+  ['Seraphim', ['Seraphim Solar', 'Ø³ÙŠØ±Ø§ÙÙŠÙ…', 'Ø³Ø±Ø§ÙÙŠÙ…']],
+  ['PHONO Solar', ['Phono', 'SUMEC', 'ÙÙˆÙ†Ùˆ', 'ÙÙˆÙ†Ùˆ Ø³ÙˆÙ„Ø§Ø±']],
+  ['Talesun', ['Talesun Solar', 'ØªØ§ÙŠÙ„Ø³Ù†', 'ØªØ§Ù„ÙŠØ³Ù†']],
+  ['Suntech', ['Suntech Power', 'Sun Tech', 'ØµÙ† ØªÙƒ', 'Ø³Ø§Ù†ØªÙƒ', 'Ø³Ù†ØªÙƒ']],
+  ['Yingli Solar', ['Yingli', 'ÙŠÙ†Ø¬Ù„ÙŠ', 'ÙŠÙ†ØºÙ„ÙŠ']],
+  ['GCL System Integration', ['GCL', 'GCL SI', 'GCL Solar', 'Ø¬ÙŠ Ø³ÙŠ Ø§Ù„', 'Ø¬ÙŠ Ø³ÙŠ Ø¥Ù„']],
+  ['EGing PV', ['Eging', 'Ø§ÙŠØ¬ÙŠÙ†Ø¬', 'Ø¥ÙŠØ¬ÙŠÙ†Øº']],
+  ['Jolywood', ['Jolywood Solar', 'Ø¬ÙˆÙ„ÙŠ ÙˆÙˆØ¯', 'Ø¬ÙˆÙ„ÙŠÙˆÙˆØ¯']],
+  ['ZNShine Solar', ['Znshine', 'Ø²ÙŠÙ†Ø´Ø§ÙŠÙ†', 'Ø²Ø¯ Ø§Ù† Ø´Ø§ÙŠÙ†']],
+  ['Sunova Solar', ['Sunova', 'ØµÙ†ÙˆÙØ§', 'Ø³Ø§Ù†ÙˆÙØ§']],
+  ['URE', ['United Renewable Energy', 'ÙŠÙˆ Ø¢Ø± Ø¥ÙŠ', 'ÙŠÙˆ Ø§Ø± Ø§ÙŠ']],
+  ['VSUN', ['VSUN Solar', 'Vietnam Sunergy', 'ÙÙŠ ØµÙ†', 'ÙÙŠ Ø³Ø§Ù†']],
+  ['Sharp', ['Sharp Solar', 'Ø´Ø§Ø±Ø¨']],
+  ['Waaree', ['Waaree Energies', 'ÙˆØ§Ø±ÙŠ', 'ÙˆØ§Ø±ÙŠÙŠ']],
+  ['Vikram Solar', ['Vikram', 'ÙÙŠÙƒØ±Ø§Ù…']],
+  ['Adani Solar', ['Adani', 'Ø£Ø¯Ø§Ù†ÙŠ', 'Ø§Ø¯Ø§Ù†ÙŠ']],
+  ['Tata Power Solar', ['Tata', 'TP Solar', 'Tata Solar', 'ØªØ§ØªØ§', 'ØªØ§ØªØ§ Ø¨Ø§ÙˆØ±']],
+  ['RenewSys', ['Renew Sys', 'Ø±ÙŠÙ†ÙŠÙˆ Ø³ÙŠØ³', 'Ø±ÙŠÙ†ÙŠÙˆØ³ÙŠØ³']],
+  ['Goldi Solar', ['Goldi', 'Ø¬ÙˆÙ„Ø¯ÙŠ', 'ØºÙˆÙ„Ø¯ÙŠ']],
+  ['Premier Energies', ['Premier', 'Ø¨Ø±ÙŠÙ…ÙŠØ±', 'Ø¨Ø±ÙŠÙ…ÙŠÙŠØ±']],
+  ['Emmvee', ['Emmvee Solar', 'Ø¥Ù…ÙÙŠ', 'Ø§Ù…ÙÙŠ']],
+  ['Saatvik', ['Saatvik Green Energy', 'Ø³Ø§ØªÙÙŠÙƒ']],
+  ['Rayzon Solar', ['Rayzon', 'Ø±Ø§ÙŠØ²ÙˆÙ†', 'Ø±ÙŠØ²ÙˆÙ†']],
+  ['AESOLAR', ['AE Solar', 'AE-Solar', 'Ø§ÙŠ Ø§ÙŠ Ø³ÙˆÙ„Ø§Ø±', 'Ø¥ÙŠÙ‡ Ø¥ÙŠ Ø³ÙˆÙ„Ø§Ø±']],
+  ['Solarwatt', ['Solar Watt', 'Ø³ÙˆÙ„Ø§Ø± ÙˆØ§Øª', 'Ø³ÙˆÙ„Ø§Ø±ÙˆØ§Øª']],
+  ['SoliTek', ['Ø³ÙˆÙ„ÙŠØªÙƒ', 'Ø³ÙˆÙ„ÙŠ ØªÙƒ']],
+  ['Eurener', ['ÙŠÙˆØ±ÙŠÙ†Ø±', 'ÙŠÙˆØ±ÙŠÙ†ÙŠØ±']],
+  ['Silfab Solar', ['Silfab', 'Ø³ÙŠÙ„ÙØ§Ø¨']],
+  ['Mission Solar', ['Mission Solar Energy', 'Mission', 'Ù…ÙŠØ´Ù† Ø³ÙˆÙ„Ø§Ø±', 'Ù…ÙŠØ´Ù†']],
+  ['SEG Solar', ['SEG', 'Ø§Ø³ Ø§ÙŠ Ø¬ÙŠ', 'Ø¥Ø³ Ø¥ÙŠ Ø¬ÙŠ']],
+  ['Heliene', ['Ù‡ÙŠÙ„ÙŠÙŠÙ†', 'Ù‡ÙŠÙ„ÙŠØ§Ù†']],
+  ['Qn-SOLAR', ['Qn Solar', 'ÙƒÙŠÙˆ Ø§Ù† Ø³ÙˆÙ„Ø§Ø±']],
+  ['Osda', ['Osda Solar', 'Ø£ÙˆØ³Ø¯Ø§', 'Ø§ÙˆØ³Ø¯Ø§']],
+  ['Bluesun Solar', ['Bluesun', 'Blue Sun', 'Ø¨Ù„Ùˆ ØµÙ†', 'Ø¨Ù„ÙˆØ³Ù†']],
+  ['Luxen Solar', ['Luxen', 'Ù„ÙˆÙƒØ³Ù†', 'Ù„ÙˆÙƒØ³ÙŠÙ†']],
+  ['CW Enerji', ['CW Energy', 'Ø³ÙŠ Ø¯Ø¨Ù„ÙŠÙˆ', 'Ø³ÙŠ Ø¯Ø¨Ù„ÙŠÙˆ Ø¥Ù†Ø±Ø¬ÙŠ']],
 ].sort(([a], [b]) => a.localeCompare(b, 'en'));
 const TRANSLATIONS = {
-  'ابحث عن الشركة المصنّعة': 'Search for a manufacturer',
-  'عرض الشركات المصنّعة': 'Show manufacturers', 'الشركات المصنّعة': 'Manufacturers',
-  'ابحث بالعربية أو الإنجليزية، أو اكتب اسم الشركة. يمكنك اختيار «غير معروف».': 'Search in Arabic or English, or enter the company name. You can choose “Unknown”.',
-  'تحليل الفاتورة باستخدام Ai': 'Analyze bill with Ai',
-  'الغبار في الجو': 'Airborne dust', 'استخدام موقعك الحالي': 'Use your current location',
-  'تمت التعبئة من الطقس': 'Filled from weather data', 'جارٍ تحديد الموقع…': 'Getting location…',
-  'تحليل الألواح باستخدام Claude': 'Panel assessment with Claude', 'تحليل الفاتورة باستخدام Claude': 'Read bill with Claude',
-  'الظل والغبار واتجاه الشمس': 'Shade, dust and sun direction', 'خسارة الطاقة وقيمتها': 'Energy deficit and its value',
-  'حفظ البيانات': 'Save details',
-  'عند ضغط هذا الزر، تُرسل صور الألواح ولقطات موزعة من الفيديو إلى Anthropic، حتى 8 صور في الطلب. لا يُحلل الصوت أو كل الإطارات.': 'Choosing this button sends panel photos and frames sampled across your video to Anthropic, up to 8 images per request. Audio and every frame are not assessed.',
-  'اتجاه واجهة الألواح (اختياري)': 'Panel facing direction (optional)', '0° شمال · 90° شرق · 180° جنوب · 270° غرب. أدخل قراءة بوصلة للواجهة التي تواجه الشمس.': '0° north · 90° east · 180° south · 270° west. Enter a compass reading for the panel facing direction.',
-  'وقت تصوير الألواح': 'Panel capture time', 'وقت محلي تختاره؛ لا نستخرجه من الفيديو. يلزم الموقع والميل والاتجاه والوقت لحساب زاوية الشمس.': 'Your selected local time; it is not extracted from video metadata. Location, tilt, direction and time are needed for sun geometry.',
-  'يفحص Claude صوراً ولقطات مختارة من المقاطع، حتى 8 صور في الطلب. لا يفحص الصوت أو كل إطارات الفيديو.': 'Claude inspects photos and selected frames from your clips, up to 8 images per request. Audio and every video frame are not analyzed.',
-  'لا يمكن قياس حرارة السطح أو زاوية الميل الدقيقة من صورة عادية؛ يعتمد الحساب على البيانات التي تدخلها والطقس.': 'An ordinary image cannot measure surface temperature or exact panel tilt; calculations use your inputs and weather.',
-  'تُرسل الصور واللقطات إلى Anthropic فقط عند ضغط «تحليل الألواح باستخدام Claude».': 'Images and frames are sent to Anthropic only when you choose “Panel assessment with Claude”.',
-  'إنتاج متوقع للشهر (اختياري)': 'Expected monthly generation (optional)', 'إنتاج فعلي للشهر (اختياري)': 'Actual monthly generation (optional)',
-  'استخدم خط أساس موثوقاً للنظام. يجب أن يغطي الإنتاج المتوقع والفعلي الفترة نفسها.': 'Use a reliable baseline for your system. Expected and actual generation must cover the same period.',
-  'قراءة عدّاد الإنتاج أو العاكس؛ استهلاك الفاتورة ليس إنتاج الألواح.': 'A generation meter or inverter reading; bill consumption is not panel generation.',
-  'قد تتضمن الفاتورة بيانات شخصية؛ احجب ما لا يلزم. لن تُرسل إلى Anthropic إلا عند ضغط زر تحليل الفاتورة.': 'Bills may contain personal details; cover anything unnecessary. The bill is sent to Anthropic only when you press the bill analysis button.',
-  'راجع قراءة الفاتورة': 'Review extracted bill details', 'استخدام البيانات المراجعة': 'Apply reviewed details', 'إلغاء': 'Cancel',
-  'استهلاك الطاقة': 'Energy consumption', 'العملة': 'Currency', 'التعرفة لكل kWh': 'Rate per kWh', 'أيام الفاتورة': 'Billing days',
-  'هذه قراءة آلية قابلة للخطأ. راجع الأرقام والعملة والشهر قبل استخدامها. الفاتورة وحدها لا تثبت خسارة الألواح.': 'Automatic extraction can be wrong. Review numbers, currency and month before applying them. A bill alone cannot establish solar losses.',
-  'الخسارة في الشهر المحدد': 'Loss for selected month', 'الشهر': 'Month', 'تحديث تحليل الشهر': 'Update monthly assessment',
-  'Claude غير مفعّل بعد. يستطيع مسؤول الموقع تفعيله بمفتاح Anthropic.': 'Claude is not enabled yet. The site administrator can enable it with an Anthropic key.',
-  'تعذر معرفة حالة Claude؛ حاول مرة أخرى.': 'Could not check Claude availability; try again.',
-  'جارٍ قراءة الفاتورة…': 'Reading bill…', 'تعذر قراءة الفاتورة. جرّب صورة أوضح.': 'Could not read the bill. Try a clearer image.',
-  'تم استخدام بيانات الفاتورة التي راجعتها.': 'Your reviewed bill details were applied.', 'تأكد من الشهر والأرقام قبل استخدام بيانات الفاتورة.': 'Check the month and numbers before applying bill details.',
-  'حساب القيمة هنا يدعم الريال العُماني؛ أدخل تعرفة بالريال العُماني يدوياً لهذه الفاتورة.': 'The value calculation supports Omani rials; enter an OMR rate manually for this bill.',
-  'تأكد من اتجاه الألواح بين 0 و360 درجة.': 'Panel direction must be between 0 and 360 degrees.', 'تأكد من الميل بين 0 و90 درجة.': 'Panel tilt must be between 0 and 90 degrees.',
-  'تأكد من وقت التصوير.': 'Check the capture time.', 'تأكد من قيمة الإنتاج المتوقّع والفعلي.': 'Check expected and actual generation.',
-  'تعذر فتح الفيديو في هذا المتصفح؛ جرّب MP4 أو أرفق صوراً من المقطع.': 'This browser could not open the video; try MP4 or attach still images from the clip.',
-  'لا توجد لقطات قابلة للتحليل؛ أرفق صورة واضحة أو فيديو مدعوماً.': 'No readable frames were available; attach a clear image or supported video.',
-  'تغيرت البيانات أثناء التحليل. أعد الطلب باستخدام البيانات الحالية.': 'Details changed during analysis. Submit again with the current details.',
-  'تعذر التحقق من حد استخدام التحليل الآن. أعد المحاولة لاحقاً.': 'Could not check the analysis usage limit. Try again later.',
-  'التحليل الذكي متوقف حالياً وفق إعدادات الاستخدام.': 'AI analysis is currently disabled by the usage settings.',
-  'يوجد تحليل لحسابك قيد التنفيذ. انتظر اكتماله.': 'An assessment for your account is already running. Wait for it to finish.',
-  'التحليل مشغول حالياً. أعد المحاولة بعد قليل.': 'The analysis service is busy. Try again shortly.',
-  'وصلت إلى حد التحليل اليومي لحسابك. يتجدد الحد عند منتصف الليل بتوقيت UTC.': 'Your account has reached its daily analysis limit. The limit resets at midnight UTC.',
-  'وصل الموقع إلى حد التحليل اليومي. يتجدد الحد عند منتصف الليل بتوقيت UTC.': 'The site has reached its daily analysis limit. The limit resets at midnight UTC.',
-  'انتظر 30 ثانية بين طلبات التحليل.': 'Wait 30 seconds between analysis requests.',
-  'انتهت جلسة الدخول؛ سجّل الدخول من جديد.': 'Your session has expired. Log in again.',
-  'أضف GOOGLE_CLIENT_ID إلى ملف .env لتفعيل تسجيل Google.': 'Add GOOGLE_CLIENT_ID to the .env file to enable Google sign-in.',
-  'أرفق صورة أو فيديو للألواح قبل التحليل.': 'Attach a panel photo or video before analysis.',
-  'تعذر قراءة الصور المرفقة. جرّب صور JPEG أو PNG أو WEBP.': 'Could not read the attached images. Try JPEG, PNG, or WEBP images.',
-  'رفيقك الذكي للطاقة الشمسية': 'Your smart solar companion', 'نحمي إنتاجك، خطوة بخطوة': 'Protecting your solar output, step by step',
-  'الرئيسية': 'Home', 'السجل': 'History', 'الإعدادات': 'Settings', 'تسجيل الدخول': 'Log in', 'إنشاء حساب': 'Create account',
-  'حدّد موقع النظام': 'Set system location', 'العودة للرئيسية': 'Back to home', 'القائمة': 'Menu',
-  'صباح الطاقة، ': 'Hello, ', 'يا صديق الشمس': 'sunshine', 'هذه لمحة سريعة عن أداء نظامك اليوم.': 'Here is a quick look at your system today.',
-  'تحديث بيانات النظام': 'Update system details', 'حالة اليوم': 'Today’s status', 'بانتظار بيانات نظامك': 'Waiting for your system details',
-  'ابدأ التحليل': 'Start analysis', 'فقد تقديري': 'Estimated loss', 'نحتاج بعض التفاصيل أولاً': 'A few details are needed first',
-  'أدخل بيانات النظام وأرفق صورة أو مقطعاً للألواح للحصول على قراءة أوضح.': 'Enter your system details and add a panel photo or video for a clearer estimate.',
-  'إعداد النظام': 'Set up system', 'الطقس —': 'Weather —', 'الطقس غير متاح': 'Weather unavailable',
-  'آخر تحديث ': 'Last updated ', 'ملخص النظام': 'System overview', 'نظرة على الألواح': 'Panel overview',
-  'درجة الحرارة': 'Temperature', 'حرارة الجو الحالية': 'Current air temperature', 'الرطوبة': 'Humidity', 'الرطوبة النسبية': 'Relative humidity',
-  'مستوى الغبار': 'Dust level', 'تقدير أولي': 'Initial estimate', 'تقدير الغبار على الألواح': 'Estimated panel dust',
-  'تقديرك اليدوي للألواح': 'Your panel estimate', 'مؤشر جوي': 'air indicator', 'الخسارة اليومية': 'Daily energy loss',
-  'طاقة تقديرية': 'Estimated energy', 'تحديث الطقس والموقع': 'Refresh weather and location', 'توصية سياج': 'Siyaj recommendation',
-  'ابدأ بفحص ألواحك': 'Start with a panel check', 'قد يكون تنظيف الألواح مفيداً': 'Panel cleaning may help',
-  'راقب أثر الحرارة على الألواح': 'Keep an eye on heat impact', 'حافظ على متابعة دورية': 'Keep checking your system regularly',
-  'تم التنظيف': 'Cleaned', 'متابعة الأداء': 'Performance', 'قراءة الأسبوع': 'Weekly outlook', 'الإنتاج المتوقع': 'Estimated output',
-  'آخر 7 أيام': 'Last 7 days', 'الأيام السبعة القادمة': 'Next 7 days', 'مخطط الإنتاج المتوقع خلال الأيام السبعة القادمة': 'Expected solar output for the next seven days', 'تقديرات أولية تتحدث مع الطقس': 'Initial estimates update with the weather',
-  'بيانات مختصرة': 'System details', 'لم تتم إضافة بيانات بعد.': 'No system details added yet.',
-  'ميل الألواح والغبار': 'Panel tilt and dust', 'زاوية اللوح وتراكم الغبار': 'Tilt angle and dust build-up',
-  'يتغيّر المشهد حسب ميل اللوح المدخل في صفحة التسجيل، وأدنى ميل يعني غباراً أكثر.': 'The scene follows the tilt entered on the setup page: the lower the tilt, the more dust collects.',
-  'القدرة': 'Capacity', 'الألواح': 'Panels', 'الموقع': 'Location', 'الميل': 'Tilt', 'غير محدد': 'Not set',
-  'النتائج التقديرية لا تستبدل فحص فني مختص.': 'Estimates do not replace an inspection by a qualified technician.',
-  'خطوة بسيطة نحو طاقة أفضل': 'A few steps toward better solar performance', 'لنتعرّف على نظامك ': 'Let’s get to know your system ',
-  'أجب عن هذه الخطوات لتحصل سياج على صورة متكاملة عن ألواحك.': 'Answer these questions to help Siyaj understand your panels.',
-  'البيئة والموقع': 'Environment & location', 'بيانات البيئة والموقع': 'Environment and location',
-  'الألواح': 'Panels', 'بيانات الألواح': 'Panel details', 'الفاتورة': 'Electricity bill', 'فاتورة الكهرباء': 'Electricity bill',
-  'التأكيد': 'Review', 'تأكيد البيانات': 'Review details', 'بياناتك تحفظ على حسابك وتظهر عند تسجيل الدخول من أجهزتك.': 'Your details are saved to your account and appear when you sign in on your devices.',
-  'حفظ تلقائي': 'Saved automatically', 'التالي ': 'Next ', 'السابق': 'Back', 'تستغرق أقل من دقيقتين': 'Takes less than two minutes',
-  'تقديرات سياج إرشادية': 'Siyaj estimates are guidance only', 'ابدأ التحليل ': 'Analyze system ',
-  'أخبرنا عن موقع النظام والظروف المحيطة بالألواح.': 'Tell us where your system is and about the conditions around the panels.',
-  'أضف معلومات الألواح وأرفق صورة أو مقطعاً قصيراً لفحصها بصرياً.': 'Add panel details and attach a photo or short video for visual inspection.',
-  'تساعدنا بيانات الفاتورة على تقدير قيمة الطاقة التي قد تفقدها.': 'Bill details help estimate the value of energy you may be losing.',
-  'راجع ملخص المعلومات قبل أن يبدأ سياج بتحليل نظامك.': 'Review the details before Siyaj analyzes your system.',
-  'اسمك (اختياري)': 'Your name (optional)', 'درجة حرارة الجو': 'Air temperature', 'الرطوبة النسبية': 'Relative humidity', 'عدد الألواح': 'Number of panels',
-  'تراكم الغبار على الألواح': 'Dust on the panels', 'تقدير مبدئي؛ عدّله حسب ما تراه على الألواح.': 'An initial estimate; adjust it to match what you see on the panels.',
-  'موقع النظام': 'System location', 'ابحث عن مدينة أو محافظة': 'Search for a city or region', 'بحث': 'Search',
-  'الموقع الدقيق اختياري؛ استخدم GPS لجلب الطقس الأقرب.': 'Exact location is optional. Use GPS for nearby weather.',
-  'استخدام موقعي الحالي': 'Use my current location', 'القدرة الإجمالية للنظام': 'Total system capacity', 'الشركة المصنّعة': 'Manufacturer',
-  'أو اكتب: غير معروف': 'Or enter: unknown', 'ميل الألواح عن الأفقي': 'Panel tilt from horizontal', 'نوع الألواح': 'Panel type',
-  'أحادية البلورة': 'Monocrystalline', 'متعددة البلورات': 'Polycrystalline', 'أغشية رقيقة': 'Thin film', 'غير معروف': 'Unknown',
-  'كفاءة اللوح (اختياري)': 'Panel efficiency (optional)', 'معامل الحرارة (اختياري)': 'Temperature coefficient (optional)',
-  'غالباً بين ‎-0.25 و‎-0.50 لكل درجة.': 'Usually between -0.25 and -0.50 per degree.', 'قدرة اللوح الواحد (اختياري)': 'Power per panel (optional)',
-  'صورة أو فيديو للألواح': 'Panel photo or video', 'أضف صورة أو مقطعاً قصيراً': 'Add a photo or short video',
-  'صورة واضحة أو فيديو من 5 إلى 10 ثوانٍ · حتى 6 ملفات، 25 ميغابايت للملف': 'A clear photo or a 5–10 second video · up to 6 files, 25 MB per file',
-  'تُحفظ المرفقات في حسابك وتظهر على أجهزتك. تُرسل إطارات صور الألواح إلى AI فقط عند ضغط «ابدأ التحليل».': 'Attachments sync to your account and devices. Panel image frames are sent to AI only when you choose “Analyze system”.',
-  'قيمة الفاتورة': 'Bill amount', 'الاستهلاك من الفاتورة (اختياري)': 'Bill consumption (optional)',
-  'إن توفر، نستخدمه لاشتقاق تعرفة الكهرباء التقريبية.': 'If available, we use it to estimate your electricity rate.',
-  'تعرفة الكهرباء (اختياري)': 'Electricity rate (optional)', 'تُستخدم إذا لم تدخل الاستهلاك.': 'Used if consumption is not provided.',
-  'شهر الفاتورة': 'Bill month', 'صورة الفاتورة (اختياري)': 'Bill photo (optional)', 'أرفق صورة الفاتورة': 'Attach a bill photo',
-  'تُحفظ في حسابك ولا تُرسل للتحليل البصري': 'Saved to your account and not sent for visual analysis.',
-  'راجع البيانات': 'Review your details', 'اسم صاحب النظام': 'Account name', 'لم تُضف': 'Not added', 'لوح': 'panels',
-  'ملف للألواح': 'panel file(s)', 'ملفات للألواح': 'panel files', 'سيحسب سياج فقد الطاقة التقديري من الحرارة والغبار والظل المرئي. قيمة المال تقديرية وتتغير حسب التعرفة المدخلة. ': 'Siyaj estimates energy loss from heat, dust, and visible shade. The cost estimate depends on your electricity rate. ',
-  'سيتم إرسال صور الألواح فقط للتحليل الذكي.': 'Only panel images will be sent for AI analysis.', 'أضف صورة للألواح في الخطوة السابقة لتفعيل التحليل البصري.': 'Add a panel photo in the previous step to enable visual analysis.',
-  'رحلتك مع الشمس': 'Your solar journey', 'سجل الفحوصات': 'Inspection history', 'كل عمليات الفحص المحفوظة في حسابك.': 'All inspections saved to your account.',
-  'فحص جديد ': 'New inspection ', 'لا توجد فحوصات محفوظة بعد': 'No saved inspections yet', 'بعد إعداد نظامك سيظهر هنا سجل الفحوصات.': 'Your inspections will appear here after system setup.',
-  'عرض': 'View', 'فقد الطاقة التقديري حينها: ': 'Estimated energy loss then: ', 'فقد التقديري ': 'Estimated loss ',
-  'تفضيلاتك': 'Your preferences', 'خصّص تجربة سياج بما يناسبك.': 'Personalize your Siyaj experience.', 'التنبيهات والعرض': 'Alerts and display',
-  'تنبيهات المتصفح': 'Browser notifications', 'تنبيه عند تغير مهم في الطقس': 'Alerts for significant weather changes', 'الوضع الليلي': 'Dark mode',
-  'ألوان أهدأ عند الاستخدام مساءً': 'A softer display for evening use', 'التنبيه الصوتي': 'Sound alerts', 'صوت عند التنبيهات المهمة': 'Play a sound for important alerts',
-  'اللغة': 'Language', 'لغة واجهة الموقع': 'Interface language', 'العربية': 'Arabic', 'بياناتك وخصوصيتك': 'Your data and privacy',
-  'يحفظ سياج بيانات حسابك وإعداداتك وسجل الفحوصات ومرفقاتك في التخزين السحابي، وتظهر البيانات التي تمت مزامنتها على أجهزتك عند تسجيل الدخول بالحساب نفسه. عند طلب التحليل فقط، تُرسل صور الألواح ولقطات موزعة من الفيديو أو صورة الفاتورة إلى Anthropic لتحليلها باستخدام Claude. يمكنك مراجعة قراءة الفاتورة قبل استخدامها. إحداثيات GPS تُستخدم لحساب اتجاه الشمس والطقس والتنبيهات عند تفعيلها.': 'Siyaj saves account details, settings, inspection history and attachments in cloud storage and syncs them across your devices. Only when you request analysis, panel photos, sampled video frames or a bill image are sent to Anthropic for assessment by Claude. You can review extracted bill details before applying them. GPS coordinates are used for sun geometry, weather and alerts when enabled.',
-  'تنزيل نسخة من بياناتي': 'Download my data', 'مسح بيانات حسابي': 'Clear my account data', 'رفيقك الذكي للطاقة الشمسية · إصدار تجريبي': 'Your smart solar companion · Preview',
-  'صُنع بعناية لنعطي الشمس حقها': 'Made with care, under the sun', 'حسابك في سياج': 'Your Siyaj account', 'أهلاً': 'Welcome',
-  'سجّل الدخول لمتابعة نظامك الشمسي.': 'Log in to keep up with your solar system.', 'استخدم بريدك الإلكتروني أو رقم هاتفك.': 'Use your email address or phone number.',
-  'البريد الإلكتروني أو رقم الهاتف': 'Email address or phone number', 'كلمة المرور': 'Password', 'أدخل كلمة المرور': 'Enter your password',
-  'اسم المستخدم أو البريد الإلكتروني أو رقم الهاتف': 'Username, email or phone number',
-  'دخول ': 'Log in ', 'ليس لديك حساب؟ ': 'Don’t have an account? ', 'إنشاء حساب جديد': 'Create a new account', 'أو': 'OR',
-  'المتابعة باستخدام Google': 'Continue with Google', 'سجّل بياناتك للبدء مع سياج.': 'Enter your details to get started with Siyaj.',
-  'البريد الإلكتروني': 'Email address', 'رقم الهاتف': 'Phone number', '8 أحرف على الأقل': 'At least 8 characters',
-  'تأكيد كلمة المرور': 'Confirm password', 'أعد كتابة كلمة المرور': 'Enter your password again', 'إنشاء الحساب ': 'Create account ',
-  'لديك حساب؟ ': 'Already have an account? ', 'إنشاء حساب باستخدام Google': 'Sign up with Google', 'يُحفظ الحساب والبيانات والمرفقات على الخادم وتظهر عند تسجيل الدخول من أجهزتك.': 'Your account, details, and attachments are saved on the server and appear when you sign in on your devices.',
-  'اسم المستخدم': 'Username', 'مثال: maryam_1': 'Example: maryam_1', 'اسم المستخدم فريد. بيانات حسابك وفحوصاتك ومرفقاتك تتزامن بين أجهزتك.': 'Usernames are unique. Your account, inspections, and attachments sync across your devices.',
-  'اسم المستخدم من 3 إلى 24 حرفاً أو رقماً، ويمكن استخدام النقطة والشرطة السفلية فقط.': 'Username must be 3–24 letters or numbers. Periods and underscores are also allowed.',
-  'اسم المستخدم مستخدم بالفعل؛ اختر اسماً آخر.': 'That username is already taken. Choose another one.',
-  'حالة الطقس الحالية': 'Current weather', 'تظهر بعد تحديد الموقع': 'Shown after setting a location',
-  'تقدير مبدئي من الغبار الجوي، وليس قياساً مباشراً على سطح الألواح.': 'Initial estimate from airborne dust, not a direct measurement on the panels.',
-  'هذا الحساب مرتبط بـ Google؛ تابع باستخدام Google.': 'This account uses Google. Continue with Google.',
-  'تسجيل Google يحتاج إضافة GOOGLE_CLIENT_ID إلى ملف .env.': 'Google sign-in needs GOOGLE_CLIENT_ID added to the .env file.',
-  'تم تسجيل الدخول باستخدام Google.': 'Signed in with Google.', 'هذا البريد مرتبط بحساب Google آخر.': 'This email is linked to another Google account.',
-  'تعذر التحقق من حساب Google.': 'Could not verify the Google account.', 'لم يصل رمز تسجيل Google.': 'Google sign-in did not return a credential.',
-  'رمز Google غير صالح أو انتهت صلاحيته.': 'The Google credential is invalid or expired.',
-  'هل تريد مسح بيانات الحساب ومرفقاته من جميع أجهزتك؟': 'Delete your account data and attachments from all your devices?',
-  'تحليل بصري': 'Visual inspection', 'تقدير أولي': 'Initial estimate', 'سماء صافية': 'Clear sky', 'غائم جزئياً': 'Partly cloudy',
-  'ضباب': 'Fog', 'رذاذ': 'Drizzle', 'أمطار': 'Rain', 'ثلوج': 'Snow', 'عواصف رعدية': 'Thunderstorms', 'حالة متغيرة': 'Changing conditions',
-  'لا يظهر غبار واضح': 'No obvious dust visible', 'غبار خفيف ظاهر': 'Light dust visible', 'غبار متوسط ظاهر': 'Moderate dust visible',
-  'غبار كثيف ظاهر': 'Heavy dust visible', 'الصورة غير واضحة': 'Image is unclear', 'يحتاج إلى انتباه': 'Needs attention', 'مستوى متوسط': 'Moderate level', 'أداء مطمئن': 'Looking good',
-  'انتباه': 'Attention', 'مراقبة': 'Monitor', 'جيد': 'Good', 'تم فحص بصري': 'Visual inspection', 'فحص محفوظ': 'Saved inspection',
-  'تقدير الغبار مرتفعاً': 'dust estimate is high', 'تابع التغيرات في الطقس وافحص سطح الألواح بعد العواصف أو فترات الغبار.': 'Watch for weather changes and inspect panels after storms or dusty periods.',
-  'حرارة مرتفعة': 'High temperature', 'في موقعك؛ تجنب لمس الألواح وقت الظهيرة.': 'at your location; avoid touching panels at midday.',
-  'هبات رياح قوية تصل إلى ': 'Strong wind gusts up to ', ' كم/س؛ أجّل الصعود إلى السطح حتى تهدأ.': ' km/h; wait for calmer conditions before going onto the roof.',
-  'احتمال هطول مرتفع (': 'High chance of rain (', '%)؛ راقب الألواح بعد انقضاء الطقس.': '%); check the panels after the weather passes.',
-  'تم تحديث تقدير الغبار بعد التنظيف.': 'Dust estimate updated after cleaning.', 'واجهة سياج متاحة حالياً بالعربية.': 'Siyaj is currently available in Arabic.',
-  'تنبيهات الغبار والرياح': 'Dust and wind push alerts', 'تنبيهات الغبار والرياح عبر الإشعارات': 'Push alerts for dusty and windy weather',
-  'كل ': 'Every ', ' يوماً كحد أقصى': ' days at most', 'توقعات الغبار الجوي: Open-Meteo وCAMS.': 'Air quality forecasts: Open-Meteo and CAMS.',
-  'يتم إرسال تنبيه التنظيف مرة كل 14 يوماً كحد أقصى.': 'Cleaning alerts are limited to once every 14 days.',
-  'خسارة شهرية تقديرية': 'Estimated monthly loss', 'خسارة بسبب الغبار:': 'Dust loss:', 'خسارة بسبب الحرارة:': 'Heat loss:',
-  'ر.ع شهرياً': 'OMR / month', 'زاوية لوحك الحالية تخليه يتجمع عليه غبار أسرع من لو كانت قريبة من 30 درجة.': 'Your current panel tilt may collect dust faster than an angle close to 30 degrees.',
-  'تحتاج التنبيهات إلى إعداد Push في الخادم. راجع ملف README.': 'Push alerts need server setup. See the README.',
-  'تعذر تفعيل التنبيهات؛ تحقق من الإذن والاتصال بالخادم.': 'Could not enable alerts. Check permission and server connection.',
-  'التنبيهات تعمل بعد إضافة مفاتيح VAPID وتشغيل الخادم.': 'Alerts work after adding VAPID keys and starting the server.',
-  'تعذر حفظ سجل التنظيف على الخادم.': 'Could not save the cleaning record on the server.',
-  'تعذر حساب تفصيل خسارة الحرارة حالياً.': 'Could not calculate the heat loss breakdown right now.',
-  'تنبيه غبار من سياج': 'Dust alert from Siyaj', 'تنبيه توقيت التنظيف من سياج': 'Cleaning time alert from Siyaj',
-  'لم نعثر على نتائج. جرّب كتابة الاسم بالإنجليزية.': 'No results found. Try entering the name in English.',
-  'تعذر البحث. تأكد من تشغيل الخادم.': 'Search failed. Make sure the local server is running.',
-  'لم يتم تفعيل إذن التنبيهات.': 'Notification permission was not granted.', 'تم تفعيل التنبيهات.': 'Notifications enabled.', 'تم إيقاف التنبيهات.': 'Notifications disabled.',
-  'تنبيهات هذا الجهاز فقط': 'Alerts on this device only',
-  'مفعّلة على هذا الجهاز': 'Enabled on this device', 'غير مفعّلة على هذا الجهاز': 'Not enabled on this device',
-  'تعذر التحقق من تنبيهات هذا الجهاز.': 'Could not check alerts on this device.',
-  'تعذر إيقاف تنبيهات هذا الجهاز.': 'Could not disable alerts on this device.',
-  'تعذر تسجيل الخروج؛ حاول مرة أخرى.': 'Could not log out. Please try again.',
-  'تم تسجيل التنظيف وتحديث تقدير الغبار.': 'Cleaning was recorded and the dust estimate was updated.',
-  'لم تتوفر بيانات كافية لحساب خسارة الحرارة؛ التقدير الحالي يشمل الغبار والظل فقط.': 'There is not enough data to calculate heat loss; this estimate includes dust and shade only.',
-  'يومياً وفق تقدير الغبار والظل.': 'per day based on estimated dust and shade.',
-  'تم مسح بيانات حسابك.': 'Your account data was cleared.', 'تم تنزيل نسخة البيانات.': 'Data export downloaded.', 'تم تحديد موقع النظام.': 'System location set.',
-  'لم نتمكن من تحديد الموقع. تحقق من إذن الموقع في المتصفح.': 'Could not get your location. Check your browser location permission.',
-  'حدّد مدينة أو استخدم GPS أولاً.': 'Choose a city or use GPS first.', 'أدخل عدد الألواح أولاً.': 'Enter the number of panels first.',
-  'تأكد من درجة حرارة الجو.': 'Check the air temperature.', 'الرطوبة يجب أن تكون بين 0 و100%.': 'Humidity must be between 0 and 100%.',
-  'أدخل القدرة الإجمالية للنظام.': 'Enter the total system capacity.', 'أضف قيمة الفاتورة لحساب التعرفة التقريبية.': 'Enter the bill amount to estimate the electricity rate.',
-  'اكتب اسم مدينة للبحث.': 'Enter a city name to search.', 'اختر صورة أو فيديو مدعوماً.': 'Choose a supported image or video.',
-  'يمكن إرفاق الفاتورة كصورة.': 'The bill can be attached as an image.', 'يمكنك إضافة 6 ملفات كحد أقصى.': 'You can add up to 6 files.',
-  'تعذر حفظ الملف محلياً؛ جرّب ملفاً أصغر.': 'Could not save the file locally. Try a smaller file.',
-  'اختر JPG أو PNG أو WEBP أو فيديو MP4 أو WEBM أو MOV.': 'Choose JPG, PNG, WEBP, MP4, WEBM, or MOV.', 'يجب ألا يتجاوز حجم الملف 25 ميغابايت.': 'Each file must be 25 MB or smaller.',
-  'أضف صورة أو فيديو للألواح لتفعيل التحليل البصري بالذكاء الاصطناعي.': 'Add a panel photo or video to enable AI visual analysis.',
-  'القدرة الإجمالية': 'Total capacity', 'الفاتورة الشهرية': 'Monthly bill', 'لم تتم إضافة بيانات بعد.': 'No system details added yet.',
-  'أدخل بريداً إلكترونياً صالحاً.': 'Enter a valid email address.', 'أدخل رقم هاتف صالحاً.': 'Enter a valid phone number.',
-  'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.': 'Password must be at least 8 characters.', 'كلمتا المرور غير متطابقتين.': 'The passwords do not match.',
-  'هذا البريد أو رقم الهاتف مسجل مسبقاً.': 'This email or phone number is already registered.', 'تعذر إنشاء الحساب.': 'Could not create the account.',
-  'لم نعثر على هذا الحساب في هذا المتصفح. أنشئ حساباً أولاً.': 'This account was not found in this browser. Create an account first.',
-  'كلمة المرور غير صحيحة.': 'Incorrect password.', 'تعذر تسجيل الدخول.': 'Could not log in.', 'تم إنشاء الحساب وحفظه على الخادم.': 'Account created and saved on the server.',
-  'تم تسجيل الدخول.': 'You are logged in.', 'تم تسجيل الخروج.': 'You are logged out.', 'تسجيل Google يحتاج إعداد OAuth من Google قبل تفعيله.': 'Google sign-in needs Google OAuth configuration before it can be enabled.',
-  'يتطلب تسجيل الحساب متصفحاً آمناً مثل localhost.': 'Account creation requires a secure browser context such as localhost.',
-  'فقد الطاقة التقديري حينها: ': 'Estimated energy loss then: ', 'فاتورة': 'Bill', 'استهلاك': 'Consumption', 'تنبيه': 'Alert',
-  'تم تحديد موقع النظام.': 'System location set.', 'تم تحديث تقدير الغبار بعد التنظيف.': 'Dust estimate updated after cleaning.',
-  'فقد اليوم ': 'Today’s loss: ', 'إشعاع الشمس يتغير حسب الطقس': 'Sunshine varies with the weather',
-  'بانتظار بيانات نظامك': 'Waiting for your system details', 'تم التنظيف': 'Cleaned',
-  'تسجيل الخروج': 'Log out', 'name@example.com أو رقم الهاتف': 'name@example.com or phone number',
-  'ر.ع': 'OMR', 'ك.و.س': 'kWh', 'واط': 'W', '°م': '°C', 'كم/س': 'km/h',
-  'التعرفة التي أدخلتها': 'the rate you entered', 'مشتقة من الفاتورة والاستهلاك': 'derived from your bill and consumption', 'تعرفة مرجعية قابلة للتغيير': 'editable reference rate',
-  'تقريباً': 'approx.', 'قد يفقد النظام نحو ': 'The system may lose about ', ' يومياً وفق تقدير الحرارة والغبار والظل.': ' per day based on estimated heat, dust, and shade.',
-  ' في موقعك؛ تجنب لمس الألواح وقت الظهيرة.': ' at your location; avoid touching panels at midday.',
-  'المتصفح لا يدعم تحديد الموقع.': 'Your browser does not support location services.', 'تعذر جلب حالة الطقس.': 'Could not load weather.',
-  'تعذر تحديث الطقس.': 'Could not refresh the weather.', 'تعذر جلب بيانات الطقس الآن.': 'Weather data is unavailable right now.',
-  'تعذر جلب الطقس الآن. حاول مرة أخرى بعد قليل أو أدخل البيانات يدويًا.': 'Weather data is unavailable right now. Try again shortly or enter the readings manually.',
-  'إحداثيات الموقع غير صالحة.': 'The location coordinates are invalid.',
-  'تعذر تنفيذ التحليل الذكي.': 'Could not run AI analysis.', 'تعذر تحليل المرفق الآن.': 'Could not analyze the attachment right now.',
-  'لم يصل رد قابل للقراءة من خدمة التحليل.': 'The analysis service returned an unreadable response.',
-  'حرارة مرتفعة': 'High temperature', 'هبات رياح قوية تصل إلى ': 'Strong wind gusts up to ',
-  'احتمال هطول مرتفع (': 'High chance of rain (', '%)؛ راقب الألواح بعد انقضاء الطقس.': '%); check the panels after the weather passes.',
-  'جاري تحديد الموقع…': 'Getting location…', 'جارٍ البحث…': 'Searching…', 'تعذر البحث عن المدينة.': 'Could not search for the city.',
-  'لم نعثر على نتائج. جرّب كتابة الاسم بالإنجليزية.': 'No results found. Try entering the name in English.',
-  'تعذر البحث. تأكد من تشغيل الخادم.': 'Search failed. Make sure the local server is running.',
-  'الرمز البريدي': 'Postal code',
-  ' النتيجة الحالية تقديرية وتعتمد على البيانات التي أدخلتها.': ' This is an estimate based on the details you entered.',
-  'أضف بيانات النظام أولاً': 'Add system details first', 'تقديرات أولية': 'Initial estimates',
-  'يظهر تقدير الغبار مرتفعاً؛ تحقق بصرياً من الألواح ونظّفها عند الحاجة وبطريقة آمنة.': 'Dust may be high; inspect the panels and clean them safely if needed.',
-  'تابع التغيرات في الطقس وافحص سطح الألواح بعد العواصف أو فترات الغبار.': 'Watch for weather changes and inspect the panels after storms or dusty periods.',
-  'العربية': 'Arabic', 'English': 'English', 'PM10': 'PM10', 'غير معروف': 'Unknown',
-  'البلاغات والشكاوى': 'Complaints & reports', 'تقرير النظام': 'System report',
-  'تواصل مباشر مع فريق الصيانة': 'Direct contact with the maintenance team',
-  'أرسل بلاغاً عن أي مشكلة في نظامك الشمسي، وسيرسل مباشرة إلى فريق الصيانة.': 'Send a complaint about any issue with your solar system and it reaches the maintenance team directly.',
-  'بلاغ جديد': 'New complaint', 'اكتب بلاغك': 'Write your complaint',
-  'سيُرسل البلاغ إلى فريق الصيانة مباشرة.': 'Your complaint is sent to the maintenance team directly.',
-  'الاسم (اختياري)': 'Name (optional)', 'وسيلة التواصل (بريد أو هاتف)': 'Contact (email or phone)',
-  'نوع البلاغ': 'Complaint type', 'الموضوع (اختياري)': 'Subject (optional)', 'تفاصيل البلاغ': 'Complaint details',
-  'ضعف في الإنتاج': 'Low generation', 'غبار على الألواح': 'Dust on panels',
-  'تظليل على الألواح': 'Shading on panels', 'مشكلة كهربائية': 'Electrical issue',
-  'طلب صيانة': 'Maintenance request', 'أخرى': 'Other',
-  'إرسال البلاغ': 'Send complaint', 'مشاركة / نسخ البلاغ': 'Share / copy complaint',
-  'بلاغاتي السابقة': 'My complaints', 'ملخص جاهز للمشاركة': 'Summary ready to share',
-  'تقرير شامل يمكن تنزيله PDF أو مشاركته مع شركة الصيانة.': 'A full report you can download as PDF or share with a maintenance company.',
-  'تنزيل PDF': 'Download PDF', 'طباعة': 'Print', 'مشاركة': 'Share',
-  'جارٍ تجهيز سياج…': 'Preparing Siyaj…', 'إعادة المحاولة': 'Try again',
-  'يتم الاتصال بالخادم وتحميل بياناتك، لحظات من فضلك.': 'Contacting the server and loading your data, just a moment.',
-  'تحديث الطقس والموقع': 'Update weather and location',
-  'مثال: مريم': 'e.g. Mariam', 'name@example.com أو رقم الهاتف': 'name@example.com or a phone number',
-  'مثال: تنظيف الألواح في الشتاء': 'e.g. panel cleaning in winter',
-  'صف المشكلة ومتى لاحظتها…': 'Describe the issue and when you noticed it…',
-  'صيانة الألواح': 'Panel maintenance',
-  'دورة الصيانة كل 6 أشهر': 'Maintenance cycle every 6 months',
-  'تمت الصيانة اليوم ✓': 'Maintenance done today ✓',
-  'اسم شركة الألواح': 'Panel company name',
-  'آخر صيانة للألواح': 'Last panel maintenance',
-  'آخر صيانة': 'Last maintenance',
-  'الصيانة القادمة': 'Next maintenance',
-  'موعد الصيانة القادمة': 'Next maintenance due',
-  'لم تُسجل': 'Not recorded',
-  'شركة الألواح': 'Panel company',
-  'الشركة': 'Company',
-  'المصنع': 'Manufacturer',
-  'غير محددة': 'Not set',
-  'أضف تاريخ آخر صيانة': 'Add the last maintenance date',
+  'Ø§Ø¨Ø­Ø« Ø¹Ù† Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©': 'Search for a manufacturer',
+  'Ø¹Ø±Ø¶ Ø§Ù„Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©': 'Show manufacturers', 'Ø§Ù„Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©': 'Manufacturers',
+  'Ø§Ø¨Ø­Ø« Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© Ø£Ùˆ Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©ØŒ Ø£Ùˆ Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ø§Ù„Ø´Ø±ÙƒØ©. ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ø®ØªÙŠØ§Ø± Â«ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙÂ».': 'Search in Arabic or English, or enter the company name. You can choose â€œUnknownâ€.',
+  'ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ai': 'Analyze bill with Ai',
+  'Ø§Ù„ØºØ¨Ø§Ø± ÙÙŠ Ø§Ù„Ø¬Ùˆ': 'Airborne dust', 'Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…ÙˆÙ‚Ø¹Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠ': 'Use your current location',
+  'ØªÙ…Øª Ø§Ù„ØªØ¹Ø¨Ø¦Ø© Ù…Ù† Ø§Ù„Ø·Ù‚Ø³': 'Filled from weather data', 'Ø¬Ø§Ø±Ù ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹â€¦': 'Getting locationâ€¦',
+  'ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude': 'Panel assessment with Claude', 'ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude': 'Read bill with Claude',
+  'Ø§Ù„Ø¸Ù„ ÙˆØ§Ù„ØºØ¨Ø§Ø± ÙˆØ§ØªØ¬Ø§Ù‡ Ø§Ù„Ø´Ù…Ø³': 'Shade, dust and sun direction', 'Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø© ÙˆÙ‚ÙŠÙ…ØªÙ‡Ø§': 'Energy deficit and its value',
+  'Ø­ÙØ¸ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª': 'Save details',
+  'Ø¹Ù†Ø¯ Ø¶ØºØ· Ù‡Ø°Ø§ Ø§Ù„Ø²Ø±ØŒ ØªÙØ±Ø³Ù„ ØµÙˆØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ„Ù‚Ø·Ø§Øª Ù…ÙˆØ²Ø¹Ø© Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ø¥Ù„Ù‰ AnthropicØŒ Ø­ØªÙ‰ 8 ØµÙˆØ± ÙÙŠ Ø§Ù„Ø·Ù„Ø¨. Ù„Ø§ ÙŠÙØ­Ù„Ù„ Ø§Ù„ØµÙˆØª Ø£Ùˆ ÙƒÙ„ Ø§Ù„Ø¥Ø·Ø§Ø±Ø§Øª.': 'Choosing this button sends panel photos and frames sampled across your video to Anthropic, up to 8 images per request. Audio and every frame are not assessed.',
+  'Ø§ØªØ¬Ø§Ù‡ ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Panel facing direction (optional)', '0Â° Ø´Ù…Ø§Ù„ Â· 90Â° Ø´Ø±Ù‚ Â· 180Â° Ø¬Ù†ÙˆØ¨ Â· 270Â° ØºØ±Ø¨. Ø£Ø¯Ø®Ù„ Ù‚Ø±Ø§Ø¡Ø© Ø¨ÙˆØµÙ„Ø© Ù„Ù„ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„ØªÙŠ ØªÙˆØ§Ø¬Ù‡ Ø§Ù„Ø´Ù…Ø³.': '0Â° north Â· 90Â° east Â· 180Â° south Â· 270Â° west. Enter a compass reading for the panel facing direction.',
+  'ÙˆÙ‚Øª ØªØµÙˆÙŠØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel capture time', 'ÙˆÙ‚Øª Ù…Ø­Ù„ÙŠ ØªØ®ØªØ§Ø±Ù‡Ø› Ù„Ø§ Ù†Ø³ØªØ®Ø±Ø¬Ù‡ Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆ. ÙŠÙ„Ø²Ù… Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆØ§Ù„Ù…ÙŠÙ„ ÙˆØ§Ù„Ø§ØªØ¬Ø§Ù‡ ÙˆØ§Ù„ÙˆÙ‚Øª Ù„Ø­Ø³Ø§Ø¨ Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ø´Ù…Ø³.': 'Your selected local time; it is not extracted from video metadata. Location, tilt, direction and time are needed for sun geometry.',
+  'ÙŠÙØ­Øµ Claude ØµÙˆØ±Ø§Ù‹ ÙˆÙ„Ù‚Ø·Ø§Øª Ù…Ø®ØªØ§Ø±Ø© Ù…Ù† Ø§Ù„Ù…Ù‚Ø§Ø·Ø¹ØŒ Ø­ØªÙ‰ 8 ØµÙˆØ± ÙÙŠ Ø§Ù„Ø·Ù„Ø¨. Ù„Ø§ ÙŠÙØ­Øµ Ø§Ù„ØµÙˆØª Ø£Ùˆ ÙƒÙ„ Ø¥Ø·Ø§Ø±Ø§Øª Ø§Ù„ÙÙŠØ¯ÙŠÙˆ.': 'Claude inspects photos and selected frames from your clips, up to 8 images per request. Audio and every video frame are not analyzed.',
+  'Ù„Ø§ ÙŠÙ…ÙƒÙ† Ù‚ÙŠØ§Ø³ Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø³Ø·Ø­ Ø£Ùˆ Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ù…ÙŠÙ„ Ø§Ù„Ø¯Ù‚ÙŠÙ‚Ø© Ù…Ù† ØµÙˆØ±Ø© Ø¹Ø§Ø¯ÙŠØ©Ø› ÙŠØ¹ØªÙ…Ø¯ Ø§Ù„Ø­Ø³Ø§Ø¨ Ø¹Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙŠ ØªØ¯Ø®Ù„Ù‡Ø§ ÙˆØ§Ù„Ø·Ù‚Ø³.': 'An ordinary image cannot measure surface temperature or exact panel tilt; calculations use your inputs and weather.',
+  'ØªÙØ±Ø³Ù„ Ø§Ù„ØµÙˆØ± ÙˆØ§Ù„Ù„Ù‚Ø·Ø§Øª Ø¥Ù„Ù‰ Anthropic ÙÙ‚Ø· Ø¹Ù†Ø¯ Ø¶ØºØ· Â«ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… ClaudeÂ».': 'Images and frames are sent to Anthropic only when you choose â€œPanel assessment with Claudeâ€.',
+  'Ø¥Ù†ØªØ§Ø¬ Ù…ØªÙˆÙ‚Ø¹ Ù„Ù„Ø´Ù‡Ø± (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Expected monthly generation (optional)', 'Ø¥Ù†ØªØ§Ø¬ ÙØ¹Ù„ÙŠ Ù„Ù„Ø´Ù‡Ø± (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Actual monthly generation (optional)',
+  'Ø§Ø³ØªØ®Ø¯Ù… Ø®Ø· Ø£Ø³Ø§Ø³ Ù…ÙˆØ«ÙˆÙ‚Ø§Ù‹ Ù„Ù„Ù†Ø¸Ø§Ù…. ÙŠØ¬Ø¨ Ø£Ù† ÙŠØºØ·ÙŠ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ Ø§Ù„ÙØªØ±Ø© Ù†ÙØ³Ù‡Ø§.': 'Use a reliable baseline for your system. Expected and actual generation must cover the same period.',
+  'Ù‚Ø±Ø§Ø¡Ø© Ø¹Ø¯Ù‘Ø§Ø¯ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø£Ùˆ Ø§Ù„Ø¹Ø§ÙƒØ³Ø› Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„ÙŠØ³ Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.': 'A generation meter or inverter reading; bill consumption is not panel generation.',
+  'Ù‚Ø¯ ØªØªØ¶Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø´Ø®ØµÙŠØ©Ø› Ø§Ø­Ø¬Ø¨ Ù…Ø§ Ù„Ø§ ÙŠÙ„Ø²Ù…. Ù„Ù† ØªÙØ±Ø³Ù„ Ø¥Ù„Ù‰ Anthropic Ø¥Ù„Ø§ Ø¹Ù†Ø¯ Ø¶ØºØ· Ø²Ø± ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø©.': 'Bills may contain personal details; cover anything unnecessary. The bill is sent to Anthropic only when you press the bill analysis button.',
+  'Ø±Ø§Ø¬Ø¹ Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Review extracted bill details', 'Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©': 'Apply reviewed details', 'Ø¥Ù„ØºØ§Ø¡': 'Cancel',
+  'Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø§Ù„Ø·Ø§Ù‚Ø©': 'Energy consumption', 'Ø§Ù„Ø¹Ù…Ù„Ø©': 'Currency', 'Ø§Ù„ØªØ¹Ø±ÙØ© Ù„ÙƒÙ„ kWh': 'Rate per kWh', 'Ø£ÙŠØ§Ù… Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Billing days',
+  'Ù‡Ø°Ù‡ Ù‚Ø±Ø§Ø¡Ø© Ø¢Ù„ÙŠØ© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„Ø®Ø·Ø£. Ø±Ø§Ø¬Ø¹ Ø§Ù„Ø£Ø±Ù‚Ø§Ù… ÙˆØ§Ù„Ø¹Ù…Ù„Ø© ÙˆØ§Ù„Ø´Ù‡Ø± Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù…Ù‡Ø§. Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙˆØ­Ø¯Ù‡Ø§ Ù„Ø§ ØªØ«Ø¨Øª Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­.': 'Automatic extraction can be wrong. Review numbers, currency and month before applying them. A bill alone cannot establish solar losses.',
+  'Ø§Ù„Ø®Ø³Ø§Ø±Ø© ÙÙŠ Ø§Ù„Ø´Ù‡Ø± Ø§Ù„Ù…Ø­Ø¯Ø¯': 'Loss for selected month', 'Ø§Ù„Ø´Ù‡Ø±': 'Month', 'ØªØ­Ø¯ÙŠØ« ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø´Ù‡Ø±': 'Update monthly assessment',
+  'Claude ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„ Ø¨Ø¹Ø¯. ÙŠØ³ØªØ·ÙŠØ¹ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØªÙØ¹ÙŠÙ„Ù‡ Ø¨Ù…ÙØªØ§Ø­ Anthropic.': 'Claude is not enabled yet. The site administrator can enable it with an Anthropic key.',
+  'ØªØ¹Ø°Ø± Ù…Ø¹Ø±ÙØ© Ø­Ø§Ù„Ø© ClaudeØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.': 'Could not check Claude availability; try again.',
+  'Ø¬Ø§Ø±Ù Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©â€¦': 'Reading billâ€¦', 'ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©. Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ÙˆØ¶Ø­.': 'Could not read the bill. Try a clearer image.',
+  'ØªÙ… Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø§Ù„ØªÙŠ Ø±Ø§Ø¬Ø¹ØªÙ‡Ø§.': 'Your reviewed bill details were applied.', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø´Ù‡Ø± ÙˆØ§Ù„Ø£Ø±Ù‚Ø§Ù… Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø©.': 'Check the month and numbers before applying bill details.',
+  'Ø­Ø³Ø§Ø¨ Ø§Ù„Ù‚ÙŠÙ…Ø© Ù‡Ù†Ø§ ÙŠØ¯Ø¹Ù… Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø¹ÙÙ…Ø§Ù†ÙŠØ› Ø£Ø¯Ø®Ù„ ØªØ¹Ø±ÙØ© Ø¨Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø¹ÙÙ…Ø§Ù†ÙŠ ÙŠØ¯ÙˆÙŠØ§Ù‹ Ù„Ù‡Ø°Ù‡ Ø§Ù„ÙØ§ØªÙˆØ±Ø©.': 'The value calculation supports Omani rials; enter an OMR rate manually for this bill.',
+  'ØªØ£ÙƒØ¯ Ù…Ù† Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨ÙŠÙ† 0 Ùˆ360 Ø¯Ø±Ø¬Ø©.': 'Panel direction must be between 0 and 360 degrees.', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ù…ÙŠÙ„ Ø¨ÙŠÙ† 0 Ùˆ90 Ø¯Ø±Ø¬Ø©.': 'Panel tilt must be between 0 and 90 degrees.',
+  'ØªØ£ÙƒØ¯ Ù…Ù† ÙˆÙ‚Øª Ø§Ù„ØªØµÙˆÙŠØ±.': 'Check the capture time.', 'ØªØ£ÙƒØ¯ Ù…Ù† Ù‚ÙŠÙ…Ø© Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ù‘Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ.': 'Check expected and actual generation.',
+  'ØªØ¹Ø°Ø± ÙØªØ­ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­Ø› Ø¬Ø±Ù‘Ø¨ MP4 Ø£Ùˆ Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ù…Ù† Ø§Ù„Ù…Ù‚Ø·Ø¹.': 'This browser could not open the video; try MP4 or attach still images from the clip.',
+  'Ù„Ø§ ØªÙˆØ¬Ø¯ Ù„Ù‚Ø·Ø§Øª Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØ­Ù„ÙŠÙ„Ø› Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© ÙˆØ§Ø¶Ø­Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ø¯Ø¹ÙˆÙ…Ø§Ù‹.': 'No readable frames were available; attach a clear image or supported video.',
+  'ØªØºÙŠØ±Øª Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„ØªØ­Ù„ÙŠÙ„. Ø£Ø¹Ø¯ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø§Ù„ÙŠØ©.': 'Details changed during analysis. Submit again with the current details.',
+  'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø­Ø¯ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¢Ù†. Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù„Ø§Ø­Ù‚Ø§Ù‹.': 'Could not check the analysis usage limit. Try again later.',
+  'Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø°ÙƒÙŠ Ù…ØªÙˆÙ‚Ù Ø­Ø§Ù„ÙŠØ§Ù‹ ÙˆÙÙ‚ Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù….': 'AI analysis is currently disabled by the usage settings.',
+  'ÙŠÙˆØ¬Ø¯ ØªØ­Ù„ÙŠÙ„ Ù„Ø­Ø³Ø§Ø¨Ùƒ Ù‚ÙŠØ¯ Ø§Ù„ØªÙ†ÙÙŠØ°. Ø§Ù†ØªØ¸Ø± Ø§ÙƒØªÙ…Ø§Ù„Ù‡.': 'An assessment for your account is already running. Wait for it to finish.',
+  'Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ù…Ø´ØºÙˆÙ„ Ø­Ø§Ù„ÙŠØ§Ù‹. Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ø¨Ø¹Ø¯ Ù‚Ù„ÙŠÙ„.': 'The analysis service is busy. Try again shortly.',
+  'ÙˆØµÙ„Øª Ø¥Ù„Ù‰ Ø­Ø¯ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙŠÙˆÙ…ÙŠ Ù„Ø­Ø³Ø§Ø¨Ùƒ. ÙŠØªØ¬Ø¯Ø¯ Ø§Ù„Ø­Ø¯ Ø¹Ù†Ø¯ Ù…Ù†ØªØµÙ Ø§Ù„Ù„ÙŠÙ„ Ø¨ØªÙˆÙ‚ÙŠØª UTC.': 'Your account has reached its daily analysis limit. The limit resets at midnight UTC.',
+  'ÙˆØµÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø¥Ù„Ù‰ Ø­Ø¯ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙŠÙˆÙ…ÙŠ. ÙŠØªØ¬Ø¯Ø¯ Ø§Ù„Ø­Ø¯ Ø¹Ù†Ø¯ Ù…Ù†ØªØµÙ Ø§Ù„Ù„ÙŠÙ„ Ø¨ØªÙˆÙ‚ÙŠØª UTC.': 'The site has reached its daily analysis limit. The limit resets at midnight UTC.',
+  'Ø§Ù†ØªØ¸Ø± 30 Ø«Ø§Ù†ÙŠØ© Ø¨ÙŠÙ† Ø·Ù„Ø¨Ø§Øª Ø§Ù„ØªØ­Ù„ÙŠÙ„.': 'Wait 30 seconds between analysis requests.',
+  'Ø§Ù†ØªÙ‡Øª Ø¬Ù„Ø³Ø© Ø§Ù„Ø¯Ø®ÙˆÙ„Ø› Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ù† Ø¬Ø¯ÙŠØ¯.': 'Your session has expired. Log in again.',
+  'Ø£Ø¶Ù GOOGLE_CLIENT_ID Ø¥Ù„Ù‰ Ù…Ù„Ù .env Ù„ØªÙØ¹ÙŠÙ„ ØªØ³Ø¬ÙŠÙ„ Google.': 'Add GOOGLE_CLIENT_ID to the .env file to enable Google sign-in.',
+  'Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù‚Ø¨Ù„ Ø§Ù„ØªØ­Ù„ÙŠÙ„.': 'Attach a panel photo or video before analysis.',
+  'ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ØµÙˆØ± Ø§Ù„Ù…Ø±ÙÙ‚Ø©. Ø¬Ø±Ù‘Ø¨ ØµÙˆØ± JPEG Ø£Ùˆ PNG Ø£Ùˆ WEBP.': 'Could not read the attached images. Try JPEG, PNG, or WEBP images.',
+  'Ø±ÙÙŠÙ‚Ùƒ Ø§Ù„Ø°ÙƒÙŠ Ù„Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ø´Ù…Ø³ÙŠØ©': 'Your smart solar companion', 'Ù†Ø­Ù…ÙŠ Ø¥Ù†ØªØ§Ø¬ÙƒØŒ Ø®Ø·ÙˆØ© Ø¨Ø®Ø·ÙˆØ©': 'Protecting your solar output, step by step',
+  'Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©': 'Home', 'Ø§Ù„Ø³Ø¬Ù„': 'History', 'Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª': 'Settings', 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„': 'Log in', 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨': 'Create account',
+  'Ø­Ø¯Ù‘Ø¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù…': 'Set system location', 'Ø§Ù„Ø¹ÙˆØ¯Ø© Ù„Ù„Ø±Ø¦ÙŠØ³ÙŠØ©': 'Back to home', 'Ø§Ù„Ù‚Ø§Ø¦Ù…Ø©': 'Menu',
+  'ØµØ¨Ø§Ø­ Ø§Ù„Ø·Ø§Ù‚Ø©ØŒ ': 'Hello, ', 'ÙŠØ§ ØµØ¯ÙŠÙ‚ Ø§Ù„Ø´Ù…Ø³': 'sunshine', 'Ù‡Ø°Ù‡ Ù„Ù…Ø­Ø© Ø³Ø±ÙŠØ¹Ø© Ø¹Ù† Ø£Ø¯Ø§Ø¡ Ù†Ø¸Ø§Ù…Ùƒ Ø§Ù„ÙŠÙˆÙ….': 'Here is a quick look at your system today.',
+  'ØªØ­Ø¯ÙŠØ« Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù…': 'Update system details', 'Ø­Ø§Ù„Ø© Ø§Ù„ÙŠÙˆÙ…': 'Todayâ€™s status', 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø¨ÙŠØ§Ù†Ø§Øª Ù†Ø¸Ø§Ù…Ùƒ': 'Waiting for your system details',
+  'Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ­Ù„ÙŠÙ„': 'Start analysis', 'ÙÙ‚Ø¯ ØªÙ‚Ø¯ÙŠØ±ÙŠ': 'Estimated loss', 'Ù†Ø­ØªØ§Ø¬ Ø¨Ø¹Ø¶ Ø§Ù„ØªÙØ§ØµÙŠÙ„ Ø£ÙˆÙ„Ø§Ù‹': 'A few details are needed first',
+  'Ø£Ø¯Ø®Ù„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù„Ù„Ø­ØµÙˆÙ„ Ø¹Ù„Ù‰ Ù‚Ø±Ø§Ø¡Ø© Ø£ÙˆØ¶Ø­.': 'Enter your system details and add a panel photo or video for a clearer estimate.',
+  'Ø¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù…': 'Set up system', 'Ø§Ù„Ø·Ù‚Ø³ â€”': 'Weather â€”', 'Ø§Ù„Ø·Ù‚Ø³ ØºÙŠØ± Ù…ØªØ§Ø­': 'Weather unavailable',
+  'Ø¢Ø®Ø± ØªØ­Ø¯ÙŠØ« ': 'Last updated ', 'Ù…Ù„Ø®Øµ Ø§Ù„Ù†Ø¸Ø§Ù…': 'System overview', 'Ù†Ø¸Ø±Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel overview',
+  'Ø¯Ø±Ø¬Ø© Ø§Ù„Ø­Ø±Ø§Ø±Ø©': 'Temperature', 'Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ Ø§Ù„Ø­Ø§Ù„ÙŠØ©': 'Current air temperature', 'Ø§Ù„Ø±Ø·ÙˆØ¨Ø©': 'Humidity', 'Ø§Ù„Ø±Ø·ÙˆØ¨Ø© Ø§Ù„Ù†Ø³Ø¨ÙŠØ©': 'Relative humidity',
+  'Ù…Ø³ØªÙˆÙ‰ Ø§Ù„ØºØ¨Ø§Ø±': 'Dust level', 'ØªÙ‚Ø¯ÙŠØ± Ø£ÙˆÙ„ÙŠ': 'Initial estimate', 'ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Estimated panel dust',
+  'ØªÙ‚Ø¯ÙŠØ±Ùƒ Ø§Ù„ÙŠØ¯ÙˆÙŠ Ù„Ù„Ø£Ù„ÙˆØ§Ø­': 'Your panel estimate', 'Ù…Ø¤Ø´Ø± Ø¬ÙˆÙŠ': 'air indicator', 'Ø§Ù„Ø®Ø³Ø§Ø±Ø© Ø§Ù„ÙŠÙˆÙ…ÙŠØ©': 'Daily energy loss',
+  'Ø·Ø§Ù‚Ø© ØªÙ‚Ø¯ÙŠØ±ÙŠØ©': 'Estimated energy', 'ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹': 'Refresh weather and location', 'ØªÙˆØµÙŠØ© Ø³ÙŠØ§Ø¬': 'Siyaj recommendation',
+  'Ø§Ø¨Ø¯Ø£ Ø¨ÙØ­Øµ Ø£Ù„ÙˆØ§Ø­Ùƒ': 'Start with a panel check', 'Ù‚Ø¯ ÙŠÙƒÙˆÙ† ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ù…ÙÙŠØ¯Ø§Ù‹': 'Panel cleaning may help',
+  'Ø±Ø§Ù‚Ø¨ Ø£Ø«Ø± Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Keep an eye on heat impact', 'Ø­Ø§ÙØ¸ Ø¹Ù„Ù‰ Ù…ØªØ§Ø¨Ø¹Ø© Ø¯ÙˆØ±ÙŠØ©': 'Keep checking your system regularly',
+  'ØªÙ… Ø§Ù„ØªÙ†Ø¸ÙŠÙ': 'Cleaned', 'Ù…ØªØ§Ø¨Ø¹Ø© Ø§Ù„Ø£Ø¯Ø§Ø¡': 'Performance', 'Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ø£Ø³Ø¨ÙˆØ¹': 'Weekly outlook', 'Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹': 'Estimated output',
+  'Ø¢Ø®Ø± 7 Ø£ÙŠØ§Ù…': 'Last 7 days', 'Ø§Ù„Ø£ÙŠØ§Ù… Ø§Ù„Ø³Ø¨Ø¹Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©': 'Next 7 days', 'Ù…Ø®Ø·Ø· Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ Ø®Ù„Ø§Ù„ Ø§Ù„Ø£ÙŠØ§Ù… Ø§Ù„Ø³Ø¨Ø¹Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©': 'Expected solar output for the next seven days', 'ØªÙ‚Ø¯ÙŠØ±Ø§Øª Ø£ÙˆÙ„ÙŠØ© ØªØªØ­Ø¯Ø« Ù…Ø¹ Ø§Ù„Ø·Ù‚Ø³': 'Initial estimates update with the weather',
+  'Ø¨ÙŠØ§Ù†Ø§Øª Ù…Ø®ØªØµØ±Ø©': 'System details', 'Ù„Ù… ØªØªÙ… Ø¥Ø¶Ø§ÙØ© Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ø¹Ø¯.': 'No system details added yet.',
+  'Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆØ§Ù„ØºØ¨Ø§Ø±': 'Panel tilt and dust', 'Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ù„ÙˆØ­ ÙˆØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø±': 'Tilt angle and dust build-up',
+  'ÙŠØªØºÙŠÙ‘Ø± Ø§Ù„Ù…Ø´Ù‡Ø¯ Ø­Ø³Ø¨ Ù…ÙŠÙ„ Ø§Ù„Ù„ÙˆØ­ Ø§Ù„Ù…Ø¯Ø®Ù„ ÙÙŠ ØµÙØ­Ø© Ø§Ù„ØªØ³Ø¬ÙŠÙ„ØŒ ÙˆØ£Ø¯Ù†Ù‰ Ù…ÙŠÙ„ ÙŠØ¹Ù†ÙŠ ØºØ¨Ø§Ø±Ø§Ù‹ Ø£ÙƒØ«Ø±.': 'The scene follows the tilt entered on the setup page: the lower the tilt, the more dust collects.',
+  'Ø§Ù„Ù‚Ø¯Ø±Ø©': 'Capacity', 'Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panels', 'Ø§Ù„Ù…ÙˆÙ‚Ø¹': 'Location', 'Ø§Ù„Ù…ÙŠÙ„': 'Tilt', 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯': 'Not set',
+  'Ø§Ù„Ù†ØªØ§Ø¦Ø¬ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ© Ù„Ø§ ØªØ³ØªØ¨Ø¯Ù„ ÙØ­Øµ ÙÙ†ÙŠ Ù…Ø®ØªØµ.': 'Estimates do not replace an inspection by a qualified technician.',
+  'Ø®Ø·ÙˆØ© Ø¨Ø³ÙŠØ·Ø© Ù†Ø­Ùˆ Ø·Ø§Ù‚Ø© Ø£ÙØ¶Ù„': 'A few steps toward better solar performance', 'Ù„Ù†ØªØ¹Ø±Ù‘Ù Ø¹Ù„Ù‰ Ù†Ø¸Ø§Ù…Ùƒ ': 'Letâ€™s get to know your system ',
+  'Ø£Ø¬Ø¨ Ø¹Ù† Ù‡Ø°Ù‡ Ø§Ù„Ø®Ø·ÙˆØ§Øª Ù„ØªØ­ØµÙ„ Ø³ÙŠØ§Ø¬ Ø¹Ù„Ù‰ ØµÙˆØ±Ø© Ù…ØªÙƒØ§Ù…Ù„Ø© Ø¹Ù† Ø£Ù„ÙˆØ§Ø­Ùƒ.': 'Answer these questions to help Siyaj understand your panels.',
+  'Ø§Ù„Ø¨ÙŠØ¦Ø© ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹': 'Environment & location', 'Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø¨ÙŠØ¦Ø© ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹': 'Environment and location',
+  'Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panels', 'Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel details', 'Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Electricity bill', 'ÙØ§ØªÙˆØ±Ø© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡': 'Electricity bill',
+  'Ø§Ù„ØªØ£ÙƒÙŠØ¯': 'Review', 'ØªØ£ÙƒÙŠØ¯ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª': 'Review details', 'Ø¨ÙŠØ§Ù†Ø§ØªÙƒ ØªØ­ÙØ¸ Ø¹Ù„Ù‰ Ø­Ø³Ø§Ø¨Ùƒ ÙˆØªØ¸Ù‡Ø± Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ù† Ø£Ø¬Ù‡Ø²ØªÙƒ.': 'Your details are saved to your account and appear when you sign in on your devices.',
+  'Ø­ÙØ¸ ØªÙ„Ù‚Ø§Ø¦ÙŠ': 'Saved automatically', 'Ø§Ù„ØªØ§Ù„ÙŠ ': 'Next ', 'Ø§Ù„Ø³Ø§Ø¨Ù‚': 'Back', 'ØªØ³ØªØºØ±Ù‚ Ø£Ù‚Ù„ Ù…Ù† Ø¯Ù‚ÙŠÙ‚ØªÙŠÙ†': 'Takes less than two minutes',
+  'ØªÙ‚Ø¯ÙŠØ±Ø§Øª Ø³ÙŠØ§Ø¬ Ø¥Ø±Ø´Ø§Ø¯ÙŠØ©': 'Siyaj estimates are guidance only', 'Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ­Ù„ÙŠÙ„ ': 'Analyze system ',
+  'Ø£Ø®Ø¨Ø±Ù†Ø§ Ø¹Ù† Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ§Ù„Ø¸Ø±ÙˆÙ Ø§Ù„Ù…Ø­ÙŠØ·Ø© Ø¨Ø§Ù„Ø£Ù„ÙˆØ§Ø­.': 'Tell us where your system is and about the conditions around the panels.',
+  'Ø£Ø¶Ù Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆØ£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù‚ØµÙŠØ±Ø§Ù‹ Ù„ÙØ­ØµÙ‡Ø§ Ø¨ØµØ±ÙŠØ§Ù‹.': 'Add panel details and attach a photo or short video for visual inspection.',
+  'ØªØ³Ø§Ø¹Ø¯Ù†Ø§ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¹Ù„Ù‰ ØªÙ‚Ø¯ÙŠØ± Ù‚ÙŠÙ…Ø© Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙŠ Ù‚Ø¯ ØªÙÙ‚Ø¯Ù‡Ø§.': 'Bill details help estimate the value of energy you may be losing.',
+  'Ø±Ø§Ø¬Ø¹ Ù…Ù„Ø®Øµ Ø§Ù„Ù…Ø¹Ù„ÙˆÙ…Ø§Øª Ù‚Ø¨Ù„ Ø£Ù† ÙŠØ¨Ø¯Ø£ Ø³ÙŠØ§Ø¬ Ø¨ØªØ­Ù„ÙŠÙ„ Ù†Ø¸Ø§Ù…Ùƒ.': 'Review the details before Siyaj analyzes your system.',
+  'Ø§Ø³Ù…Ùƒ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Your name (optional)', 'Ø¯Ø±Ø¬Ø© Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ': 'Air temperature', 'Ø§Ù„Ø±Ø·ÙˆØ¨Ø© Ø§Ù„Ù†Ø³Ø¨ÙŠØ©': 'Relative humidity', 'Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Number of panels',
+  'ØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Dust on the panels', 'ØªÙ‚Ø¯ÙŠØ± Ù…Ø¨Ø¯Ø¦ÙŠØ› Ø¹Ø¯Ù‘Ù„Ù‡ Ø­Ø³Ø¨ Ù…Ø§ ØªØ±Ø§Ù‡ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.': 'An initial estimate; adjust it to match what you see on the panels.',
+  'Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù…': 'System location', 'Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†Ø© Ø£Ùˆ Ù…Ø­Ø§ÙØ¸Ø©': 'Search for a city or region', 'Ø¨Ø­Ø«': 'Search',
+  'Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ø¯Ù‚ÙŠÙ‚ Ø§Ø®ØªÙŠØ§Ø±ÙŠØ› Ø§Ø³ØªØ®Ø¯Ù… GPS Ù„Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø£Ù‚Ø±Ø¨.': 'Exact location is optional. Use GPS for nearby weather.',
+  'Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…ÙˆÙ‚Ø¹ÙŠ Ø§Ù„Ø­Ø§Ù„ÙŠ': 'Use my current location', 'Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù†Ø¸Ø§Ù…': 'Total system capacity', 'Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©': 'Manufacturer',
+  'Ø£Ùˆ Ø§ÙƒØªØ¨: ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ': 'Or enter: unknown', 'Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¹Ù† Ø§Ù„Ø£ÙÙ‚ÙŠ': 'Panel tilt from horizontal', 'Ù†ÙˆØ¹ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel type',
+  'Ø£Ø­Ø§Ø¯ÙŠØ© Ø§Ù„Ø¨Ù„ÙˆØ±Ø©': 'Monocrystalline', 'Ù…ØªØ¹Ø¯Ø¯Ø© Ø§Ù„Ø¨Ù„ÙˆØ±Ø§Øª': 'Polycrystalline', 'Ø£ØºØ´ÙŠØ© Ø±Ù‚ÙŠÙ‚Ø©': 'Thin film', 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ': 'Unknown',
+  'ÙƒÙØ§Ø¡Ø© Ø§Ù„Ù„ÙˆØ­ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Panel efficiency (optional)', 'Ù…Ø¹Ø§Ù…Ù„ Ø§Ù„Ø­Ø±Ø§Ø±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Temperature coefficient (optional)',
+  'ØºØ§Ù„Ø¨Ø§Ù‹ Ø¨ÙŠÙ† â€Ž-0.25 Ùˆâ€Ž-0.50 Ù„ÙƒÙ„ Ø¯Ø±Ø¬Ø©.': 'Usually between -0.25 and -0.50 per degree.', 'Ù‚Ø¯Ø±Ø© Ø§Ù„Ù„ÙˆØ­ Ø§Ù„ÙˆØ§Ø­Ø¯ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Power per panel (optional)',
+  'ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel photo or video', 'Ø£Ø¶Ù ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù‚ØµÙŠØ±Ø§Ù‹': 'Add a photo or short video',
+  'ØµÙˆØ±Ø© ÙˆØ§Ø¶Ø­Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ù† 5 Ø¥Ù„Ù‰ 10 Ø«ÙˆØ§Ù†Ù Â· Ø­ØªÙ‰ 6 Ù…Ù„ÙØ§ØªØŒ 25 Ù…ÙŠØºØ§Ø¨Ø§ÙŠØª Ù„Ù„Ù…Ù„Ù': 'A clear photo or a 5â€“10 second video Â· up to 6 files, 25 MB per file',
+  'ØªÙØ­ÙØ¸ Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª ÙÙŠ Ø­Ø³Ø§Ø¨Ùƒ ÙˆØªØ¸Ù‡Ø± Ø¹Ù„Ù‰ Ø£Ø¬Ù‡Ø²ØªÙƒ. ØªÙØ±Ø³Ù„ Ø¥Ø·Ø§Ø±Ø§Øª ØµÙˆØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¥Ù„Ù‰ AI ÙÙ‚Ø· Ø¹Ù†Ø¯ Ø¶ØºØ· Â«Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ­Ù„ÙŠÙ„Â».': 'Attachments sync to your account and devices. Panel image frames are sent to AI only when you choose â€œAnalyze systemâ€.',
+  'Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Bill amount', 'Ø§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Bill consumption (optional)',
+  'Ø¥Ù† ØªÙˆÙØ±ØŒ Ù†Ø³ØªØ®Ø¯Ù…Ù‡ Ù„Ø§Ø´ØªÙ‚Ø§Ù‚ ØªØ¹Ø±ÙØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ Ø§Ù„ØªÙ‚Ø±ÙŠØ¨ÙŠØ©.': 'If available, we use it to estimate your electricity rate.',
+  'ØªØ¹Ø±ÙØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Electricity rate (optional)', 'ØªÙØ³ØªØ®Ø¯Ù… Ø¥Ø°Ø§ Ù„Ù… ØªØ¯Ø®Ù„ Ø§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ.': 'Used if consumption is not provided.',
+  'Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Bill month', 'ØµÙˆØ±Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Bill photo (optional)', 'Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©': 'Attach a bill photo',
+  'ØªÙØ­ÙØ¸ ÙÙŠ Ø­Ø³Ø§Ø¨Ùƒ ÙˆÙ„Ø§ ØªÙØ±Ø³Ù„ Ù„Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¨ØµØ±ÙŠ': 'Saved to your account and not sent for visual analysis.',
+  'Ø±Ø§Ø¬Ø¹ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª': 'Review your details', 'Ø§Ø³Ù… ØµØ§Ø­Ø¨ Ø§Ù„Ù†Ø¸Ø§Ù…': 'Account name', 'Ù„Ù… ØªÙØ¶Ù': 'Not added', 'Ù„ÙˆØ­': 'panels',
+  'Ù…Ù„Ù Ù„Ù„Ø£Ù„ÙˆØ§Ø­': 'panel file(s)', 'Ù…Ù„ÙØ§Øª Ù„Ù„Ø£Ù„ÙˆØ§Ø­': 'panel files', 'Ø³ÙŠØ­Ø³Ø¨ Ø³ÙŠØ§Ø¬ ÙÙ‚Ø¯ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ Ù…Ù† Ø§Ù„Ø­Ø±Ø§Ø±Ø© ÙˆØ§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„ Ø§Ù„Ù…Ø±Ø¦ÙŠ. Ù‚ÙŠÙ…Ø© Ø§Ù„Ù…Ø§Ù„ ØªÙ‚Ø¯ÙŠØ±ÙŠØ© ÙˆØªØªØºÙŠØ± Ø­Ø³Ø¨ Ø§Ù„ØªØ¹Ø±ÙØ© Ø§Ù„Ù…Ø¯Ø®Ù„Ø©. ': 'Siyaj estimates energy loss from heat, dust, and visible shade. The cost estimate depends on your electricity rate. ',
+  'Ø³ÙŠØªÙ… Ø¥Ø±Ø³Ø§Ù„ ØµÙˆØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙÙ‚Ø· Ù„Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø°ÙƒÙŠ.': 'Only panel images will be sent for AI analysis.', 'Ø£Ø¶Ù ØµÙˆØ±Ø© Ù„Ù„Ø£Ù„ÙˆØ§Ø­ ÙÙŠ Ø§Ù„Ø®Ø·ÙˆØ© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø© Ù„ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¨ØµØ±ÙŠ.': 'Add a panel photo in the previous step to enable visual analysis.',
+  'Ø±Ø­Ù„ØªÙƒ Ù…Ø¹ Ø§Ù„Ø´Ù…Ø³': 'Your solar journey', 'Ø³Ø¬Ù„ Ø§Ù„ÙØ­ÙˆØµØ§Øª': 'Inspection history', 'ÙƒÙ„ Ø¹Ù…Ù„ÙŠØ§Øª Ø§Ù„ÙØ­Øµ Ø§Ù„Ù…Ø­ÙÙˆØ¸Ø© ÙÙŠ Ø­Ø³Ø§Ø¨Ùƒ.': 'All inspections saved to your account.',
+  'ÙØ­Øµ Ø¬Ø¯ÙŠØ¯ ': 'New inspection ', 'Ù„Ø§ ØªÙˆØ¬Ø¯ ÙØ­ÙˆØµØ§Øª Ù…Ø­ÙÙˆØ¸Ø© Ø¨Ø¹Ø¯': 'No saved inspections yet', 'Ø¨Ø¹Ø¯ Ø¥Ø¹Ø¯Ø§Ø¯ Ù†Ø¸Ø§Ù…Ùƒ Ø³ÙŠØ¸Ù‡Ø± Ù‡Ù†Ø§ Ø³Ø¬Ù„ Ø§Ù„ÙØ­ÙˆØµØ§Øª.': 'Your inspections will appear here after system setup.',
+  'Ø¹Ø±Ø¶': 'View', 'ÙÙ‚Ø¯ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ Ø­ÙŠÙ†Ù‡Ø§: ': 'Estimated energy loss then: ', 'ÙÙ‚Ø¯ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ ': 'Estimated loss ',
+  'ØªÙØ¶ÙŠÙ„Ø§ØªÙƒ': 'Your preferences', 'Ø®ØµÙ‘Øµ ØªØ¬Ø±Ø¨Ø© Ø³ÙŠØ§Ø¬ Ø¨Ù…Ø§ ÙŠÙ†Ø§Ø³Ø¨Ùƒ.': 'Personalize your Siyaj experience.', 'Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª ÙˆØ§Ù„Ø¹Ø±Ø¶': 'Alerts and display',
+  'ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„Ù…ØªØµÙØ­': 'Browser notifications', 'ØªÙ†Ø¨ÙŠÙ‡ Ø¹Ù†Ø¯ ØªØºÙŠØ± Ù…Ù‡Ù… ÙÙŠ Ø§Ù„Ø·Ù‚Ø³': 'Alerts for significant weather changes', 'Ø§Ù„ÙˆØ¶Ø¹ Ø§Ù„Ù„ÙŠÙ„ÙŠ': 'Dark mode',
+  'Ø£Ù„ÙˆØ§Ù† Ø£Ù‡Ø¯Ø£ Ø¹Ù†Ø¯ Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…Ø³Ø§Ø¡Ù‹': 'A softer display for evening use', 'Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡ Ø§Ù„ØµÙˆØªÙŠ': 'Sound alerts', 'ØµÙˆØª Ø¹Ù†Ø¯ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„Ù…Ù‡Ù…Ø©': 'Play a sound for important alerts',
+  'Ø§Ù„Ù„ØºØ©': 'Language', 'Ù„ØºØ© ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ù…ÙˆÙ‚Ø¹': 'Interface language', 'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©': 'Arabic', 'Ø¨ÙŠØ§Ù†Ø§ØªÙƒ ÙˆØ®ØµÙˆØµÙŠØªÙƒ': 'Your data and privacy',
+  'ÙŠØ­ÙØ¸ Ø³ÙŠØ§Ø¬ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø¨Ùƒ ÙˆØ¥Ø¹Ø¯Ø§Ø¯Ø§ØªÙƒ ÙˆØ³Ø¬Ù„ Ø§Ù„ÙØ­ÙˆØµØ§Øª ÙˆÙ…Ø±ÙÙ‚Ø§ØªÙƒ ÙÙŠ Ø§Ù„ØªØ®Ø²ÙŠÙ† Ø§Ù„Ø³Ø­Ø§Ø¨ÙŠØŒ ÙˆØªØ¸Ù‡Ø± Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙŠ ØªÙ…Øª Ù…Ø²Ø§Ù…Ù†ØªÙ‡Ø§ Ø¹Ù„Ù‰ Ø£Ø¬Ù‡Ø²ØªÙƒ Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ù„Ø­Ø³Ø§Ø¨ Ù†ÙØ³Ù‡. Ø¹Ù†Ø¯ Ø·Ù„Ø¨ Ø§Ù„ØªØ­Ù„ÙŠÙ„ ÙÙ‚Ø·ØŒ ØªÙØ±Ø³Ù„ ØµÙˆØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ„Ù‚Ø·Ø§Øª Ù…ÙˆØ²Ø¹Ø© Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆ Ø£Ùˆ ØµÙˆØ±Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¥Ù„Ù‰ Anthropic Ù„ØªØ­Ù„ÙŠÙ„Ù‡Ø§ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude. ÙŠÙ…ÙƒÙ†Ùƒ Ù…Ø±Ø§Ø¬Ø¹Ø© Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù…Ù‡Ø§. Ø¥Ø­Ø¯Ø§Ø«ÙŠØ§Øª GPS ØªÙØ³ØªØ®Ø¯Ù… Ù„Ø­Ø³Ø§Ø¨ Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø´Ù…Ø³ ÙˆØ§Ù„Ø·Ù‚Ø³ ÙˆØ§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø¹Ù†Ø¯ ØªÙØ¹ÙŠÙ„Ù‡Ø§.': 'Siyaj saves account details, settings, inspection history and attachments in cloud storage and syncs them across your devices. Only when you request analysis, panel photos, sampled video frames or a bill image are sent to Anthropic for assessment by Claude. You can review extracted bill details before applying them. GPS coordinates are used for sun geometry, weather and alerts when enabled.',
+  'ØªÙ†Ø²ÙŠÙ„ Ù†Ø³Ø®Ø© Ù…Ù† Ø¨ÙŠØ§Ù†Ø§ØªÙŠ': 'Download my data', 'Ù…Ø³Ø­ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø¨ÙŠ': 'Clear my account data', 'Ø±ÙÙŠÙ‚Ùƒ Ø§Ù„Ø°ÙƒÙŠ Ù„Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ø´Ù…Ø³ÙŠØ© Â· Ø¥ØµØ¯Ø§Ø± ØªØ¬Ø±ÙŠØ¨ÙŠ': 'Your smart solar companion Â· Preview',
+  'ØµÙÙ†Ø¹ Ø¨Ø¹Ù†Ø§ÙŠØ© Ù„Ù†Ø¹Ø·ÙŠ Ø§Ù„Ø´Ù…Ø³ Ø­Ù‚Ù‡Ø§': 'Made with care, under the sun', 'Ø­Ø³Ø§Ø¨Ùƒ ÙÙŠ Ø³ÙŠØ§Ø¬': 'Your Siyaj account', 'Ø£Ù‡Ù„Ø§Ù‹': 'Welcome',
+  'Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù„Ù…ØªØ§Ø¨Ø¹Ø© Ù†Ø¸Ø§Ù…Ùƒ Ø§Ù„Ø´Ù…Ø³ÙŠ.': 'Log in to keep up with your solar system.', 'Ø§Ø³ØªØ®Ø¯Ù… Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ù‡Ø§ØªÙÙƒ.': 'Use your email address or phone number.',
+  'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ': 'Email address or phone number', 'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±': 'Password', 'Ø£Ø¯Ø®Ù„ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±': 'Enter your password',
+  'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ø£Ùˆ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ': 'Username, email or phone number',
+  'Ø¯Ø®ÙˆÙ„ ': 'Log in ', 'Ù„ÙŠØ³ Ù„Ø¯ÙŠÙƒ Ø­Ø³Ø§Ø¨ØŸ ': 'Donâ€™t have an account? ', 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø¬Ø¯ÙŠØ¯': 'Create a new account', 'Ø£Ùˆ': 'OR',
+  'Ø§Ù„Ù…ØªØ§Ø¨Ø¹Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google': 'Continue with Google', 'Ø³Ø¬Ù‘Ù„ Ø¨ÙŠØ§Ù†Ø§ØªÙƒ Ù„Ù„Ø¨Ø¯Ø¡ Ù…Ø¹ Ø³ÙŠØ§Ø¬.': 'Enter your details to get started with Siyaj.',
+  'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ': 'Email address', 'Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ': 'Phone number', '8 Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„': 'At least 8 characters',
+  'ØªØ£ÙƒÙŠØ¯ ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±': 'Confirm password', 'Ø£Ø¹Ø¯ ÙƒØªØ§Ø¨Ø© ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ±': 'Enter your password again', 'Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨ ': 'Create account ',
+  'Ù„Ø¯ÙŠÙƒ Ø­Ø³Ø§Ø¨ØŸ ': 'Already have an account? ', 'Ø¥Ù†Ø´Ø§Ø¡ Ø­Ø³Ø§Ø¨ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google': 'Sign up with Google', 'ÙŠÙØ­ÙØ¸ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙˆØ§Ù„Ù…Ø±ÙÙ‚Ø§Øª Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆØªØ¸Ù‡Ø± Ø¹Ù†Ø¯ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ù…Ù† Ø£Ø¬Ù‡Ø²ØªÙƒ.': 'Your account, details, and attachments are saved on the server and appear when you sign in on your devices.',
+  'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…': 'Username', 'Ù…Ø«Ø§Ù„: maryam_1': 'Example: maryam_1', 'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙØ±ÙŠØ¯. Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø¨Ùƒ ÙˆÙØ­ÙˆØµØ§ØªÙƒ ÙˆÙ…Ø±ÙÙ‚Ø§ØªÙƒ ØªØªØ²Ø§Ù…Ù† Ø¨ÙŠÙ† Ø£Ø¬Ù‡Ø²ØªÙƒ.': 'Usernames are unique. Your account, inspections, and attachments sync across your devices.',
+  'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù…Ù† 3 Ø¥Ù„Ù‰ 24 Ø­Ø±ÙØ§Ù‹ Ø£Ùˆ Ø±Ù‚Ù…Ø§Ù‹ØŒ ÙˆÙŠÙ…ÙƒÙ† Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ù†Ù‚Ø·Ø© ÙˆØ§Ù„Ø´Ø±Ø·Ø© Ø§Ù„Ø³ÙÙ„ÙŠØ© ÙÙ‚Ø·.': 'Username must be 3â€“24 letters or numbers. Periods and underscores are also allowed.',
+  'Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù…Ø³ØªØ®Ø¯Ù… Ø¨Ø§Ù„ÙØ¹Ù„Ø› Ø§Ø®ØªØ± Ø§Ø³Ù…Ø§Ù‹ Ø¢Ø®Ø±.': 'That username is already taken. Choose another one.',
+  'Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø­Ø§Ù„ÙŠØ©': 'Current weather', 'ØªØ¸Ù‡Ø± Ø¨Ø¹Ø¯ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹': 'Shown after setting a location',
+  'ØªÙ‚Ø¯ÙŠØ± Ù…Ø¨Ø¯Ø¦ÙŠ Ù…Ù† Ø§Ù„ØºØ¨Ø§Ø± Ø§Ù„Ø¬ÙˆÙŠØŒ ÙˆÙ„ÙŠØ³ Ù‚ÙŠØ§Ø³Ø§Ù‹ Ù…Ø¨Ø§Ø´Ø±Ø§Ù‹ Ø¹Ù„Ù‰ Ø³Ø·Ø­ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.': 'Initial estimate from airborne dust, not a direct measurement on the panels.',
+  'Ù‡Ø°Ø§ Ø§Ù„Ø­Ø³Ø§Ø¨ Ù…Ø±ØªØ¨Ø· Ø¨Ù€ GoogleØ› ØªØ§Ø¨Ø¹ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google.': 'This account uses Google. Continue with Google.',
+  'ØªØ³Ø¬ÙŠÙ„ Google ÙŠØ­ØªØ§Ø¬ Ø¥Ø¶Ø§ÙØ© GOOGLE_CLIENT_ID Ø¥Ù„Ù‰ Ù…Ù„Ù .env.': 'Google sign-in needs GOOGLE_CLIENT_ID added to the .env file.',
+  'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google.': 'Signed in with Google.', 'Ù‡Ø°Ø§ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ù…Ø±ØªØ¨Ø· Ø¨Ø­Ø³Ø§Ø¨ Google Ø¢Ø®Ø±.': 'This email is linked to another Google account.',
+  'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø­Ø³Ø§Ø¨ Google.': 'Could not verify the Google account.', 'Ù„Ù… ÙŠØµÙ„ Ø±Ù…Ø² ØªØ³Ø¬ÙŠÙ„ Google.': 'Google sign-in did not return a credential.',
+  'Ø±Ù…Ø² Google ØºÙŠØ± ØµØ§Ù„Ø­ Ø£Ùˆ Ø§Ù†ØªÙ‡Øª ØµÙ„Ø§Ø­ÙŠØªÙ‡.': 'The Google credential is invalid or expired.',
+  'Ù‡Ù„ ØªØ±ÙŠØ¯ Ù…Ø³Ø­ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆÙ…Ø±ÙÙ‚Ø§ØªÙ‡ Ù…Ù† Ø¬Ù…ÙŠØ¹ Ø£Ø¬Ù‡Ø²ØªÙƒØŸ': 'Delete your account data and attachments from all your devices?',
+  'ØªØ­Ù„ÙŠÙ„ Ø¨ØµØ±ÙŠ': 'Visual inspection', 'ØªÙ‚Ø¯ÙŠØ± Ø£ÙˆÙ„ÙŠ': 'Initial estimate', 'Ø³Ù…Ø§Ø¡ ØµØ§ÙÙŠØ©': 'Clear sky', 'ØºØ§Ø¦Ù… Ø¬Ø²Ø¦ÙŠØ§Ù‹': 'Partly cloudy',
+  'Ø¶Ø¨Ø§Ø¨': 'Fog', 'Ø±Ø°Ø§Ø°': 'Drizzle', 'Ø£Ù…Ø·Ø§Ø±': 'Rain', 'Ø«Ù„ÙˆØ¬': 'Snow', 'Ø¹ÙˆØ§ØµÙ Ø±Ø¹Ø¯ÙŠØ©': 'Thunderstorms', 'Ø­Ø§Ù„Ø© Ù…ØªØºÙŠØ±Ø©': 'Changing conditions',
+  'Ù„Ø§ ÙŠØ¸Ù‡Ø± ØºØ¨Ø§Ø± ÙˆØ§Ø¶Ø­': 'No obvious dust visible', 'ØºØ¨Ø§Ø± Ø®ÙÙŠÙ Ø¸Ø§Ù‡Ø±': 'Light dust visible', 'ØºØ¨Ø§Ø± Ù…ØªÙˆØ³Ø· Ø¸Ø§Ù‡Ø±': 'Moderate dust visible',
+  'ØºØ¨Ø§Ø± ÙƒØ«ÙŠÙ Ø¸Ø§Ù‡Ø±': 'Heavy dust visible', 'Ø§Ù„ØµÙˆØ±Ø© ØºÙŠØ± ÙˆØ§Ø¶Ø­Ø©': 'Image is unclear', 'ÙŠØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ø§Ù†ØªØ¨Ø§Ù‡': 'Needs attention', 'Ù…Ø³ØªÙˆÙ‰ Ù…ØªÙˆØ³Ø·': 'Moderate level', 'Ø£Ø¯Ø§Ø¡ Ù…Ø·Ù…Ø¦Ù†': 'Looking good',
+  'Ø§Ù†ØªØ¨Ø§Ù‡': 'Attention', 'Ù…Ø±Ø§Ù‚Ø¨Ø©': 'Monitor', 'Ø¬ÙŠØ¯': 'Good', 'ØªÙ… ÙØ­Øµ Ø¨ØµØ±ÙŠ': 'Visual inspection', 'ÙØ­Øµ Ù…Ø­ÙÙˆØ¸': 'Saved inspection',
+  'ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ù…Ø±ØªÙØ¹Ø§Ù‹': 'dust estimate is high', 'ØªØ§Ø¨Ø¹ Ø§Ù„ØªØºÙŠØ±Ø§Øª ÙÙŠ Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§ÙØ­Øµ Ø³Ø·Ø­ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù„Ø¹ÙˆØ§ØµÙ Ø£Ùˆ ÙØªØ±Ø§Øª Ø§Ù„ØºØ¨Ø§Ø±.': 'Watch for weather changes and inspect panels after storms or dusty periods.',
+  'Ø­Ø±Ø§Ø±Ø© Ù…Ø±ØªÙØ¹Ø©': 'High temperature', 'ÙÙŠ Ù…ÙˆÙ‚Ø¹ÙƒØ› ØªØ¬Ù†Ø¨ Ù„Ù…Ø³ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ‚Øª Ø§Ù„Ø¸Ù‡ÙŠØ±Ø©.': 'at your location; avoid touching panels at midday.',
+  'Ù‡Ø¨Ø§Øª Ø±ÙŠØ§Ø­ Ù‚ÙˆÙŠØ© ØªØµÙ„ Ø¥Ù„Ù‰ ': 'Strong wind gusts up to ', ' ÙƒÙ…/Ø³Ø› Ø£Ø¬Ù‘Ù„ Ø§Ù„ØµØ¹ÙˆØ¯ Ø¥Ù„Ù‰ Ø§Ù„Ø³Ø·Ø­ Ø­ØªÙ‰ ØªÙ‡Ø¯Ø£.': ' km/h; wait for calmer conditions before going onto the roof.',
+  'Ø§Ø­ØªÙ…Ø§Ù„ Ù‡Ø·ÙˆÙ„ Ù…Ø±ØªÙØ¹ (': 'High chance of rain (', '%)Ø› Ø±Ø§Ù‚Ø¨ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù†Ù‚Ø¶Ø§Ø¡ Ø§Ù„Ø·Ù‚Ø³.': '%); check the panels after the weather passes.',
+  'ØªÙ… ØªØ­Ø¯ÙŠØ« ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ø¨Ø¹Ø¯ Ø§Ù„ØªÙ†Ø¸ÙŠÙ.': 'Dust estimate updated after cleaning.', 'ÙˆØ§Ø¬Ù‡Ø© Ø³ÙŠØ§Ø¬ Ù…ØªØ§Ø­Ø© Ø­Ø§Ù„ÙŠØ§Ù‹ Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©.': 'Siyaj is currently available in Arabic.',
+  'ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø±ÙŠØ§Ø­': 'Dust and wind push alerts', 'ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø±ÙŠØ§Ø­ Ø¹Ø¨Ø± Ø§Ù„Ø¥Ø´Ø¹Ø§Ø±Ø§Øª': 'Push alerts for dusty and windy weather',
+  'ÙƒÙ„ ': 'Every ', ' ÙŠÙˆÙ…Ø§Ù‹ ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰': ' days at most', 'ØªÙˆÙ‚Ø¹Ø§Øª Ø§Ù„ØºØ¨Ø§Ø± Ø§Ù„Ø¬ÙˆÙŠ: Open-Meteo ÙˆCAMS.': 'Air quality forecasts: Open-Meteo and CAMS.',
+  'ÙŠØªÙ… Ø¥Ø±Ø³Ø§Ù„ ØªÙ†Ø¨ÙŠÙ‡ Ø§Ù„ØªÙ†Ø¸ÙŠÙ Ù…Ø±Ø© ÙƒÙ„ 14 ÙŠÙˆÙ…Ø§Ù‹ ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰.': 'Cleaning alerts are limited to once every 14 days.',
+  'Ø®Ø³Ø§Ø±Ø© Ø´Ù‡Ø±ÙŠØ© ØªÙ‚Ø¯ÙŠØ±ÙŠØ©': 'Estimated monthly loss', 'Ø®Ø³Ø§Ø±Ø© Ø¨Ø³Ø¨Ø¨ Ø§Ù„ØºØ¨Ø§Ø±:': 'Dust loss:', 'Ø®Ø³Ø§Ø±Ø© Ø¨Ø³Ø¨Ø¨ Ø§Ù„Ø­Ø±Ø§Ø±Ø©:': 'Heat loss:',
+  'Ø±.Ø¹ Ø´Ù‡Ø±ÙŠØ§Ù‹': 'OMR / month', 'Ø²Ø§ÙˆÙŠØ© Ù„ÙˆØ­Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠØ© ØªØ®Ù„ÙŠÙ‡ ÙŠØªØ¬Ù…Ø¹ Ø¹Ù„ÙŠÙ‡ ØºØ¨Ø§Ø± Ø£Ø³Ø±Ø¹ Ù…Ù† Ù„Ùˆ ÙƒØ§Ù†Øª Ù‚Ø±ÙŠØ¨Ø© Ù…Ù† 30 Ø¯Ø±Ø¬Ø©.': 'Your current panel tilt may collect dust faster than an angle close to 30 degrees.',
+  'ØªØ­ØªØ§Ø¬ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ø¥Ù„Ù‰ Ø¥Ø¹Ø¯Ø§Ø¯ Push ÙÙŠ Ø§Ù„Ø®Ø§Ø¯Ù…. Ø±Ø§Ø¬Ø¹ Ù…Ù„Ù README.': 'Push alerts need server setup. See the README.',
+  'ØªØ¹Ø°Ø± ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§ØªØ› ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¥Ø°Ù† ÙˆØ§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù….': 'Could not enable alerts. Check permission and server connection.',
+  'Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª ØªØ¹Ù…Ù„ Ø¨Ø¹Ø¯ Ø¥Ø¶Ø§ÙØ© Ù…ÙØ§ØªÙŠØ­ VAPID ÙˆØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù….': 'Alerts work after adding VAPID keys and starting the server.',
+  'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø³Ø¬Ù„ Ø§Ù„ØªÙ†Ø¸ÙŠÙ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….': 'Could not save the cleaning record on the server.',
+  'ØªØ¹Ø°Ø± Ø­Ø³Ø§Ø¨ ØªÙØµÙŠÙ„ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ø­Ø§Ù„ÙŠØ§Ù‹.': 'Could not calculate the heat loss breakdown right now.',
+  'ØªÙ†Ø¨ÙŠÙ‡ ØºØ¨Ø§Ø± Ù…Ù† Ø³ÙŠØ§Ø¬': 'Dust alert from Siyaj', 'ØªÙ†Ø¨ÙŠÙ‡ ØªÙˆÙ‚ÙŠØª Ø§Ù„ØªÙ†Ø¸ÙŠÙ Ù…Ù† Ø³ÙŠØ§Ø¬': 'Cleaning time alert from Siyaj',
+  'Ù„Ù… Ù†Ø¹Ø«Ø± Ø¹Ù„Ù‰ Ù†ØªØ§Ø¦Ø¬. Ø¬Ø±Ù‘Ø¨ ÙƒØªØ§Ø¨Ø© Ø§Ù„Ø§Ø³Ù… Ø¨Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©.': 'No results found. Try entering the name in English.',
+  'ØªØ¹Ø°Ø± Ø§Ù„Ø¨Ø­Ø«. ØªØ£ÙƒØ¯ Ù…Ù† ØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù….': 'Search failed. Make sure the local server is running.',
+  'Ù„Ù… ÙŠØªÙ… ØªÙØ¹ÙŠÙ„ Ø¥Ø°Ù† Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.': 'Notification permission was not granted.', 'ØªÙ… ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.': 'Notifications enabled.', 'ØªÙ… Ø¥ÙŠÙ‚Ø§Ù Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.': 'Notifications disabled.',
+  'ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø² ÙÙ‚Ø·': 'Alerts on this device only',
+  'Ù…ÙØ¹Ù‘Ù„Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø²': 'Enabled on this device', 'ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø²': 'Not enabled on this device',
+  'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².': 'Could not check alerts on this device.',
+  'ØªØ¹Ø°Ø± Ø¥ÙŠÙ‚Ø§Ù ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².': 'Could not disable alerts on this device.',
+  'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬Ø› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.': 'Could not log out. Please try again.',
+  'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„ØªÙ†Ø¸ÙŠÙ ÙˆØªØ­Ø¯ÙŠØ« ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø±.': 'Cleaning was recorded and the dust estimate was updated.',
+  'Ù„Ù… ØªØªÙˆÙØ± Ø¨ÙŠØ§Ù†Ø§Øª ÙƒØ§ÙÙŠØ© Ù„Ø­Ø³Ø§Ø¨ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø­Ø±Ø§Ø±Ø©Ø› Ø§Ù„ØªÙ‚Ø¯ÙŠØ± Ø§Ù„Ø­Ø§Ù„ÙŠ ÙŠØ´Ù…Ù„ Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„ ÙÙ‚Ø·.': 'There is not enough data to calculate heat loss; this estimate includes dust and shade only.',
+  'ÙŠÙˆÙ…ÙŠØ§Ù‹ ÙˆÙÙ‚ ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„.': 'per day based on estimated dust and shade.',
+  'ØªÙ… Ù…Ø³Ø­ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø¨Ùƒ.': 'Your account data was cleared.', 'ØªÙ… ØªÙ†Ø²ÙŠÙ„ Ù†Ø³Ø®Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª.': 'Data export downloaded.', 'ØªÙ… ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù….': 'System location set.',
+  'Ù„Ù… Ù†ØªÙ…ÙƒÙ† Ù…Ù† ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹. ØªØ­Ù‚Ù‚ Ù…Ù† Ø¥Ø°Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙÙŠ Ø§Ù„Ù…ØªØµÙØ­.': 'Could not get your location. Check your browser location permission.',
+  'Ø­Ø¯Ù‘Ø¯ Ù…Ø¯ÙŠÙ†Ø© Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… GPS Ø£ÙˆÙ„Ø§Ù‹.': 'Choose a city or use GPS first.', 'Ø£Ø¯Ø®Ù„ Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£ÙˆÙ„Ø§Ù‹.': 'Enter the number of panels first.',
+  'ØªØ£ÙƒØ¯ Ù…Ù† Ø¯Ø±Ø¬Ø© Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ.': 'Check the air temperature.', 'Ø§Ù„Ø±Ø·ÙˆØ¨Ø© ÙŠØ¬Ø¨ Ø£Ù† ØªÙƒÙˆÙ† Ø¨ÙŠÙ† 0 Ùˆ100%.': 'Humidity must be between 0 and 100%.',
+  'Ø£Ø¯Ø®Ù„ Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù†Ø¸Ø§Ù….': 'Enter the total system capacity.', 'Ø£Ø¶Ù Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„Ø­Ø³Ø§Ø¨ Ø§Ù„ØªØ¹Ø±ÙØ© Ø§Ù„ØªÙ‚Ø±ÙŠØ¨ÙŠØ©.': 'Enter the bill amount to estimate the electricity rate.',
+  'Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ù…Ø¯ÙŠÙ†Ø© Ù„Ù„Ø¨Ø­Ø«.': 'Enter a city name to search.', 'Ø§Ø®ØªØ± ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ø¯Ø¹ÙˆÙ…Ø§Ù‹.': 'Choose a supported image or video.',
+  'ÙŠÙ…ÙƒÙ† Ø¥Ø±ÙØ§Ù‚ Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙƒØµÙˆØ±Ø©.': 'The bill can be attached as an image.', 'ÙŠÙ…ÙƒÙ†Ùƒ Ø¥Ø¶Ø§ÙØ© 6 Ù…Ù„ÙØ§Øª ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰.': 'You can add up to 6 files.',
+  'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ù…Ù„Ù Ù…Ø­Ù„ÙŠØ§Ù‹Ø› Ø¬Ø±Ù‘Ø¨ Ù…Ù„ÙØ§Ù‹ Ø£ØµØºØ±.': 'Could not save the file locally. Try a smaller file.',
+  'Ø§Ø®ØªØ± JPG Ø£Ùˆ PNG Ø£Ùˆ WEBP Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ MP4 Ø£Ùˆ WEBM Ø£Ùˆ MOV.': 'Choose JPG, PNG, WEBP, MP4, WEBM, or MOV.', 'ÙŠØ¬Ø¨ Ø£Ù„Ø§ ÙŠØªØ¬Ø§ÙˆØ² Ø­Ø¬Ù… Ø§Ù„Ù…Ù„Ù 25 Ù…ÙŠØºØ§Ø¨Ø§ÙŠØª.': 'Each file must be 25 MB or smaller.',
+  'Ø£Ø¶Ù ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù„ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¨ØµØ±ÙŠ Ø¨Ø§Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„Ø§ØµØ·Ù†Ø§Ø¹ÙŠ.': 'Add a panel photo or video to enable AI visual analysis.',
+  'Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ©': 'Total capacity', 'Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø§Ù„Ø´Ù‡Ø±ÙŠØ©': 'Monthly bill', 'Ù„Ù… ØªØªÙ… Ø¥Ø¶Ø§ÙØ© Ø¨ÙŠØ§Ù†Ø§Øª Ø¨Ø¹Ø¯.': 'No system details added yet.',
+  'Ø£Ø¯Ø®Ù„ Ø¨Ø±ÙŠØ¯Ø§Ù‹ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ§Ù‹ ØµØ§Ù„Ø­Ø§Ù‹.': 'Enter a valid email address.', 'Ø£Ø¯Ø®Ù„ Ø±Ù‚Ù… Ù‡Ø§ØªÙ ØµØ§Ù„Ø­Ø§Ù‹.': 'Enter a valid phone number.',
+  'ÙŠØ¬Ø¨ Ø£Ù† ØªØªÙƒÙˆÙ† ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ù…Ù† 8 Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„.': 'Password must be at least 8 characters.', 'ÙƒÙ„Ù…ØªØ§ Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± Ù…ØªØ·Ø§Ø¨Ù‚ØªÙŠÙ†.': 'The passwords do not match.',
+  'Ù‡Ø°Ø§ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ Ù…Ø³Ø¬Ù„ Ù…Ø³Ø¨Ù‚Ø§Ù‹.': 'This email or phone number is already registered.', 'ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨.': 'Could not create the account.',
+  'Ù„Ù… Ù†Ø¹Ø«Ø± Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­. Ø£Ù†Ø´Ø¦ Ø­Ø³Ø§Ø¨Ø§Ù‹ Ø£ÙˆÙ„Ø§Ù‹.': 'This account was not found in this browser. Create an account first.',
+  'ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± ØµØ­ÙŠØ­Ø©.': 'Incorrect password.', 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.': 'Could not log in.', 'ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ­ÙØ¸Ù‡ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….': 'Account created and saved on the server.',
+  'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.': 'You are logged in.', 'ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬.': 'You are logged out.', 'ØªØ³Ø¬ÙŠÙ„ Google ÙŠØ­ØªØ§Ø¬ Ø¥Ø¹Ø¯Ø§Ø¯ OAuth Ù…Ù† Google Ù‚Ø¨Ù„ ØªÙØ¹ÙŠÙ„Ù‡.': 'Google sign-in needs Google OAuth configuration before it can be enabled.',
+  'ÙŠØªØ·Ù„Ø¨ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø³Ø§Ø¨ Ù…ØªØµÙØ­Ø§Ù‹ Ø¢Ù…Ù†Ø§Ù‹ Ù…Ø«Ù„ localhost.': 'Account creation requires a secure browser context such as localhost.',
+  'ÙÙ‚Ø¯ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ Ø­ÙŠÙ†Ù‡Ø§: ': 'Estimated energy loss then: ', 'ÙØ§ØªÙˆØ±Ø©': 'Bill', 'Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ': 'Consumption', 'ØªÙ†Ø¨ÙŠÙ‡': 'Alert',
+  'ØªÙ… ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù….': 'System location set.', 'ØªÙ… ØªØ­Ø¯ÙŠØ« ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ø¨Ø¹Ø¯ Ø§Ù„ØªÙ†Ø¸ÙŠÙ.': 'Dust estimate updated after cleaning.',
+  'ÙÙ‚Ø¯ Ø§Ù„ÙŠÙˆÙ… ': 'Todayâ€™s loss: ', 'Ø¥Ø´Ø¹Ø§Ø¹ Ø§Ù„Ø´Ù…Ø³ ÙŠØªØºÙŠØ± Ø­Ø³Ø¨ Ø§Ù„Ø·Ù‚Ø³': 'Sunshine varies with the weather',
+  'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø¨ÙŠØ§Ù†Ø§Øª Ù†Ø¸Ø§Ù…Ùƒ': 'Waiting for your system details', 'ØªÙ… Ø§Ù„ØªÙ†Ø¸ÙŠÙ': 'Cleaned',
+  'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬': 'Log out', 'name@example.com Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ': 'name@example.com or phone number',
+  'Ø±.Ø¹': 'OMR', 'Ùƒ.Ùˆ.Ø³': 'kWh', 'ÙˆØ§Ø·': 'W', 'Â°Ù…': 'Â°C', 'ÙƒÙ…/Ø³': 'km/h',
+  'Ø§Ù„ØªØ¹Ø±ÙØ© Ø§Ù„ØªÙŠ Ø£Ø¯Ø®Ù„ØªÙ‡Ø§': 'the rate you entered', 'Ù…Ø´ØªÙ‚Ø© Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙˆØ§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ': 'derived from your bill and consumption', 'ØªØ¹Ø±ÙØ© Ù…Ø±Ø¬Ø¹ÙŠØ© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØºÙŠÙŠØ±': 'editable reference rate',
+  'ØªÙ‚Ø±ÙŠØ¨Ø§Ù‹': 'approx.', 'Ù‚Ø¯ ÙŠÙÙ‚Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù… Ù†Ø­Ùˆ ': 'The system may lose about ', ' ÙŠÙˆÙ…ÙŠØ§Ù‹ ÙˆÙÙ‚ ØªÙ‚Ø¯ÙŠØ± Ø§Ù„Ø­Ø±Ø§Ø±Ø© ÙˆØ§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„.': ' per day based on estimated heat, dust, and shade.',
+  ' ÙÙŠ Ù…ÙˆÙ‚Ø¹ÙƒØ› ØªØ¬Ù†Ø¨ Ù„Ù…Ø³ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ‚Øª Ø§Ù„Ø¸Ù‡ÙŠØ±Ø©.': ' at your location; avoid touching panels at midday.',
+  'Ø§Ù„Ù…ØªØµÙØ­ Ù„Ø§ ÙŠØ¯Ø¹Ù… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹.': 'Your browser does not support location services.', 'ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù‚Ø³.': 'Could not load weather.',
+  'ØªØ¹Ø°Ø± ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³.': 'Could not refresh the weather.', 'ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø¢Ù†.': 'Weather data is unavailable right now.',
+  'ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø¢Ù†. Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰ Ø¨Ø¹Ø¯ Ù‚Ù„ÙŠÙ„ Ø£Ùˆ Ø£Ø¯Ø®Ù„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙŠØ¯ÙˆÙŠÙ‹Ø§.': 'Weather data is unavailable right now. Try again shortly or enter the readings manually.',
+  'Ø¥Ø­Ø¯Ø§Ø«ÙŠØ§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØºÙŠØ± ØµØ§Ù„Ø­Ø©.': 'The location coordinates are invalid.',
+  'ØªØ¹Ø°Ø± ØªÙ†ÙÙŠØ° Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø°ÙƒÙŠ.': 'Could not run AI analysis.', 'ØªØ¹Ø°Ø± ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ù…Ø±ÙÙ‚ Ø§Ù„Ø¢Ù†.': 'Could not analyze the attachment right now.',
+  'Ù„Ù… ÙŠØµÙ„ Ø±Ø¯ Ù‚Ø§Ø¨Ù„ Ù„Ù„Ù‚Ø±Ø§Ø¡Ø© Ù…Ù† Ø®Ø¯Ù…Ø© Ø§Ù„ØªØ­Ù„ÙŠÙ„.': 'The analysis service returned an unreadable response.',
+  'Ø­Ø±Ø§Ø±Ø© Ù…Ø±ØªÙØ¹Ø©': 'High temperature', 'Ù‡Ø¨Ø§Øª Ø±ÙŠØ§Ø­ Ù‚ÙˆÙŠØ© ØªØµÙ„ Ø¥Ù„Ù‰ ': 'Strong wind gusts up to ',
+  'Ø§Ø­ØªÙ…Ø§Ù„ Ù‡Ø·ÙˆÙ„ Ù…Ø±ØªÙØ¹ (': 'High chance of rain (', '%)Ø› Ø±Ø§Ù‚Ø¨ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù†Ù‚Ø¶Ø§Ø¡ Ø§Ù„Ø·Ù‚Ø³.': '%); check the panels after the weather passes.',
+  'Ø¬Ø§Ø±ÙŠ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹â€¦': 'Getting locationâ€¦', 'Ø¬Ø§Ø±Ù Ø§Ù„Ø¨Ø­Ø«â€¦': 'Searchingâ€¦', 'ØªØ¹Ø°Ø± Ø§Ù„Ø¨Ø­Ø« Ø¹Ù† Ø§Ù„Ù…Ø¯ÙŠÙ†Ø©.': 'Could not search for the city.',
+  'Ù„Ù… Ù†Ø¹Ø«Ø± Ø¹Ù„Ù‰ Ù†ØªØ§Ø¦Ø¬. Ø¬Ø±Ù‘Ø¨ ÙƒØªØ§Ø¨Ø© Ø§Ù„Ø§Ø³Ù… Ø¨Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©.': 'No results found. Try entering the name in English.',
+  'ØªØ¹Ø°Ø± Ø§Ù„Ø¨Ø­Ø«. ØªØ£ÙƒØ¯ Ù…Ù† ØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù….': 'Search failed. Make sure the local server is running.',
+  'Ø§Ù„Ø±Ù…Ø² Ø§Ù„Ø¨Ø±ÙŠØ¯ÙŠ': 'Postal code',
+  ' Ø§Ù„Ù†ØªÙŠØ¬Ø© Ø§Ù„Ø­Ø§Ù„ÙŠØ© ØªÙ‚Ø¯ÙŠØ±ÙŠØ© ÙˆØªØ¹ØªÙ…Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙŠ Ø£Ø¯Ø®Ù„ØªÙ‡Ø§.': ' This is an estimate based on the details you entered.',
+  'Ø£Ø¶Ù Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… Ø£ÙˆÙ„Ø§Ù‹': 'Add system details first', 'ØªÙ‚Ø¯ÙŠØ±Ø§Øª Ø£ÙˆÙ„ÙŠØ©': 'Initial estimates',
+  'ÙŠØ¸Ù‡Ø± ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ù…Ø±ØªÙØ¹Ø§Ù‹Ø› ØªØ­Ù‚Ù‚ Ø¨ØµØ±ÙŠØ§Ù‹ Ù…Ù† Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ†Ø¸Ù‘ÙÙ‡Ø§ Ø¹Ù†Ø¯ Ø§Ù„Ø­Ø§Ø¬Ø© ÙˆØ¨Ø·Ø±ÙŠÙ‚Ø© Ø¢Ù…Ù†Ø©.': 'Dust may be high; inspect the panels and clean them safely if needed.',
+  'ØªØ§Ø¨Ø¹ Ø§Ù„ØªØºÙŠØ±Ø§Øª ÙÙŠ Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§ÙØ­Øµ Ø³Ø·Ø­ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù„Ø¹ÙˆØ§ØµÙ Ø£Ùˆ ÙØªØ±Ø§Øª Ø§Ù„ØºØ¨Ø§Ø±.': 'Watch for weather changes and inspect the panels after storms or dusty periods.',
+  'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©': 'Arabic', 'English': 'English', 'PM10': 'PM10', 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ': 'Unknown',
+  'Ø§Ù„Ø¨Ù„Ø§ØºØ§Øª ÙˆØ§Ù„Ø´ÙƒØ§ÙˆÙ‰': 'Complaints & reports', 'ØªÙ‚Ø±ÙŠØ± Ø§Ù„Ù†Ø¸Ø§Ù…': 'System report',
+  'ØªÙˆØ§ØµÙ„ Ù…Ø¨Ø§Ø´Ø± Ù…Ø¹ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø©': 'Direct contact with the maintenance team',
+  'Ø£Ø±Ø³Ù„ Ø¨Ù„Ø§ØºØ§Ù‹ Ø¹Ù† Ø£ÙŠ Ù…Ø´ÙƒÙ„Ø© ÙÙŠ Ù†Ø¸Ø§Ù…Ùƒ Ø§Ù„Ø´Ù…Ø³ÙŠØŒ ÙˆØ³ÙŠØ±Ø³Ù„ Ù…Ø¨Ø§Ø´Ø±Ø© Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø©.': 'Send a complaint about any issue with your solar system and it reaches the maintenance team directly.',
+  'Ø¨Ù„Ø§Øº Ø¬Ø¯ÙŠØ¯': 'New complaint', 'Ø§ÙƒØªØ¨ Ø¨Ù„Ø§ØºÙƒ': 'Write your complaint',
+  'Ø³ÙŠÙØ±Ø³Ù„ Ø§Ù„Ø¨Ù„Ø§Øº Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø© Ù…Ø¨Ø§Ø´Ø±Ø©.': 'Your complaint is sent to the maintenance team directly.',
+  'Ø§Ù„Ø§Ø³Ù… (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Name (optional)', 'ÙˆØ³ÙŠÙ„Ø© Ø§Ù„ØªÙˆØ§ØµÙ„ (Ø¨Ø±ÙŠØ¯ Ø£Ùˆ Ù‡Ø§ØªÙ)': 'Contact (email or phone)',
+  'Ù†ÙˆØ¹ Ø§Ù„Ø¨Ù„Ø§Øº': 'Complaint type', 'Ø§Ù„Ù…ÙˆØ¶ÙˆØ¹ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)': 'Subject (optional)', 'ØªÙØ§ØµÙŠÙ„ Ø§Ù„Ø¨Ù„Ø§Øº': 'Complaint details',
+  'Ø¶Ø¹Ù ÙÙŠ Ø§Ù„Ø¥Ù†ØªØ§Ø¬': 'Low generation', 'ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Dust on panels',
+  'ØªØ¸Ù„ÙŠÙ„ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Shading on panels', 'Ù…Ø´ÙƒÙ„Ø© ÙƒÙ‡Ø±Ø¨Ø§Ø¦ÙŠØ©': 'Electrical issue',
+  'Ø·Ù„Ø¨ ØµÙŠØ§Ù†Ø©': 'Maintenance request', 'Ø£Ø®Ø±Ù‰': 'Other',
+  'Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¨Ù„Ø§Øº': 'Send complaint', 'Ù…Ø´Ø§Ø±ÙƒØ© / Ù†Ø³Ø® Ø§Ù„Ø¨Ù„Ø§Øº': 'Share / copy complaint',
+  'Ø¨Ù„Ø§ØºØ§ØªÙŠ Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©': 'My complaints', 'Ù…Ù„Ø®Øµ Ø¬Ø§Ù‡Ø² Ù„Ù„Ù…Ø´Ø§Ø±ÙƒØ©': 'Summary ready to share',
+  'ØªÙ‚Ø±ÙŠØ± Ø´Ø§Ù…Ù„ ÙŠÙ…ÙƒÙ† ØªÙ†Ø²ÙŠÙ„Ù‡ PDF Ø£Ùˆ Ù…Ø´Ø§Ø±ÙƒØªÙ‡ Ù…Ø¹ Ø´Ø±ÙƒØ© Ø§Ù„ØµÙŠØ§Ù†Ø©.': 'A full report you can download as PDF or share with a maintenance company.',
+  'ØªÙ†Ø²ÙŠÙ„ PDF': 'Download PDF', 'Ø·Ø¨Ø§Ø¹Ø©': 'Print', 'Ù…Ø´Ø§Ø±ÙƒØ©': 'Share',
+  'Ø¬Ø§Ø±Ù ØªØ¬Ù‡ÙŠØ² Ø³ÙŠØ§Ø¬â€¦': 'Preparing Siyajâ€¦', 'Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©': 'Try again',
+  'ÙŠØªÙ… Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆØªØ­Ù…ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§ØªÙƒØŒ Ù„Ø­Ø¸Ø§Øª Ù…Ù† ÙØ¶Ù„Ùƒ.': 'Contacting the server and loading your data, just a moment.',
+  'ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§Ù„Ù…ÙˆÙ‚Ø¹': 'Update weather and location',
+  'Ù…Ø«Ø§Ù„: Ù…Ø±ÙŠÙ…': 'e.g. Mariam', 'name@example.com Ø£Ùˆ Ø±Ù‚Ù… Ø§Ù„Ù‡Ø§ØªÙ': 'name@example.com or a phone number',
+  'Ù…Ø«Ø§Ù„: ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙÙŠ Ø§Ù„Ø´ØªØ§Ø¡': 'e.g. panel cleaning in winter',
+  'ØµÙ Ø§Ù„Ù…Ø´ÙƒÙ„Ø© ÙˆÙ…ØªÙ‰ Ù„Ø§Ø­Ø¸ØªÙ‡Ø§â€¦': 'Describe the issue and when you noticed itâ€¦',
+  'ØµÙŠØ§Ù†Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel maintenance',
+  'Ø¯ÙˆØ±Ø© Ø§Ù„ØµÙŠØ§Ù†Ø© ÙƒÙ„ 6 Ø£Ø´Ù‡Ø±': 'Maintenance cycle every 6 months',
+  'ØªÙ…Øª Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„ÙŠÙˆÙ… âœ“': 'Maintenance done today âœ“',
+  'Ø§Ø³Ù… Ø´Ø±ÙƒØ© Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel company name',
+  'Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ù„Ù„Ø£Ù„ÙˆØ§Ø­': 'Last panel maintenance',
+  'Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©': 'Last maintenance',
+  'Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©': 'Next maintenance',
+  'Ù…ÙˆØ¹Ø¯ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©': 'Next maintenance due',
+  'Ù„Ù… ØªÙØ³Ø¬Ù„': 'Not recorded',
+  'Ø´Ø±ÙƒØ© Ø§Ù„Ø£Ù„ÙˆØ§Ø­': 'Panel company',
+  'Ø§Ù„Ø´Ø±ÙƒØ©': 'Company',
+  'Ø§Ù„Ù…ØµÙ†Ø¹': 'Manufacturer',
+  'ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©': 'Not set',
+  'Ø£Ø¶Ù ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©': 'Add the last maintenance date',
 };
 const ORIGINAL_TEXT = new WeakMap();
 const ORIGINAL_ATTRIBUTES = new WeakMap();
@@ -341,7 +341,7 @@ let gpsNotice = null;
 let weatherNotice = null;
 let complaintConfig = { email: 'shathaalbaraa67@gmail.com', delivery: false };
 
-// ---------- شريط التقدم العلوي: يظهر لكل طلب شبكة جارٍ ----------
+// ---------- Ø´Ø±ÙŠØ· Ø§Ù„ØªÙ‚Ø¯Ù… Ø§Ù„Ø¹Ù„ÙˆÙŠ: ÙŠØ¸Ù‡Ø± Ù„ÙƒÙ„ Ø·Ù„Ø¨ Ø´Ø¨ÙƒØ© Ø¬Ø§Ø±Ù ----------
 let pendingRequests = 0;
 let requestProgressTimer = null;
 function updateRequestProgress() {
@@ -367,7 +367,7 @@ if (typeof window !== 'undefined' && window.fetch) {
   };
 }
 
-// ---------- شاشة التحميل عند تأخر الخادم ----------
+// ---------- Ø´Ø§Ø´Ø© Ø§Ù„ØªØ­Ù…ÙŠÙ„ Ø¹Ù†Ø¯ ØªØ£Ø®Ø± Ø§Ù„Ø®Ø§Ø¯Ù… ----------
 let bootstrapSettled = false;
 let introActive = false;
 let loadingSlowTimer = null;
@@ -379,12 +379,12 @@ function showLoadingScreen(title, note) {
   const noteNode = el('app-loading-note');
   const retry = el('app-loading-retry');
   if (titleNode && title) titleNode.textContent = title;
-  if (noteNode) { noteNode.textContent = note || ui('يتم الاتصال بالخادم وتحميل بياناتك، لحظات من فضلك.', 'Contacting the server and loading your data, just a moment.'); noteNode.classList.remove('slow'); }
+  if (noteNode) { noteNode.textContent = note || ui('ÙŠØªÙ… Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù… ÙˆØªØ­Ù…ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§ØªÙƒØŒ Ù„Ø­Ø¸Ø§Øª Ù…Ù† ÙØ¶Ù„Ùƒ.', 'Contacting the server and loading your data, just a moment.'); noteNode.classList.remove('slow'); }
   if (retry) { retry.hidden = true; retry.onclick = () => window.location.reload(); }
   clearTimeout(loadingSlowTimer);
   loadingSlowTimer = setTimeout(() => {
     if (screen.hidden) return;
-    if (noteNode) { noteNode.textContent = ui('يبدو أن الخادم يستغرق وقتاً أطول من المعتاد. تحقق من الاتصال ثم أعد المحاولة.', 'The server is taking longer than usual. Check your connection and try again.'); noteNode.classList.add('slow'); }
+    if (noteNode) { noteNode.textContent = ui('ÙŠØ¨Ø¯Ùˆ Ø£Ù† Ø§Ù„Ø®Ø§Ø¯Ù… ÙŠØ³ØªØºØ±Ù‚ ÙˆÙ‚ØªØ§Ù‹ Ø£Ø·ÙˆÙ„ Ù…Ù† Ø§Ù„Ù…Ø¹ØªØ§Ø¯. ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø§ØªØµØ§Ù„ Ø«Ù… Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©.', 'The server is taking longer than usual. Check your connection and try again.'); noteNode.classList.add('slow'); }
     if (retry) retry.hidden = false;
   }, 10000);
 }
@@ -407,14 +407,14 @@ function resetAiRequests() {
   analysisSequence += 1; invoiceSequence += 1;
   analysisController?.abort(); invoiceController?.abort();
   invoiceReview = null; invoiceBusy = false; analysisBusy = false;
-  const button = el('start-setup'); if (button) { button.disabled = false; button.innerHTML = ui('إعداد النظام <span>←</span>', 'Set up system <span>←</span>'); }
-  const aiButton = el('analyze-panels'); if (aiButton) { aiButton.disabled = true; aiButton.textContent = ui('تحليل الألواح باستخدام Claude', 'Panel assessment with Claude'); }
+  const button = el('start-setup'); if (button) { button.disabled = false; button.innerHTML = ui('Ø¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù… <span>â†</span>', 'Set up system <span>â†</span>'); }
+  const aiButton = el('analyze-panels'); if (aiButton) { aiButton.disabled = true; aiButton.textContent = ui('ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude', 'Panel assessment with Claude'); }
 }
 function analysisFingerprint() {
   return JSON.stringify({ accountId: currentAccount?.id, form: state.form, weather: { timezone: state.weather?.timezone, temperature: state.weather?.current?.temperature_2m, time: state.weather?.current?.time }, language: state.settings.language, media: mediaFor('panels').map(({ id, updatedAt }) => ({ id, updatedAt })) });
 }
 function claudeAvailabilityMarkup() {
-  const message = claudeEnabled === true ? ui('التحليل باستخدام Ai', 'Analysis with Ai') : claudeEnabled === false ? ui('التحليل باستخدام Ai غير مفعّل بعد.', 'Ai analysis is not enabled yet.') : aiConfigurationChecked ? ui('تعذر معرفة حالة التحليل باستخدام Ai؛ حاول مرة أخرى.', 'Could not check Ai analysis availability; try again.') : ui('جارٍ التحقق من خدمة Ai…', 'Checking Ai analysis…');
+  const message = claudeEnabled === true ? ui('Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ai', 'Analysis with Ai') : claudeEnabled === false ? ui('Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ai ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„ Ø¨Ø¹Ø¯.', 'Ai analysis is not enabled yet.') : aiConfigurationChecked ? ui('ØªØ¹Ø°Ø± Ù…Ø¹Ø±ÙØ© Ø­Ø§Ù„Ø© Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… AiØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.', 'Could not check Ai analysis availability; try again.') : ui('Ø¬Ø§Ø±Ù Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø®Ø¯Ù…Ø© Aiâ€¦', 'Checking Ai analysisâ€¦');
   return `<p class="ai-availability" role="status">${escapeHtml(message)}</p>`;
 }
 async function loadAiConfig() {
@@ -455,7 +455,7 @@ function airborneDustReading(weather) {
     if ((typeof raw !== 'number' && typeof raw !== 'string') || String(raw).trim() === '') continue;
     const concentration = Number(raw);
     if (!Number.isFinite(concentration) || concentration < 0) continue;
-    // A presentation index: 200 µg/m³ maps to 100; this is not an air fraction or energy loss.
+    // A presentation index: 200 Âµg/mÂ³ maps to 100; this is not an air fraction or energy loss.
     return { source, concentration, percent: Math.min(100, Math.round(concentration / 2)) };
   }
   return null;
@@ -469,7 +469,7 @@ function weatherFieldWasFilled(key) {
 }
 function weatherFieldCheck(key) {
   if (!Object.hasOwn(DEFAULT_STATE.weatherPrefill, key)) return '';
-  return `<span class="weather-field-check" data-weather-check="${key}" role="img" aria-label="${ui('تمت التعبئة من الطقس', 'Filled from weather data')}" title="${ui('تمت التعبئة من الطقس', 'Filled from weather data')}" ${weatherFieldWasFilled(key) ? '' : 'hidden'}>✓</span>`;
+  return `<span class="weather-field-check" data-weather-check="${key}" role="img" aria-label="${ui('ØªÙ…Øª Ø§Ù„ØªØ¹Ø¨Ø¦Ø© Ù…Ù† Ø§Ù„Ø·Ù‚Ø³', 'Filled from weather data')}" title="${ui('ØªÙ…Øª Ø§Ù„ØªØ¹Ø¨Ø¦Ø© Ù…Ù† Ø§Ù„Ø·Ù‚Ø³', 'Filled from weather data')}" ${weatherFieldWasFilled(key) ? '' : 'hidden'}>âœ“</span>`;
 }
 function refreshWeatherFieldChecks() {
   document.querySelectorAll('[data-weather-check]').forEach((node) => { node.hidden = !weatherFieldWasFilled(node.dataset.weatherCheck); });
@@ -480,17 +480,17 @@ function clearWeatherForLocation() {
   if (!state.form.airDustManual) {
     state.form.airDustPercent = null;
     const input = el('field-airDustPercent');
-    if (input) { input.value = '0'; input.setAttribute('aria-valuetext', ui('غير متاح', 'Unavailable')); }
-    const output = document.querySelector('[data-output="airDustPercent"]'); if (output) output.textContent = '—';
+    if (input) { input.value = '0'; input.setAttribute('aria-valuetext', ui('ØºÙŠØ± Ù…ØªØ§Ø­', 'Unavailable')); }
+    const output = document.querySelector('[data-output="airDustPercent"]'); if (output) output.textContent = 'â€”';
   }
   const hint = el('air-dust-hint'); if (hint) hint.textContent = airDustHint();
-  const condition = el('wizard-weather-condition'); if (condition) condition.textContent = ui('بانتظار بيانات الطقس', 'Waiting for weather data');
+  const condition = el('wizard-weather-condition'); if (condition) condition.textContent = ui('Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø·Ù‚Ø³', 'Waiting for weather data');
   refreshWeatherFieldChecks();
 }
 function airDustHint() {
-  const explanation = ui('مؤشر نسبي من تركيز الغبار في الجو: 0–100%، ويصل إلى 100% عند 200 µg/m³. لا يمثل تراكم الغبار على الألواح أو خسارة الطاقة.', 'A relative airborne dust index: 0–100%, reaching 100% at 200 µg/m³. It does not measure panel soiling or energy loss.');
+  const explanation = ui('Ù…Ø¤Ø´Ø± Ù†Ø³Ø¨ÙŠ Ù…Ù† ØªØ±ÙƒÙŠØ² Ø§Ù„ØºØ¨Ø§Ø± ÙÙŠ Ø§Ù„Ø¬Ùˆ: 0â€“100%ØŒ ÙˆÙŠØµÙ„ Ø¥Ù„Ù‰ 100% Ø¹Ù†Ø¯ 200 Âµg/mÂ³. Ù„Ø§ ÙŠÙ…Ø«Ù„ ØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£Ùˆ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø©.', 'A relative airborne dust index: 0â€“100%, reaching 100% at 200 Âµg/mÂ³. It does not measure panel soiling or energy loss.');
   const reading = airborneDustReading(state.weather);
-  const detail = state.form.airDustManual ? ui('قيمة معدّلة يدوياً.', 'Manually adjusted value.') : reading ? `${reading.source === 'pm10' ? 'PM10' : ui('تركيز الغبار', 'Dust concentration')}: ${reading.concentration.toFixed(1)} µg/m³.` : ui('تظهر القراءة عند توفر بيانات جودة الهواء لموقعك.', 'The reading appears when air quality data is available for your location.');
+  const detail = state.form.airDustManual ? ui('Ù‚ÙŠÙ…Ø© Ù…Ø¹Ø¯Ù‘Ù„Ø© ÙŠØ¯ÙˆÙŠØ§Ù‹.', 'Manually adjusted value.') : reading ? `${reading.source === 'pm10' ? 'PM10' : ui('ØªØ±ÙƒÙŠØ² Ø§Ù„ØºØ¨Ø§Ø±', 'Dust concentration')}: ${reading.concentration.toFixed(1)} Âµg/mÂ³.` : ui('ØªØ¸Ù‡Ø± Ø§Ù„Ù‚Ø±Ø§Ø¡Ø© Ø¹Ù†Ø¯ ØªÙˆÙØ± Ø¨ÙŠØ§Ù†Ø§Øª Ø¬ÙˆØ¯Ø© Ø§Ù„Ù‡ÙˆØ§Ø¡ Ù„Ù…ÙˆÙ‚Ø¹Ùƒ.', 'The reading appears when air quality data is available for your location.');
   return `${explanation} ${detail}`;
 }
 function clearVisualAssessment() { state.ai = null; state.aiLanguage = null; state.aiModel = null; }
@@ -518,7 +518,7 @@ async function syncAccountState() {
     method: 'PUT', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ state: { ...state, user: null } }),
   });
-  if (!response.ok) throw new Error((await response.json()).error || 'تعذر مزامنة بيانات الحساب.');
+  if (!response.ok) throw new Error((await response.json()).error || 'ØªØ¹Ø°Ø± Ù…Ø²Ø§Ù…Ù†Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨.');
 }
 async function syncPanelData() {
   if (!currentAccount?.id) return;
@@ -529,7 +529,7 @@ async function syncPanelData() {
       timezone: state.weather?.timezone || '', tilt: state.form.tilt, notifications: !!state.settings.notifications, lastCleanedAt: state.lastCleanedAt,
     }),
   });
-  if (!response.ok) throw new Error((await response.json()).error || 'تعذر مزامنة بيانات النظام.');
+  if (!response.ok) throw new Error((await response.json()).error || 'ØªØ¹Ø°Ø± Ù…Ø²Ø§Ù…Ù†Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù….');
 }
 
 async function loadAppSettings() {
@@ -552,7 +552,7 @@ function tiltWarningMarkup() {
   const target = Number(appSettings.tilt_target_degrees);
   const message = state.settings.language === 'en'
     ? `Your current panel tilt may collect dust faster than an angle close to ${target} degrees.`
-    : `زاوية لوحك الحالية تخليه يتجمع عليه غبار أسرع من لو كانت قريبة من ${target} درجة.`;
+    : `Ø²Ø§ÙˆÙŠØ© Ù„ÙˆØ­Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠØ© ØªØ®Ù„ÙŠÙ‡ ÙŠØªØ¬Ù…Ø¹ Ø¹Ù„ÙŠÙ‡ ØºØ¨Ø§Ø± Ø£Ø³Ø±Ø¹ Ù…Ù† Ù„Ùˆ ÙƒØ§Ù†Øª Ù‚Ø±ÙŠØ¨Ø© Ù…Ù† ${target} Ø¯Ø±Ø¬Ø©.`;
   return `<div class="tilt-warning" role="status">${message}</div>`;
 }
 
@@ -746,28 +746,28 @@ function panelVisualMessage(tilt) {
   if (panelVisualTiltIsPlaceholder()) {
     return {
       tone: 'neutral',
-      headline: english ? `Suggested angle: ${target}°` : `الزاوية المقترحة: ${target}°`,
-      detail: english ? 'Enter the panel tilt above to preview how dust builds up on the glass.' : 'أدخل ميل الألواح أعلاه لترى كيف يتغيّر تراكم الغبار على اللوح.',
+      headline: english ? `Suggested angle: ${target}Â°` : `Ø§Ù„Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ù…Ù‚ØªØ±Ø­Ø©: ${target}Â°`,
+      detail: english ? 'Enter the panel tilt above to preview how dust builds up on the glass.' : 'Ø£Ø¯Ø®Ù„ Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£Ø¹Ù„Ø§Ù‡ Ù„ØªØ±Ù‰ ÙƒÙŠÙ ÙŠØªØºÙŠÙ‘Ø± ØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ù„ÙˆØ­.',
     };
   }
   if (tilt < low) {
     return {
       tone: 'warn',
-      headline: english ? `We suggest raising the tilt to about ${target}°` : `نقترح رفع الميل إلى ${target}° تقريباً`,
-      detail: english ? `At ${shown}° the panel is almost flat, so dust settles faster and blocks the sun.` : `عند ${shown}° يكون اللوح شبه أفقي، فيتراكم الغبار أسرع ويحجب ضوء الشمس.`,
+      headline: english ? `We suggest raising the tilt to about ${target}Â°` : `Ù†Ù‚ØªØ±Ø­ Ø±ÙØ¹ Ø§Ù„Ù…ÙŠÙ„ Ø¥Ù„Ù‰ ${target}Â° ØªÙ‚Ø±ÙŠØ¨Ø§Ù‹`,
+      detail: english ? `At ${shown}Â° the panel is almost flat, so dust settles faster and blocks the sun.` : `Ø¹Ù†Ø¯ ${shown}Â° ÙŠÙƒÙˆÙ† Ø§Ù„Ù„ÙˆØ­ Ø´Ø¨Ù‡ Ø£ÙÙ‚ÙŠØŒ ÙÙŠØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø± Ø£Ø³Ø±Ø¹ ÙˆÙŠØ­Ø¬Ø¨ Ø¶ÙˆØ¡ Ø§Ù„Ø´Ù…Ø³.`,
     };
   }
   if (tilt > high) {
     return {
       tone: 'warn',
-      headline: english ? `We suggest lowering the tilt to about ${target}°` : `نقترح خفض الميل إلى ${target}° تقريباً`,
-      detail: english ? `At ${shown}° the panel is steeper than the recommended ${formatTiltDegrees(low)}°–${formatTiltDegrees(high)}° range.` : `عند ${shown}° يكون اللوح أكثر انحداراً من المدى الموصى به (${formatTiltDegrees(low)}°–${formatTiltDegrees(high)}°).`,
+      headline: english ? `We suggest lowering the tilt to about ${target}Â°` : `Ù†Ù‚ØªØ±Ø­ Ø®ÙØ¶ Ø§Ù„Ù…ÙŠÙ„ Ø¥Ù„Ù‰ ${target}Â° ØªÙ‚Ø±ÙŠØ¨Ø§Ù‹`,
+      detail: english ? `At ${shown}Â° the panel is steeper than the recommended ${formatTiltDegrees(low)}Â°â€“${formatTiltDegrees(high)}Â° range.` : `Ø¹Ù†Ø¯ ${shown}Â° ÙŠÙƒÙˆÙ† Ø§Ù„Ù„ÙˆØ­ Ø£ÙƒØ«Ø± Ø§Ù†Ø­Ø¯Ø§Ø±Ø§Ù‹ Ù…Ù† Ø§Ù„Ù…Ø¯Ù‰ Ø§Ù„Ù…ÙˆØµÙ‰ Ø¨Ù‡ (${formatTiltDegrees(low)}Â°â€“${formatTiltDegrees(high)}Â°).`,
     };
   }
   return {
     tone: 'good',
-    headline: english ? `Your ${shown}° tilt is within the recommended range` : `زاويتك ${shown}° ضمن المدى الموصى به`,
-    detail: english ? `Keep it between ${formatTiltDegrees(low)}° and ${formatTiltDegrees(high)}°: the steeper the panel, the less dust it collects.` : `أبقِ اللوح بين ${formatTiltDegrees(low)}° و${formatTiltDegrees(high)}°: كلما ارتفع الميل قلّ تراكم الغبار.`,
+    headline: english ? `Your ${shown}Â° tilt is within the recommended range` : `Ø²Ø§ÙˆÙŠØªÙƒ ${shown}Â° Ø¶Ù…Ù† Ø§Ù„Ù…Ø¯Ù‰ Ø§Ù„Ù…ÙˆØµÙ‰ Ø¨Ù‡`,
+    detail: english ? `Keep it between ${formatTiltDegrees(low)}Â° and ${formatTiltDegrees(high)}Â°: the steeper the panel, the less dust it collects.` : `Ø£Ø¨Ù‚Ù Ø§Ù„Ù„ÙˆØ­ Ø¨ÙŠÙ† ${formatTiltDegrees(low)}Â° Ùˆ${formatTiltDegrees(high)}Â°: ÙƒÙ„Ù…Ø§ Ø§Ø±ØªÙØ¹ Ø§Ù„Ù…ÙŠÙ„ Ù‚Ù„Ù‘ ØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø±.`,
   };
 }
 function panelCellsMarkup(geometry) {
@@ -853,7 +853,7 @@ function panelTiltVisualMarkup() {
         </g>
         <g class="pv-dust-motes" id="panel-dust-motes" opacity="${(0.15 + dust * 0.5).toFixed(3)}">${motes}</g>
       </svg>
-      <span class="panel-visual-angle"><b id="panel-angle-value">${angle}°</b><small>${ui('ميل اللوح', 'Panel tilt')}</small></span>
+      <span class="panel-visual-angle"><b id="panel-angle-value">${angle}Â°</b><small>${ui('Ù…ÙŠÙ„ Ø§Ù„Ù„ÙˆØ­', 'Panel tilt')}</small></span>
     </div>
     <figcaption class="panel-visual-note is-${message.tone}" id="panel-visual-note" aria-live="polite">
       <strong>${escapeHtml(message.headline)}</strong>
@@ -901,7 +901,7 @@ function updatePanelVisual() {
   }
   panelVisualRayPaths(tilt).forEach((path, index) => el(`panel-ray-${index + 1}`)?.setAttribute('d', path));
   const angleValue = el('panel-angle-value');
-  if (angleValue) angleValue.textContent = `${formatTiltDegrees(tilt)}°`;
+  if (angleValue) angleValue.textContent = `${formatTiltDegrees(tilt)}Â°`;
   const note = el('panel-visual-note');
   if (note) {
     const message = panelVisualMessage(tilt);
@@ -968,32 +968,32 @@ function maintenanceStatus(reference = new Date()) {
   };
 }
 function maintenanceDateLabel(date, locale) {
-  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return '—';
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return 'â€”';
   return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
 }
 function maintenanceElapsedLabel(status) {
   const english = state.settings.language === 'en';
-  if (status.elapsedDays === 0) return english ? 'today' : 'اليوم';
+  if (status.elapsedDays === 0) return english ? 'today' : 'Ø§Ù„ÙŠÙˆÙ…';
   const parts = [];
-  if (status.months > 0) parts.push(english ? `${status.months} ${status.months === 1 ? 'month' : 'months'}` : arabicCount(status.months, { one: 'شهر واحد', two: 'شهرين', few: 'أشهر', many: 'شهرًا' }));
-  if (status.days > 0 || !parts.length) parts.push(english ? `${status.days} ${status.days === 1 ? 'day' : 'days'}` : arabicCount(status.days, { one: 'يوم واحد', two: 'يومين', few: 'أيام', many: 'يومًا' }));
-  return (english ? 'since ' : 'قبل ') + parts.join(english ? ' and ' : ' و');
+  if (status.months > 0) parts.push(english ? `${status.months} ${status.months === 1 ? 'month' : 'months'}` : arabicCount(status.months, { one: 'Ø´Ù‡Ø± ÙˆØ§Ø­Ø¯', two: 'Ø´Ù‡Ø±ÙŠÙ†', few: 'Ø£Ø´Ù‡Ø±', many: 'Ø´Ù‡Ø±Ù‹Ø§' }));
+  if (status.days > 0 || !parts.length) parts.push(english ? `${status.days} ${status.days === 1 ? 'day' : 'days'}` : arabicCount(status.days, { one: 'ÙŠÙˆÙ… ÙˆØ§Ø­Ø¯', two: 'ÙŠÙˆÙ…ÙŠÙ†', few: 'Ø£ÙŠØ§Ù…', many: 'ÙŠÙˆÙ…Ù‹Ø§' }));
+  return (english ? 'since ' : 'Ù‚Ø¨Ù„ ') + parts.join(english ? ' and ' : ' Ùˆ');
 }
 function maintenanceRemainingLabel(status) {
   const english = state.settings.language === 'en';
   const count = Math.abs(status.daysRemaining);
-  if (status.daysRemaining === 0) return english ? 'Maintenance is due today.' : 'الصيانة مستحقة اليوم.';
+  if (status.daysRemaining === 0) return english ? 'Maintenance is due today.' : 'Ø§Ù„ØµÙŠØ§Ù†Ø© Ù…Ø³ØªØ­Ù‚Ø© Ø§Ù„ÙŠÙˆÙ….';
   if (status.overdue) {
-    return english ? `Maintenance is ${count} ${count === 1 ? 'day' : 'days'} overdue.` : `تأخرت الصيانة ${arabicCount(count, { one: 'يومًا واحدًا', two: 'يومين', few: 'أيام', many: 'يومًا' })}.`;
+    return english ? `Maintenance is ${count} ${count === 1 ? 'day' : 'days'} overdue.` : `ØªØ£Ø®Ø±Øª Ø§Ù„ØµÙŠØ§Ù†Ø© ${arabicCount(count, { one: 'ÙŠÙˆÙ…Ù‹Ø§ ÙˆØ§Ø­Ø¯Ù‹Ø§', two: 'ÙŠÙˆÙ…ÙŠÙ†', few: 'Ø£ÙŠØ§Ù…', many: 'ÙŠÙˆÙ…Ù‹Ø§' })}.`;
   }
-  return english ? `${count} ${count === 1 ? 'day' : 'days'} left until the next maintenance.` : `باقي ${arabicCount(count, { one: 'يوم واحد', two: 'يومين', few: 'أيام', many: 'يومًا' })} على الصيانة القادمة.`;
+  return english ? `${count} ${count === 1 ? 'day' : 'days'} left until the next maintenance.` : `Ø¨Ø§Ù‚ÙŠ ${arabicCount(count, { one: 'ÙŠÙˆÙ… ÙˆØ§Ø­Ø¯', two: 'ÙŠÙˆÙ…ÙŠÙ†', few: 'Ø£ÙŠØ§Ù…', many: 'ÙŠÙˆÙ…Ù‹Ø§' })} Ø¹Ù„Ù‰ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©.`;
 }
 function maintenancePillMarkup(status) {
   const english = state.settings.language === 'en';
   if (!status) return { hidden: true, className: '', text: '' };
-  if (status.overdue) return { hidden: false, className: 'is-overdue', text: english ? 'Overdue' : 'متأخرة' };
-  if (status.dueSoon) return { hidden: false, className: 'is-due-soon', text: english ? 'Due soon' : 'قريبة' };
-  return { hidden: false, className: 'is-ok', text: english ? 'On schedule' : 'منتظمة' };
+  if (status.overdue) return { hidden: false, className: 'is-overdue', text: english ? 'Overdue' : 'Ù…ØªØ£Ø®Ø±Ø©' };
+  if (status.dueSoon) return { hidden: false, className: 'is-due-soon', text: english ? 'Due soon' : 'Ù‚Ø±ÙŠØ¨Ø©' };
+  return { hidden: false, className: 'is-ok', text: english ? 'On schedule' : 'Ù…Ù†ØªØ¸Ù…Ø©' };
 }
 function renderMaintenance() {
   const container = el('maintenance-content');
@@ -1004,7 +1004,7 @@ function renderMaintenance() {
   const button = el('maintenance-done');
   const pill = el('maintenance-state-pill');
   const panel = el('maintenance-panel');
-  if (button) { button.disabled = false; button.textContent = english ? 'Mark maintenance done today ✓' : 'تمت الصيانة اليوم ✓'; }
+  if (button) { button.disabled = false; button.textContent = english ? 'Mark maintenance done today âœ“' : 'ØªÙ…Øª Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„ÙŠÙˆÙ… âœ“'; }
   const pillState = maintenancePillMarkup(status);
   if (pill) {
     pill.hidden = pillState.hidden;
@@ -1017,7 +1017,7 @@ function renderMaintenance() {
     panel.classList.toggle('maintenance-due-soon', Boolean(status?.dueSoon && !status?.overdue));
   }
   if (!status) {
-    container.innerHTML = `<div class="maintenance-empty-state"><div class="maintenance-empty-icon">📅</div><p>${english ? 'No maintenance date is saved yet. Add the date of your last maintenance in the system details so we can schedule the next one and count the days for you.' : 'لم يُسجَّل تاريخ آخر صيانة بعد. أضف تاريخ آخر صيانة من «تحديث بيانات النظام» لنحسب لك موعد الصيانة القادمة والوقت المتبقي كل يوم.'}</p></div>`;
+    container.innerHTML = `<div class="maintenance-empty-state"><div class="maintenance-empty-icon">ðŸ“…</div><p>${english ? 'No maintenance date is saved yet. Add the date of your last maintenance in the system details so we can schedule the next one and count the days for you.' : 'Ù„Ù… ÙŠÙØ³Ø¬ÙŽÙ‘Ù„ ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ø¨Ø¹Ø¯. Ø£Ø¶Ù ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ù…Ù† Â«ØªØ­Ø¯ÙŠØ« Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù…Â» Ù„Ù†Ø­Ø³Ø¨ Ù„Ùƒ Ù…ÙˆØ¹Ø¯ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø© ÙˆØ§Ù„ÙˆÙ‚Øª Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ ÙƒÙ„ ÙŠÙˆÙ….'}</p></div>`;
     return;
   }
   const lastLabel = maintenanceDateLabel(status.last, locale);
@@ -1026,43 +1026,43 @@ function renderMaintenance() {
   const remainingLabel = maintenanceRemainingLabel(status);
   const remainingShort = english
     ? `${Math.abs(status.daysRemaining)} ${Math.abs(status.daysRemaining) === 1 ? 'day' : 'days'}`
-    : arabicCount(Math.abs(status.daysRemaining), { one: 'يوم واحد', two: 'يومين', few: 'أيام', many: 'يومًا' });
+    : arabicCount(Math.abs(status.daysRemaining), { one: 'ÙŠÙˆÙ… ÙˆØ§Ø­Ø¯', two: 'ÙŠÙˆÙ…ÙŠÙ†', few: 'Ø£ÙŠØ§Ù…', many: 'ÙŠÙˆÙ…Ù‹Ø§' });
   const progressCaption = english
     ? `${status.progressPercent}% of the cycle completed`
-    : `اكتملت ${status.progressPercent}% من الدورة`;
+    : `Ø§ÙƒØªÙ…Ù„Øª ${status.progressPercent}% Ù…Ù† Ø§Ù„Ø¯ÙˆØ±Ø©`;
   const overdueDaysShort = status.overdue
     ? (english
       ? `${Math.abs(status.daysRemaining)} ${Math.abs(status.daysRemaining) === 1 ? 'day' : 'days'}`
-      : arabicCount(Math.abs(status.daysRemaining), { one: 'يوم واحد', two: 'يومين', few: 'أيام', many: 'يومًا' }))
+      : arabicCount(Math.abs(status.daysRemaining), { one: 'ÙŠÙˆÙ… ÙˆØ§Ø­Ø¯', two: 'ÙŠÙˆÙ…ÙŠÙ†', few: 'Ø£ÙŠØ§Ù…', many: 'ÙŠÙˆÙ…Ù‹Ø§' }))
     : '';
   const untilDueLabel = status.overdue
-    ? (english ? 'Date passed' : 'انقضى الموعد')
+    ? (english ? 'Date passed' : 'Ø§Ù†Ù‚Ø¶Ù‰ Ø§Ù„Ù…ÙˆØ¹Ø¯')
     : status.monthsUntilDue > 0
       ? (english
         ? `in about ${status.monthsUntilDue} ${status.monthsUntilDue === 1 ? 'month' : 'months'}`
-        : `بعد ${arabicCount(status.monthsUntilDue, { one: 'شهر واحد', two: 'شهرين', few: 'أشهر', many: 'شهرًا' })}`)
-      : (english ? 'within this month' : 'خلال هذا الشهر');
+        : `Ø¨Ø¹Ø¯ ${arabicCount(status.monthsUntilDue, { one: 'Ø´Ù‡Ø± ÙˆØ§Ø­Ø¯', two: 'Ø´Ù‡Ø±ÙŠÙ†', few: 'Ø£Ø´Ù‡Ø±', many: 'Ø´Ù‡Ø±Ù‹Ø§' })}`)
+      : (english ? 'within this month' : 'Ø®Ù„Ø§Ù„ Ù‡Ø°Ø§ Ø§Ù„Ø´Ù‡Ø±');
   const overdueNote = english
     ? 'Panels can be affected if maintenance is delayed: dust and deposits build up, airflow drops, and generation declines gradually. Book a maintenance visit and clean the panels safely.'
-    : 'قد تتأثر الألواح الشمسية إذا تأخرت الصيانة: يتراكم الغبار والترسبات وتقل التهوية وينخفض الإنتاج تدريجيًا. احجز صيانة ونظّف الألواح بطريقة آمنة.';
+    : 'Ù‚Ø¯ ØªØªØ£Ø«Ø± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø§Ù„Ø´Ù…Ø³ÙŠØ© Ø¥Ø°Ø§ ØªØ£Ø®Ø±Øª Ø§Ù„ØµÙŠØ§Ù†Ø©: ÙŠØªØ±Ø§ÙƒÙ… Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„ØªØ±Ø³Ø¨Ø§Øª ÙˆØªÙ‚Ù„ Ø§Ù„ØªÙ‡ÙˆÙŠØ© ÙˆÙŠÙ†Ø®ÙØ¶ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ ØªØ¯Ø±ÙŠØ¬ÙŠÙ‹Ø§. Ø§Ø­Ø¬Ø² ØµÙŠØ§Ù†Ø© ÙˆÙ†Ø¸Ù‘Ù Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø·Ø±ÙŠÙ‚Ø© Ø¢Ù…Ù†Ø©.';
   const dueSoonNote = english
     ? 'The next maintenance is close. Booking it now keeps the panels within their cleaning cycle.'
-    : 'موعد الصيانة القادمة اقترب. احجزها الآن لتبقى الألواح ضمن دورة الصيانة.';
+    : 'Ù…ÙˆØ¹Ø¯ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø© Ø§Ù‚ØªØ±Ø¨. Ø§Ø­Ø¬Ø²Ù‡Ø§ Ø§Ù„Ø¢Ù† Ù„ØªØ¨Ù‚Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¶Ù…Ù† Ø¯ÙˆØ±Ø© Ø§Ù„ØµÙŠØ§Ù†Ø©.';
   const onScheduleNote = english
     ? 'The panels are on schedule. The app recalculates the remaining days from the saved date every time you open it.'
-    : 'الصيانة منتظمة. يحسب سياج الأيام المتبقية من التاريخ المحفوظ في كل مرة تفتح فيها التطبيق.';
+    : 'Ø§Ù„ØµÙŠØ§Ù†Ø© Ù…Ù†ØªØ¸Ù…Ø©. ÙŠØ­Ø³Ø¨ Ø³ÙŠØ§Ø¬ Ø§Ù„Ø£ÙŠØ§Ù… Ø§Ù„Ù…ØªØ¨Ù‚ÙŠØ© Ù…Ù† Ø§Ù„ØªØ§Ø±ÙŠØ® Ø§Ù„Ù…Ø­ÙÙˆØ¸ ÙÙŠ ÙƒÙ„ Ù…Ø±Ø© ØªÙØªØ­ ÙÙŠÙ‡Ø§ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚.';
   const note = status.overdue ? overdueNote : status.dueSoon ? dueSoonNote : onScheduleNote;
   container.innerHTML = `<div class="maintenance-grid">
-      <div class="maintenance-stat"><span class="maintenance-stat-icon">📅</span><div class="maintenance-stat-body"><small>${english ? 'Last maintenance' : 'آخر صيانة'}</small><b>${escapeHtml(lastLabel)}</b><span>${escapeHtml(elapsedLabel)}</span></div></div>
-      <div class="maintenance-stat"><span class="maintenance-stat-icon">⏳</span><div class="maintenance-stat-body"><small>${status.overdue ? (english ? 'Overdue by' : 'متأخرة منذ') : (english ? 'Time left' : 'الوقت المتبقي')}</small><b class="maintenance-remaining">${escapeHtml(overdueDaysShort || remainingShort)}</b><span>${escapeHtml(status.overdue ? (english ? 'Needs urgent attention' : 'تحتاج صيانة عاجلة') : progressCaption)}</span></div></div>
-      <div class="maintenance-stat"><span class="maintenance-stat-icon">🔧</span><div class="maintenance-stat-body"><small>${english ? 'Next maintenance' : 'الصيانة القادمة'}</small><b>${escapeHtml(dueLabel)}</b><span>${escapeHtml(untilDueLabel)}</span></div></div>
+      <div class="maintenance-stat"><span class="maintenance-stat-icon">ðŸ“…</span><div class="maintenance-stat-body"><small>${english ? 'Last maintenance' : 'Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©'}</small><b>${escapeHtml(lastLabel)}</b><span>${escapeHtml(elapsedLabel)}</span></div></div>
+      <div class="maintenance-stat"><span class="maintenance-stat-icon">â³</span><div class="maintenance-stat-body"><small>${status.overdue ? (english ? 'Overdue by' : 'Ù…ØªØ£Ø®Ø±Ø© Ù…Ù†Ø°') : (english ? 'Time left' : 'Ø§Ù„ÙˆÙ‚Øª Ø§Ù„Ù…ØªØ¨Ù‚ÙŠ')}</small><b class="maintenance-remaining">${escapeHtml(overdueDaysShort || remainingShort)}</b><span>${escapeHtml(status.overdue ? (english ? 'Needs urgent attention' : 'ØªØ­ØªØ§Ø¬ ØµÙŠØ§Ù†Ø© Ø¹Ø§Ø¬Ù„Ø©') : progressCaption)}</span></div></div>
+      <div class="maintenance-stat"><span class="maintenance-stat-icon">ðŸ”§</span><div class="maintenance-stat-body"><small>${english ? 'Next maintenance' : 'Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©'}</small><b>${escapeHtml(dueLabel)}</b><span>${escapeHtml(untilDueLabel)}</span></div></div>
     </div>
     <div class="maintenance-progress">
-      <div class="maintenance-progress-head"><span>${english ? 'Cycle progress' : 'تقدم الدورة'}</span><b>${status.progressPercent}%</b></div>
-      <div class="maintenance-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${status.progressPercent}" aria-label="${english ? 'Maintenance cycle progress' : 'تقدم دورة الصيانة'}"><i style="width:${status.progressPercent}%"></i></div>
+      <div class="maintenance-progress-head"><span>${english ? 'Cycle progress' : 'ØªÙ‚Ø¯Ù… Ø§Ù„Ø¯ÙˆØ±Ø©'}</span><b>${status.progressPercent}%</b></div>
+      <div class="maintenance-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${status.progressPercent}" aria-label="${english ? 'Maintenance cycle progress' : 'ØªÙ‚Ø¯Ù… Ø¯ÙˆØ±Ø© Ø§Ù„ØµÙŠØ§Ù†Ø©'}"><i style="width:${status.progressPercent}%"></i></div>
       <div class="maintenance-progress-foot"><span>${escapeHtml(lastLabel)}</span><span>${escapeHtml(dueLabel)}</span></div>
     </div>
-    <p class="maintenance-note"><span class="maintenance-note-icon">${status.overdue ? '⚠️' : status.dueSoon ? '⏰' : 'ℹ️'}</span>${escapeHtml(note)}</p>`;
+    <p class="maintenance-note"><span class="maintenance-note-icon">${status.overdue ? 'âš ï¸' : status.dueSoon ? 'â°' : 'â„¹ï¸'}</span>${escapeHtml(note)}</p>`;
 }
 
 function escapeHtml(value) { return String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]); }
@@ -1078,9 +1078,9 @@ function translateText(value) {
     if (arabic.length <= 2 && /[\u0600-\u06FF]/.test(arabic)) continue;
     result = result.replaceAll(arabic, TRANSLATIONS[arabic]);
   }
-  result = result.replace(/°م/g, '°C');
-  result = result.replace(/[٠-٩]/g, (digit) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)));
-  result = result.replace(/الخطوة (\d+) من (\d+)/g, 'Step $1 of $2');
+  result = result.replace(/Â°Ù…/g, 'Â°C');
+  result = result.replace(/[Ù -Ù©]/g, (digit) => String('Ù Ù¡Ù¢Ù£Ù¤Ù¥Ù¦Ù§Ù¨Ù©'.indexOf(digit)));
+  result = result.replace(/Ø§Ù„Ø®Ø·ÙˆØ© (\d+) Ù…Ù† (\d+)/g, 'Step $1 of $2');
   return result;
 }
 function applyLanguage() {
@@ -1107,7 +1107,7 @@ function applyLanguage() {
     }
   });
   const toggle = el('language-toggle');
-  if (toggle) { toggle.textContent = english ? 'العربية' : 'EN'; toggle.setAttribute('aria-label', english ? 'Switch to Arabic' : 'Switch to English'); }
+  if (toggle) { toggle.textContent = english ? 'Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©' : 'EN'; toggle.setAttribute('aria-label', english ? 'Switch to Arabic' : 'Switch to English'); }
   const languageSelect = el('setting-language');
   if (languageSelect) languageSelect.value = english ? 'en' : 'ar';
 }
@@ -1116,9 +1116,9 @@ function showToast(message) {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 3100);
 }
 function syncHeader() {
-  el('header-location').textContent = state.form.location || 'حدّد موقع النظام';
+  el('header-location').textContent = state.form.location || 'Ø­Ø¯Ù‘Ø¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù…';
   const authButton = el('auth-nav');
-  if (authButton) authButton.textContent = state.user?.username || 'تسجيل الدخول';
+  if (authButton) authButton.textContent = state.user?.username || 'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„';
   const loggedIn = !!state.user;
   document.querySelector('.main-nav').hidden = !loggedIn;
   document.querySelector('.topbar-location').hidden = !loggedIn;
@@ -1179,7 +1179,7 @@ async function loadMedia() {
   catch (error) {
     const all = (await dbRequest('readonly', (store) => store.getAll()).catch(() => [])) || [];
     media = currentAccount ? all.filter((item) => item.accountId === currentAccount.id) : [];
-    showToast(error.message || 'تعذر مزامنة المرفقات الآن.');
+    showToast(error.message || 'ØªØ¹Ø°Ø± Ù…Ø²Ø§Ù…Ù†Ø© Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª Ø§Ù„Ø¢Ù†.');
   }
   renderCurrentStep();
 }
@@ -1187,7 +1187,7 @@ async function syncAccountMedia() {
   if (!currentAccount?.id) return;
   const listResponse = await authenticatedFetch('/api/account/media');
   const listData = await listResponse.json();
-  if (!listResponse.ok) throw new Error(listData.error || 'تعذر تحميل مرفقات الحساب.');
+  if (!listResponse.ok) throw new Error(listData.error || 'ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ù…Ø±ÙÙ‚Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨.');
   const remote = new Map((listData.files || []).map((item) => [item.id, item]));
   const allFiles = (await dbRequest('readonly', (store) => store.getAll())) || [];
   const local = allFiles.filter((item) => item.accountId === currentAccount.id);
@@ -1204,7 +1204,7 @@ async function syncAccountMedia() {
         + '?category=' + encodeURIComponent(item.category) + '&name=' + encodeURIComponent(item.name);
       const response = await authenticatedFetch(url, { method: 'POST', headers: { 'Content-Type': item.type || item.blob.type }, body: item.blob });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error || 'تعذر رفع أحد المرفقات إلى الحساب.');
+      if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø±ÙØ¹ Ø£Ø­Ø¯ Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª Ø¥Ù„Ù‰ Ø§Ù„Ø­Ø³Ø§Ø¨.');
       const syncedItem = { ...item, cloudSynced: true };
       await dbRequest('readwrite', (store) => store.put(syncedItem));
       localById.set(item.id, syncedItem);
@@ -1215,7 +1215,7 @@ async function syncAccountMedia() {
   for (const item of remote.values()) {
     if (localById.has(item.id)) continue;
     const response = await authenticatedFetch('/api/account/media/' + encodeURIComponent(item.id));
-    if (!response.ok) throw new Error('تعذر تنزيل أحد مرفقات الحساب.');
+    if (!response.ok) throw new Error('ØªØ¹Ø°Ø± ØªÙ†Ø²ÙŠÙ„ Ø£Ø­Ø¯ Ù…Ø±ÙÙ‚Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨.');
     const saved = { id: item.id, accountId: currentAccount.id, category: item.category, name: item.name, type: item.type, blob: await response.blob(), updatedAt: Date.parse(item.updated_at) || Date.now(), cloudSynced: true };
     await dbRequest('readwrite', (store) => store.put(saved));
     localById.set(item.id, saved);
@@ -1224,7 +1224,7 @@ async function syncAccountMedia() {
 function saveFormField(target) {
   if (!target?.dataset?.field) return;
   const key = target.dataset.field;
-  const value = key === 'brand' && isUnknownManufacturer(target.value) ? 'غير معروف' : target.value;
+  const value = key === 'brand' && isUnknownManufacturer(target.value) ? 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ' : target.value;
   if (!['name', 'billMonth', 'expectedMonthlyKwh', 'actualMonthlyKwh', 'invoice', 'consumption', 'tariff'].includes(key) && String(state.form[key]) !== String(value)) clearVisualAssessment();
   if (key === 'billMonth' && String(state.form.billMonth) !== String(target.value)) {
     state.form.expectedMonthlyKwh = ''; state.form.actualMonthlyKwh = ''; invoiceReview = null;
@@ -1265,9 +1265,9 @@ function field(label, key, options = {}) {
   if (min !== undefined) attrs.push(`min="${min}"`); if (max !== undefined) attrs.push(`max="${max}"`); if (step !== undefined) attrs.push(`step="${step}"`);
   if (required) attrs.push('required');
   if (type === 'range') {
-    const output = current === '' ? '—' : `${escapeHtml(current)}%`;
+    const output = current === '' ? 'â€”' : `${escapeHtml(current)}%`;
     attrs[2] = `value="${escapeHtml(current === '' ? min ?? 0 : current)}"`;
-    return `<div class="field ${full ? 'full' : ''}"><label for="field-${key}">${labelMarkup}</label><div class="range-row"><input id="field-${key}" ${attrs.join(' ')} aria-valuetext="${current === '' ? ui('غير متاح', 'Unavailable') : `${escapeHtml(current)}%`}"><output data-output="${key}">${output}</output></div>${hint ? `<small class="helper-text" ${key === 'airDustPercent' ? 'id="air-dust-hint"' : ''}>${hint}</small>` : ''}</div>`;
+    return `<div class="field ${full ? 'full' : ''}"><label for="field-${key}">${labelMarkup}</label><div class="range-row"><input id="field-${key}" ${attrs.join(' ')} aria-valuetext="${current === '' ? ui('ØºÙŠØ± Ù…ØªØ§Ø­', 'Unavailable') : `${escapeHtml(current)}%`}"><output data-output="${key}">${output}</output></div>${hint ? `<small class="helper-text" ${key === 'airDustPercent' ? 'id="air-dust-hint"' : ''}>${hint}</small>` : ''}</div>`;
   }
   return `<div class="field ${full ? 'full' : ''}"><label for="field-${key}">${labelMarkup}</label><div class="${suffix ? 'input-suffix' : ''}"><input id="field-${key}" ${attrs.join(' ')}>${suffix ? `<span>${suffix}</span>` : ''}</div>${hint ? `<small class="helper-text">${hint}</small>` : ''}</div>`;
 }
@@ -1276,14 +1276,14 @@ function selectField(label, key, choices, options = {}) {
   return `<div class="field ${full ? 'full' : ''}"><label for="field-${key}">${label}</label><select id="field-${key}" data-field="${key}">${choices.map(([value, text]) => `<option value="${escapeHtml(value)}" ${current === value ? 'selected' : ''}>${escapeHtml(text)}</option>`).join('')}</select></div>`;
 }
 function manufacturerSearchKey(value) {
-  return String(value ?? '').normalize('NFKD').toLowerCase().replace(/[\u0300-\u036f\u064b-\u065f\u0670\u0640]/g, '').replace(/[أإآٱ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه').replace(/[\s._-]+/g, '');
+  return String(value ?? '').normalize('NFKD').toLowerCase().replace(/[\u0300-\u036f\u064b-\u065f\u0670\u0640]/g, '').replace(/[Ø£Ø¥Ø¢Ù±]/g, 'Ø§').replace(/Ù‰/g, 'ÙŠ').replace(/Ø©/g, 'Ù‡').replace(/[\s._-]+/g, '');
 }
 function isUnknownManufacturer(value) {
-  return ['غيرمعروف', 'unknown'].includes(manufacturerSearchKey(value));
+  return ['ØºÙŠØ±Ù…Ø¹Ø±ÙˆÙ', 'unknown'].includes(manufacturerSearchKey(value));
 }
 function manufacturerField() {
-  const value = isUnknownManufacturer(state.form.brand) ? ui('غير معروف', 'Unknown') : state.form.brand || '';
-  return `<div class="field manufacturer-picker"><label for="field-brand">الشركة المصنّعة</label><div class="manufacturer-input-row"><input id="field-brand" data-field="brand" type="text" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="manufacturer-options" aria-describedby="manufacturer-hint" autocomplete="off" placeholder="ابحث عن الشركة المصنّعة" value="${escapeHtml(value)}"><button class="manufacturer-toggle" type="button" aria-label="عرض الشركات المصنّعة" aria-controls="manufacturer-options" aria-expanded="false">⌄</button><div id="manufacturer-options" class="manufacturer-options" role="listbox" aria-label="الشركات المصنّعة" hidden></div></div><small id="manufacturer-hint" class="helper-text">ابحث بالعربية أو الإنجليزية، أو اكتب اسم الشركة. يمكنك اختيار «غير معروف».</small></div>`;
+  const value = isUnknownManufacturer(state.form.brand) ? ui('ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ', 'Unknown') : state.form.brand || '';
+  return `<div class="field manufacturer-picker"><label for="field-brand">Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©</label><div class="manufacturer-input-row"><input id="field-brand" data-field="brand" type="text" role="combobox" aria-autocomplete="list" aria-haspopup="listbox" aria-expanded="false" aria-controls="manufacturer-options" aria-describedby="manufacturer-hint" autocomplete="off" placeholder="Ø§Ø¨Ø­Ø« Ø¹Ù† Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©" value="${escapeHtml(value)}"><button class="manufacturer-toggle" type="button" aria-label="Ø¹Ø±Ø¶ Ø§Ù„Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©" aria-controls="manufacturer-options" aria-expanded="false">âŒ„</button><div id="manufacturer-options" class="manufacturer-options" role="listbox" aria-label="Ø§Ù„Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø©" hidden></div></div><small id="manufacturer-hint" class="helper-text">Ø§Ø¨Ø­Ø« Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ© Ø£Ùˆ Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©ØŒ Ø£Ùˆ Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ø§Ù„Ø´Ø±ÙƒØ©. ÙŠÙ…ÙƒÙ†Ùƒ Ø§Ø®ØªÙŠØ§Ø± Â«ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙÂ».</small></div>`;
 }
 function bindManufacturerPicker() {
   manufacturerPickerController?.abort();
@@ -1303,9 +1303,9 @@ function bindManufacturerPicker() {
   const show = (query = input.value) => {
     const key = manufacturerSearchKey(query);
     const companies = PANEL_MANUFACTURERS.filter(([name, aliases]) => !key || [name, ...aliases].some((name) => manufacturerSearchKey(name).includes(key))).map(([name]) => ({ value: name, label: name }));
-    const unknown = { value: 'غير معروف', label: ui('غير معروف', 'Unknown') };
+    const unknown = { value: 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ', label: ui('ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ', 'Unknown') };
     matches = key ? [...companies, unknown] : [unknown, ...companies]; active = -1;
-    list.innerHTML = `${key && !companies.length && !isUnknownManufacturer(query) ? `<p class="manufacturer-no-results" role="status">${ui('يمكنك حفظ الاسم الذي كتبته، أو اختيار «غير معروف».', 'You can keep the name you entered, or choose “Unknown”.')}</p>` : ''}${matches.map((entry, index) => `<button type="button" tabindex="-1" role="option" class="manufacturer-option" id="manufacturer-option-${index}" data-manufacturer-index="${index}" aria-selected="false"><bdi>${escapeHtml(entry.label)}</bdi></button>`).join('')}`;
+    list.innerHTML = `${key && !companies.length && !isUnknownManufacturer(query) ? `<p class="manufacturer-no-results" role="status">${ui('ÙŠÙ…ÙƒÙ†Ùƒ Ø­ÙØ¸ Ø§Ù„Ø§Ø³Ù… Ø§Ù„Ø°ÙŠ ÙƒØªØ¨ØªÙ‡ØŒ Ø£Ùˆ Ø§Ø®ØªÙŠØ§Ø± Â«ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙÂ».', 'You can keep the name you entered, or choose â€œUnknownâ€.')}</p>` : ''}${matches.map((entry, index) => `<button type="button" tabindex="-1" role="option" class="manufacturer-option" id="manufacturer-option-${index}" data-manufacturer-index="${index}" aria-selected="false"><bdi>${escapeHtml(entry.label)}</bdi></button>`).join('')}`;
     list.hidden = false; input.setAttribute('aria-expanded', 'true'); toggle.setAttribute('aria-expanded', 'true'); input.removeAttribute('aria-activedescendant');
   };
   const activate = (index) => {
@@ -1342,12 +1342,12 @@ function bindManufacturerPicker() {
   document.addEventListener('pointerdown', (event) => { if (!picker.contains(event.target)) close(); }, options);
 }
 function renderRail() {
-  el('step-rail').innerHTML = STEPS.map((step, index) => `<div class="rail-step ${index === currentStep ? 'active' : ''} ${index < currentStep ? 'done' : ''}"><span class="rail-number">${index < currentStep ? '✓' : index + 1}</span><span><b>${step.short}</b><small>${step.title}</small></span></div>`).join('');
-  el('step-kicker').textContent = `الخطوة ${currentStep + 1} من ${STEPS.length}`;
+  el('step-rail').innerHTML = STEPS.map((step, index) => `<div class="rail-step ${index === currentStep ? 'active' : ''} ${index < currentStep ? 'done' : ''}"><span class="rail-number">${index < currentStep ? 'âœ“' : index + 1}</span><span><b>${step.short}</b><small>${step.title}</small></span></div>`).join('');
+  el('step-kicker').textContent = `Ø§Ù„Ø®Ø·ÙˆØ© ${currentStep + 1} Ù…Ù† ${STEPS.length}`;
   el('step-back').disabled = currentStep === 0;
   el('step-back').style.opacity = currentStep === 0 ? '.45' : '1';
-  el('step-next').innerHTML = currentStep === STEPS.length - 1 ? 'حفظ البيانات <span>✓</span>' : 'التالي <span>←</span>';
-  el('form-hint').textContent = currentStep === 3 ? 'تقديرات سياج إرشادية' : 'تستغرق أقل من دقيقتين';
+  el('step-next').innerHTML = currentStep === STEPS.length - 1 ? 'Ø­ÙØ¸ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª <span>âœ“</span>' : 'Ø§Ù„ØªØ§Ù„ÙŠ <span>â†</span>';
+  el('form-hint').textContent = currentStep === 3 ? 'ØªÙ‚Ø¯ÙŠØ±Ø§Øª Ø³ÙŠØ§Ø¬ Ø¥Ø±Ø´Ø§Ø¯ÙŠØ©' : 'ØªØ³ØªØºØ±Ù‚ Ø£Ù‚Ù„ Ù…Ù† Ø¯Ù‚ÙŠÙ‚ØªÙŠÙ†';
   const progress = el('wizard-progress-fill');
   if (progress) progress.style.width = `${Math.round(((currentStep + 1) / STEPS.length) * 100)}%`;
 }
@@ -1356,70 +1356,70 @@ function renderMedia(category) {
   const files = mediaFor(category);
   return `<div class="media-list">${files.map((item) => {
     const url = item.type.startsWith('image/') ? URL.createObjectURL(item.blob) : '';
-    return `<span class="media-chip">${url ? `<img class="upload-preview" src="${url}" alt="">` : '▣'}<span>${escapeHtml(item.name)}</span><button type="button" data-remove-media="${escapeHtml(item.id)}" aria-label="حذف ${escapeHtml(item.name)}">×</button></span>`;
+    return `<span class="media-chip">${url ? `<img class="upload-preview" src="${url}" alt="">` : 'â–£'}<span>${escapeHtml(item.name)}</span><button type="button" data-remove-media="${escapeHtml(item.id)}" aria-label="Ø­Ø°Ù ${escapeHtml(item.name)}">Ã—</button></span>`;
   }).join('')}</div>`;
 }
 function uploadBlock(category, title, detail, accept, multiple = false) {
-  return `<label class="upload-zone" data-drop-zone="${category}"><input type="file" data-upload="${category}" accept="${accept}" ${multiple ? 'multiple' : ''}><span class="upload-symbol">↑</span><b>${title}</b><small>${detail}</small></label>${renderMedia(category)}`;
+  return `<label class="upload-zone" data-drop-zone="${category}"><input type="file" data-upload="${category}" accept="${accept}" ${multiple ? 'multiple' : ''}><span class="upload-symbol">â†‘</span><b>${title}</b><small>${detail}</small></label>${renderMedia(category)}`;
 }
 function invoiceReviewMarkup() {
   if (!invoiceReview || invoiceReview.accountId !== currentAccount?.id) return '';
   const invoice = invoiceReview.invoice;
   const entries = [
-    ['totalAmount', 'قيمة الفاتورة', 'number', '.001'], ['consumptionKwh', 'استهلاك الطاقة', 'number', '.1'],
-    ['energyTariffPerKwh', 'التعرفة لكل kWh', 'number', '.0001'], ['billingMonth', 'شهر الفاتورة', 'month', ''],
-    ['currency', 'العملة', 'text', ''],
+    ['totalAmount', 'Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'number', '.001'], ['consumptionKwh', 'Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø§Ù„Ø·Ø§Ù‚Ø©', 'number', '.1'],
+    ['energyTariffPerKwh', 'Ø§Ù„ØªØ¹Ø±ÙØ© Ù„ÙƒÙ„ kWh', 'number', '.0001'], ['billingMonth', 'Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'month', ''],
+    ['currency', 'Ø§Ù„Ø¹Ù…Ù„Ø©', 'text', ''],
   ];
   const notices = [invoice.summary, ...(invoice.ambiguities || [])].filter((value) => typeof value === 'string' && value);
-  const charges = [['energyCharges', ui('رسوم الطاقة', 'Energy charges')], ['fixedCharges', ui('رسوم ثابتة', 'Fixed charges')], ['taxes', ui('الضرائب', 'Taxes')], ['otherCharges', ui('رسوم أخرى', 'Other charges')]];
-  return `<section class="invoice-review" aria-labelledby="invoice-review-title"><h3 id="invoice-review-title">راجع قراءة الفاتورة</h3><p>هذه قراءة آلية قابلة للخطأ. راجع الأرقام والعملة والشهر قبل استخدامها. الفاتورة وحدها لا تثبت خسارة الألواح.</p><p class="helper-text">${ui('الثقة في القراءة', 'Extraction confidence')}: ${confidenceText(invoice.confidence)}${invoice.documentReadable === false ? ` · ${ui('الفاتورة غير مقروءة بوضوح', 'The bill is not clearly readable')}` : ''}</p><p class="helper-text">${ui('الفترة الظاهرة في الفاتورة', 'Printed billing period')}: ${escapeHtml(invoice.billingStart || '—')} — ${escapeHtml(invoice.billingEnd || '—')}</p><div class="field-grid">${entries.map(([key, label, type, step]) => `<div class="field"><label for="invoice-review-${key}">${label}</label><input id="invoice-review-${key}" data-invoice-review="${key}" type="${type}" value="${escapeHtml(invoice[key] ?? '')}" ${type === 'number' ? `min="0" step="${step}"` : ''}></div>`).join('')}</div><div class="assessment-metrics">${charges.map(([key, label]) => assessmentMetric(label, assessmentValue(invoice[key], '', 3))).join('')}</div><p class="helper-text">${ui('تُستخدم فقط الحقول التي راجعتها أعلاه. إذا تركت مبلغ الفاتورة أو الاستهلاك أو التعرفة فارغاً، تُمسح قيمته السابقة. لا تُشتق تعرفة الطاقة من إجمالي الفاتورة لهذا الحساب الشهري.', 'Only the reviewed fields above are applied. Leaving amount, consumption or tariff blank clears its previous value. The monthly assessment does not derive an energy tariff from the bill total.')}</p>${notices.length ? `<ul class="assessment-notes">${notices.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul>` : ''}<div class="invoice-review-actions"><button type="button" class="button button-primary" id="apply-invoice">استخدام البيانات المراجعة</button><button type="button" class="button button-outline" id="cancel-invoice">إلغاء</button></div></section>`;
+  const charges = [['energyCharges', ui('Ø±Ø³ÙˆÙ… Ø§Ù„Ø·Ø§Ù‚Ø©', 'Energy charges')], ['fixedCharges', ui('Ø±Ø³ÙˆÙ… Ø«Ø§Ø¨ØªØ©', 'Fixed charges')], ['taxes', ui('Ø§Ù„Ø¶Ø±Ø§Ø¦Ø¨', 'Taxes')], ['otherCharges', ui('Ø±Ø³ÙˆÙ… Ø£Ø®Ø±Ù‰', 'Other charges')]];
+  return `<section class="invoice-review" aria-labelledby="invoice-review-title"><h3 id="invoice-review-title">Ø±Ø§Ø¬Ø¹ Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©</h3><p>Ù‡Ø°Ù‡ Ù‚Ø±Ø§Ø¡Ø© Ø¢Ù„ÙŠØ© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„Ø®Ø·Ø£. Ø±Ø§Ø¬Ø¹ Ø§Ù„Ø£Ø±Ù‚Ø§Ù… ÙˆØ§Ù„Ø¹Ù…Ù„Ø© ÙˆØ§Ù„Ø´Ù‡Ø± Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù…Ù‡Ø§. Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙˆØ­Ø¯Ù‡Ø§ Ù„Ø§ ØªØ«Ø¨Øª Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­.</p><p class="helper-text">${ui('Ø§Ù„Ø«Ù‚Ø© ÙÙŠ Ø§Ù„Ù‚Ø±Ø§Ø¡Ø©', 'Extraction confidence')}: ${confidenceText(invoice.confidence)}${invoice.documentReadable === false ? ` Â· ${ui('Ø§Ù„ÙØ§ØªÙˆØ±Ø© ØºÙŠØ± Ù…Ù‚Ø±ÙˆØ¡Ø© Ø¨ÙˆØ¶ÙˆØ­', 'The bill is not clearly readable')}` : ''}</p><p class="helper-text">${ui('Ø§Ù„ÙØªØ±Ø© Ø§Ù„Ø¸Ø§Ù‡Ø±Ø© ÙÙŠ Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'Printed billing period')}: ${escapeHtml(invoice.billingStart || 'â€”')} â€” ${escapeHtml(invoice.billingEnd || 'â€”')}</p><div class="field-grid">${entries.map(([key, label, type, step]) => `<div class="field"><label for="invoice-review-${key}">${label}</label><input id="invoice-review-${key}" data-invoice-review="${key}" type="${type}" value="${escapeHtml(invoice[key] ?? '')}" ${type === 'number' ? `min="0" step="${step}"` : ''}></div>`).join('')}</div><div class="assessment-metrics">${charges.map(([key, label]) => assessmentMetric(label, assessmentValue(invoice[key], '', 3))).join('')}</div><p class="helper-text">${ui('ØªÙØ³ØªØ®Ø¯Ù… ÙÙ‚Ø· Ø§Ù„Ø­Ù‚ÙˆÙ„ Ø§Ù„ØªÙŠ Ø±Ø§Ø¬Ø¹ØªÙ‡Ø§ Ø£Ø¹Ù„Ø§Ù‡. Ø¥Ø°Ø§ ØªØ±ÙƒØª Ù…Ø¨Ù„Øº Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø£Ùˆ Ø§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø£Ùˆ Ø§Ù„ØªØ¹Ø±ÙØ© ÙØ§Ø±ØºØ§Ù‹ØŒ ØªÙÙ…Ø³Ø­ Ù‚ÙŠÙ…ØªÙ‡ Ø§Ù„Ø³Ø§Ø¨Ù‚Ø©. Ù„Ø§ ØªÙØ´ØªÙ‚ ØªØ¹Ø±ÙØ© Ø§Ù„Ø·Ø§Ù‚Ø© Ù…Ù† Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„Ù‡Ø°Ø§ Ø§Ù„Ø­Ø³Ø§Ø¨ Ø§Ù„Ø´Ù‡Ø±ÙŠ.', 'Only the reviewed fields above are applied. Leaving amount, consumption or tariff blank clears its previous value. The monthly assessment does not derive an energy tariff from the bill total.')}</p>${notices.length ? `<ul class="assessment-notes">${notices.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul>` : ''}<div class="invoice-review-actions"><button type="button" class="button button-primary" id="apply-invoice">Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø±Ø§Ø¬Ø¹Ø©</button><button type="button" class="button button-outline" id="cancel-invoice">Ø¥Ù„ØºØ§Ø¡</button></div></section>`;
 }
 function renderCurrentStep() {
   renderRail(); const target = el('step-content');
   clearFormAlert();
   if (currentStep === 0) {
-    target.innerHTML = `<h2 class="step-title">${STEPS[0].title}</h2><p class="step-description">${STEPS[0].description}</p><button class="button button-outline weather-location-action" type="button" id="gps-button">⌖ استخدام موقعك الحالي</button><p class="gps-status${gpsNotice ? ` gps-${gpsNotice.type}` : ''}" id="gps-status" role="status" aria-live="polite" ${gpsNotice ? '' : 'hidden'}>${gpsNotice ? escapeHtml(gpsNoticeText(gpsNotice.code)) : ''}</p><div class="field-grid">
-      ${field('اسمك (اختياري)', 'name', { placeholder: 'مثال: مريم' })}
-      ${field('درجة حرارة الجو', 'ambientTemp', { type: 'number', suffix: '°م', placeholder: '35', min: '-10', max: '65', step: '0.1' })}
-      ${field('الرطوبة النسبية', 'humidity', { type: 'number', suffix: '%', placeholder: '45', min: '0', max: '100' })}
-      ${field('عدد الألواح', 'panels', { type: 'number', placeholder: '12', min: '1', max: '10000' })}
-      ${field('الغبار في الجو', 'airDustPercent', { type: 'range', min: '0', max: '100', hint: airDustHint(), full: true })}
-      <div class="field full"><span class="field-label">موقع النظام</span><div class="inline-search"><input id="city-search" class="field-input" placeholder="ابحث عن مدينة أو محافظة" value="${escapeHtml(state.form.location)}"><button class="button button-outline" type="button" id="city-search-button">بحث</button></div><div class="search-results" id="search-results"></div><small class="helper-text">الموقع الدقيق اختياري؛ استخدم GPS لجلب الطقس الأقرب.</small><div class="weather-prefill"><span>حالة الطقس الحالية</span><b id="wizard-weather-condition">${state.weather?.current ? weatherText(state.weather.current.weather_code) : 'تظهر بعد تحديد الموقع'}</b></div></div>
+    target.innerHTML = `<h2 class="step-title">${STEPS[0].title}</h2><p class="step-description">${STEPS[0].description}</p><button class="button button-outline weather-location-action" type="button" id="gps-button">âŒ– Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…ÙˆÙ‚Ø¹Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠ</button><p class="gps-status${gpsNotice ? ` gps-${gpsNotice.type}` : ''}" id="gps-status" role="status" aria-live="polite" ${gpsNotice ? '' : 'hidden'}>${gpsNotice ? escapeHtml(gpsNoticeText(gpsNotice.code)) : ''}</p><div class="field-grid">
+      ${field('Ø§Ø³Ù…Ùƒ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'name', { placeholder: 'Ù…Ø«Ø§Ù„: Ù…Ø±ÙŠÙ…' })}
+      ${field('Ø¯Ø±Ø¬Ø© Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ', 'ambientTemp', { type: 'number', suffix: 'Â°Ù…', placeholder: '35', min: '-10', max: '65', step: '0.1' })}
+      ${field('Ø§Ù„Ø±Ø·ÙˆØ¨Ø© Ø§Ù„Ù†Ø³Ø¨ÙŠØ©', 'humidity', { type: 'number', suffix: '%', placeholder: '45', min: '0', max: '100' })}
+      ${field('Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'panels', { type: 'number', placeholder: '12', min: '1', max: '10000' })}
+      ${field('Ø§Ù„ØºØ¨Ø§Ø± ÙÙŠ Ø§Ù„Ø¬Ùˆ', 'airDustPercent', { type: 'range', min: '0', max: '100', hint: airDustHint(), full: true })}
+      <div class="field full"><span class="field-label">Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù…</span><div class="inline-search"><input id="city-search" class="field-input" placeholder="Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†Ø© Ø£Ùˆ Ù…Ø­Ø§ÙØ¸Ø©" value="${escapeHtml(state.form.location)}"><button class="button button-outline" type="button" id="city-search-button">Ø¨Ø­Ø«</button></div><div class="search-results" id="search-results"></div><small class="helper-text">Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ø¯Ù‚ÙŠÙ‚ Ø§Ø®ØªÙŠØ§Ø±ÙŠØ› Ø§Ø³ØªØ®Ø¯Ù… GPS Ù„Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø£Ù‚Ø±Ø¨.</small><div class="weather-prefill"><span>Ø­Ø§Ù„Ø© Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø­Ø§Ù„ÙŠØ©</span><b id="wizard-weather-condition">${state.weather?.current ? weatherText(state.weather.current.weather_code) : 'ØªØ¸Ù‡Ø± Ø¨Ø¹Ø¯ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹'}</b></div></div>
       </div>`;
   } else if (currentStep === 1) {
     target.innerHTML = `<h2 class="step-title">${STEPS[1].title}</h2><p class="step-description">${STEPS[1].description}</p><div class="field-grid">
-      ${field('القدرة الإجمالية للنظام', 'power', { type: 'number', suffix: 'واط', placeholder: '5000', min: '1' })}
+      ${field('Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù†Ø¸Ø§Ù…', 'power', { type: 'number', suffix: 'ÙˆØ§Ø·', placeholder: '5000', min: '1' })}
       ${manufacturerField()}
-      ${field('اسم شركة الألواح', 'company', { placeholder: 'مثال: شركة النور للطاقة الشمسية', hint: ui('اكتب اسم الشركة المصنّعة أو المورّد كما يظهر في فاتورة الشراء (اختياري).', 'Enter the manufacturer or supplier name as shown on the purchase invoice (optional).') })}
-      ${field('آخر صيانة للألواح', 'lastMaintenanceAt', { type: 'date', max: todayIsoDate(), hint: ui('تاريخ آخر صيانة أو تنظيف شامل. منه نحسب الصيانة القادمة كل 6 أشهر وننبّهك قبل موعدها.', 'Date of the last maintenance or deep clean. We use it to schedule the next maintenance every 6 months and remind you before it is due.') })}
-      ${field('ميل الألواح عن الأفقي', 'tilt', { type: 'number', suffix: '°', placeholder: '20', min: '0', max: '90' })}
-      ${field('اتجاه واجهة الألواح (اختياري)', 'panelAzimuth', { type: 'number', suffix: '°', placeholder: '180', min: '0', max: '360', step: '1', hint: '0° شمال · 90° شرق · 180° جنوب · 270° غرب. أدخل قراءة بوصلة للواجهة التي تواجه الشمس.' })}
-      ${field('وقت تصوير الألواح', 'captureAt', { type: 'datetime-local', hint: 'وقت محلي تختاره؛ لا نستخرجه من الفيديو. يلزم الموقع والميل والاتجاه والوقت لحساب زاوية الشمس.', full: true })}
-      <div class="field full"><button class="text-button" type="button" id="capture-now">${ui('استخدام الوقت الحالي إذا صوّرت الآن', 'Use the current time if you filmed just now')}</button></div>
+      ${field('Ø§Ø³Ù… Ø´Ø±ÙƒØ© Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'company', { placeholder: 'Ù…Ø«Ø§Ù„: Ø´Ø±ÙƒØ© Ø§Ù„Ù†ÙˆØ± Ù„Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ø´Ù…Ø³ÙŠØ©', hint: ui('Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ø§Ù„Ø´Ø±ÙƒØ© Ø§Ù„Ù…ØµÙ†Ù‘Ø¹Ø© Ø£Ùˆ Ø§Ù„Ù…ÙˆØ±Ù‘Ø¯ ÙƒÙ…Ø§ ÙŠØ¸Ù‡Ø± ÙÙŠ ÙØ§ØªÙˆØ±Ø© Ø§Ù„Ø´Ø±Ø§Ø¡ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ).', 'Enter the manufacturer or supplier name as shown on the purchase invoice (optional).') })}
+      ${field('Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ù„Ù„Ø£Ù„ÙˆØ§Ø­', 'lastMaintenanceAt', { type: 'date', max: todayIsoDate(), hint: ui('ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ø£Ùˆ ØªÙ†Ø¸ÙŠÙ Ø´Ø§Ù…Ù„. Ù…Ù†Ù‡ Ù†Ø­Ø³Ø¨ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø© ÙƒÙ„ 6 Ø£Ø´Ù‡Ø± ÙˆÙ†Ù†Ø¨Ù‘Ù‡Ùƒ Ù‚Ø¨Ù„ Ù…ÙˆØ¹Ø¯Ù‡Ø§.', 'Date of the last maintenance or deep clean. We use it to schedule the next maintenance every 6 months and remind you before it is due.') })}
+      ${field('Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¹Ù† Ø§Ù„Ø£ÙÙ‚ÙŠ', 'tilt', { type: 'number', suffix: 'Â°', placeholder: '20', min: '0', max: '90' })}
+      ${field('Ø§ØªØ¬Ø§Ù‡ ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'panelAzimuth', { type: 'number', suffix: 'Â°', placeholder: '180', min: '0', max: '360', step: '1', hint: '0Â° Ø´Ù…Ø§Ù„ Â· 90Â° Ø´Ø±Ù‚ Â· 180Â° Ø¬Ù†ÙˆØ¨ Â· 270Â° ØºØ±Ø¨. Ø£Ø¯Ø®Ù„ Ù‚Ø±Ø§Ø¡Ø© Ø¨ÙˆØµÙ„Ø© Ù„Ù„ÙˆØ§Ø¬Ù‡Ø© Ø§Ù„ØªÙŠ ØªÙˆØ§Ø¬Ù‡ Ø§Ù„Ø´Ù…Ø³.' })}
+      ${field('ÙˆÙ‚Øª ØªØµÙˆÙŠØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'captureAt', { type: 'datetime-local', hint: 'ÙˆÙ‚Øª Ù…Ø­Ù„ÙŠ ØªØ®ØªØ§Ø±Ù‡Ø› Ù„Ø§ Ù†Ø³ØªØ®Ø±Ø¬Ù‡ Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆ. ÙŠÙ„Ø²Ù… Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆØ§Ù„Ù…ÙŠÙ„ ÙˆØ§Ù„Ø§ØªØ¬Ø§Ù‡ ÙˆØ§Ù„ÙˆÙ‚Øª Ù„Ø­Ø³Ø§Ø¨ Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ø´Ù…Ø³.', full: true })}
+      <div class="field full"><button class="text-button" type="button" id="capture-now">${ui('Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„ÙˆÙ‚Øª Ø§Ù„Ø­Ø§Ù„ÙŠ Ø¥Ø°Ø§ ØµÙˆÙ‘Ø±Øª Ø§Ù„Ø¢Ù†', 'Use the current time if you filmed just now')}</button></div>
       <div id="tilt-warning-slot" class="field full">${tiltWarningMarkup()}</div>
-      ${selectField('نوع الألواح', 'panelType', [['monocrystalline', 'أحادية البلورة'], ['polycrystalline', 'متعددة البلورات'], ['thin-film', 'أغشية رقيقة'], ['unknown', 'غير معروف']])}
-      ${field('كفاءة اللوح (اختياري)', 'efficiency', { type: 'number', suffix: '%', placeholder: '21', min: '1', max: '40', step: '.1' })}
-      ${field('معامل الحرارة (اختياري)', 'coefficient', { type: 'number', suffix: '%/°م', placeholder: '-0.35', step: '.01', hint: 'غالباً بين ‎-0.25 و‎-0.50 لكل درجة.' })}
-      ${field('قدرة اللوح الواحد (اختياري)', 'ratedPower', { type: 'number', suffix: 'واط', placeholder: '450', min: '1' })}
-      <div class="field full"><span class="field-label">صورة أو فيديو للألواح</span>${uploadBlock('panels', 'أضف صورة أو مقطعاً قصيراً', 'صورة واضحة أو فيديو من 5 إلى 10 ثوانٍ · حتى 6 ملفات، 25 ميغابايت للملف', 'image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm', true)}<small class="helper-text">يفحص Claude صوراً ولقطات مختارة من المقاطع، حتى 8 صور في الطلب. لا يفحص الصوت أو كل إطارات الفيديو.</small><small class="helper-text">لا يمكن قياس حرارة السطح أو زاوية الميل الدقيقة من صورة عادية؛ يعتمد الحساب على البيانات التي تدخلها والطقس.</small><small class="helper-text">تُرسل الصور واللقطات إلى Anthropic فقط عند ضغط «تحليل الألواح باستخدام Claude».</small>${claudeAvailabilityMarkup()}</div>
+      ${selectField('Ù†ÙˆØ¹ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'panelType', [['monocrystalline', 'Ø£Ø­Ø§Ø¯ÙŠØ© Ø§Ù„Ø¨Ù„ÙˆØ±Ø©'], ['polycrystalline', 'Ù…ØªØ¹Ø¯Ø¯Ø© Ø§Ù„Ø¨Ù„ÙˆØ±Ø§Øª'], ['thin-film', 'Ø£ØºØ´ÙŠØ© Ø±Ù‚ÙŠÙ‚Ø©'], ['unknown', 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ']])}
+      ${field('ÙƒÙØ§Ø¡Ø© Ø§Ù„Ù„ÙˆØ­ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'efficiency', { type: 'number', suffix: '%', placeholder: '21', min: '1', max: '40', step: '.1' })}
+      ${field('Ù…Ø¹Ø§Ù…Ù„ Ø§Ù„Ø­Ø±Ø§Ø±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'coefficient', { type: 'number', suffix: '%/Â°Ù…', placeholder: '-0.35', step: '.01', hint: 'ØºØ§Ù„Ø¨Ø§Ù‹ Ø¨ÙŠÙ† â€Ž-0.25 Ùˆâ€Ž-0.50 Ù„ÙƒÙ„ Ø¯Ø±Ø¬Ø©.' })}
+      ${field('Ù‚Ø¯Ø±Ø© Ø§Ù„Ù„ÙˆØ­ Ø§Ù„ÙˆØ§Ø­Ø¯ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'ratedPower', { type: 'number', suffix: 'ÙˆØ§Ø·', placeholder: '450', min: '1' })}
+      <div class="field full"><span class="field-label">ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­</span>${uploadBlock('panels', 'Ø£Ø¶Ù ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù‚ØµÙŠØ±Ø§Ù‹', 'ØµÙˆØ±Ø© ÙˆØ§Ø¶Ø­Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ù† 5 Ø¥Ù„Ù‰ 10 Ø«ÙˆØ§Ù†Ù Â· Ø­ØªÙ‰ 6 Ù…Ù„ÙØ§ØªØŒ 25 Ù…ÙŠØºØ§Ø¨Ø§ÙŠØª Ù„Ù„Ù…Ù„Ù', 'image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm', true)}<small class="helper-text">ÙŠÙØ­Øµ Claude ØµÙˆØ±Ø§Ù‹ ÙˆÙ„Ù‚Ø·Ø§Øª Ù…Ø®ØªØ§Ø±Ø© Ù…Ù† Ø§Ù„Ù…Ù‚Ø§Ø·Ø¹ØŒ Ø­ØªÙ‰ 8 ØµÙˆØ± ÙÙŠ Ø§Ù„Ø·Ù„Ø¨. Ù„Ø§ ÙŠÙØ­Øµ Ø§Ù„ØµÙˆØª Ø£Ùˆ ÙƒÙ„ Ø¥Ø·Ø§Ø±Ø§Øª Ø§Ù„ÙÙŠØ¯ÙŠÙˆ.</small><small class="helper-text">Ù„Ø§ ÙŠÙ…ÙƒÙ† Ù‚ÙŠØ§Ø³ Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø³Ø·Ø­ Ø£Ùˆ Ø²Ø§ÙˆÙŠØ© Ø§Ù„Ù…ÙŠÙ„ Ø§Ù„Ø¯Ù‚ÙŠÙ‚Ø© Ù…Ù† ØµÙˆØ±Ø© Ø¹Ø§Ø¯ÙŠØ©Ø› ÙŠØ¹ØªÙ…Ø¯ Ø§Ù„Ø­Ø³Ø§Ø¨ Ø¹Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙŠ ØªØ¯Ø®Ù„Ù‡Ø§ ÙˆØ§Ù„Ø·Ù‚Ø³.</small><small class="helper-text">ØªÙØ±Ø³Ù„ Ø§Ù„ØµÙˆØ± ÙˆØ§Ù„Ù„Ù‚Ø·Ø§Øª Ø¥Ù„Ù‰ Anthropic ÙÙ‚Ø· Ø¹Ù†Ø¯ Ø¶ØºØ· Â«ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… ClaudeÂ».</small>${claudeAvailabilityMarkup()}</div>
       </div>`;
   } else if (currentStep === 2) {
     target.innerHTML = `<h2 class="step-title">${STEPS[2].title}</h2><p class="step-description">${STEPS[2].description}</p><div class="field-grid">
-      ${field('قيمة الفاتورة', 'invoice', { type: 'number', suffix: 'ر.ع', placeholder: '25.000', min: '0', step: '.001' })}
-      ${field('الاستهلاك من الفاتورة (اختياري)', 'consumption', { type: 'number', suffix: 'kWh', placeholder: '950', min: '0', step: '.1', hint: 'إن توفر، نستخدمه لاشتقاق تعرفة الكهرباء التقريبية.' })}
-      ${field('تعرفة الكهرباء (اختياري)', 'tariff', { type: 'number', suffix: 'ر.ع/kWh', placeholder: 'مثال: 0.025', min: '0', step: '.001', hint: ui('أدخل سعر وحدة الطاقة فقط، دون الرسوم والضرائب؛ يلزم لحساب قيمة خسارة الشهر.', 'Enter the energy unit rate excluding fees and taxes; this is needed to value the monthly deficit.') })}
-      ${field('شهر الفاتورة', 'billMonth', { type: 'month' })}
-      ${field('إنتاج متوقع للشهر (اختياري)', 'expectedMonthlyKwh', { type: 'number', suffix: 'kWh', min: '0', step: '.1', hint: 'استخدم خط أساس موثوقاً للنظام. يجب أن يغطي الإنتاج المتوقع والفعلي الفترة نفسها.' })}
-      ${field('إنتاج فعلي للشهر (اختياري)', 'actualMonthlyKwh', { type: 'number', suffix: 'kWh', min: '0', step: '.1', hint: 'قراءة عدّاد الإنتاج أو العاكس؛ استهلاك الفاتورة ليس إنتاج الألواح.' })}
-      <p class="helper-text field full">${ui('للشهر الحالي: أدخل الإنتاج حتى نهاية أمس في الحقلين. للأشهر الماضية: أدخل إجمالي الشهر الكامل.', 'For the current month, enter generation through the end of yesterday in both fields. For past months, enter full-month totals.')}</p>
-      <div class="field full"><span class="field-label">صورة الفاتورة (اختياري)</span>${uploadBlock('bill', 'أرفق صورة الفاتورة', ui('JPG أو PNG أو WEBP · حتى 25 ميغابايت', 'JPG, PNG or WEBP · up to 25 MB'), 'image/jpeg,image/png,image/webp')}<p class="helper-text">قد تتضمن الفاتورة بيانات شخصية؛ احجب ما لا يلزم. لن تُرسل إلى Anthropic إلا عند ضغط زر تحليل الفاتورة.</p>${claudeAvailabilityMarkup()}<button class="button button-outline invoice-ai-button" type="button" id="analyze-invoice" aria-busy="${invoiceBusy}" ${invoiceBusy || claudeEnabled !== true || !mediaFor('bill').length ? 'disabled' : ''}>${invoiceBusy ? 'جارٍ قراءة الفاتورة…' : 'تحليل الفاتورة باستخدام Ai'}</button>${invoiceReviewMarkup()}</div>
+      ${field('Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'invoice', { type: 'number', suffix: 'Ø±.Ø¹', placeholder: '25.000', min: '0', step: '.001' })}
+      ${field('Ø§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'consumption', { type: 'number', suffix: 'kWh', placeholder: '950', min: '0', step: '.1', hint: 'Ø¥Ù† ØªÙˆÙØ±ØŒ Ù†Ø³ØªØ®Ø¯Ù…Ù‡ Ù„Ø§Ø´ØªÙ‚Ø§Ù‚ ØªØ¹Ø±ÙØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ Ø§Ù„ØªÙ‚Ø±ÙŠØ¨ÙŠØ©.' })}
+      ${field('ØªØ¹Ø±ÙØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'tariff', { type: 'number', suffix: 'Ø±.Ø¹/kWh', placeholder: 'Ù…Ø«Ø§Ù„: 0.025', min: '0', step: '.001', hint: ui('Ø£Ø¯Ø®Ù„ Ø³Ø¹Ø± ÙˆØ­Ø¯Ø© Ø§Ù„Ø·Ø§Ù‚Ø© ÙÙ‚Ø·ØŒ Ø¯ÙˆÙ† Ø§Ù„Ø±Ø³ÙˆÙ… ÙˆØ§Ù„Ø¶Ø±Ø§Ø¦Ø¨Ø› ÙŠÙ„Ø²Ù… Ù„Ø­Ø³Ø§Ø¨ Ù‚ÙŠÙ…Ø© Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±.', 'Enter the energy unit rate excluding fees and taxes; this is needed to value the monthly deficit.') })}
+      ${field('Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'billMonth', { type: 'month' })}
+      ${field('Ø¥Ù†ØªØ§Ø¬ Ù…ØªÙˆÙ‚Ø¹ Ù„Ù„Ø´Ù‡Ø± (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'expectedMonthlyKwh', { type: 'number', suffix: 'kWh', min: '0', step: '.1', hint: 'Ø§Ø³ØªØ®Ø¯Ù… Ø®Ø· Ø£Ø³Ø§Ø³ Ù…ÙˆØ«ÙˆÙ‚Ø§Ù‹ Ù„Ù„Ù†Ø¸Ø§Ù…. ÙŠØ¬Ø¨ Ø£Ù† ÙŠØºØ·ÙŠ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ Ø§Ù„ÙØªØ±Ø© Ù†ÙØ³Ù‡Ø§.' })}
+      ${field('Ø¥Ù†ØªØ§Ø¬ ÙØ¹Ù„ÙŠ Ù„Ù„Ø´Ù‡Ø± (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)', 'actualMonthlyKwh', { type: 'number', suffix: 'kWh', min: '0', step: '.1', hint: 'Ù‚Ø±Ø§Ø¡Ø© Ø¹Ø¯Ù‘Ø§Ø¯ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø£Ùˆ Ø§Ù„Ø¹Ø§ÙƒØ³Ø› Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„ÙŠØ³ Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.' })}
+      <p class="helper-text field full">${ui('Ù„Ù„Ø´Ù‡Ø± Ø§Ù„Ø­Ø§Ù„ÙŠ: Ø£Ø¯Ø®Ù„ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø­ØªÙ‰ Ù†Ù‡Ø§ÙŠØ© Ø£Ù…Ø³ ÙÙŠ Ø§Ù„Ø­Ù‚Ù„ÙŠÙ†. Ù„Ù„Ø£Ø´Ù‡Ø± Ø§Ù„Ù…Ø§Ø¶ÙŠØ©: Ø£Ø¯Ø®Ù„ Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„Ø´Ù‡Ø± Ø§Ù„ÙƒØ§Ù…Ù„.', 'For the current month, enter generation through the end of yesterday in both fields. For past months, enter full-month totals.')}</p>
+      <div class="field full"><span class="field-label">ØµÙˆØ±Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© (Ø§Ø®ØªÙŠØ§Ø±ÙŠ)</span>${uploadBlock('bill', 'Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©', ui('JPG Ø£Ùˆ PNG Ø£Ùˆ WEBP Â· Ø­ØªÙ‰ 25 Ù…ÙŠØºØ§Ø¨Ø§ÙŠØª', 'JPG, PNG or WEBP Â· up to 25 MB'), 'image/jpeg,image/png,image/webp')}<p class="helper-text">Ù‚Ø¯ ØªØªØ¶Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¨ÙŠØ§Ù†Ø§Øª Ø´Ø®ØµÙŠØ©Ø› Ø§Ø­Ø¬Ø¨ Ù…Ø§ Ù„Ø§ ÙŠÙ„Ø²Ù…. Ù„Ù† ØªÙØ±Ø³Ù„ Ø¥Ù„Ù‰ Anthropic Ø¥Ù„Ø§ Ø¹Ù†Ø¯ Ø¶ØºØ· Ø²Ø± ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø©.</p>${claudeAvailabilityMarkup()}<button class="button button-outline invoice-ai-button" type="button" id="analyze-invoice" aria-busy="${invoiceBusy}" ${invoiceBusy || claudeEnabled !== true || !mediaFor('bill').length ? 'disabled' : ''}>${invoiceBusy ? 'Ø¬Ø§Ø±Ù Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©â€¦' : 'ØªØ­Ù„ÙŠÙ„ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ai'}</button>${invoiceReviewMarkup()}</div>
       </div>`;
   } else {
     const f = state.form; const attachments = mediaFor('panels').length;
     const reviewLocale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
     const reviewMaintenance = parseIsoDate(f.lastMaintenanceAt);
-    const summary = [['اسم صاحب النظام', f.name || '—'], ['الموقع', f.location || 'غير محدد'], ['عدد الألواح', f.panels ? `${f.panels} لوح` : '—'], ['القدرة الإجمالية', f.power ? `${f.power} واط` : '—'], ['النوع', ({ monocrystalline: 'أحادية البلورة', polycrystalline: 'متعددة البلورات', 'thin-film': 'أغشية رقيقة', unknown: 'غير معروف' })[f.panelType]], ['شركة الألواح', f.company || '—'], ['آخر صيانة', reviewMaintenance ? maintenanceDateLabel(reviewMaintenance, reviewLocale) : 'لم تُسجل'], ['الفاتورة الشهرية', f.invoice ? `${f.invoice} ر.ع` : 'لم تُضف'], ['شهر الفاتورة', f.billMonth || '—'], ['المرفقات', attachments ? `${attachments} ملف للألواح` : 'لا توجد صورة/فيديو']];
-    target.innerHTML = `<h2 class="step-title">${STEPS[3].title}</h2><p class="step-description">${STEPS[3].description}</p><div class="confirmation-grid">${summary.map(([label, value]) => `<div class="confirm-card"><small>${label}</small><b>${escapeHtml(value)}</b></div>`).join('')}</div><div class="confirmation-callout">${ui('حفظ البيانات يحسب تقدير الإدخالات والشهر. يمكنك بعد الحفظ طلب فحص Claude من الزر المخصص في الرئيسية. نسبة التغطية المرئية لا تساوي نسبة خسارة الطاقة؛ حساب خسارة الشهر يحتاج إنتاجاً فعلياً وخط أساس متوقعاً أو تقديراً من طقس الفترة.', 'Saving details calculates the input estimate and monthly assessment. After saving, request Claude from its button on the home page. Visible coverage is not energy loss; monthly losses need actual generation and an expected baseline or a period weather model.')} ${attachments ? 'تُرسل الصور واللقطات إلى Anthropic فقط عند ضغط «تحليل الألواح باستخدام Claude».' : 'أضف صورة للألواح في الخطوة السابقة لتفعيل التحليل البصري.'}</div>${claudeAvailabilityMarkup()}`;
+    const summary = [['Ø§Ø³Ù… ØµØ§Ø­Ø¨ Ø§Ù„Ù†Ø¸Ø§Ù…', f.name || 'â€”'], ['Ø§Ù„Ù…ÙˆÙ‚Ø¹', f.location || 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯'], ['Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', f.panels ? `${f.panels} Ù„ÙˆØ­` : 'â€”'], ['Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ©', f.power ? `${f.power} ÙˆØ§Ø·` : 'â€”'], ['Ø§Ù„Ù†ÙˆØ¹', ({ monocrystalline: 'Ø£Ø­Ø§Ø¯ÙŠØ© Ø§Ù„Ø¨Ù„ÙˆØ±Ø©', polycrystalline: 'Ù…ØªØ¹Ø¯Ø¯Ø© Ø§Ù„Ø¨Ù„ÙˆØ±Ø§Øª', 'thin-film': 'Ø£ØºØ´ÙŠØ© Ø±Ù‚ÙŠÙ‚Ø©', unknown: 'ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ' })[f.panelType]], ['Ø´Ø±ÙƒØ© Ø§Ù„Ø£Ù„ÙˆØ§Ø­', f.company || 'â€”'], ['Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©', reviewMaintenance ? maintenanceDateLabel(reviewMaintenance, reviewLocale) : 'Ù„Ù… ØªÙØ³Ø¬Ù„'], ['Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø§Ù„Ø´Ù‡Ø±ÙŠØ©', f.invoice ? `${f.invoice} Ø±.Ø¹` : 'Ù„Ù… ØªÙØ¶Ù'], ['Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø©', f.billMonth || 'â€”'], ['Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª', attachments ? `${attachments} Ù…Ù„Ù Ù„Ù„Ø£Ù„ÙˆØ§Ø­` : 'Ù„Ø§ ØªÙˆØ¬Ø¯ ØµÙˆØ±Ø©/ÙÙŠØ¯ÙŠÙˆ']];
+    target.innerHTML = `<h2 class="step-title">${STEPS[3].title}</h2><p class="step-description">${STEPS[3].description}</p><div class="confirmation-grid">${summary.map(([label, value]) => `<div class="confirm-card"><small>${label}</small><b>${escapeHtml(value)}</b></div>`).join('')}</div><div class="confirmation-callout">${ui('Ø­ÙØ¸ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙŠØ­Ø³Ø¨ ØªÙ‚Ø¯ÙŠØ± Ø§Ù„Ø¥Ø¯Ø®Ø§Ù„Ø§Øª ÙˆØ§Ù„Ø´Ù‡Ø±. ÙŠÙ…ÙƒÙ†Ùƒ Ø¨Ø¹Ø¯ Ø§Ù„Ø­ÙØ¸ Ø·Ù„Ø¨ ÙØ­Øµ Claude Ù…Ù† Ø§Ù„Ø²Ø± Ø§Ù„Ù…Ø®ØµØµ ÙÙŠ Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©. Ù†Ø³Ø¨Ø© Ø§Ù„ØªØºØ·ÙŠØ© Ø§Ù„Ù…Ø±Ø¦ÙŠØ© Ù„Ø§ ØªØ³Ø§ÙˆÙŠ Ù†Ø³Ø¨Ø© Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø©Ø› Ø­Ø³Ø§Ø¨ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø± ÙŠØ­ØªØ§Ø¬ Ø¥Ù†ØªØ§Ø¬Ø§Ù‹ ÙØ¹Ù„ÙŠØ§Ù‹ ÙˆØ®Ø· Ø£Ø³Ø§Ø³ Ù…ØªÙˆÙ‚Ø¹Ø§Ù‹ Ø£Ùˆ ØªÙ‚Ø¯ÙŠØ±Ø§Ù‹ Ù…Ù† Ø·Ù‚Ø³ Ø§Ù„ÙØªØ±Ø©.', 'Saving details calculates the input estimate and monthly assessment. After saving, request Claude from its button on the home page. Visible coverage is not energy loss; monthly losses need actual generation and an expected baseline or a period weather model.')} ${attachments ? 'ØªÙØ±Ø³Ù„ Ø§Ù„ØµÙˆØ± ÙˆØ§Ù„Ù„Ù‚Ø·Ø§Øª Ø¥Ù„Ù‰ Anthropic ÙÙ‚Ø· Ø¹Ù†Ø¯ Ø¶ØºØ· Â«ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… ClaudeÂ».' : 'Ø£Ø¶Ù ØµÙˆØ±Ø© Ù„Ù„Ø£Ù„ÙˆØ§Ø­ ÙÙŠ Ø§Ù„Ø®Ø·ÙˆØ© Ø§Ù„Ø³Ø§Ø¨Ù‚Ø© Ù„ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¨ØµØ±ÙŠ.'}</div>${claudeAvailabilityMarkup()}`;
   }
   target.querySelectorAll('[data-field]').forEach((input) => input.addEventListener('input', () => saveFormField(input)));
   target.querySelectorAll('[data-field]').forEach((input) => input.addEventListener('change', () => saveFormField(input)));
@@ -1482,13 +1482,13 @@ function showStepError(key, message) {
 }
 function gpsNoticeText(code) {
   const messages = {
-    unsupported: ['متصفحك لا يدعم تحديد الموقع؛ ابحث عن مدينتك من حقل البحث بالأسفل.', 'Your browser does not support location; search for your city below.'],
-    insecure: ['تحديد الموقع يحتاج اتصالاً آمناً (HTTPS). ابحث عن مدينتك من حقل البحث بالأسفل.', 'Location needs a secure connection (HTTPS). Search for your city below.'],
-    denied: ['تم رفض إذن الموقع. فعّل الإذن من إعدادات المتصفح ثم أعد المحاولة، أو ابحث عن مدينتك.', 'Location permission was denied. Allow it in your browser settings and retry, or search for your city.'],
-    unavailable: ['تعذر تحديد موقعك الآن. جرّب مرة أخرى أو ابحث عن مدينتك.', 'Could not determine your location now. Try again or search for your city.'],
-    timeout: ['استغرق تحديد الموقع وقتاً طويلاً. جرّب مرة أخرى في مكان مكشوف.', 'Locating took too long. Try again in an open area.'],
-    busy: ['جارٍ تحديد موقعك وتحديث الطقس…', 'Getting your location and updating weather…'],
-    granted: ['تم تحديد موقعك وتحديث الطقس بنجاح.', 'Location set and weather updated successfully.'],
+    unsupported: ['Ù…ØªØµÙØ­Ùƒ Ù„Ø§ ÙŠØ¯Ø¹Ù… ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹Ø› Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†ØªÙƒ Ù…Ù† Ø­Ù‚Ù„ Ø§Ù„Ø¨Ø­Ø« Ø¨Ø§Ù„Ø£Ø³ÙÙ„.', 'Your browser does not support location; search for your city below.'],
+    insecure: ['ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙŠØ­ØªØ§Ø¬ Ø§ØªØµØ§Ù„Ø§Ù‹ Ø¢Ù…Ù†Ø§Ù‹ (HTTPS). Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†ØªÙƒ Ù…Ù† Ø­Ù‚Ù„ Ø§Ù„Ø¨Ø­Ø« Ø¨Ø§Ù„Ø£Ø³ÙÙ„.', 'Location needs a secure connection (HTTPS). Search for your city below.'],
+    denied: ['ØªÙ… Ø±ÙØ¶ Ø¥Ø°Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹. ÙØ¹Ù‘Ù„ Ø§Ù„Ø¥Ø°Ù† Ù…Ù† Ø¥Ø¹Ø¯Ø§Ø¯Ø§Øª Ø§Ù„Ù…ØªØµÙØ­ Ø«Ù… Ø£Ø¹Ø¯ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø©ØŒ Ø£Ùˆ Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†ØªÙƒ.', 'Location permission was denied. Allow it in your browser settings and retry, or search for your city.'],
+    unavailable: ['ØªØ¹Ø°Ø± ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹Ùƒ Ø§Ù„Ø¢Ù†. Ø¬Ø±Ù‘Ø¨ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰ Ø£Ùˆ Ø§Ø¨Ø­Ø« Ø¹Ù† Ù…Ø¯ÙŠÙ†ØªÙƒ.', 'Could not determine your location now. Try again or search for your city.'],
+    timeout: ['Ø§Ø³ØªØºØ±Ù‚ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆÙ‚ØªØ§Ù‹ Ø·ÙˆÙŠÙ„Ø§Ù‹. Ø¬Ø±Ù‘Ø¨ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰ ÙÙŠ Ù…ÙƒØ§Ù† Ù…ÙƒØ´ÙˆÙ.', 'Locating took too long. Try again in an open area.'],
+    busy: ['Ø¬Ø§Ø±Ù ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹Ùƒ ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³â€¦', 'Getting your location and updating weatherâ€¦'],
+    granted: ['ØªÙ… ØªØ­Ø¯ÙŠØ¯ Ù…ÙˆÙ‚Ø¹Ùƒ ÙˆØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³ Ø¨Ù†Ø¬Ø§Ø­.', 'Location set and weather updated successfully.'],
   };
   return messages[code] ? ui(...messages[code]) : '';
 }
@@ -1505,17 +1505,17 @@ function validateStep() {
   const f = state.form;
   const invalid = (key, message) => { showStepError(key, message); return false; };
   if (currentStep === 0) {
-    if (!f.panels || Number(f.panels) < 1) return invalid('panels', 'أدخل عدد الألواح أولاً.');
-    if (f.ambientTemp !== '' && (Number(f.ambientTemp) < -10 || Number(f.ambientTemp) > 65)) return invalid('ambientTemp', 'تأكد من درجة حرارة الجو.');
-    if (f.humidity !== '' && (Number(f.humidity) < 0 || Number(f.humidity) > 100)) return invalid('humidity', 'الرطوبة يجب أن تكون بين 0 و100%.');
+    if (!f.panels || Number(f.panels) < 1) return invalid('panels', 'Ø£Ø¯Ø®Ù„ Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£ÙˆÙ„Ø§Ù‹.');
+    if (f.ambientTemp !== '' && (Number(f.ambientTemp) < -10 || Number(f.ambientTemp) > 65)) return invalid('ambientTemp', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø¯Ø±Ø¬Ø© Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ.');
+    if (f.humidity !== '' && (Number(f.humidity) < 0 || Number(f.humidity) > 100)) return invalid('humidity', 'Ø§Ù„Ø±Ø·ÙˆØ¨Ø© ÙŠØ¬Ø¨ Ø£Ù† ØªÙƒÙˆÙ† Ø¨ÙŠÙ† 0 Ùˆ100%.');
   }
-  if (currentStep === 1 && (!f.power || Number(f.power) <= 0)) return invalid('power', 'أدخل القدرة الإجمالية للنظام.');
-  if (currentStep === 1 && f.tilt !== '' && (!Number.isFinite(Number(f.tilt)) || Number(f.tilt) < 0 || Number(f.tilt) > 90)) return invalid('tilt', 'تأكد من الميل بين 0 و90 درجة.');
-  if (currentStep === 1 && f.panelAzimuth !== '' && (!Number.isFinite(Number(f.panelAzimuth)) || Number(f.panelAzimuth) < 0 || Number(f.panelAzimuth) > 360)) return invalid('panelAzimuth', 'تأكد من اتجاه الألواح بين 0 و360 درجة.');
-  if (currentStep === 1 && f.captureAt && !captureTimeIso()) return invalid('captureAt', 'تأكد من وقت التصوير.');
-  if (currentStep === 2 && !/^\d{4}-\d{2}$/.test(f.billMonth || '')) return invalid('billMonth', 'تأكد من الشهر والأرقام قبل استخدام بيانات الفاتورة.');
-  if (currentStep === 2) for (const key of ['expectedMonthlyKwh', 'actualMonthlyKwh']) { if (f[key] !== '' && (!Number.isFinite(Number(f[key])) || Number(f[key]) < 0)) return invalid(key, 'تأكد من قيمة الإنتاج المتوقّع والفعلي.'); }
-  if (currentStep === 2 && f.consumption && !f.invoice) return invalid('invoice', 'أضف قيمة الفاتورة لحساب التعرفة التقريبية.');
+  if (currentStep === 1 && (!f.power || Number(f.power) <= 0)) return invalid('power', 'Ø£Ø¯Ø®Ù„ Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù†Ø¸Ø§Ù….');
+  if (currentStep === 1 && f.tilt !== '' && (!Number.isFinite(Number(f.tilt)) || Number(f.tilt) < 0 || Number(f.tilt) > 90)) return invalid('tilt', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ù…ÙŠÙ„ Ø¨ÙŠÙ† 0 Ùˆ90 Ø¯Ø±Ø¬Ø©.');
+  if (currentStep === 1 && f.panelAzimuth !== '' && (!Number.isFinite(Number(f.panelAzimuth)) || Number(f.panelAzimuth) < 0 || Number(f.panelAzimuth) > 360)) return invalid('panelAzimuth', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨ÙŠÙ† 0 Ùˆ360 Ø¯Ø±Ø¬Ø©.');
+  if (currentStep === 1 && f.captureAt && !captureTimeIso()) return invalid('captureAt', 'ØªØ£ÙƒØ¯ Ù…Ù† ÙˆÙ‚Øª Ø§Ù„ØªØµÙˆÙŠØ±.');
+  if (currentStep === 2 && !/^\d{4}-\d{2}$/.test(f.billMonth || '')) return invalid('billMonth', 'ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø´Ù‡Ø± ÙˆØ§Ù„Ø£Ø±Ù‚Ø§Ù… Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø©.');
+  if (currentStep === 2) for (const key of ['expectedMonthlyKwh', 'actualMonthlyKwh']) { if (f[key] !== '' && (!Number.isFinite(Number(f[key])) || Number(f[key]) < 0)) return invalid(key, 'ØªØ£ÙƒØ¯ Ù…Ù† Ù‚ÙŠÙ…Ø© Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ù‘Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ.'); }
+  if (currentStep === 2 && f.consumption && !f.invoice) return invalid('invoice', 'Ø£Ø¶Ù Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„Ø­Ø³Ø§Ø¨ Ø§Ù„ØªØ¹Ø±ÙØ© Ø§Ù„ØªÙ‚Ø±ÙŠØ¨ÙŠØ©.');
   return true;
 }
 function nextStep() {
@@ -1532,16 +1532,16 @@ function nextStep() {
 function previousStep() { if (currentStep > 0) { currentStep -= 1; renderCurrentStep(); } }
 async function handleUploads(category, files) {
   const accountId = currentAccount?.id;
-  if (!accountId) return showFormAlert('سجّل الدخول أولاً.');
+  if (!accountId) return showFormAlert('Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø£ÙˆÙ„Ø§Ù‹.');
   if (category === 'bill') { invoiceReview = null; invoiceSequence += 1; invoiceController?.abort(); invoiceBusy = false; }
   const chosen = category === 'bill' ? files.slice(0, 1) : files;
-  if (category === 'panels' && mediaFor(category).length + chosen.length > 6) { showFormAlert('يمكنك إضافة 6 ملفات كحد أقصى.'); return; }
+  if (category === 'panels' && mediaFor(category).length + chosen.length > 6) { showFormAlert('ÙŠÙ…ÙƒÙ†Ùƒ Ø¥Ø¶Ø§ÙØ© 6 Ù…Ù„ÙØ§Øª ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰.'); return; }
   for (const file of chosen) {
     const supportedImage = ['image/jpeg', 'image/png', 'image/webp'].includes(file.type);
     const supportedVideo = ['video/mp4', 'video/webm', 'video/quicktime'].includes(file.type);
-    if (!supportedImage && !supportedVideo) { showFormAlert('اختر JPG أو PNG أو WEBP أو فيديو MP4 أو WEBM أو MOV.'); continue; }
-    if (category === 'bill' && !file.type.startsWith('image/')) { showFormAlert('يمكن إرفاق الفاتورة كصورة.'); continue; }
-    if (file.size > 25 * 1024 * 1024) { showFormAlert('يجب ألا يتجاوز حجم الملف 25 ميغابايت.'); continue; }
+    if (!supportedImage && !supportedVideo) { showFormAlert('Ø§Ø®ØªØ± JPG Ø£Ùˆ PNG Ø£Ùˆ WEBP Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ MP4 Ø£Ùˆ WEBM Ø£Ùˆ MOV.'); continue; }
+    if (category === 'bill' && !file.type.startsWith('image/')) { showFormAlert('ÙŠÙ…ÙƒÙ† Ø¥Ø±ÙØ§Ù‚ Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙƒØµÙˆØ±Ø©.'); continue; }
+    if (file.size > 25 * 1024 * 1024) { showFormAlert('ÙŠØ¬Ø¨ Ø£Ù„Ø§ ÙŠØªØ¬Ø§ÙˆØ² Ø­Ø¬Ù… Ø§Ù„Ù…Ù„Ù 25 Ù…ÙŠØºØ§Ø¨Ø§ÙŠØª.'); continue; }
     const blob = file.type.startsWith('image/') ? await compressImage(file, category === 'bill' ? 1600 : 1500) : file;
     if (accountId !== currentAccount?.id) return;
     if (category === 'bill') {
@@ -1550,11 +1550,11 @@ async function handleUploads(category, files) {
     }
     const item = { id: crypto.randomUUID(), accountId, category, name: file.name, type: blob.type || file.type, blob, updatedAt: Date.now() };
     try { await dbRequest('readwrite', (store) => store.put(item)); media.push(item); if (category === 'panels') clearVisualAssessment(); }
-    catch { showFormAlert('تعذر حفظ الملف محلياً؛ جرّب ملفاً أصغر.'); }
+    catch { showFormAlert('ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ù…Ù„Ù Ù…Ø­Ù„ÙŠØ§Ù‹Ø› Ø¬Ø±Ù‘Ø¨ Ù…Ù„ÙØ§Ù‹ Ø£ØµØºØ±.'); }
   }
   if (accountId !== currentAccount?.id) return;
   persist();
-  if (currentAccount) await syncAccountMedia().catch((error) => showFormAlert(error.message || 'تعذر رفع المرفقات؛ حُفظت على هذا الجهاز.'));
+  if (currentAccount) await syncAccountMedia().catch((error) => showFormAlert(error.message || 'ØªØ¹Ø°Ø± Ø±ÙØ¹ Ø§Ù„Ù…Ø±ÙÙ‚Ø§ØªØ› Ø­ÙÙØ¸Øª Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².'));
   renderCurrentStep();
 }
 function compressImage(file, maxSide) {
@@ -1576,8 +1576,8 @@ async function removeMedia(id) {
     try {
       const response = await authenticatedFetch('/api/account/media/' + encodeURIComponent(id), { method: 'DELETE' });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'تعذر حذف المرفق من الحساب.');
-    } catch (error) { showToast(error.message || 'تعذر حذف المرفق من الحساب.'); return; }
+      if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø­Ø°Ù Ø§Ù„Ù…Ø±ÙÙ‚ Ù…Ù† Ø§Ù„Ø­Ø³Ø§Ø¨.');
+    } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± Ø­Ø°Ù Ø§Ù„Ù…Ø±ÙÙ‚ Ù…Ù† Ø§Ù„Ø­Ø³Ø§Ø¨.'); return; }
   }
   try { await dbRequest('readwrite', (store) => store.delete(id)); } catch { /* remove visible reference anyway */ }
   media = media.filter((item) => item.id !== id); if (selected?.category === 'panels') clearVisualAssessment(); persist(); renderCurrentStep();
@@ -1591,7 +1591,7 @@ async function analyzeInvoice() {
   if (accountId !== currentAccount?.id || mediaFor('bill')[0]?.id !== item.id) return;
   if (!config.claudeEnabled) {
     invoiceBusy = false; renderCurrentStep();
-    return showToast(claudeEnabled === false ? 'Claude غير مفعّل بعد. يستطيع مسؤول الموقع تفعيله بمفتاح Anthropic.' : 'تعذر معرفة حالة Claude؛ حاول مرة أخرى.');
+    return showToast(claudeEnabled === false ? 'Claude ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„ Ø¨Ø¹Ø¯. ÙŠØ³ØªØ·ÙŠØ¹ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØªÙØ¹ÙŠÙ„Ù‡ Ø¨Ù…ÙØªØ§Ø­ Anthropic.' : 'ØªØ¹Ø°Ø± Ù…Ø¹Ø±ÙØ© Ø­Ø§Ù„Ø© ClaudeØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.');
   }
   invoiceController?.abort(); invoiceController = new AbortController();
   const sequence = ++invoiceSequence;
@@ -1605,28 +1605,28 @@ async function analyzeInvoice() {
       body: JSON.stringify({ image, billMonth: month, language }),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(claudeError(data, 'تعذر قراءة الفاتورة. جرّب صورة أوضح.'));
+    if (!response.ok) throw new Error(claudeError(data, 'ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©. Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ÙˆØ¶Ø­.'));
     if (sequence !== invoiceSequence || accountId !== currentAccount?.id || month !== state.form.billMonth || language !== state.settings.language || mediaFor('bill')[0]?.id !== item.id) return;
-    if (!data.invoice || typeof data.invoice !== 'object') throw new Error('تعذر قراءة الفاتورة. جرّب صورة أوضح.');
+    if (!data.invoice || typeof data.invoice !== 'object') throw new Error('ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©. Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ÙˆØ¶Ø­.');
     invoiceReview = { accountId, mediaId: item.id, month, invoice: { ...data.invoice }, model: data.model };
-  } catch (error) { if (error.name !== 'AbortError' && sequence === invoiceSequence && accountId === currentAccount?.id) showToast(error.message || 'تعذر قراءة الفاتورة. جرّب صورة أوضح.'); }
+  } catch (error) { if (error.name !== 'AbortError' && sequence === invoiceSequence && accountId === currentAccount?.id) showToast(error.message || 'ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©. Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ÙˆØ¶Ø­.'); }
   finally { if (sequence === invoiceSequence && accountId === currentAccount?.id) { invoiceBusy = false; if (currentStep === 2 && !el('page-wizard').hidden) renderCurrentStep(); } }
 }
 function applyInvoiceReview() {
   const draft = invoiceReview;
   if (!draft || draft.accountId !== currentAccount?.id || draft.mediaId !== mediaFor('bill')[0]?.id || draft.month !== state.form.billMonth) { invoiceReview = null; renderCurrentStep(); return; }
   const values = draft.invoice;
-  if (String(values.currency || '').trim().toUpperCase() !== 'OMR') return showToast('حساب القيمة هنا يدعم الريال العُماني؛ أدخل تعرفة بالريال العُماني يدوياً لهذه الفاتورة.');
-  if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(values.billingMonth || '')) return showToast('تأكد من الشهر والأرقام قبل استخدام بيانات الفاتورة.');
+  if (String(values.currency || '').trim().toUpperCase() !== 'OMR') return showToast('Ø­Ø³Ø§Ø¨ Ø§Ù„Ù‚ÙŠÙ…Ø© Ù‡Ù†Ø§ ÙŠØ¯Ø¹Ù… Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø¹ÙÙ…Ø§Ù†ÙŠØ› Ø£Ø¯Ø®Ù„ ØªØ¹Ø±ÙØ© Ø¨Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø¹ÙÙ…Ø§Ù†ÙŠ ÙŠØ¯ÙˆÙŠØ§Ù‹ Ù„Ù‡Ø°Ù‡ Ø§Ù„ÙØ§ØªÙˆØ±Ø©.');
+  if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(values.billingMonth || '')) return showToast('ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø´Ù‡Ø± ÙˆØ§Ù„Ø£Ø±Ù‚Ø§Ù… Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø©.');
   for (const key of ['totalAmount', 'consumptionKwh', 'energyTariffPerKwh']) {
-    if (values[key] !== null && values[key] !== undefined && values[key] !== '' && (!Number.isFinite(Number(values[key])) || Number(values[key]) < 0)) return showToast('تأكد من الشهر والأرقام قبل استخدام بيانات الفاتورة.');
+    if (values[key] !== null && values[key] !== undefined && values[key] !== '' && (!Number.isFinite(Number(values[key])) || Number(values[key]) < 0)) return showToast('ØªØ£ÙƒØ¯ Ù…Ù† Ø§Ù„Ø´Ù‡Ø± ÙˆØ§Ù„Ø£Ø±Ù‚Ø§Ù… Ù‚Ø¨Ù„ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø©.');
   }
   for (const [source, destination] of [['totalAmount', 'invoice'], ['consumptionKwh', 'consumption'], ['energyTariffPerKwh', 'tariff']]) {
     state.form[destination] = values[source] !== null && values[source] !== undefined && values[source] !== '' ? String(Number(values[source])) : '';
   }
   if (values.billingMonth !== state.form.billMonth) { state.form.expectedMonthlyKwh = ''; state.form.actualMonthlyKwh = ''; }
   state.form.billMonth = values.billingMonth; state.monthlyLoss = null;
-  invoiceReview = null; persist(); renderCurrentStep(); showToast('تم استخدام بيانات الفاتورة التي راجعتها.');
+  invoiceReview = null; persist(); renderCurrentStep(); showToast('ØªÙ… Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ø§Ù„ØªÙŠ Ø±Ø§Ø¬Ø¹ØªÙ‡Ø§.');
 }
 function getLocation() {
   const accountId = currentAccount?.id;
@@ -1635,8 +1635,8 @@ function getLocation() {
   if (!window.isSecureContext && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') { setGpsNotice('error', 'insecure'); showFormAlert(gpsNoticeText('insecure')); return; }
   if (!button || button.disabled) return;
   setGpsNotice('busy', 'busy');
-  button.textContent = ui('جارٍ تحديد الموقع…', 'Getting location…'); button.disabled = true;
-  const restoreButton = () => { if (button.isConnected) { button.textContent = ui('⌖ استخدام موقعك الحالي', '⌖ Use your current location'); button.disabled = false; } };
+  button.textContent = ui('Ø¬Ø§Ø±Ù ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹â€¦', 'Getting locationâ€¦'); button.disabled = true;
+  const restoreButton = () => { if (button.isConnected) { button.textContent = ui('âŒ– Ø§Ø³ØªØ®Ø¯Ø§Ù… Ù…ÙˆÙ‚Ø¹Ùƒ Ø§Ù„Ø­Ø§Ù„ÙŠ', 'âŒ– Use your current location'); button.disabled = false; } };
   navigator.geolocation.getCurrentPosition(async (position) => {
     if (accountId !== currentAccount?.id) return;
     clearVisualAssessment();
@@ -1658,24 +1658,24 @@ function getLocation() {
 async function searchCity() {
   const accountId = currentAccount?.id;
   const input = el('city-search'); const results = el('search-results'); const name = input?.value.trim();
-  if (!name) return showToast('اكتب اسم مدينة للبحث.');
-  results.innerHTML = '<small class="helper-text">جارٍ البحث…</small>';
+  if (!name) return showToast('Ø§ÙƒØªØ¨ Ø§Ø³Ù… Ù…Ø¯ÙŠÙ†Ø© Ù„Ù„Ø¨Ø­Ø«.');
+  results.innerHTML = '<small class="helper-text">Ø¬Ø§Ø±Ù Ø§Ù„Ø¨Ø­Ø«â€¦</small>';
   try {
     const response = await fetch(`/api/geocode?name=${encodeURIComponent(name)}`); const data = await response.json();
     if (!response.ok) throw new Error(data.error);
     if (accountId !== currentAccount?.id) return;
-    if (!data.results.length) { results.innerHTML = '<small class="helper-text">لم نعثر على نتائج. جرّب كتابة الاسم بالإنجليزية.</small>'; return; }
-    results.innerHTML = data.results.map((place, index) => `<button type="button" class="search-result" data-place="${index}">${escapeHtml([place.name, place.admin1, place.country].filter(Boolean).join('، '))}</button>`).join('');
+    if (!data.results.length) { results.innerHTML = '<small class="helper-text">Ù„Ù… Ù†Ø¹Ø«Ø± Ø¹Ù„Ù‰ Ù†ØªØ§Ø¦Ø¬. Ø¬Ø±Ù‘Ø¨ ÙƒØªØ§Ø¨Ø© Ø§Ù„Ø§Ø³Ù… Ø¨Ø§Ù„Ø¥Ù†Ø¬Ù„ÙŠØ²ÙŠØ©.</small>'; return; }
+    results.innerHTML = data.results.map((place, index) => `<button type="button" class="search-result" data-place="${index}">${escapeHtml([place.name, place.admin1, place.country].filter(Boolean).join('ØŒ '))}</button>`).join('');
     results.querySelectorAll('[data-place]').forEach((button) => button.addEventListener('click', async () => {
       if (accountId !== currentAccount?.id) return;
       clearVisualAssessment();
-      const place = data.results[Number(button.dataset.place)]; state.form.location = [place.name, place.admin1].filter(Boolean).join('، '); state.form.latitude = place.latitude; state.form.longitude = place.longitude;
+      const place = data.results[Number(button.dataset.place)]; state.form.location = [place.name, place.admin1].filter(Boolean).join('ØŒ '); state.form.latitude = place.latitude; state.form.longitude = place.longitude;
       state.solarContext = null; state.monthlyLoss = null;
       gpsNotice = null;
       clearWeatherForLocation();
-      persist(); refreshWeatherFieldChecks(); input.value = state.form.location; results.innerHTML = ''; showToast(`تم اختيار ${state.form.location}.`); await loadWeather({ forcePrefill: true });
+      persist(); refreshWeatherFieldChecks(); input.value = state.form.location; results.innerHTML = ''; showToast(`ØªÙ… Ø§Ø®ØªÙŠØ§Ø± ${state.form.location}.`); await loadWeather({ forcePrefill: true });
     }));
-  } catch (error) { results.innerHTML = `<small class="helper-text">${escapeHtml(error.message || 'تعذر البحث. تأكد من تشغيل الخادم.')}</small>`; }
+  } catch (error) { results.innerHTML = `<small class="helper-text">${escapeHtml(error.message || 'ØªØ¹Ø°Ø± Ø§Ù„Ø¨Ø­Ø«. ØªØ£ÙƒØ¯ Ù…Ù† ØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù….')}</small>`; }
 }
 async function fetchWeatherResponse(url, timeoutMs) {
   // Use a controller and timer so this also works in Safari versions without AbortSignal.timeout.
@@ -1696,7 +1696,7 @@ async function fetchWeatherResponse(url, timeoutMs) {
 function assertWeatherCoordinates(latitude, longitude) {
   const validCoordinate = (value, min, max) => (typeof value === 'number' || typeof value === 'string')
     && String(value).trim() !== '' && Number.isFinite(Number(value)) && Number(value) >= min && Number(value) <= max;
-  if (!validCoordinate(latitude, -90, 90) || !validCoordinate(longitude, -180, 180)) throw new Error('إحداثيات الموقع غير صالحة.');
+  if (!validCoordinate(latitude, -90, 90) || !validCoordinate(longitude, -180, 180)) throw new Error('Ø¥Ø­Ø¯Ø§Ø«ÙŠØ§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØºÙŠØ± ØµØ§Ù„Ø­Ø©.');
 }
 function hasUsableWeatherCurrent(snapshot) {
   const validReading = (value, min, max) => (typeof value === 'number' || typeof value === 'string')
@@ -1757,9 +1757,9 @@ async function requestWeatherSnapshot(latitude, longitude) {
     return snapshot;
   } catch (error) {
     // A bad request is a coordinate/input issue, not a reason to request another provider path.
-    if (error.status === 400) throw new Error('إحداثيات الموقع غير صالحة.');
+    if (error.status === 400) throw new Error('Ø¥Ø­Ø¯Ø§Ø«ÙŠØ§Øª Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØºÙŠØ± ØµØ§Ù„Ø­Ø©.');
     try { return await fetchDirectWeatherSnapshot(latitude, longitude); }
-    catch { throw new Error('تعذر جلب الطقس الآن. حاول مرة أخرى بعد قليل أو أدخل البيانات يدويًا.'); }
+    catch { throw new Error('ØªØ¹Ø°Ø± Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ Ø§Ù„Ø¢Ù†. Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰ Ø¨Ø¹Ø¯ Ù‚Ù„ÙŠÙ„ Ø£Ùˆ Ø£Ø¯Ø®Ù„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙŠØ¯ÙˆÙŠÙ‹Ø§.'); }
   }
 }
 function renderWeatherStatus() {
@@ -1770,24 +1770,24 @@ function renderWeatherStatus() {
   if (state.weather?.fetchedAt) {
     const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
     const time = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(state.weather.fetchedAt));
-    node.textContent = ui(`آخر تحديث للطقس ${time}${state.weather.cached ? ' (نسخة محفوظة)' : ''}.`, `Weather updated ${time}${state.weather.cached ? ' (cached)' : ''}.`);
+    node.textContent = ui(`Ø¢Ø®Ø± ØªØ­Ø¯ÙŠØ« Ù„Ù„Ø·Ù‚Ø³ ${time}${state.weather.cached ? ' (Ù†Ø³Ø®Ø© Ù…Ø­ÙÙˆØ¸Ø©)' : ''}.`, `Weather updated ${time}${state.weather.cached ? ' (cached)' : ''}.`);
   } else if (state.form.latitude !== null && state.form.latitude !== '' && state.form.longitude !== null && state.form.longitude !== '') {
-    node.textContent = ui('لم يتم جلب الطقس بعد؛ اضغط «تحديث الطقس».', 'Weather has not been fetched yet; press “Update weather”.');
+    node.textContent = ui('Ù„Ù… ÙŠØªÙ… Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ Ø¨Ø¹Ø¯Ø› Ø§Ø¶ØºØ· Â«ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³Â».', 'Weather has not been fetched yet; press â€œUpdate weatherâ€.');
   } else {
-    node.textContent = ui('حدّد موقع النظام لجلب الطقس تلقائياً.', 'Set the system location to fetch weather automatically.');
+    node.textContent = ui('Ø­Ø¯Ù‘Ø¯ Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù… Ù„Ø¬Ù„Ø¨ Ø§Ù„Ø·Ù‚Ø³ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹.', 'Set the system location to fetch weather automatically.');
   }
 }
 async function loadWeather({ forcePrefill = false } = {}) {
   const { latitude, longitude } = state.form;
   const accountId = currentAccount?.id;
   if (latitude === null || longitude === null || latitude === '' || longitude === '' || !Number.isFinite(Number(latitude)) || !Number.isFinite(Number(longitude))) {
-    weatherNotice = { type: 'error', message: ui('حدّد مدينة أو استخدم GPS أولاً.', 'Choose a city or use GPS first.') };
-    renderWeatherStatus(); showToast(ui('حدّد مدينة أو استخدم GPS أولاً.', 'Choose a city or use GPS first.')); return;
+    weatherNotice = { type: 'error', message: ui('Ø­Ø¯Ù‘Ø¯ Ù…Ø¯ÙŠÙ†Ø© Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… GPS Ø£ÙˆÙ„Ø§Ù‹.', 'Choose a city or use GPS first.') };
+    renderWeatherStatus(); showToast(ui('Ø­Ø¯Ù‘Ø¯ Ù…Ø¯ÙŠÙ†Ø© Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… GPS Ø£ÙˆÙ„Ø§Ù‹.', 'Choose a city or use GPS first.')); return;
   }
   const requestId = ++weatherSequence;
   const refreshButton = el('refresh-weather');
   if (refreshButton) { refreshButton.disabled = true; refreshButton.setAttribute('aria-busy', 'true'); }
-  weatherNotice = { type: 'loading', message: ui('جارٍ تحديث الطقس…', 'Updating weather…') };
+  weatherNotice = { type: 'loading', message: ui('Ø¬Ø§Ø±Ù ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³â€¦', 'Updating weatherâ€¦') };
   renderWeatherStatus();
   const before = Object.fromEntries(Object.keys(DEFAULT_STATE.weatherPrefill).map((key) => [key, state.form[key]]));
   const beforeMarkers = { ...state.weatherPrefill };
@@ -1824,8 +1824,8 @@ async function loadWeather({ forcePrefill = false } = {}) {
     renderDashboard();
   } catch (error) {
     if (requestId === weatherSequence && accountId === currentAccount?.id) {
-      const message = error.message || ui('تعذر تحديث الطقس.', 'Could not update weather.');
-      weatherNotice = { type: 'error', message: `${message} ${ui('يمكنك إعادة المحاولة أو إدخال البيانات يدوياً.', 'You can retry or enter the data manually.')}` };
+      const message = error.message || ui('ØªØ¹Ø°Ø± ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø·Ù‚Ø³.', 'Could not update weather.');
+      weatherNotice = { type: 'error', message: `${message} ${ui('ÙŠÙ…ÙƒÙ†Ùƒ Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ø£Ùˆ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙŠØ¯ÙˆÙŠØ§Ù‹.', 'You can retry or enter the data manually.')}` };
       renderWeatherStatus(); showToast(message);
     }
   } finally {
@@ -1833,9 +1833,9 @@ async function loadWeather({ forcePrefill = false } = {}) {
   }
 }
 function weatherText(code) {
-  if (code === 0) return 'سماء صافية'; if ([1, 2, 3].includes(code)) return 'غائم جزئياً'; if ([45, 48].includes(code)) return 'ضباب';
-  if ([51, 53, 55, 56, 57].includes(code)) return 'رذاذ'; if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return 'أمطار';
-  if ([71, 73, 75, 77, 85, 86].includes(code)) return 'ثلوج'; if ([95, 96, 99].includes(code)) return 'عواصف رعدية'; return 'حالة متغيرة';
+  if (code === 0) return 'Ø³Ù…Ø§Ø¡ ØµØ§ÙÙŠØ©'; if ([1, 2, 3].includes(code)) return 'ØºØ§Ø¦Ù… Ø¬Ø²Ø¦ÙŠØ§Ù‹'; if ([45, 48].includes(code)) return 'Ø¶Ø¨Ø§Ø¨';
+  if ([51, 53, 55, 56, 57].includes(code)) return 'Ø±Ø°Ø§Ø°'; if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return 'Ø£Ù…Ø·Ø§Ø±';
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return 'Ø«Ù„ÙˆØ¬'; if ([95, 96, 99].includes(code)) return 'Ø¹ÙˆØ§ØµÙ Ø±Ø¹Ø¯ÙŠØ©'; return 'Ø­Ø§Ù„Ø© Ù…ØªØºÙŠØ±Ø©';
 }
 function calculateLoss() {
   const f = state.form; const current = state.weather?.current || {};
@@ -1866,7 +1866,7 @@ function calculateLoss() {
   const lostKwh = possibleKwh * (totalPercent / 100);
   const consumption = Number(f.consumption || 0); const bill = Number(f.invoice || 0); const tariff = Number(f.tariff || 0);
   const price = tariff > 0 ? tariff : consumption > 0 && bill > 0 ? bill / consumption : .025;
-  const priceBasis = tariff > 0 ? 'التعرفة التي أدخلتها' : consumption > 0 && bill > 0 ? 'مشتقة من الفاتورة والاستهلاك' : 'تعرفة مرجعية قابلة للتغيير';
+  const priceBasis = tariff > 0 ? 'Ø§Ù„ØªØ¹Ø±ÙØ© Ø§Ù„ØªÙŠ Ø£Ø¯Ø®Ù„ØªÙ‡Ø§' : consumption > 0 && bill > 0 ? 'Ù…Ø´ØªÙ‚Ø© Ù…Ù† Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙˆØ§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ' : 'ØªØ¹Ø±ÙØ© Ù…Ø±Ø¬Ø¹ÙŠØ© Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØºÙŠÙŠØ±';
   return { percent: totalPercent, totalPercent, heatPercent, heatEstimateUnavailable: heatPercent === null, soilingPercent: dustPercent, dustPercent, shadePercent, possibleKwh, lostKwh, lostMoney: lostKwh * price, priceBasis, sunHours, airTemp, tariffOmrPerKwh: price };
 }
 function applyStoredReport(result, report) {
@@ -1895,9 +1895,9 @@ function applyStoredReport(result, report) {
 }
 function waitForVideoEvent(video, eventName) {
   return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => finish(new Error('تعذر فتح الفيديو في هذا المتصفح؛ جرّب MP4 أو أرفق صوراً من المقطع.')), 12000);
+    const timeout = setTimeout(() => finish(new Error('ØªØ¹Ø°Ø± ÙØªØ­ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­Ø› Ø¬Ø±Ù‘Ø¨ MP4 Ø£Ùˆ Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ù…Ù† Ø§Ù„Ù…Ù‚Ø·Ø¹.')), 12000);
     const success = () => finish();
-    const error = () => finish(new Error('تعذر فتح الفيديو في هذا المتصفح؛ جرّب MP4 أو أرفق صوراً من المقطع.'));
+    const error = () => finish(new Error('ØªØ¹Ø°Ø± ÙØªØ­ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­Ø› Ø¬Ø±Ù‘Ø¨ MP4 Ø£Ùˆ Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ù…Ù† Ø§Ù„Ù…Ù‚Ø·Ø¹.'));
     function finish(failure) { clearTimeout(timeout); video.removeEventListener(eventName, success); video.removeEventListener('error', error); failure ? reject(failure) : resolve(); }
     video.addEventListener(eventName, success, { once: true }); video.addEventListener('error', error, { once: true });
   });
@@ -1907,7 +1907,7 @@ async function framesFromVideo(blob, count, mediaId) {
   try {
     if (video.readyState < 1) await waitForVideoEvent(video, 'loadedmetadata');
     const duration = video.duration;
-    if (!Number.isFinite(duration) || duration <= 0 || !video.videoWidth || !video.videoHeight) throw new Error('تعذر فتح الفيديو في هذا المتصفح؛ جرّب MP4 أو أرفق صوراً من المقطع.');
+    if (!Number.isFinite(duration) || duration <= 0 || !video.videoWidth || !video.videoHeight) throw new Error('ØªØ¹Ø°Ø± ÙØªØ­ Ø§Ù„ÙÙŠØ¯ÙŠÙˆ ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­Ø› Ø¬Ø±Ù‘Ø¨ MP4 Ø£Ùˆ Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ù…Ù† Ø§Ù„Ù…Ù‚Ø·Ø¹.');
     const times = Array.from({ length: count }, (_, index) => duration * (index + .5) / count);
     const frames = [];
     for (const time of times) {
@@ -1943,7 +1943,7 @@ async function collectFrames() {
     const count = Math.floor(budget / videos.length) + (index < budget % videos.length ? 1 : 0);
     try { frames.push(...await framesFromVideo(item.blob, Math.max(1, count), item.id)); } catch { failures.push(item.name); }
   }
-  if (!images.length && !frames.length) throw new Error('لا توجد لقطات قابلة للتحليل؛ أرفق صورة واضحة أو فيديو مدعوماً.');
+  if (!images.length && !frames.length) throw new Error('Ù„Ø§ ØªÙˆØ¬Ø¯ Ù„Ù‚Ø·Ø§Øª Ù‚Ø§Ø¨Ù„Ø© Ù„Ù„ØªØ­Ù„ÙŠÙ„Ø› Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© ÙˆØ§Ø¶Ø­Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ø¯Ø¹ÙˆÙ…Ø§Ù‹.');
   return { images, frames, failures };
 }
 function analysisFacts(result = calculateLoss()) {
@@ -1968,22 +1968,22 @@ function monthlyReportInput(result = calculateLoss()) {
 }
 function claudeError(data, fallback) {
   const messages = {
-    claude_config: ['إعداد خدمة Claude غير صالح؛ يحتاج مسؤول الموقع مراجعته.', 'Claude configuration is invalid; the site administrator needs to check it.'],
-    claude_not_configured: ['Claude غير مفعّل بعد. يستطيع مسؤول الموقع تفعيله بمفتاح Anthropic.', 'Claude is not enabled yet. The site administrator can enable it with an Anthropic key.'],
-    claude_billing: ['يلزم تفعيل رصيد خدمة Claude لدى مسؤول الموقع.', 'The site administrator needs to activate Claude API credits.'],
-    claude_auth: ['تعذر الاتصال بحساب Claude؛ يحتاج مسؤول الموقع مراجعة الربط.', 'Could not authenticate Claude; the site administrator needs to check the connection.'],
-    claude_rate_limit: ['خدمة Claude مشغولة؛ انتظر قليلاً ثم أعد التحليل.', 'Claude is busy; wait a little and try again.'],
-    claude_timeout: ['استغرق Claude وقتاً طويلاً؛ أعد الطلب أو أرفق صوراً أوضح.', 'Claude took too long; retry or attach clearer photos.'],
-    claude_refusal: ['لم يستطع Claude تقديم هذا التحليل؛ أرفق صور الألواح أو الفاتورة فقط.', 'Claude could not provide this assessment; attach only panel or bill images.'],
-    claude_invalid_output: ['لم يصل تحليل مكتمل من Claude؛ حاول مرة أخرى.', 'Claude did not return a complete assessment; try again.'],
-    claude_image_size: ['الصورة كبيرة للتحليل؛ جرّب صورة أصغر أو أقل دقة.', 'The image is too large for assessment; try a smaller or lower-resolution image.'],
-    claude_image_format: ['تعذر قراءة الصورة؛ استخدم JPG أو PNG أو WEBP.', 'Could not read the image; use JPG, PNG or WEBP.'],
-    claude_images_required: ['أرفق صورة واضحة أو فيديو مدعوماً قبل التحليل.', 'Attach a clear image or supported video before assessment.'],
-    claude_frame_time: ['تعذر قراءة توقيت لقطة الفيديو؛ أعد إرفاق المقطع.', 'Could not read a video frame timestamp; attach the clip again.'],
-    claude_model: ['نموذج Claude المحدد غير متاح؛ يحتاج مسؤول الموقع مراجعة الإعداد.', 'The selected Claude model is unavailable; the site administrator needs to check it.'],
-    claude_request: ['تعذر تنفيذ طلب Claude؛ جرّب صورة أوضح أو أعد الطلب.', 'Could not process the Claude request; try a clearer image or submit again.'],
-    claude_unavailable: ['خدمة Claude غير متاحة الآن؛ حاول لاحقاً.', 'Claude is unavailable right now; try later.'],
-    claude_network: ['تعذر الاتصال بخدمة Claude؛ حاول لاحقاً.', 'Could not connect to Claude; try later.'],
+    claude_config: ['Ø¥Ø¹Ø¯Ø§Ø¯ Ø®Ø¯Ù…Ø© Claude ØºÙŠØ± ØµØ§Ù„Ø­Ø› ÙŠØ­ØªØ§Ø¬ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ù…Ø±Ø§Ø¬Ø¹ØªÙ‡.', 'Claude configuration is invalid; the site administrator needs to check it.'],
+    claude_not_configured: ['Claude ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„ Ø¨Ø¹Ø¯. ÙŠØ³ØªØ·ÙŠØ¹ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØªÙØ¹ÙŠÙ„Ù‡ Ø¨Ù…ÙØªØ§Ø­ Anthropic.', 'Claude is not enabled yet. The site administrator can enable it with an Anthropic key.'],
+    claude_billing: ['ÙŠÙ„Ø²Ù… ØªÙØ¹ÙŠÙ„ Ø±ØµÙŠØ¯ Ø®Ø¯Ù…Ø© Claude Ù„Ø¯Ù‰ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹.', 'The site administrator needs to activate Claude API credits.'],
+    claude_auth: ['ØªØ¹Ø°Ø± Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø­Ø³Ø§Ø¨ ClaudeØ› ÙŠØ­ØªØ§Ø¬ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ø±Ø¨Ø·.', 'Could not authenticate Claude; the site administrator needs to check the connection.'],
+    claude_rate_limit: ['Ø®Ø¯Ù…Ø© Claude Ù…Ø´ØºÙˆÙ„Ø©Ø› Ø§Ù†ØªØ¸Ø± Ù‚Ù„ÙŠÙ„Ø§Ù‹ Ø«Ù… Ø£Ø¹Ø¯ Ø§Ù„ØªØ­Ù„ÙŠÙ„.', 'Claude is busy; wait a little and try again.'],
+    claude_timeout: ['Ø§Ø³ØªØºØ±Ù‚ Claude ÙˆÙ‚ØªØ§Ù‹ Ø·ÙˆÙŠÙ„Ø§Ù‹Ø› Ø£Ø¹Ø¯ Ø§Ù„Ø·Ù„Ø¨ Ø£Ùˆ Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ø£ÙˆØ¶Ø­.', 'Claude took too long; retry or attach clearer photos.'],
+    claude_refusal: ['Ù„Ù… ÙŠØ³ØªØ·Ø¹ Claude ØªÙ‚Ø¯ÙŠÙ… Ù‡Ø°Ø§ Ø§Ù„ØªØ­Ù„ÙŠÙ„Ø› Ø£Ø±ÙÙ‚ ØµÙˆØ± Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£Ùˆ Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙÙ‚Ø·.', 'Claude could not provide this assessment; attach only panel or bill images.'],
+    claude_invalid_output: ['Ù„Ù… ÙŠØµÙ„ ØªØ­Ù„ÙŠÙ„ Ù…ÙƒØªÙ…Ù„ Ù…Ù† ClaudeØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.', 'Claude did not return a complete assessment; try again.'],
+    claude_image_size: ['Ø§Ù„ØµÙˆØ±Ø© ÙƒØ¨ÙŠØ±Ø© Ù„Ù„ØªØ­Ù„ÙŠÙ„Ø› Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ØµØºØ± Ø£Ùˆ Ø£Ù‚Ù„ Ø¯Ù‚Ø©.', 'The image is too large for assessment; try a smaller or lower-resolution image.'],
+    claude_image_format: ['ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„ØµÙˆØ±Ø©Ø› Ø§Ø³ØªØ®Ø¯Ù… JPG Ø£Ùˆ PNG Ø£Ùˆ WEBP.', 'Could not read the image; use JPG, PNG or WEBP.'],
+    claude_images_required: ['Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø© ÙˆØ§Ø¶Ø­Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù…Ø¯Ø¹ÙˆÙ…Ø§Ù‹ Ù‚Ø¨Ù„ Ø§Ù„ØªØ­Ù„ÙŠÙ„.', 'Attach a clear image or supported video before assessment.'],
+    claude_frame_time: ['ØªØ¹Ø°Ø± Ù‚Ø±Ø§Ø¡Ø© ØªÙˆÙ‚ÙŠØª Ù„Ù‚Ø·Ø© Ø§Ù„ÙÙŠØ¯ÙŠÙˆØ› Ø£Ø¹Ø¯ Ø¥Ø±ÙØ§Ù‚ Ø§Ù„Ù…Ù‚Ø·Ø¹.', 'Could not read a video frame timestamp; attach the clip again.'],
+    claude_model: ['Ù†Ù…ÙˆØ°Ø¬ Claude Ø§Ù„Ù…Ø­Ø¯Ø¯ ØºÙŠØ± Ù…ØªØ§Ø­Ø› ÙŠØ­ØªØ§Ø¬ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ù…Ø±Ø§Ø¬Ø¹Ø© Ø§Ù„Ø¥Ø¹Ø¯Ø§Ø¯.', 'The selected Claude model is unavailable; the site administrator needs to check it.'],
+    claude_request: ['ØªØ¹Ø°Ø± ØªÙ†ÙÙŠØ° Ø·Ù„Ø¨ ClaudeØ› Ø¬Ø±Ù‘Ø¨ ØµÙˆØ±Ø© Ø£ÙˆØ¶Ø­ Ø£Ùˆ Ø£Ø¹Ø¯ Ø§Ù„Ø·Ù„Ø¨.', 'Could not process the Claude request; try a clearer image or submit again.'],
+    claude_unavailable: ['Ø®Ø¯Ù…Ø© Claude ØºÙŠØ± Ù…ØªØ§Ø­Ø© Ø§Ù„Ø¢Ù†Ø› Ø­Ø§ÙˆÙ„ Ù„Ø§Ø­Ù‚Ø§Ù‹.', 'Claude is unavailable right now; try later.'],
+    claude_network: ['ØªØ¹Ø°Ø± Ø§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø®Ø¯Ù…Ø© ClaudeØ› Ø­Ø§ÙˆÙ„ Ù„Ø§Ø­Ù‚Ø§Ù‹.', 'Could not connect to Claude; try later.'],
   };
   return messages[data.code] ? ui(...messages[data.code]) : state.settings.language === 'en' ? translateText(data.error || fallback) : data.error || fallback;
 }
@@ -1993,7 +1993,7 @@ async function requestMonthlyAssessment(signal) {
     body: JSON.stringify({ facts: analysisFacts(), reportInput: monthlyReportInput(), language: state.settings.language }),
   });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.error || ui('تعذر حساب خسارة الشهر.', 'Could not calculate monthly losses.'));
+  if (!response.ok) throw new Error(data.error || ui('ØªØ¹Ø°Ø± Ø­Ø³Ø§Ø¨ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±.', 'Could not calculate monthly losses.'));
   return data;
 }
 async function updateMonthlyAssessment() {
@@ -2016,12 +2016,12 @@ async function runAnalysis({ useClaude = false } = {}) {
   if (!currentAccount?.id) return;
   analysisController?.abort(); analysisController = new AbortController();
   analysisBusy = useClaude;
-  const panelButton = el('analyze-panels'); if (panelButton) panelButton.textContent = ui('تحليل الألواح باستخدام Claude', 'Panel assessment with Claude');
+  const panelButton = el('analyze-panels'); if (panelButton) panelButton.textContent = ui('ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude', 'Panel assessment with Claude');
   const sequence = ++analysisSequence; const accountId = currentAccount.id; const fingerprint = analysisFingerprint();
   const stillCurrent = () => sequence === analysisSequence && accountId === currentAccount?.id && fingerprint === analysisFingerprint();
   const button = useClaude ? el('analyze-panels') : el('start-setup'); const original = button?.innerHTML;
-  if (button) { button.disabled = true; button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('يجري التحليل…', 'Assessing…')}</span>`; }
-  el('status-title').textContent = ui('سياج يراجع البيانات', 'Siyaj is reviewing your details');
+  if (button) { button.disabled = true; button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('ÙŠØ¬Ø±ÙŠ Ø§Ù„ØªØ­Ù„ÙŠÙ„â€¦', 'Assessingâ€¦')}</span>`; }
+  el('status-title').textContent = ui('Ø³ÙŠØ§Ø¬ ÙŠØ±Ø§Ø¬Ø¹ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª', 'Siyaj is reviewing your details');
   let analysisError = ''; let storedReport = null; let ai = null; let aiModel = null; let solarContext = null; let monthlyLoss = null;
   try {
     await loadAppSettings(); const config = await loadAiConfig();
@@ -2036,13 +2036,13 @@ async function runAnalysis({ useClaude = false } = {}) {
           body: JSON.stringify({ images: collected.images, frames: collected.frames, language: state.settings.language, facts: analysisFacts(baseResult), reportInput: monthlyReportInput(baseResult) }),
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(claudeError(data, 'تعذر التحليل الذكي.'));
+        if (!response.ok) throw new Error(claudeError(data, 'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø°ÙƒÙŠ.'));
         ai = data.analysis; aiModel = data.model || 'Claude'; storedReport = data.report || null;
         solarContext = data.solarContext || null; monthlyLoss = data.monthlyLoss || null;
-        if (collected.failures.length) analysisError = ui(`لم تُقرأ هذه المرفقات: ${collected.failures.join('، ')}. تم تحليل المرفقات المتاحة فقط.`, `These attachments could not be read: ${collected.failures.join(', ')}. Only readable attachments were assessed.`);
-      } catch (error) { if (error.name === 'AbortError') return; analysisError = error.message || 'تعذر تحليل الصور.'; }
-    } else if (useClaude) analysisError = config.claudeEnabled ? 'أضف صورة أو فيديو للألواح لتفعيل التحليل البصري بالذكاء الاصطناعي.' : claudeEnabled === false ? 'Claude غير مفعّل بعد. يستطيع مسؤول الموقع تفعيله بمفتاح Anthropic.' : 'تعذر معرفة حالة Claude؛ حاول مرة أخرى.';
-    if (!stillCurrent()) { if (accountId === currentAccount?.id) showToast('تغيرت البيانات أثناء التحليل. أعد الطلب باستخدام البيانات الحالية.'); return; }
+        if (collected.failures.length) analysisError = ui(`Ù„Ù… ØªÙÙ‚Ø±Ø£ Ù‡Ø°Ù‡ Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª: ${collected.failures.join('ØŒ ')}. ØªÙ… ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ù…Ø±ÙÙ‚Ø§Øª Ø§Ù„Ù…ØªØ§Ø­Ø© ÙÙ‚Ø·.`, `These attachments could not be read: ${collected.failures.join(', ')}. Only readable attachments were assessed.`);
+      } catch (error) { if (error.name === 'AbortError') return; analysisError = error.message || 'ØªØ¹Ø°Ø± ØªØ­Ù„ÙŠÙ„ Ø§Ù„ØµÙˆØ±.'; }
+    } else if (useClaude) analysisError = config.claudeEnabled ? 'Ø£Ø¶Ù ØµÙˆØ±Ø© Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù„ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø¨ØµØ±ÙŠ Ø¨Ø§Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„Ø§ØµØ·Ù†Ø§Ø¹ÙŠ.' : claudeEnabled === false ? 'Claude ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„ Ø¨Ø¹Ø¯. ÙŠØ³ØªØ·ÙŠØ¹ Ù…Ø³Ø¤ÙˆÙ„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ØªÙØ¹ÙŠÙ„Ù‡ Ø¨Ù…ÙØªØ§Ø­ Anthropic.' : 'ØªØ¹Ø°Ø± Ù…Ø¹Ø±ÙØ© Ø­Ø§Ù„Ø© ClaudeØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.';
+    if (!stillCurrent()) { if (accountId === currentAccount?.id) showToast('ØªØºÙŠØ±Øª Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø£Ø«Ù†Ø§Ø¡ Ø§Ù„ØªØ­Ù„ÙŠÙ„. Ø£Ø¹Ø¯ Ø§Ù„Ø·Ù„Ø¨ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø§Ù„ÙŠØ©.'); return; }
     if (!monthlyLoss) {
       try { const data = await requestMonthlyAssessment(analysisController.signal); solarContext = data.solarContext || solarContext; monthlyLoss = data.monthlyLoss || null; }
       catch (error) { if (error.name === 'AbortError') return; analysisError += ` ${error.message}`; }
@@ -2053,68 +2053,68 @@ async function runAnalysis({ useClaude = false } = {}) {
     else {
       try {
         const response = await authenticatedFetch('/api/panel/analysis', { method: 'POST', signal: analysisController.signal, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(monthlyReportInput(result)) });
-        const data = await response.json(); if (!response.ok) throw new Error(data.error || 'تعذر حساب تفصيل خسارة الحرارة حالياً.');
+        const data = await response.json(); if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø­Ø³Ø§Ø¨ ØªÙØµÙŠÙ„ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ø­Ø§Ù„ÙŠØ§Ù‹.');
         if (data.analysis) applyStoredReport(result, data.analysis);
       } catch (error) { if (error.name === 'AbortError') return; result.heatLossPercent = null; result.heatLossOmr = null; result.dustLossOmr = null; if (!analysisError) analysisError = error.message; }
     }
     if (!stillCurrent()) return;
     state.ai = ai; state.aiLanguage = ai ? state.settings.language : null; state.aiModel = aiModel;
     state.solarContext = solarContext; state.monthlyLoss = monthlyLoss; state.result = result; state.updatedAt = new Date().toISOString();
-    const item = { ...result, id: crypto.randomUUID(), createdAt: state.updatedAt, temperature: result.airTemp, location: state.form.location || 'غير محدد', ai: !!ai, visualAssessment: ai, aiLanguage: state.aiLanguage, aiModel, solarContext, monthlyLoss };
+    const item = { ...result, id: crypto.randomUUID(), createdAt: state.updatedAt, temperature: result.airTemp, location: state.form.location || 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯', ai: !!ai, visualAssessment: ai, aiLanguage: state.aiLanguage, aiModel, solarContext, monthlyLoss };
     state.history.unshift(item); state.history = state.history.slice(0, 50);
     renderDashboard(analysisError); persist();
   } finally {
     if (sequence === analysisSequence && accountId === currentAccount?.id) {
       analysisBusy = false;
-      if (button) { button.disabled = false; button.innerHTML = original || (useClaude ? ui('تحليل الألواح باستخدام Claude', 'Panel assessment with Claude') : 'إعداد النظام <span>←</span>'); }
+      if (button) { button.disabled = false; button.innerHTML = original || (useClaude ? ui('ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude', 'Panel assessment with Claude') : 'Ø¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù… <span>â†</span>'); }
       if (panelButton) panelButton.disabled = claudeEnabled !== true || !mediaFor('panels').length;
-      if (!stillCurrent()) renderDashboard(ui('تغيرت البيانات؛ أعد التحليل إذا أردت نتيجة محدثة.', 'Details changed; run analysis again for an updated assessment.'));
+      if (!stillCurrent()) renderDashboard(ui('ØªØºÙŠØ±Øª Ø§Ù„Ø¨ÙŠØ§Ù†Ø§ØªØ› Ø£Ø¹Ø¯ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ø¥Ø°Ø§ Ø£Ø±Ø¯Øª Ù†ØªÙŠØ¬Ø© Ù…Ø­Ø¯Ø«Ø©.', 'Details changed; run analysis again for an updated assessment.'));
     }
   }
 }
-function money(value) { return `${Number(value || 0).toFixed(3)} ر.ع`; }
+function money(value) { return `${Number(value || 0).toFixed(3)} Ø±.Ø¹`; }
 function assessmentValue(value, suffix = '', decimals = 1) {
-  return value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value)) ? `${Number(value).toFixed(decimals)}${suffix}` : '—';
+  return value !== null && value !== undefined && value !== '' && Number.isFinite(Number(value)) ? `${Number(value).toFixed(decimals)}${suffix}` : 'â€”';
 }
 function confidenceText(value) {
-  return ({ high: ui('مرتفعة', 'High'), medium: ui('متوسطة', 'Medium'), low: ui('منخفضة', 'Low'), unavailable: ui('غير متاحة', 'Unavailable') })[value] || ui('غير محددة', 'Not specified');
+  return ({ high: ui('Ù…Ø±ØªÙØ¹Ø©', 'High'), medium: ui('Ù…ØªÙˆØ³Ø·Ø©', 'Medium'), low: ui('Ù…Ù†Ø®ÙØ¶Ø©', 'Low'), unavailable: ui('ØºÙŠØ± Ù…ØªØ§Ø­Ø©', 'Unavailable') })[value] || ui('ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©', 'Not specified');
 }
 function assessmentMetric(label, value, hint = '') {
   return `<div class="assessment-metric"><small>${escapeHtml(label)}</small><b>${escapeHtml(value)}</b>${hint ? `<span>${escapeHtml(hint)}</span>` : ''}</div>`;
 }
 function assessmentNote(key) {
   const notes = {
-    missing_location: ['أضف موقع النظام لحساب اتجاه الشمس.', 'Add the system location to calculate sun direction.'],
-    missing_capture_time_with_timezone: ['أضف وقت التصوير لحساب موضع الشمس.', 'Add the capture time to calculate the sun position.'],
-    missing_measured_panel_tilt: ['أدخل ميل الألواح المقاس؛ لا نستخرجه بدقة من الفيديو.', 'Enter measured panel tilt; video does not establish it precisely.'],
-    missing_measured_panel_azimuth: ['أدخل اتجاه الألواح من قراءة بوصلة.', 'Enter the panel direction from a compass reading.'],
-    approximate_position_without_atmospheric_refraction: ['موضع الشمس حساب تقريبي من الموقع والوقت.', 'Sun position is an approximation from location and time.'],
-    reduced_solar_position_accuracy_at_high_latitude: ['دقة حساب الشمس أقل عند خطوط العرض العالية.', 'Sun position accuracy is lower at high latitudes.'],
-    cell_temperature_model_requires_matching_capture_time_and_nominal_wind_mounting: ['حرارة الخلايا تقدير نموذجي يفترض توافق وقت الطقس والتصوير وظروف تركيب ورياح اسمية.', 'Cell temperature is modeled and assumes matching weather and capture time, with nominal mounting and wind conditions.'],
-    rgb_and_sun_direction_do_not_measure_panel_temperature: ['صورة عادية واتجاه الشمس لا يقيسان حرارة اللوح. يلزم مستشعر حرارة أو بيانات حرارية مناسبة.', 'An ordinary image and sun direction do not measure panel temperature. A temperature sensor or suitable thermal data is needed.'],
-    missing_confirmed_omr_energy_tariff: ['أدخل تعرفة طاقة مؤكدة بالريال العُماني لإظهار قيمة الخسارة.', 'Enter a confirmed OMR energy tariff to show the value of the deficit.'],
-    missing_timezone_using_utc_until_weather_resolves_local_timezone: ['المنطقة الزمنية غير محددة؛ قد تُستخدم UTC حتى يتوفر طقس الموقع.', 'The time zone is not set; UTC may be used until location weather is available.'],
-    invalid_selected_month: ['حدّد شهراً صحيحاً.', 'Select a valid month.'],
-    selected_month_has_no_completed_days: ['لا توجد أيام مكتملة في الشهر المحدد حتى الآن.', 'The selected month has no completed days yet.'],
-    invoice_month_differs_from_selected_month: ['شهر الفاتورة مختلف عن شهر التحليل.', 'The bill month differs from the assessment month.'],
-    bill_grid_consumption_is_not_solar_production: ['استهلاك شبكة الكهرباء في الفاتورة ليس إنتاج الألواح.', 'Grid consumption on the bill is not solar generation.'],
-    visible_surface_coverage_is_not_energy_loss: ['نسبة تغطية الغبار والظل لا تساوي نسبة فقد الطاقة.', 'Dust and shade coverage is not the percentage of energy loss.'],
-    monthly_model_requires_location: ['أضف موقع النظام لتقدير إنتاج الشهر من الطقس.', 'Add the system location to model monthly generation from weather.'],
-    monthly_model_requires_measured_tilt_and_azimuth: ['أدخل الميل والاتجاه المقاسين لتقدير الإنتاج.', 'Enter measured tilt and facing direction to model generation.'],
-    monthly_model_requires_installed_power: ['أدخل القدرة الإجمالية للنظام لتقدير الإنتاج.', 'Enter total system capacity to model generation.'],
-    weather_model_is_not_metered_site_generation: ['الإنتاج المتوقع مستمد من نموذج الطقس، وليس قراءة عدّاد الموقع.', 'Expected generation comes from a weather model, not a site meter reading.'],
-    incomplete_monthly_weather_no_full_period_estimate: ['بيانات الطقس غير مكتملة؛ لم يُحسب تقدير كامل للفترة.', 'Weather data is incomplete; no complete-period estimate was calculated.'],
-    monthly_weather_unavailable: ['طقس الشهر غير متاح الآن؛ يمكنك إدخال الإنتاج المتوقع يدوياً.', 'Monthly weather is unavailable; you can enter expected generation manually.'],
-    current_month_includes_completed_days_only_align_inverter_reading_to_end_of_yesterday: ['يشمل الشهر الحالي الأيام المكتملة حتى نهاية أمس فقط؛ أدخل قراءة العاكس للفترة نفسها.', 'The current month includes completed days through yesterday only; enter the inverter reading for that period.'],
-    actual_inverter_generation_required_for_monthly_loss: ['أدخل الإنتاج الفعلي من عدّاد الألواح أو العاكس لحساب فرق الإنتاج.', 'Enter actual PV meter or inverter generation to calculate the generation deficit.'],
-    generation_deficit_cannot_be_attributed_to_dust_shade_heat_without_additional_measurements: ['فرق الإنتاج لا يحدد وحده كم خسرت بسبب الغبار أو الظل أو الحرارة؛ يلزم قياس إضافي.', 'The generation deficit alone cannot separate dust, shade or heat losses; further measurements are needed.'],
-    actual_generation_exceeds_reference_no_positive_deficit: ['الإنتاج الفعلي يتجاوز المرجع؛ لا يوجد فرق إنتاج موجب محسوب.', 'Actual generation exceeds the reference; no positive deficit is calculated.'],
-    expected_and_actual_pv_generation_refer_to_same_selected_period: ['الإنتاج المتوقع والفعلي المدخلان يفترض أنهما يغطيان الفترة نفسها.', 'Entered expected and actual PV generation are assumed to cover the same period.'],
-    expected_generation_equals_installed_kw_times_plane_of_array_kwh_per_m2_times_performance_ratio: ['الإنتاج النموذجي = قدرة النظام × الإشعاع على مستوى الألواح × معامل الأداء.', 'Modeled generation = system capacity × panel-plane irradiation × performance ratio.'],
-    performance_ratio_is_aggregate_and_includes_temperature_inverter_and_other_losses: ['معامل الأداء يشمل أثر الحرارة والعاكس وخسائر أخرى؛ لا تُضاف مرة ثانية.', 'The performance ratio includes temperature, inverter and other losses; they are not added again.'],
-    open_meteo_isotropic_sky_and_ground_albedo_0_2: ['يعتمد نموذج الإشعاع على Open-Meteo وافتراض انعكاس أرضي 0.2.', 'The irradiation model uses Open-Meteo and an assumed ground albedo of 0.2.'],
-    default_performance_ratio_0_8_not_a_site_calibration: ['معامل الأداء المفترض 0.8، ولم تتم معايرته لنظامك.', 'The assumed performance ratio is 0.8 and is not calibrated for your system.'],
-    energy_value_uses_constant_confirmed_omr_tariff_not_bill_total_or_tax: ['القيمة المحسوبة تستخدم تعرفة الطاقة المؤكدة فقط؛ لا تشمل الرسوم الثابتة أو الضرائب.', 'The calculated value uses the confirmed energy tariff only; fixed fees and taxes are excluded.'],
+    missing_location: ['Ø£Ø¶Ù Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù… Ù„Ø­Ø³Ø§Ø¨ Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø´Ù…Ø³.', 'Add the system location to calculate sun direction.'],
+    missing_capture_time_with_timezone: ['Ø£Ø¶Ù ÙˆÙ‚Øª Ø§Ù„ØªØµÙˆÙŠØ± Ù„Ø­Ø³Ø§Ø¨ Ù…ÙˆØ¶Ø¹ Ø§Ù„Ø´Ù…Ø³.', 'Add the capture time to calculate the sun position.'],
+    missing_measured_panel_tilt: ['Ø£Ø¯Ø®Ù„ Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø§Ù„Ù…Ù‚Ø§Ø³Ø› Ù„Ø§ Ù†Ø³ØªØ®Ø±Ø¬Ù‡ Ø¨Ø¯Ù‚Ø© Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆ.', 'Enter measured panel tilt; video does not establish it precisely.'],
+    missing_measured_panel_azimuth: ['Ø£Ø¯Ø®Ù„ Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ù…Ù† Ù‚Ø±Ø§Ø¡Ø© Ø¨ÙˆØµÙ„Ø©.', 'Enter the panel direction from a compass reading.'],
+    approximate_position_without_atmospheric_refraction: ['Ù…ÙˆØ¶Ø¹ Ø§Ù„Ø´Ù…Ø³ Ø­Ø³Ø§Ø¨ ØªÙ‚Ø±ÙŠØ¨ÙŠ Ù…Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙˆÙ‚Øª.', 'Sun position is an approximation from location and time.'],
+    reduced_solar_position_accuracy_at_high_latitude: ['Ø¯Ù‚Ø© Ø­Ø³Ø§Ø¨ Ø§Ù„Ø´Ù…Ø³ Ø£Ù‚Ù„ Ø¹Ù†Ø¯ Ø®Ø·ÙˆØ· Ø§Ù„Ø¹Ø±Ø¶ Ø§Ù„Ø¹Ø§Ù„ÙŠØ©.', 'Sun position accuracy is lower at high latitudes.'],
+    cell_temperature_model_requires_matching_capture_time_and_nominal_wind_mounting: ['Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø®Ù„Ø§ÙŠØ§ ØªÙ‚Ø¯ÙŠØ± Ù†Ù…ÙˆØ°Ø¬ÙŠ ÙŠÙØªØ±Ø¶ ØªÙˆØ§ÙÙ‚ ÙˆÙ‚Øª Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§Ù„ØªØµÙˆÙŠØ± ÙˆØ¸Ø±ÙˆÙ ØªØ±ÙƒÙŠØ¨ ÙˆØ±ÙŠØ§Ø­ Ø§Ø³Ù…ÙŠØ©.', 'Cell temperature is modeled and assumes matching weather and capture time, with nominal mounting and wind conditions.'],
+    rgb_and_sun_direction_do_not_measure_panel_temperature: ['ØµÙˆØ±Ø© Ø¹Ø§Ø¯ÙŠØ© ÙˆØ§ØªØ¬Ø§Ù‡ Ø§Ù„Ø´Ù…Ø³ Ù„Ø§ ÙŠÙ‚ÙŠØ³Ø§Ù† Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ù„ÙˆØ­. ÙŠÙ„Ø²Ù… Ù…Ø³ØªØ´Ø¹Ø± Ø­Ø±Ø§Ø±Ø© Ø£Ùˆ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø±Ø§Ø±ÙŠØ© Ù…Ù†Ø§Ø³Ø¨Ø©.', 'An ordinary image and sun direction do not measure panel temperature. A temperature sensor or suitable thermal data is needed.'],
+    missing_confirmed_omr_energy_tariff: ['Ø£Ø¯Ø®Ù„ ØªØ¹Ø±ÙØ© Ø·Ø§Ù‚Ø© Ù…Ø¤ÙƒØ¯Ø© Ø¨Ø§Ù„Ø±ÙŠØ§Ù„ Ø§Ù„Ø¹ÙÙ…Ø§Ù†ÙŠ Ù„Ø¥Ø¸Ù‡Ø§Ø± Ù‚ÙŠÙ…Ø© Ø§Ù„Ø®Ø³Ø§Ø±Ø©.', 'Enter a confirmed OMR energy tariff to show the value of the deficit.'],
+    missing_timezone_using_utc_until_weather_resolves_local_timezone: ['Ø§Ù„Ù…Ù†Ø·Ù‚Ø© Ø§Ù„Ø²Ù…Ù†ÙŠØ© ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©Ø› Ù‚Ø¯ ØªÙØ³ØªØ®Ø¯Ù… UTC Ø­ØªÙ‰ ÙŠØªÙˆÙØ± Ø·Ù‚Ø³ Ø§Ù„Ù…ÙˆÙ‚Ø¹.', 'The time zone is not set; UTC may be used until location weather is available.'],
+    invalid_selected_month: ['Ø­Ø¯Ù‘Ø¯ Ø´Ù‡Ø±Ø§Ù‹ ØµØ­ÙŠØ­Ø§Ù‹.', 'Select a valid month.'],
+    selected_month_has_no_completed_days: ['Ù„Ø§ ØªÙˆØ¬Ø¯ Ø£ÙŠØ§Ù… Ù…ÙƒØªÙ…Ù„Ø© ÙÙŠ Ø§Ù„Ø´Ù‡Ø± Ø§Ù„Ù…Ø­Ø¯Ø¯ Ø­ØªÙ‰ Ø§Ù„Ø¢Ù†.', 'The selected month has no completed days yet.'],
+    invoice_month_differs_from_selected_month: ['Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù…Ø®ØªÙ„Ù Ø¹Ù† Ø´Ù‡Ø± Ø§Ù„ØªØ­Ù„ÙŠÙ„.', 'The bill month differs from the assessment month.'],
+    bill_grid_consumption_is_not_solar_production: ['Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ Ø´Ø¨ÙƒØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ ÙÙŠ Ø§Ù„ÙØ§ØªÙˆØ±Ø© Ù„ÙŠØ³ Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.', 'Grid consumption on the bill is not solar generation.'],
+    visible_surface_coverage_is_not_energy_loss: ['Ù†Ø³Ø¨Ø© ØªØºØ·ÙŠØ© Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„ Ù„Ø§ ØªØ³Ø§ÙˆÙŠ Ù†Ø³Ø¨Ø© ÙÙ‚Ø¯ Ø§Ù„Ø·Ø§Ù‚Ø©.', 'Dust and shade coverage is not the percentage of energy loss.'],
+    monthly_model_requires_location: ['Ø£Ø¶Ù Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ù†Ø¸Ø§Ù… Ù„ØªÙ‚Ø¯ÙŠØ± Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ø´Ù‡Ø± Ù…Ù† Ø§Ù„Ø·Ù‚Ø³.', 'Add the system location to model monthly generation from weather.'],
+    monthly_model_requires_measured_tilt_and_azimuth: ['Ø£Ø¯Ø®Ù„ Ø§Ù„Ù…ÙŠÙ„ ÙˆØ§Ù„Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ù…Ù‚Ø§Ø³ÙŠÙ† Ù„ØªÙ‚Ø¯ÙŠØ± Ø§Ù„Ø¥Ù†ØªØ§Ø¬.', 'Enter measured tilt and facing direction to model generation.'],
+    monthly_model_requires_installed_power: ['Ø£Ø¯Ø®Ù„ Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù†Ø¸Ø§Ù… Ù„ØªÙ‚Ø¯ÙŠØ± Ø§Ù„Ø¥Ù†ØªØ§Ø¬.', 'Enter total system capacity to model generation.'],
+    weather_model_is_not_metered_site_generation: ['Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ Ù…Ø³ØªÙ…Ø¯ Ù…Ù† Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„Ø·Ù‚Ø³ØŒ ÙˆÙ„ÙŠØ³ Ù‚Ø±Ø§Ø¡Ø© Ø¹Ø¯Ù‘Ø§Ø¯ Ø§Ù„Ù…ÙˆÙ‚Ø¹.', 'Expected generation comes from a weather model, not a site meter reading.'],
+    incomplete_monthly_weather_no_full_period_estimate: ['Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø·Ù‚Ø³ ØºÙŠØ± Ù…ÙƒØªÙ…Ù„Ø©Ø› Ù„Ù… ÙŠÙØ­Ø³Ø¨ ØªÙ‚Ø¯ÙŠØ± ÙƒØ§Ù…Ù„ Ù„Ù„ÙØªØ±Ø©.', 'Weather data is incomplete; no complete-period estimate was calculated.'],
+    monthly_weather_unavailable: ['Ø·Ù‚Ø³ Ø§Ù„Ø´Ù‡Ø± ØºÙŠØ± Ù…ØªØ§Ø­ Ø§Ù„Ø¢Ù†Ø› ÙŠÙ…ÙƒÙ†Ùƒ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙŠØ¯ÙˆÙŠØ§Ù‹.', 'Monthly weather is unavailable; you can enter expected generation manually.'],
+    current_month_includes_completed_days_only_align_inverter_reading_to_end_of_yesterday: ['ÙŠØ´Ù…Ù„ Ø§Ù„Ø´Ù‡Ø± Ø§Ù„Ø­Ø§Ù„ÙŠ Ø§Ù„Ø£ÙŠØ§Ù… Ø§Ù„Ù…ÙƒØªÙ…Ù„Ø© Ø­ØªÙ‰ Ù†Ù‡Ø§ÙŠØ© Ø£Ù…Ø³ ÙÙ‚Ø·Ø› Ø£Ø¯Ø®Ù„ Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ø¹Ø§ÙƒØ³ Ù„Ù„ÙØªØ±Ø© Ù†ÙØ³Ù‡Ø§.', 'The current month includes completed days through yesterday only; enter the inverter reading for that period.'],
+    actual_inverter_generation_required_for_monthly_loss: ['Ø£Ø¯Ø®Ù„ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„ÙØ¹Ù„ÙŠ Ù…Ù† Ø¹Ø¯Ù‘Ø§Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø£Ùˆ Ø§Ù„Ø¹Ø§ÙƒØ³ Ù„Ø­Ø³Ø§Ø¨ ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬.', 'Enter actual PV meter or inverter generation to calculate the generation deficit.'],
+    generation_deficit_cannot_be_attributed_to_dust_shade_heat_without_additional_measurements: ['ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ù„Ø§ ÙŠØ­Ø¯Ø¯ ÙˆØ­Ø¯Ù‡ ÙƒÙ… Ø®Ø³Ø±Øª Ø¨Ø³Ø¨Ø¨ Ø§Ù„ØºØ¨Ø§Ø± Ø£Ùˆ Ø§Ù„Ø¸Ù„ Ø£Ùˆ Ø§Ù„Ø­Ø±Ø§Ø±Ø©Ø› ÙŠÙ„Ø²Ù… Ù‚ÙŠØ§Ø³ Ø¥Ø¶Ø§ÙÙŠ.', 'The generation deficit alone cannot separate dust, shade or heat losses; further measurements are needed.'],
+    actual_generation_exceeds_reference_no_positive_deficit: ['Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„ÙØ¹Ù„ÙŠ ÙŠØªØ¬Ø§ÙˆØ² Ø§Ù„Ù…Ø±Ø¬Ø¹Ø› Ù„Ø§ ÙŠÙˆØ¬Ø¯ ÙØ±Ù‚ Ø¥Ù†ØªØ§Ø¬ Ù…ÙˆØ¬Ø¨ Ù…Ø­Ø³ÙˆØ¨.', 'Actual generation exceeds the reference; no positive deficit is calculated.'],
+    expected_and_actual_pv_generation_refer_to_same_selected_period: ['Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Ù† ÙŠÙØªØ±Ø¶ Ø£Ù†Ù‡Ù…Ø§ ÙŠØºØ·ÙŠØ§Ù† Ø§Ù„ÙØªØ±Ø© Ù†ÙØ³Ù‡Ø§.', 'Entered expected and actual PV generation are assumed to cover the same period.'],
+    expected_generation_equals_installed_kw_times_plane_of_array_kwh_per_m2_times_performance_ratio: ['Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù†Ù…ÙˆØ°Ø¬ÙŠ = Ù‚Ø¯Ø±Ø© Ø§Ù„Ù†Ø¸Ø§Ù… Ã— Ø§Ù„Ø¥Ø´Ø¹Ø§Ø¹ Ø¹Ù„Ù‰ Ù…Ø³ØªÙˆÙ‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ã— Ù…Ø¹Ø§Ù…Ù„ Ø§Ù„Ø£Ø¯Ø§Ø¡.', 'Modeled generation = system capacity Ã— panel-plane irradiation Ã— performance ratio.'],
+    performance_ratio_is_aggregate_and_includes_temperature_inverter_and_other_losses: ['Ù…Ø¹Ø§Ù…Ù„ Ø§Ù„Ø£Ø¯Ø§Ø¡ ÙŠØ´Ù…Ù„ Ø£Ø«Ø± Ø§Ù„Ø­Ø±Ø§Ø±Ø© ÙˆØ§Ù„Ø¹Ø§ÙƒØ³ ÙˆØ®Ø³Ø§Ø¦Ø± Ø£Ø®Ø±Ù‰Ø› Ù„Ø§ ØªÙØ¶Ø§Ù Ù…Ø±Ø© Ø«Ø§Ù†ÙŠØ©.', 'The performance ratio includes temperature, inverter and other losses; they are not added again.'],
+    open_meteo_isotropic_sky_and_ground_albedo_0_2: ['ÙŠØ¹ØªÙ…Ø¯ Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„Ø¥Ø´Ø¹Ø§Ø¹ Ø¹Ù„Ù‰ Open-Meteo ÙˆØ§ÙØªØ±Ø§Ø¶ Ø§Ù†Ø¹ÙƒØ§Ø³ Ø£Ø±Ø¶ÙŠ 0.2.', 'The irradiation model uses Open-Meteo and an assumed ground albedo of 0.2.'],
+    default_performance_ratio_0_8_not_a_site_calibration: ['Ù…Ø¹Ø§Ù…Ù„ Ø§Ù„Ø£Ø¯Ø§Ø¡ Ø§Ù„Ù…ÙØªØ±Ø¶ 0.8ØŒ ÙˆÙ„Ù… ØªØªÙ… Ù…Ø¹Ø§ÙŠØ±ØªÙ‡ Ù„Ù†Ø¸Ø§Ù…Ùƒ.', 'The assumed performance ratio is 0.8 and is not calibrated for your system.'],
+    energy_value_uses_constant_confirmed_omr_tariff_not_bill_total_or_tax: ['Ø§Ù„Ù‚ÙŠÙ…Ø© Ø§Ù„Ù…Ø­Ø³ÙˆØ¨Ø© ØªØ³ØªØ®Ø¯Ù… ØªØ¹Ø±ÙØ© Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ù…Ø¤ÙƒØ¯Ø© ÙÙ‚Ø·Ø› Ù„Ø§ ØªØ´Ù…Ù„ Ø§Ù„Ø±Ø³ÙˆÙ… Ø§Ù„Ø«Ø§Ø¨ØªØ© Ø£Ùˆ Ø§Ù„Ø¶Ø±Ø§Ø¦Ø¨.', 'The calculated value uses the confirmed energy tariff only; fixed fees and taxes are excluded.'],
   };
   return notes[key] ? ui(...notes[key]) : typeof key === 'string' ? key : '';
 }
@@ -2124,39 +2124,39 @@ function renderAnalysisDetails(snapshot = state) {
   const panelButton = el('analyze-panels'); panelButton.disabled = analysisBusy || claudeEnabled !== true || !currentAccount?.id || !mediaFor('panels').length;
   if (ai && snapshot.aiLanguage === state.settings.language) {
     const readings = [
-      assessmentMetric(ui('تغطية الغبار المرئية', 'Visible dust coverage'), assessmentValue(ai.dustCoveragePercent, '%'), `${ui('الثقة', 'Confidence')}: ${confidenceText(ai.dustConfidence)}`),
-      assessmentMetric(ui('تغطية الظل المرئية', 'Visible shade coverage'), assessmentValue(ai.shadeCoveragePercent, '%'), `${ui('الثقة', 'Confidence')}: ${confidenceText(ai.shadeConfidence)}`),
+      assessmentMetric(ui('ØªØºØ·ÙŠØ© Ø§Ù„ØºØ¨Ø§Ø± Ø§Ù„Ù…Ø±Ø¦ÙŠØ©', 'Visible dust coverage'), assessmentValue(ai.dustCoveragePercent, '%'), `${ui('Ø§Ù„Ø«Ù‚Ø©', 'Confidence')}: ${confidenceText(ai.dustConfidence)}`),
+      assessmentMetric(ui('ØªØºØ·ÙŠØ© Ø§Ù„Ø¸Ù„ Ø§Ù„Ù…Ø±Ø¦ÙŠØ©', 'Visible shade coverage'), assessmentValue(ai.shadeCoveragePercent, '%'), `${ui('Ø§Ù„Ø«Ù‚Ø©', 'Confidence')}: ${confidenceText(ai.shadeConfidence)}`),
     ].join('');
     const observations = [ai.summary, ai.dustEvidence, ai.shadeEvidence, ai.tiltObservation, ai.azimuthObservation].filter((value) => typeof value === 'string' && value);
     const missing = (ai.missingMeasurements || []).filter((value) => typeof value === 'string');
     const frames = (ai.frameFindings || []).filter((value) => value && typeof value.observation === 'string').sort((a, b) => Number(a.frameIndex || 0) - Number(b.frameIndex || 0));
-    visual.innerHTML = `<p class="assessment-provider">${escapeHtml(snapshot.aiModel || 'Claude')}</p>${ai.panelDetected === false ? `<p>${ui('لم يتعرف Claude على ألواح واضحة في المرفق.', 'Claude did not identify clear panels in the attachment.')}</p>` : ''}<div class="assessment-metrics">${readings}</div><ul class="assessment-notes">${observations.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul><p class="helper-text">${ui('هذه تغطية مرئية تقديرية، وليست قياساً لخسارة الطاقة أو حرارة سطح اللوح.', 'This is estimated visible coverage, not a measurement of energy loss or panel surface temperature.')}</p>${missing.length ? `<details><summary>${ui('القياسات الناقصة', 'Missing measurements')}</summary><ul class="assessment-notes">${missing.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul></details>` : ''}${frames.length ? `<details><summary>${ui('ملاحظات اللقطات بالترتيب', 'Frame observations in sequence')}</summary><ol class="frame-findings">${frames.map((frame) => `<li>${frame.timestampSeconds !== null && frame.timestampSeconds !== undefined ? `<b>${assessmentValue(frame.timestampSeconds, ui(' ثانية', ' s'))}</b> · ` : ''}${escapeHtml(frame.observation)}</li>`).join('')}</ol></details>` : ''}`;
-  } else visual.innerHTML = `${claudeAvailabilityMarkup()}<p class="helper-text">${ai ? ui('النتيجة المحفوظة بلغة أخرى؛ أعد التحليل لقراءتها باللغة الحالية.', 'The saved assessment is in another language; run analysis again for the current language.') : ui('أرفق صوراً أو فيديو للألواح ثم اضغط «تحليل الألواح باستخدام Claude». تُحلل لقطات موزعة من الفيديو، وليس الصوت أو كل الإطارات.', 'Attach panel photos or a video, then choose “Panel assessment with Claude”. Frames sampled across the clip are assessed, not audio or every frame.')}</p>`;
+    visual.innerHTML = `<p class="assessment-provider">${escapeHtml(snapshot.aiModel || 'Claude')}</p>${ai.panelDetected === false ? `<p>${ui('Ù„Ù… ÙŠØªØ¹Ø±Ù Claude Ø¹Ù„Ù‰ Ø£Ù„ÙˆØ§Ø­ ÙˆØ§Ø¶Ø­Ø© ÙÙŠ Ø§Ù„Ù…Ø±ÙÙ‚.', 'Claude did not identify clear panels in the attachment.')}</p>` : ''}<div class="assessment-metrics">${readings}</div><ul class="assessment-notes">${observations.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul><p class="helper-text">${ui('Ù‡Ø°Ù‡ ØªØºØ·ÙŠØ© Ù…Ø±Ø¦ÙŠØ© ØªÙ‚Ø¯ÙŠØ±ÙŠØ©ØŒ ÙˆÙ„ÙŠØ³Øª Ù‚ÙŠØ§Ø³Ø§Ù‹ Ù„Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø© Ø£Ùˆ Ø­Ø±Ø§Ø±Ø© Ø³Ø·Ø­ Ø§Ù„Ù„ÙˆØ­.', 'This is estimated visible coverage, not a measurement of energy loss or panel surface temperature.')}</p>${missing.length ? `<details><summary>${ui('Ø§Ù„Ù‚ÙŠØ§Ø³Ø§Øª Ø§Ù„Ù†Ø§Ù‚ØµØ©', 'Missing measurements')}</summary><ul class="assessment-notes">${missing.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul></details>` : ''}${frames.length ? `<details><summary>${ui('Ù…Ù„Ø§Ø­Ø¸Ø§Øª Ø§Ù„Ù„Ù‚Ø·Ø§Øª Ø¨Ø§Ù„ØªØ±ØªÙŠØ¨', 'Frame observations in sequence')}</summary><ol class="frame-findings">${frames.map((frame) => `<li>${frame.timestampSeconds !== null && frame.timestampSeconds !== undefined ? `<b>${assessmentValue(frame.timestampSeconds, ui(' Ø«Ø§Ù†ÙŠØ©', ' s'))}</b> Â· ` : ''}${escapeHtml(frame.observation)}</li>`).join('')}</ol></details>` : ''}`;
+  } else visual.innerHTML = `${claudeAvailabilityMarkup()}<p class="helper-text">${ai ? ui('Ø§Ù„Ù†ØªÙŠØ¬Ø© Ø§Ù„Ù…Ø­ÙÙˆØ¸Ø© Ø¨Ù„ØºØ© Ø£Ø®Ø±Ù‰Ø› Ø£Ø¹Ø¯ Ø§Ù„ØªØ­Ù„ÙŠÙ„ Ù„Ù‚Ø±Ø§Ø¡ØªÙ‡Ø§ Ø¨Ø§Ù„Ù„ØºØ© Ø§Ù„Ø­Ø§Ù„ÙŠØ©.', 'The saved assessment is in another language; run analysis again for the current language.') : ui('Ø£Ø±ÙÙ‚ ØµÙˆØ±Ø§Ù‹ Ø£Ùˆ ÙÙŠØ¯ÙŠÙˆ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ø«Ù… Ø§Ø¶ØºØ· Â«ØªØ­Ù„ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… ClaudeÂ». ØªÙØ­Ù„Ù„ Ù„Ù‚Ø·Ø§Øª Ù…ÙˆØ²Ø¹Ø© Ù…Ù† Ø§Ù„ÙÙŠØ¯ÙŠÙˆØŒ ÙˆÙ„ÙŠØ³ Ø§Ù„ØµÙˆØª Ø£Ùˆ ÙƒÙ„ Ø§Ù„Ø¥Ø·Ø§Ø±Ø§Øª.', 'Attach panel photos or a video, then choose â€œPanel assessment with Claudeâ€. Frames sampled across the clip are assessed, not audio or every frame.')}</p>`;
   const solar = el('solar-assessment-content');
   const solarMetrics = context ? [
-    assessmentMetric(ui('اتجاه الشمس المحسوب', 'Calculated sun azimuth'), assessmentValue(context.sun?.azimuthDegrees, '°')),
-    assessmentMetric(ui('ارتفاع الشمس عن الأفق', 'Sun elevation above horizon'), assessmentValue(context.sun?.elevationDegrees, '°'), context.sun?.daylight === false ? ui('الشمس تحت الأفق', 'Sun is below the horizon') : ''),
-    assessmentMetric(ui('زاوية سقوط الشمس على اللوح', 'Sun incidence angle on panel'), assessmentValue(context.panel?.incidenceAngleDegrees, '°'), ui('من الموقع والوقت والميل والاتجاه المدخل', 'From entered location, time, tilt and direction')),
-    assessmentMetric(ui('حرارة الخلايا المقدرة', 'Estimated cell temperature'), assessmentValue(context.temperature?.estimatedCellTemperatureC, ui('°م', '°C')), context.temperature?.source === 'NOCT_model' ? ui('تقدير نموذجي، وليس قياساً حرارياً', 'Modeled estimate, not a thermal measurement') : ui('لا يوجد قياس حراري للسطح', 'No thermal surface measurement')),
+    assessmentMetric(ui('Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø´Ù…Ø³ Ø§Ù„Ù…Ø­Ø³ÙˆØ¨', 'Calculated sun azimuth'), assessmentValue(context.sun?.azimuthDegrees, 'Â°')),
+    assessmentMetric(ui('Ø§Ø±ØªÙØ§Ø¹ Ø§Ù„Ø´Ù…Ø³ Ø¹Ù† Ø§Ù„Ø£ÙÙ‚', 'Sun elevation above horizon'), assessmentValue(context.sun?.elevationDegrees, 'Â°'), context.sun?.daylight === false ? ui('Ø§Ù„Ø´Ù…Ø³ ØªØ­Øª Ø§Ù„Ø£ÙÙ‚', 'Sun is below the horizon') : ''),
+    assessmentMetric(ui('Ø²Ø§ÙˆÙŠØ© Ø³Ù‚ÙˆØ· Ø§Ù„Ø´Ù…Ø³ Ø¹Ù„Ù‰ Ø§Ù„Ù„ÙˆØ­', 'Sun incidence angle on panel'), assessmentValue(context.panel?.incidenceAngleDegrees, 'Â°'), ui('Ù…Ù† Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙˆÙ‚Øª ÙˆØ§Ù„Ù…ÙŠÙ„ ÙˆØ§Ù„Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ù…Ø¯Ø®Ù„', 'From entered location, time, tilt and direction')),
+    assessmentMetric(ui('Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø®Ù„Ø§ÙŠØ§ Ø§Ù„Ù…Ù‚Ø¯Ø±Ø©', 'Estimated cell temperature'), assessmentValue(context.temperature?.estimatedCellTemperatureC, ui('Â°Ù…', 'Â°C')), context.temperature?.source === 'NOCT_model' ? ui('ØªÙ‚Ø¯ÙŠØ± Ù†Ù…ÙˆØ°Ø¬ÙŠØŒ ÙˆÙ„ÙŠØ³ Ù‚ÙŠØ§Ø³Ø§Ù‹ Ø­Ø±Ø§Ø±ÙŠØ§Ù‹', 'Modeled estimate, not a thermal measurement') : ui('Ù„Ø§ ÙŠÙˆØ¬Ø¯ Ù‚ÙŠØ§Ø³ Ø­Ø±Ø§Ø±ÙŠ Ù„Ù„Ø³Ø·Ø­', 'No thermal surface measurement')),
   ].join('') : '';
-  solar.innerHTML = `<h3>${ui('هندسة الشمس وحرارة اللوح', 'Sun geometry and panel temperature')}</h3>${context ? `<div class="assessment-metrics">${solarMetrics}</div><ul class="assessment-notes">${(context.limitations || []).map((key) => `<li>${escapeHtml(assessmentNote(key))}</li>`).join('')}</ul>` : `<p class="helper-text">${ui('أدخل الموقع ووقت التصوير وميل الألواح واتجاهها لحساب علاقتها بالشمس. الصورة العادية لا تقيس حرارة اللوح.', 'Enter location, capture time, measured panel tilt and facing direction to calculate sun geometry. An ordinary image does not measure panel temperature.')}</p>`}`;
+  solar.innerHTML = `<h3>${ui('Ù‡Ù†Ø¯Ø³Ø© Ø§Ù„Ø´Ù…Ø³ ÙˆØ­Ø±Ø§Ø±Ø© Ø§Ù„Ù„ÙˆØ­', 'Sun geometry and panel temperature')}</h3>${context ? `<div class="assessment-metrics">${solarMetrics}</div><ul class="assessment-notes">${(context.limitations || []).map((key) => `<li>${escapeHtml(assessmentNote(key))}</li>`).join('')}</ul>` : `<p class="helper-text">${ui('Ø£Ø¯Ø®Ù„ Ø§Ù„Ù…ÙˆÙ‚Ø¹ ÙˆÙˆÙ‚Øª Ø§Ù„ØªØµÙˆÙŠØ± ÙˆÙ…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆØ§ØªØ¬Ø§Ù‡Ù‡Ø§ Ù„Ø­Ø³Ø§Ø¨ Ø¹Ù„Ø§Ù‚ØªÙ‡Ø§ Ø¨Ø§Ù„Ø´Ù…Ø³. Ø§Ù„ØµÙˆØ±Ø© Ø§Ù„Ø¹Ø§Ø¯ÙŠØ© Ù„Ø§ ØªÙ‚ÙŠØ³ Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ù„ÙˆØ­.', 'Enter location, capture time, measured panel tilt and facing direction to calculate sun geometry. An ordinary image does not measure panel temperature.')}</p>`}`;
   const host = el('monthly-assessment-content'); const monthInput = el('dashboard-bill-month');
   if (document.activeElement !== monthInput) monthInput.value = monthly?.month || state.form.billMonth || '';
   if (!monthly) {
-    host.innerHTML = `<p class="helper-text">${ui('حدّد الشهر ثم حدّث تحليله. أضف إنتاج الألواح الفعلي من العاكس وتعرفة الكهرباء في بيانات النظام لحساب قيمة فرق الإنتاج.', 'Select a month and update its assessment. Add actual inverter generation and the electricity tariff in system details to calculate the value of the deficit.')}</p>`;
+    host.innerHTML = `<p class="helper-text">${ui('Ø­Ø¯Ù‘Ø¯ Ø§Ù„Ø´Ù‡Ø± Ø«Ù… Ø­Ø¯Ù‘Ø« ØªØ­Ù„ÙŠÙ„Ù‡. Ø£Ø¶Ù Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø§Ù„ÙØ¹Ù„ÙŠ Ù…Ù† Ø§Ù„Ø¹Ø§ÙƒØ³ ÙˆØªØ¹Ø±ÙØ© Ø§Ù„ÙƒÙ‡Ø±Ø¨Ø§Ø¡ ÙÙŠ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… Ù„Ø­Ø³Ø§Ø¨ Ù‚ÙŠÙ…Ø© ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬.', 'Select a month and update its assessment. Add actual inverter generation and the electricity tariff in system details to calculate the value of the deficit.')}</p>`;
     return;
   }
   const period = monthly.period; const entered = monthly.method === 'provided_expected_generation';
-  const heading = monthly.status === 'unavailable' ? ui('لا تكفي البيانات لحساب خسارة الشهر', 'Insufficient data for monthly losses') : monthly.lostKwh === null || monthly.lostKwh === undefined ? ui('الإنتاج المتوقع فقط؛ الخسارة غير محسوبة', 'Expected generation only; deficit unavailable') : entered ? ui('فرق الإنتاج مقابل الخط الأساسي الذي أدخلته', 'Generation deficit against your entered baseline') : ui('فرق الإنتاج مقابل تقدير طقس الشهر', 'Generation deficit against modeled monthly weather');
-  const items = [assessmentMetric(ui('الإنتاج المتوقع', 'Expected generation'), assessmentValue(monthly.expectedKwh, ' kWh', 2)), assessmentMetric(ui('الإنتاج الفعلي المدخل', 'Entered actual generation'), assessmentValue(monthly.actualKwh, ' kWh', 2)), assessmentMetric(ui('فرق الإنتاج', 'Generation deficit'), assessmentValue(monthly.lostKwh, ' kWh', 2)), assessmentMetric(ui('قيمة الطاقة المفقودة', 'Value of generation deficit'), monthly.lossMoney !== null && monthly.lossMoney !== undefined ? `${assessmentValue(monthly.lossMoney, '', 3)} ${ui('ر.ع', 'OMR')}` : '—')].join('');
+  const heading = monthly.status === 'unavailable' ? ui('Ù„Ø§ ØªÙƒÙÙŠ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ù„Ø­Ø³Ø§Ø¨ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±', 'Insufficient data for monthly losses') : monthly.lostKwh === null || monthly.lostKwh === undefined ? ui('Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙÙ‚Ø·Ø› Ø§Ù„Ø®Ø³Ø§Ø±Ø© ØºÙŠØ± Ù…Ø­Ø³ÙˆØ¨Ø©', 'Expected generation only; deficit unavailable') : entered ? ui('ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ù…Ù‚Ø§Ø¨Ù„ Ø§Ù„Ø®Ø· Ø§Ù„Ø£Ø³Ø§Ø³ÙŠ Ø§Ù„Ø°ÙŠ Ø£Ø¯Ø®Ù„ØªÙ‡', 'Generation deficit against your entered baseline') : ui('ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ù…Ù‚Ø§Ø¨Ù„ ØªÙ‚Ø¯ÙŠØ± Ø·Ù‚Ø³ Ø§Ù„Ø´Ù‡Ø±', 'Generation deficit against modeled monthly weather');
+  const items = [assessmentMetric(ui('Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹', 'Expected generation'), assessmentValue(monthly.expectedKwh, ' kWh', 2)), assessmentMetric(ui('Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„ÙØ¹Ù„ÙŠ Ø§Ù„Ù…Ø¯Ø®Ù„', 'Entered actual generation'), assessmentValue(monthly.actualKwh, ' kWh', 2)), assessmentMetric(ui('ÙØ±Ù‚ Ø§Ù„Ø¥Ù†ØªØ§Ø¬', 'Generation deficit'), assessmentValue(monthly.lostKwh, ' kWh', 2)), assessmentMetric(ui('Ù‚ÙŠÙ…Ø© Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ù…ÙÙ‚ÙˆØ¯Ø©', 'Value of generation deficit'), monthly.lossMoney !== null && monthly.lossMoney !== undefined ? `${assessmentValue(monthly.lossMoney, '', 3)} ${ui('Ø±.Ø¹', 'OMR')}` : 'â€”')].join('');
   const notes = [...new Set([...(monthly.warnings || []), ...(monthly.assumptions || [])])];
-  host.innerHTML = `<h3>${heading}</h3>${period ? `<p class="assessment-period">${escapeHtml(period.startDate || '—')} — ${escapeHtml(period.endDate || '—')} · ${escapeHtml(period.daysIncluded ?? 0)} ${ui('يوماً', 'days')}${period.complete ? '' : ` · ${ui('حتى نهاية أمس', 'through yesterday')}`}</p>` : ''}<div class="assessment-metrics">${items}</div><p class="helper-text">${ui('الفاتورة تُستخدم لقراءة الاستهلاك والتعرفة؛ لا تثبت وحدها خسارة الألواح. لا نضاعف إجمالي الفاتورة في نسبة الغبار أو الظل.', 'The bill provides consumption and tariff details; it cannot establish panel losses by itself. Bill total is not multiplied by dust or shade coverage.')}</p>${notes.length ? `<details open><summary>${ui('مصادر الحساب وحدوده', 'Calculation sources and limitations')}</summary><ul class="assessment-notes">${notes.map((key) => `<li>${escapeHtml(assessmentNote(key))}</li>`).join('')}</ul></details>` : ''}`;
+  host.innerHTML = `<h3>${heading}</h3>${period ? `<p class="assessment-period">${escapeHtml(period.startDate || 'â€”')} â€” ${escapeHtml(period.endDate || 'â€”')} Â· ${escapeHtml(period.daysIncluded ?? 0)} ${ui('ÙŠÙˆÙ…Ø§Ù‹', 'days')}${period.complete ? '' : ` Â· ${ui('Ø­ØªÙ‰ Ù†Ù‡Ø§ÙŠØ© Ø£Ù…Ø³', 'through yesterday')}`}</p>` : ''}<div class="assessment-metrics">${items}</div><p class="helper-text">${ui('Ø§Ù„ÙØ§ØªÙˆØ±Ø© ØªÙØ³ØªØ®Ø¯Ù… Ù„Ù‚Ø±Ø§Ø¡Ø© Ø§Ù„Ø§Ø³ØªÙ‡Ù„Ø§Ùƒ ÙˆØ§Ù„ØªØ¹Ø±ÙØ©Ø› Ù„Ø§ ØªØ«Ø¨Øª ÙˆØ­Ø¯Ù‡Ø§ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­. Ù„Ø§ Ù†Ø¶Ø§Ø¹Ù Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ÙØ§ØªÙˆØ±Ø© ÙÙŠ Ù†Ø³Ø¨Ø© Ø§Ù„ØºØ¨Ø§Ø± Ø£Ùˆ Ø§Ù„Ø¸Ù„.', 'The bill provides consumption and tariff details; it cannot establish panel losses by itself. Bill total is not multiplied by dust or shade coverage.')}</p>${notes.length ? `<details open><summary>${ui('Ù…ØµØ§Ø¯Ø± Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ­Ø¯ÙˆØ¯Ù‡', 'Calculation sources and limitations')}</summary><ul class="assessment-notes">${notes.map((key) => `<li>${escapeHtml(assessmentNote(key))}</li>`).join('')}</ul></details>` : ''}`;
 }
 function hasLossEstimate(result) {
   return !!result && !(result.heatEstimateUnavailable === true && !(Number(result.soilingPercent) > 0));
 }
-// نتائج محفوظة قبل إضافة تفصيل الأسباب: نكمل حقول الغبار والظل والإجمالي من المدخلات
-// الحالية مرة واحدة، ثم تصبح الواجهة والتقرير متسقين.
+// Ù†ØªØ§Ø¦Ø¬ Ù…Ø­ÙÙˆØ¸Ø© Ù‚Ø¨Ù„ Ø¥Ø¶Ø§ÙØ© ØªÙØµÙŠÙ„ Ø§Ù„Ø£Ø³Ø¨Ø§Ø¨: Ù†ÙƒÙ…Ù„ Ø­Ù‚ÙˆÙ„ Ø§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„ ÙˆØ§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ù…Ù† Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª
+// Ø§Ù„Ø­Ø§Ù„ÙŠØ© Ù…Ø±Ø© ÙˆØ§Ø­Ø¯Ø©ØŒ Ø«Ù… ØªØµØ¨Ø­ Ø§Ù„ÙˆØ§Ø¬Ù‡Ø© ÙˆØ§Ù„ØªÙ‚Ø±ÙŠØ± Ù…ØªØ³Ù‚ÙŠÙ†.
 function ensureLossBreakdown(result) {
   if (!result || result.dustPercent !== undefined) return result;
   const fresh = calculateLoss();
@@ -2184,28 +2184,28 @@ function renderLossBreakdown(result) {
   const hasAny = heat !== null || dust !== null || shade > 0;
   if (!hasAny) { box.hidden = true; return; }
   box.hidden = false;
-  const row = (variant, label, value) => `<div class="loss-row ${variant}"><span><i></i>${escapeHtml(label)}</span><b>${value === null ? '—' : `${Math.round(value)}%`}</b></div>`;
+  const row = (variant, label, value) => `<div class="loss-row ${variant}"><span><i></i>${escapeHtml(label)}</span><b>${value === null ? 'â€”' : `${Math.round(value)}%`}</b></div>`;
   el('loss-components').innerHTML = [
-    row('heat', ui('الحرارة', 'Heat'), heat),
-    row('dust', ui('الغبار', 'Dust'), dust),
-    row('shade', ui('الظل', 'Shade'), shade),
-    `<div class="loss-row loss-total"><span>${ui('إجمالي التقدير', 'Estimated total')}</span><b>${total}%</b></div>`,
+    row('heat', ui('Ø§Ù„Ø­Ø±Ø§Ø±Ø©', 'Heat'), heat),
+    row('dust', ui('Ø§Ù„ØºØ¨Ø§Ø±', 'Dust'), dust),
+    row('shade', ui('Ø§Ù„Ø¸Ù„', 'Shade'), shade),
+    `<div class="loss-row loss-total"><span>${ui('Ø¥Ø¬Ù…Ø§Ù„ÙŠ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±', 'Estimated total')}</span><b>${total}%</b></div>`,
   ].join('');
   const instant = el('loss-instant');
-  if (instant) instant.innerHTML = `<h4>${ui('الفقد اللحظي', 'Instantaneous loss')}</h4><b>${heat === null ? '—' : `${Math.round(heat)}%`}</b><p>${ui('بسبب حرارة الألواح وقت الفحص، من حرارة الجو والنموذج الحراري.', 'From panel heat at inspection time, based on air temperature and the heat model.')}</p>`;
+  if (instant) instant.innerHTML = `<h4>${ui('Ø§Ù„ÙÙ‚Ø¯ Ø§Ù„Ù„Ø­Ø¸ÙŠ', 'Instantaneous loss')}</h4><b>${heat === null ? 'â€”' : `${Math.round(heat)}%`}</b><p>${ui('Ø¨Ø³Ø¨Ø¨ Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ‚Øª Ø§Ù„ÙØ­ØµØŒ Ù…Ù† Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø¬Ùˆ ÙˆØ§Ù„Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„Ø­Ø±Ø§Ø±ÙŠ.', 'From panel heat at inspection time, based on air temperature and the heat model.')}</p>`;
   const monthly = result.monthlyLoss || state.monthlyLoss;
   const monthlyNode = el('loss-monthly');
   if (monthlyNode) {
     if (monthly && monthly.lostKwh !== null && monthly.lostKwh !== undefined) {
       const value = `${Number(monthly.lostKwh).toFixed(2)}<span class="unit"> kWh</span>`;
-      const value2 = monthly.lossMoney !== null && monthly.lossMoney !== undefined ? ` · ${money(monthly.lossMoney)}` : '';
-      monthlyNode.innerHTML = `<h4>${ui('الخسارة الشهرية', 'Monthly loss')}</h4><b>${value}</b><p>${ui('الفرق بين الإنتاج المتوقع والإنتاج الفعلي', 'Expected minus actual generation')}${value2}.</p>`;
+      const value2 = monthly.lossMoney !== null && monthly.lossMoney !== undefined ? ` Â· ${money(monthly.lossMoney)}` : '';
+      monthlyNode.innerHTML = `<h4>${ui('Ø§Ù„Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±ÙŠØ©', 'Monthly loss')}</h4><b>${value}</b><p>${ui('Ø§Ù„ÙØ±Ù‚ Ø¨ÙŠÙ† Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„ÙØ¹Ù„ÙŠ', 'Expected minus actual generation')}${value2}.</p>`;
     } else {
-      monthlyNode.innerHTML = `<h4>${ui('الخسارة الشهرية', 'Monthly loss')}</h4><b>—</b><p>${ui('أضف الإنتاج المتوقع والفعلي لحساب خسارة الشهر.', 'Add expected and actual generation to calculate the monthly loss.')}</p>`;
+      monthlyNode.innerHTML = `<h4>${ui('Ø§Ù„Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±ÙŠØ©', 'Monthly loss')}</h4><b>â€”</b><p>${ui('Ø£Ø¶Ù Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ Ù„Ø­Ø³Ø§Ø¨ Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±.', 'Add expected and actual generation to calculate the monthly loss.')}</p>`;
     }
   }
   const note = el('loss-breakdown-note');
-  if (note) note.textContent = ui('النسب أعلاه تقديرية: الحرارة من النموذج الحراري، والغبار والظل من التغطية المرئية أو المؤشر الجوي، وليست قياساً كهربائياً مباشراً.', 'The percentages above are estimates: heat from the heat model, dust and shade from visible coverage or the air index, not direct electrical measurements.');
+  if (note) note.textContent = ui('Ø§Ù„Ù†Ø³Ø¨ Ø£Ø¹Ù„Ø§Ù‡ ØªÙ‚Ø¯ÙŠØ±ÙŠØ©: Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ù…Ù† Ø§Ù„Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„Ø­Ø±Ø§Ø±ÙŠØŒ ÙˆØ§Ù„ØºØ¨Ø§Ø± ÙˆØ§Ù„Ø¸Ù„ Ù…Ù† Ø§Ù„ØªØºØ·ÙŠØ© Ø§Ù„Ù…Ø±Ø¦ÙŠØ© Ø£Ùˆ Ø§Ù„Ù…Ø¤Ø´Ø± Ø§Ù„Ø¬ÙˆÙŠØŒ ÙˆÙ„ÙŠØ³Øª Ù‚ÙŠØ§Ø³Ø§Ù‹ ÙƒÙ‡Ø±Ø¨Ø§Ø¦ÙŠØ§Ù‹ Ù…Ø¨Ø§Ø´Ø±Ø§Ù‹.', 'The percentages above are estimates: heat from the heat model, dust and shade from visible coverage or the air index, not direct electrical measurements.');
 }
 function renderDashboard(note = '') {
   const f = state.form; const result = state.result || (f.power ? calculateLoss() : null); const current = state.weather?.current;
@@ -2214,61 +2214,61 @@ function renderDashboard(note = '') {
   renderAnalysisDetails();
   renderMaintenance();
   renderPanelVisual();
-  el('user-name').textContent = f.name ? escapeHtml(f.name) : 'يا صديق الشمس';
+  el('user-name').textContent = f.name ? escapeHtml(f.name) : 'ÙŠØ§ ØµØ¯ÙŠÙ‚ Ø§Ù„Ø´Ù…Ø³';
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   el('today-date').textContent = new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
   el('footer-year').textContent = new Date().getFullYear(); syncHeader();
   if (current) {
-    el('metric-temp').textContent = `${Math.round(current.temperature_2m)}°`;
+    el('metric-temp').textContent = `${Math.round(current.temperature_2m)}Â°`;
     el('metric-humidity').textContent = `${Math.round(current.relative_humidity_2m)}%`;
-    el('gauge-temp').textContent = `${Math.round(current.temperature_2m)}°م`;
-    el('weather-summary').textContent = `${weatherText(current.weather_code)} · ${Math.round(current.temperature_2m)}°م`;
-    el('weather-icon').textContent = current.is_day ? '☀' : '☾';
+    el('gauge-temp').textContent = `${Math.round(current.temperature_2m)}Â°Ù…`;
+    el('weather-summary').textContent = `${weatherText(current.weather_code)} Â· ${Math.round(current.temperature_2m)}Â°Ù…`;
+    el('weather-icon').textContent = current.is_day ? 'â˜€' : 'â˜¾';
   } else {
-    el('metric-temp').textContent = f.ambientTemp ? `${f.ambientTemp}°` : '—°'; el('metric-humidity').textContent = f.humidity ? `${f.humidity}%` : '—%';
-    el('gauge-temp').textContent = f.ambientTemp ? `${Math.round(f.ambientTemp)}°م` : '—°'; el('weather-summary').textContent = 'الطقس غير متاح';
+    el('metric-temp').textContent = f.ambientTemp ? `${f.ambientTemp}Â°` : 'â€”Â°'; el('metric-humidity').textContent = f.humidity ? `${f.humidity}%` : 'â€”%';
+    el('gauge-temp').textContent = f.ambientTemp ? `${Math.round(f.ambientTemp)}Â°Ù…` : 'â€”Â°'; el('weather-summary').textContent = 'Ø§Ù„Ø·Ù‚Ø³ ØºÙŠØ± Ù…ØªØ§Ø­';
   }
   const airDust = f.airDustPercent !== null && f.airDustPercent !== '' && f.airDustPercent !== undefined ? Number(f.airDustPercent) : NaN;
   const dustReading = airborneDustReading(state.weather);
-  el('metric-dust').textContent = Number.isFinite(airDust) ? `${Math.round(airDust)}%` : '—%';
-  el('dust-caption').textContent = f.airDustManual ? ui('مؤشر جوي معدّل يدوياً', 'Manually adjusted air index') : dustReading ? `${dustReading.source === 'pm10' ? 'PM10' : ui('غبار جوي', 'Airborne dust')} ${dustReading.concentration.toFixed(1)} µg/m³ · ${ui('مؤشر نسبي', 'Relative index')}` : ui('الغبار في الجو غير متاح', 'Airborne dust unavailable');
+  el('metric-dust').textContent = Number.isFinite(airDust) ? `${Math.round(airDust)}%` : 'â€”%';
+  el('dust-caption').textContent = f.airDustManual ? ui('Ù…Ø¤Ø´Ø± Ø¬ÙˆÙŠ Ù…Ø¹Ø¯Ù‘Ù„ ÙŠØ¯ÙˆÙŠØ§Ù‹', 'Manually adjusted air index') : dustReading ? `${dustReading.source === 'pm10' ? 'PM10' : ui('ØºØ¨Ø§Ø± Ø¬ÙˆÙŠ', 'Airborne dust')} ${dustReading.concentration.toFixed(1)} Âµg/mÂ³ Â· ${ui('Ù…Ø¤Ø´Ø± Ù†Ø³Ø¨ÙŠ', 'Relative index')}` : ui('Ø§Ù„ØºØ¨Ø§Ø± ÙÙŠ Ø§Ù„Ø¬Ùˆ ØºÙŠØ± Ù…ØªØ§Ø­', 'Airborne dust unavailable');
   if (hasLossEstimate(result)) {
     el('loss-percent').textContent = `${result.percent}%`;
     const valuePath = el('gauge-value'); const pathLength = 302; valuePath.style.strokeDashoffset = String(pathLength - pathLength * Math.min(100, result.percent) / 100);
     valuePath.style.stroke = result.percent > 30 ? 'var(--orange)' : result.percent > 15 ? '#e9824b' : '#a79370';
     el('metric-loss').textContent = `${result.lostKwh.toFixed(2)} kWh`;
-    el('loss-caption').textContent = `${money(result.lostMoney)} تقريباً · ${result.priceBasis}`;
-    el('status-title').textContent = result.percent >= 30 ? 'يحتاج إلى انتباه' : result.percent >= 15 ? 'مستوى متوسط' : 'أداء مطمئن';
-    el('status-pill').innerHTML = `<i></i> ${result.percent >= 30 ? 'انتباه' : result.percent >= 15 ? 'مراقبة' : 'جيد'}`;
+    el('loss-caption').textContent = `${money(result.lostMoney)} ØªÙ‚Ø±ÙŠØ¨Ø§Ù‹ Â· ${result.priceBasis}`;
+    el('status-title').textContent = result.percent >= 30 ? 'ÙŠØ­ØªØ§Ø¬ Ø¥Ù„Ù‰ Ø§Ù†ØªØ¨Ø§Ù‡' : result.percent >= 15 ? 'Ù…Ø³ØªÙˆÙ‰ Ù…ØªÙˆØ³Ø·' : 'Ø£Ø¯Ø§Ø¡ Ù…Ø·Ù…Ø¦Ù†';
+    el('status-pill').innerHTML = `<i></i> ${result.percent >= 30 ? 'Ø§Ù†ØªØ¨Ø§Ù‡' : result.percent >= 15 ? 'Ù…Ø±Ø§Ù‚Ø¨Ø©' : 'Ø¬ÙŠØ¯'}`;
     el('status-pill').className = `status-pill ${result.percent < 15 ? 'good' : ''}`;
-    el('status-summary').textContent = state.ai ? ui('فحص بصري باستخدام Claude', 'Visual assessment with Claude') : 'تقدير أولي لأداء النظام';
+    el('status-summary').textContent = state.ai ? ui('ÙØ­Øµ Ø¨ØµØ±ÙŠ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Claude', 'Visual assessment with Claude') : 'ØªÙ‚Ø¯ÙŠØ± Ø£ÙˆÙ„ÙŠ Ù„Ø£Ø¯Ø§Ø¡ Ø§Ù„Ù†Ø¸Ø§Ù…';
     const heatShare = result.heatPercent === null || result.heatPercent === undefined ? null : Math.round(result.heatPercent);
     const dustShare = result.dustPercent === null || result.dustPercent === undefined ? null : Math.round(result.dustPercent);
     const shadeShare = Number.isFinite(Number(result.shadePercent)) ? Math.round(Number(result.shadePercent)) : 0;
     const estimateDescription = heatShare === null && dustShare === null
-      ? ui('يومياً؛ لا تتوفر نسب مفصلة لهذه القراءة.', 'per day; no detailed percentages are available for this reading.')
-      : ui(`يومياً: الحرارة ${heatShare ?? '—'}% · الغبار ${dustShare ?? '—'}% · الظل ${shadeShare}% (إجمالي ${result.totalPercent ?? result.percent}%).`, `per day: heat ${heatShare ?? '—'}% · dust ${dustShare ?? '—'}% · shade ${shadeShare}% (total ${result.totalPercent ?? result.percent}%).`);
-    el('status-description').textContent = (note ? `${note} النتيجة الحالية تقديرية وتعتمد على البيانات التي أدخلتها.` : `قد يفقد النظام نحو ${result.lostKwh.toFixed(2)} kWh ${estimateDescription}`)
-      + (result.heatEstimateUnavailable ? ui(' لا تتوفر بيانات كافية لتقدير خسارة الطاقة.', ' There is not enough data to estimate energy losses.') : '');
-    el('recommendation-title').textContent = dustShare >= 15 ? 'قد يكون تنظيف الألواح مفيداً' : heatShare > 10 ? 'راقب أثر الحرارة على الألواح' : 'حافظ على متابعة دورية';
+      ? ui('ÙŠÙˆÙ…ÙŠØ§Ù‹Ø› Ù„Ø§ ØªØªÙˆÙØ± Ù†Ø³Ø¨ Ù…ÙØµÙ„Ø© Ù„Ù‡Ø°Ù‡ Ø§Ù„Ù‚Ø±Ø§Ø¡Ø©.', 'per day; no detailed percentages are available for this reading.')
+      : ui(`ÙŠÙˆÙ…ÙŠØ§Ù‹: Ø§Ù„Ø­Ø±Ø§Ø±Ø© ${heatShare ?? 'â€”'}% Â· Ø§Ù„ØºØ¨Ø§Ø± ${dustShare ?? 'â€”'}% Â· Ø§Ù„Ø¸Ù„ ${shadeShare}% (Ø¥Ø¬Ù…Ø§Ù„ÙŠ ${result.totalPercent ?? result.percent}%).`, `per day: heat ${heatShare ?? 'â€”'}% Â· dust ${dustShare ?? 'â€”'}% Â· shade ${shadeShare}% (total ${result.totalPercent ?? result.percent}%).`);
+    el('status-description').textContent = (note ? `${note} Ø§Ù„Ù†ØªÙŠØ¬Ø© Ø§Ù„Ø­Ø§Ù„ÙŠØ© ØªÙ‚Ø¯ÙŠØ±ÙŠØ© ÙˆØªØ¹ØªÙ…Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„ØªÙŠ Ø£Ø¯Ø®Ù„ØªÙ‡Ø§.` : `Ù‚Ø¯ ÙŠÙÙ‚Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù… Ù†Ø­Ùˆ ${result.lostKwh.toFixed(2)} kWh ${estimateDescription}`)
+      + (result.heatEstimateUnavailable ? ui(' Ù„Ø§ ØªØªÙˆÙØ± Ø¨ÙŠØ§Ù†Ø§Øª ÙƒØ§ÙÙŠØ© Ù„ØªÙ‚Ø¯ÙŠØ± Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø©.', ' There is not enough data to estimate energy losses.') : '');
+    el('recommendation-title').textContent = dustShare >= 15 ? 'Ù‚Ø¯ ÙŠÙƒÙˆÙ† ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ù…ÙÙŠØ¯Ø§Ù‹' : heatShare > 10 ? 'Ø±Ø§Ù‚Ø¨ Ø£Ø«Ø± Ø§Ù„Ø­Ø±Ø§Ø±Ø© Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­' : 'Ø­Ø§ÙØ¸ Ø¹Ù„Ù‰ Ù…ØªØ§Ø¨Ø¹Ø© Ø¯ÙˆØ±ÙŠØ©';
     const aiRecommendation = state.aiLanguage === state.settings.language ? state.ai?.recommendations?.[0] : '';
-    el('recommendation-text').textContent = aiRecommendation || (dustShare >= 15 ? 'يظهر تقدير الغبار مرتفعاً؛ تحقق بصرياً من الألواح ونظّفها عند الحاجة وبطريقة آمنة.' : heatShare > 10 ? 'حرارة الألواح قد تخفض الإنتاج وقت الذروة؛ راقب التهوية وتجنّب العمل على السطح وقت الظهيرة.' : 'تابع التغيرات في الطقس وافحص سطح الألواح بعد العواصف أو فترات الغبار.');
+    el('recommendation-text').textContent = aiRecommendation || (dustShare >= 15 ? 'ÙŠØ¸Ù‡Ø± ØªÙ‚Ø¯ÙŠØ± Ø§Ù„ØºØ¨Ø§Ø± Ù…Ø±ØªÙØ¹Ø§Ù‹Ø› ØªØ­Ù‚Ù‚ Ø¨ØµØ±ÙŠØ§Ù‹ Ù…Ù† Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ†Ø¸Ù‘ÙÙ‡Ø§ Ø¹Ù†Ø¯ Ø§Ù„Ø­Ø§Ø¬Ø© ÙˆØ¨Ø·Ø±ÙŠÙ‚Ø© Ø¢Ù…Ù†Ø©.' : heatShare > 10 ? 'Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ù‚Ø¯ ØªØ®ÙØ¶ Ø§Ù„Ø¥Ù†ØªØ§Ø¬ ÙˆÙ‚Øª Ø§Ù„Ø°Ø±ÙˆØ©Ø› Ø±Ø§Ù‚Ø¨ Ø§Ù„ØªÙ‡ÙˆÙŠØ© ÙˆØªØ¬Ù†Ù‘Ø¨ Ø§Ù„Ø¹Ù…Ù„ Ø¹Ù„Ù‰ Ø§Ù„Ø³Ø·Ø­ ÙˆÙ‚Øª Ø§Ù„Ø¸Ù‡ÙŠØ±Ø©.' : 'ØªØ§Ø¨Ø¹ Ø§Ù„ØªØºÙŠØ±Ø§Øª ÙÙŠ Ø§Ù„Ø·Ù‚Ø³ ÙˆØ§ÙØ­Øµ Ø³Ø·Ø­ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù„Ø¹ÙˆØ§ØµÙ Ø£Ùˆ ÙØªØ±Ø§Øª Ø§Ù„ØºØ¨Ø§Ø±.');
   } else {
-    el('loss-percent').textContent = '—%'; el('metric-loss').textContent = '—'; el('loss-caption').textContent = 'أضف بيانات النظام أولاً';
-    el('status-title').textContent = 'بانتظار بيانات نظامك'; el('status-pill').innerHTML = '<i></i> ابدأ التحليل'; el('status-pill').className = 'status-pill';
-    el('status-summary').textContent = 'نحتاج بعض التفاصيل أولاً'; el('status-description').textContent = 'أدخل بيانات النظام وأرفق صورة أو مقطعاً للألواح للحصول على قراءة أوضح.';
+    el('loss-percent').textContent = 'â€”%'; el('metric-loss').textContent = 'â€”'; el('loss-caption').textContent = 'Ø£Ø¶Ù Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… Ø£ÙˆÙ„Ø§Ù‹';
+    el('status-title').textContent = 'Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø¨ÙŠØ§Ù†Ø§Øª Ù†Ø¸Ø§Ù…Ùƒ'; el('status-pill').innerHTML = '<i></i> Ø§Ø¨Ø¯Ø£ Ø§Ù„ØªØ­Ù„ÙŠÙ„'; el('status-pill').className = 'status-pill';
+    el('status-summary').textContent = 'Ù†Ø­ØªØ§Ø¬ Ø¨Ø¹Ø¶ Ø§Ù„ØªÙØ§ØµÙŠÙ„ Ø£ÙˆÙ„Ø§Ù‹'; el('status-description').textContent = 'Ø£Ø¯Ø®Ù„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ø£Ùˆ Ù…Ù‚Ø·Ø¹Ø§Ù‹ Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù„Ù„Ø­ØµÙˆÙ„ Ø¹Ù„Ù‰ Ù‚Ø±Ø§Ø¡Ø© Ø£ÙˆØ¶Ø­.';
   }
   const alert = el('weather-alert');
   if (current) {
     const temp = Number(current.temperature_2m); const gust = Number(current.wind_gusts_10m); const rain = Number(state.weather?.daily?.precipitation_probability_max?.[0]);
     let alertMessage = '';
-    if (temp >= 43) alertMessage = `حرارة مرتفعة (${Math.round(temp)}°م) في موقعك؛ تجنب لمس الألواح وقت الظهيرة.`;
-    else if (gust >= 55) alertMessage = `هبات رياح قوية تصل إلى ${Math.round(gust)} كم/س؛ أجّل الصعود إلى السطح حتى تهدأ.`;
-    else if (rain >= 75) alertMessage = `احتمال هطول مرتفع (${rain}%)؛ راقب الألواح بعد انقضاء الطقس.`;
+    if (temp >= 43) alertMessage = `Ø­Ø±Ø§Ø±Ø© Ù…Ø±ØªÙØ¹Ø© (${Math.round(temp)}Â°Ù…) ÙÙŠ Ù…ÙˆÙ‚Ø¹ÙƒØ› ØªØ¬Ù†Ø¨ Ù„Ù…Ø³ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ‚Øª Ø§Ù„Ø¸Ù‡ÙŠØ±Ø©.`;
+    else if (gust >= 55) alertMessage = `Ù‡Ø¨Ø§Øª Ø±ÙŠØ§Ø­ Ù‚ÙˆÙŠØ© ØªØµÙ„ Ø¥Ù„Ù‰ ${Math.round(gust)} ÙƒÙ…/Ø³Ø› Ø£Ø¬Ù‘Ù„ Ø§Ù„ØµØ¹ÙˆØ¯ Ø¥Ù„Ù‰ Ø§Ù„Ø³Ø·Ø­ Ø­ØªÙ‰ ØªÙ‡Ø¯Ø£.`;
+    else if (rain >= 75) alertMessage = `Ø§Ø­ØªÙ…Ø§Ù„ Ù‡Ø·ÙˆÙ„ Ù…Ø±ØªÙØ¹ (${rain}%)Ø› Ø±Ø§Ù‚Ø¨ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù†Ù‚Ø¶Ø§Ø¡ Ø§Ù„Ø·Ù‚Ø³.`;
     alert.textContent = alertMessage; alert.hidden = !alertMessage;
   } else alert.hidden = true;
-  el('last-updated').textContent = state.updatedAt ? new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(state.updatedAt)) : '—';
-  const systemItems = [['القدرة', f.power ? `${f.power} واط` : '—'], ['الألواح', f.panels ? `${f.panels} لوح` : '—'], ['الشركة', f.company || 'غير محددة'], ['الموقع', f.location || 'غير محدد'], ['الميل', f.tilt ? `${f.tilt}°` : 'غير محدد'], ['آخر صيانة', f.lastMaintenanceAt ? maintenanceDateLabel(parseIsoDate(f.lastMaintenanceAt), locale) : ui('لم تُسجل', 'Not recorded')]];
+  el('last-updated').textContent = state.updatedAt ? new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(state.updatedAt)) : 'â€”';
+  const systemItems = [['Ø§Ù„Ù‚Ø¯Ø±Ø©', f.power ? `${f.power} ÙˆØ§Ø·` : 'â€”'], ['Ø§Ù„Ø£Ù„ÙˆØ§Ø­', f.panels ? `${f.panels} Ù„ÙˆØ­` : 'â€”'], ['Ø§Ù„Ø´Ø±ÙƒØ©', f.company || 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯Ø©'], ['Ø§Ù„Ù…ÙˆÙ‚Ø¹', f.location || 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯'], ['Ø§Ù„Ù…ÙŠÙ„', f.tilt ? `${f.tilt}Â°` : 'ØºÙŠØ± Ù…Ø­Ø¯Ø¯'], ['Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©', f.lastMaintenanceAt ? maintenanceDateLabel(parseIsoDate(f.lastMaintenanceAt), locale) : ui('Ù„Ù… ØªÙØ³Ø¬Ù„', 'Not recorded')]];
   el('system-summary').innerHTML = systemItems.map(([label, value]) => `<div class="system-item"><small>${label}</small><b>${escapeHtml(value)}</b></div>`).join('');
   renderWeatherStatus();
   drawChart(result); applyLanguage();
@@ -2276,20 +2276,20 @@ function renderDashboard(note = '') {
 function weatherConditionLabel(code, english) {
   const value = Number(code);
   const table = [
-    [[0], 'صافٍ', 'Clear'],
-    [[1], 'صافٍ غالبًا', 'Mainly clear'],
-    [[2], 'غائم جزئيًا', 'Partly cloudy'],
-    [[3], 'غائم', 'Overcast'],
-    [[45, 48], 'ضباب', 'Fog'],
-    [[51, 53, 55, 56, 57], 'رذاذ', 'Drizzle'],
-    [[61, 63, 65, 66, 67], 'مطر', 'Rain'],
-    [[71, 73, 75, 77], 'ثلج', 'Snow'],
-    [[80, 81, 82], 'زخات مطر', 'Rain showers'],
-    [[85, 86], 'زخات ثلج', 'Snow showers'],
-    [[95, 96, 99], 'عواصف رعدية', 'Thunderstorm'],
+    [[0], 'ØµØ§ÙÙ', 'Clear'],
+    [[1], 'ØµØ§ÙÙ ØºØ§Ù„Ø¨Ù‹Ø§', 'Mainly clear'],
+    [[2], 'ØºØ§Ø¦Ù… Ø¬Ø²Ø¦ÙŠÙ‹Ø§', 'Partly cloudy'],
+    [[3], 'ØºØ§Ø¦Ù…', 'Overcast'],
+    [[45, 48], 'Ø¶Ø¨Ø§Ø¨', 'Fog'],
+    [[51, 53, 55, 56, 57], 'Ø±Ø°Ø§Ø°', 'Drizzle'],
+    [[61, 63, 65, 66, 67], 'Ù…Ø·Ø±', 'Rain'],
+    [[71, 73, 75, 77], 'Ø«Ù„Ø¬', 'Snow'],
+    [[80, 81, 82], 'Ø²Ø®Ø§Øª Ù…Ø·Ø±', 'Rain showers'],
+    [[85, 86], 'Ø²Ø®Ø§Øª Ø«Ù„Ø¬', 'Snow showers'],
+    [[95, 96, 99], 'Ø¹ÙˆØ§ØµÙ Ø±Ø¹Ø¯ÙŠØ©', 'Thunderstorm'],
   ];
   for (const [codes, arabic, englishWord] of table) if (codes.includes(value)) return english ? englishWord : arabic;
-  return english ? 'Variable' : 'متغيّر';
+  return english ? 'Variable' : 'Ù…ØªØºÙŠÙ‘Ø±';
 }
 function weeklyProductionSeries() {
   const daily = state.weather?.daily || {};
@@ -2319,7 +2319,7 @@ function weeklyProductionSeries() {
 function weeklyProductionDays(english) {
   const weekdays = english
     ? ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    : ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    : ['Ø§Ù„Ø£Ø­Ø¯', 'Ø§Ù„Ø¥Ø«Ù†ÙŠÙ†', 'Ø§Ù„Ø«Ù„Ø§Ø«Ø§Ø¡', 'Ø§Ù„Ø£Ø±Ø¨Ø¹Ø§Ø¡', 'Ø§Ù„Ø®Ù…ÙŠØ³', 'Ø§Ù„Ø¬Ù…Ø¹Ø©', 'Ø§Ù„Ø³Ø¨Øª'];
   const dateFormat = new Intl.DateTimeFormat(english ? 'en-OM' : 'ar-OM', { day: 'numeric', month: 'short' });
   const now = new Date();
   return Array.from({ length: 7 }, (_, index) => {
@@ -2336,24 +2336,24 @@ function drawChart(result) {
     const codes = state.weather?.daily?.weather_code || [];
     chart.innerHTML = values.map((value, index) => {
       const day = days[index];
-      const label = day.today ? (english ? 'Today' : 'اليوم') : day.name;
+      const label = day.today ? (english ? 'Today' : 'Ø§Ù„ÙŠÙˆÙ…') : day.name;
       const condition = weatherConditionLabel(codes[index], english);
-      const caption = `${label} · ${day.date} · ${condition} · ${english ? 'expected output' : 'إنتاج متوقع'} ${value}%`;
+      const caption = `${label} Â· ${day.date} Â· ${condition} Â· ${english ? 'expected output' : 'Ø¥Ù†ØªØ§Ø¬ Ù…ØªÙˆÙ‚Ø¹'} ${value}%`;
       return `<div class="chart-day${day.today ? ' is-today' : ''}" title="${escapeHtml(caption)}" aria-label="${escapeHtml(caption)}"><div class="chart-plot"><div class="chart-bar" style="height:${value}%"><span class="chart-value">${value}%</span></div></div><span class="chart-label">${escapeHtml(label)}</span></div>`;
     }).join('');
   }
   const caption = el('chart-caption');
-  if (caption) caption.textContent = hasLossEstimate(result) ? `فقد اليوم ${result.percent}% · إشعاع الشمس يتغير حسب الطقس` : 'تقديرات أولية تتحدث مع الطقس';
+  if (caption) caption.textContent = hasLossEstimate(result) ? `ÙÙ‚Ø¯ Ø§Ù„ÙŠÙˆÙ… ${result.percent}% Â· Ø¥Ø´Ø¹Ø§Ø¹ Ø§Ù„Ø´Ù…Ø³ ÙŠØªØºÙŠØ± Ø­Ø³Ø¨ Ø§Ù„Ø·Ù‚Ø³` : 'ØªÙ‚Ø¯ÙŠØ±Ø§Øª Ø£ÙˆÙ„ÙŠØ© ØªØªØ­Ø¯Ø« Ù…Ø¹ Ø§Ù„Ø·Ù‚Ø³';
 }
 function renderHistory() {
   const host = el('history-list');
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
-  if (!state.history.length) { host.innerHTML = '<div class="history-empty"><div class="empty-icon">☼</div><h3>لا توجد فحوصات محفوظة بعد</h3><p>بعد إعداد نظامك سيظهر هنا سجل الفحوصات.</p><button class="button button-primary" id="history-empty-new">إعداد النظام</button></div>'; el('history-empty-new')?.addEventListener('click', () => openWizard(0)); applyLanguage(); return; }
-  host.innerHTML = state.history.map((item) => `<div class="history-row"><div class="history-date"><b>${new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(item.createdAt))}</b><small>${new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(item.createdAt))} · ${escapeHtml(item.location)}</small></div><div class="history-cell">الفقد التقديري <b>${hasLossEstimate(item) ? `${item.percent}%` : '—'}</b></div><div class="history-cell">${hasLossEstimate(item) ? `${Number(item.lostKwh).toFixed(2)} kWh` : '—'}</div><div><span class="history-badge">${item.ai ? 'فحص بصري' : 'تقدير أولي'}</span></div><button data-history-open="${item.id}">عرض</button></div>`).join('');
+  if (!state.history.length) { host.innerHTML = '<div class="history-empty"><div class="empty-icon">â˜¼</div><h3>Ù„Ø§ ØªÙˆØ¬Ø¯ ÙØ­ÙˆØµØ§Øª Ù…Ø­ÙÙˆØ¸Ø© Ø¨Ø¹Ø¯</h3><p>Ø¨Ø¹Ø¯ Ø¥Ø¹Ø¯Ø§Ø¯ Ù†Ø¸Ø§Ù…Ùƒ Ø³ÙŠØ¸Ù‡Ø± Ù‡Ù†Ø§ Ø³Ø¬Ù„ Ø§Ù„ÙØ­ÙˆØµØ§Øª.</p><button class="button button-primary" id="history-empty-new">Ø¥Ø¹Ø¯Ø§Ø¯ Ø§Ù„Ù†Ø¸Ø§Ù…</button></div>'; el('history-empty-new')?.addEventListener('click', () => openWizard(0)); applyLanguage(); return; }
+  host.innerHTML = state.history.map((item) => `<div class="history-row"><div class="history-date"><b>${new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(item.createdAt))}</b><small>${new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(item.createdAt))} Â· ${escapeHtml(item.location)}</small></div><div class="history-cell">Ø§Ù„ÙÙ‚Ø¯ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ <b>${hasLossEstimate(item) ? `${item.percent}%` : 'â€”'}</b></div><div class="history-cell">${hasLossEstimate(item) ? `${Number(item.lostKwh).toFixed(2)} kWh` : 'â€”'}</div><div><span class="history-badge">${item.ai ? 'ÙØ­Øµ Ø¨ØµØ±ÙŠ' : 'ØªÙ‚Ø¯ÙŠØ± Ø£ÙˆÙ„ÙŠ'}</span></div><button data-history-open="${item.id}">Ø¹Ø±Ø¶</button></div>`).join('');
   host.querySelectorAll('[data-history-open]').forEach((button) => button.addEventListener('click', () => {
     const item = state.history.find((row) => row.id === button.dataset.historyOpen); if (!item) return;
-    showPage('dashboard'); el('loss-percent').textContent = hasLossEstimate(item) ? `${item.percent}%` : '—%'; el('metric-loss').textContent = hasLossEstimate(item) ? `${Number(item.lostKwh).toFixed(2)} kWh` : '—';
-    el('status-title').textContent = 'فحص محفوظ'; el('status-description').textContent = hasLossEstimate(item) ? `فقد الطاقة التقديري حينها: ${money(item.lostMoney)}.` : ui('لم تتوفر بيانات كافية لتقدير خسارة الطاقة في هذا الفحص.', 'This inspection had insufficient data to estimate energy losses.');
+    showPage('dashboard'); el('loss-percent').textContent = hasLossEstimate(item) ? `${item.percent}%` : 'â€”%'; el('metric-loss').textContent = hasLossEstimate(item) ? `${Number(item.lostKwh).toFixed(2)} kWh` : 'â€”';
+    el('status-title').textContent = 'ÙØ­Øµ Ù…Ø­ÙÙˆØ¸'; el('status-description').textContent = hasLossEstimate(item) ? `ÙÙ‚Ø¯ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠ Ø­ÙŠÙ†Ù‡Ø§: ${money(item.lostMoney)}.` : ui('Ù„Ù… ØªØªÙˆÙØ± Ø¨ÙŠØ§Ù†Ø§Øª ÙƒØ§ÙÙŠØ© Ù„ØªÙ‚Ø¯ÙŠØ± Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø·Ø§Ù‚Ø© ÙÙŠ Ù‡Ø°Ø§ Ø§Ù„ÙØ­Øµ.', 'This inspection had insufficient data to estimate energy losses.');
     renderLossBreakdown(item);
     renderAnalysisDetails({ ai: item.visualAssessment || null, aiLanguage: item.aiLanguage, aiModel: item.aiModel, solarContext: item.solarContext, monthlyLoss: item.monthlyLoss });
     applyLanguage();
@@ -2365,19 +2365,19 @@ function renderSettings() {
   el('setting-notifications').disabled = devicePushBusy || !currentAccount;
   el('setting-dark').checked = !!state.settings.dark; el('setting-sound').checked = !!state.settings.sound; el('setting-language').value = state.settings.language || 'ar';
   const cooldown = Number(appSettings?.dust_alert_cooldown_days);
-  const deviceStatus = devicePushStateKnown ? (devicePushEnabled ? 'مفعّلة على هذا الجهاز' : 'غير مفعّلة على هذا الجهاز') : 'تعذر التحقق من تنبيهات هذا الجهاز.';
-  el('notification-hint').textContent = `تنبيهات هذا الجهاز فقط · ${deviceStatus}${Number.isFinite(cooldown) ? ` · كل ${cooldown} يوماً كحد أقصى` : ''}`;
+  const deviceStatus = devicePushStateKnown ? (devicePushEnabled ? 'Ù…ÙØ¹Ù‘Ù„Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø²' : 'ØºÙŠØ± Ù…ÙØ¹Ù‘Ù„Ø© Ø¹Ù„Ù‰ Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø²') : 'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².';
+  el('notification-hint').textContent = `ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø² ÙÙ‚Ø· Â· ${deviceStatus}${Number.isFinite(cooldown) ? ` Â· ÙƒÙ„ ${cooldown} ÙŠÙˆÙ…Ø§Ù‹ ÙƒØ­Ø¯ Ø£Ù‚ØµÙ‰` : ''}`;
   applyLanguage();
 }
-// ---------- البلاغات والشكاوى ----------
+// ---------- Ø§Ù„Ø¨Ù„Ø§ØºØ§Øª ÙˆØ§Ù„Ø´ÙƒØ§ÙˆÙ‰ ----------
 const COMPLAINT_CATEGORIES = {
-  performance: ['ضعف في الإنتاج', 'Low generation'],
-  dust: ['غبار على الألواح', 'Dust on panels'],
-  heat: ['حرارة مرتفعة', 'High heat'],
-  shade: ['تظليل على الألواح', 'Panel shading'],
-  electrical: ['مشكلة كهربائية', 'Electrical problem'],
-  service: ['طلب صيانة', 'Maintenance request'],
-  other: ['أخرى', 'Other'],
+  performance: ['Ø¶Ø¹Ù ÙÙŠ Ø§Ù„Ø¥Ù†ØªØ§Ø¬', 'Low generation'],
+  dust: ['ØºØ¨Ø§Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Dust on panels'],
+  heat: ['Ø­Ø±Ø§Ø±Ø© Ù…Ø±ØªÙØ¹Ø©', 'High heat'],
+  shade: ['ØªØ¸Ù„ÙŠÙ„ Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel shading'],
+  electrical: ['Ù…Ø´ÙƒÙ„Ø© ÙƒÙ‡Ø±Ø¨Ø§Ø¦ÙŠØ©', 'Electrical problem'],
+  service: ['Ø·Ù„Ø¨ ØµÙŠØ§Ù†Ø©', 'Maintenance request'],
+  other: ['Ø£Ø®Ø±Ù‰', 'Other'],
 };
 function complaintCategoryLabel(value) {
   const entry = COMPLAINT_CATEGORIES[value] || COMPLAINT_CATEGORIES.other;
@@ -2387,8 +2387,8 @@ function renderReports() {
   const note = el('complaint-email-note');
   if (note) {
     note.textContent = complaintConfig.delivery
-      ? ui(`سيُرسل البلاغ مباشرة إلى فريق الصيانة على ${complaintConfig.email}.`, `Your complaint is sent directly to the maintenance team at ${complaintConfig.email}.`)
-      : ui(`سيُجهَّز البلاغ ويفتح بريدك لإرساله إلى ${complaintConfig.email}، أو يمكنك نسخه ومشاركته.`, `Your complaint is prepared and your mail app opens to send it to ${complaintConfig.email}; you can also copy and share it.`);
+      ? ui(`Ø³ÙŠÙØ±Ø³Ù„ Ø§Ù„Ø¨Ù„Ø§Øº Ù…Ø¨Ø§Ø´Ø±Ø© Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø¹Ù„Ù‰ ${complaintConfig.email}.`, `Your complaint is sent directly to the maintenance team at ${complaintConfig.email}.`)
+      : ui(`Ø³ÙŠÙØ¬Ù‡ÙŽÙ‘Ø² Ø§Ù„Ø¨Ù„Ø§Øº ÙˆÙŠÙØªØ­ Ø¨Ø±ÙŠØ¯Ùƒ Ù„Ø¥Ø±Ø³Ø§Ù„Ù‡ Ø¥Ù„Ù‰ ${complaintConfig.email}ØŒ Ø£Ùˆ ÙŠÙ…ÙƒÙ†Ùƒ Ù†Ø³Ø®Ù‡ ÙˆÙ…Ø´Ø§Ø±ÙƒØªÙ‡.`, `Your complaint is prepared and your mail app opens to send it to ${complaintConfig.email}; you can also copy and share it.`);
   }
   const name = el('complaint-name');
   if (name && !name.value) name.value = state.form.name || state.user?.username || '';
@@ -2400,14 +2400,14 @@ function renderComplaintHistory() {
   if (!host) return;
   const list = Array.isArray(state.complaints) ? state.complaints : [];
   if (!list.length) {
-    host.innerHTML = `<div class="empty-state"><div class="empty-icon">✎</div><h3>${ui('لا توجد بلاغات بعد', 'No complaints yet')}</h3><p>${ui('عند إرسال بلاغ سيظهر هنا مع تاريخه وحالته.', 'When you send a complaint it appears here with its date and status.')}</p></div>`;
+    host.innerHTML = `<div class="empty-state"><div class="empty-icon">âœŽ</div><h3>${ui('Ù„Ø§ ØªÙˆØ¬Ø¯ Ø¨Ù„Ø§ØºØ§Øª Ø¨Ø¹Ø¯', 'No complaints yet')}</h3><p>${ui('Ø¹Ù†Ø¯ Ø¥Ø±Ø³Ø§Ù„ Ø¨Ù„Ø§Øº Ø³ÙŠØ¸Ù‡Ø± Ù‡Ù†Ø§ Ù…Ø¹ ØªØ§Ø±ÙŠØ®Ù‡ ÙˆØ­Ø§Ù„ØªÙ‡.', 'When you send a complaint it appears here with its date and status.')}</p></div>`;
     return;
   }
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   host.innerHTML = `<div class="complaint-list">${list.map((item) => {
-    const delivered = item.delivered ? ui('أُرسل إلى فريق الصيانة', 'Sent to the maintenance team') : ui('بانتظار الإرسال من بريدك', 'Pending sending from your mail');
+    const delivered = item.delivered ? ui('Ø£ÙØ±Ø³Ù„ Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø©', 'Sent to the maintenance team') : ui('Ø¨Ø§Ù†ØªØ¸Ø§Ø± Ø§Ù„Ø¥Ø±Ø³Ø§Ù„ Ù…Ù† Ø¨Ø±ÙŠØ¯Ùƒ', 'Pending sending from your mail');
     const when = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }).format(new Date(item.createdAt));
-    return `<div class="complaint-row"><div class="complaint-row-top"><b>${escapeHtml(complaintCategoryLabel(item.category))}${item.subject ? ` · ${escapeHtml(item.subject)}` : ''}</b><span class="history-badge">${escapeHtml(delivered)}</span></div><div class="complaint-row-meta">${when} · ${ui('رقم', 'No.')} ${escapeHtml(String(item.id || '').slice(0, 8))}</div><p>${escapeHtml(item.message)}</p></div>`;
+    return `<div class="complaint-row"><div class="complaint-row-top"><b>${escapeHtml(complaintCategoryLabel(item.category))}${item.subject ? ` Â· ${escapeHtml(item.subject)}` : ''}</b><span class="history-badge">${escapeHtml(delivered)}</span></div><div class="complaint-row-meta">${when} Â· ${ui('Ø±Ù‚Ù…', 'No.')} ${escapeHtml(String(item.id || '').slice(0, 8))}</div><p>${escapeHtml(item.message)}</p></div>`;
   }).join('')}</div>`;
 }
 function openMailto(url) {
@@ -2420,13 +2420,13 @@ function openMailto(url) {
 }
 function complaintMailtoFallback(payload) {
   const lines = [
-    `${ui('نوع البلاغ', 'Complaint type')}: ${complaintCategoryLabel(payload.category)}`,
-    payload.name ? `${ui('الاسم', 'Name')}: ${payload.name}` : '',
-    `${ui('وسيلة التواصل', 'Contact')}: ${payload.contact}`,
-    payload.location ? `${ui('الموقع', 'Location')}: ${payload.location}` : '',
+    `${ui('Ù†ÙˆØ¹ Ø§Ù„Ø¨Ù„Ø§Øº', 'Complaint type')}: ${complaintCategoryLabel(payload.category)}`,
+    payload.name ? `${ui('Ø§Ù„Ø§Ø³Ù…', 'Name')}: ${payload.name}` : '',
+    `${ui('ÙˆØ³ÙŠÙ„Ø© Ø§Ù„ØªÙˆØ§ØµÙ„', 'Contact')}: ${payload.contact}`,
+    payload.location ? `${ui('Ø§Ù„Ù…ÙˆÙ‚Ø¹', 'Location')}: ${payload.location}` : '',
     '', payload.message,
   ].filter((line) => line !== '');
-  return `mailto:${encodeURIComponent(complaintConfig.email)}?subject=${encodeURIComponent(payload.subject || ui('بلاغ سياج', 'Siyaj complaint'))}&body=${encodeURIComponent(lines.join('\n'))}`;
+  return `mailto:${encodeURIComponent(complaintConfig.email)}?subject=${encodeURIComponent(payload.subject || ui('Ø¨Ù„Ø§Øº Ø³ÙŠØ§Ø¬', 'Siyaj complaint'))}&body=${encodeURIComponent(lines.join('\n'))}`;
 }
 async function submitComplaint() {
   const alertBox = el('complaint-alert');
@@ -2444,17 +2444,17 @@ async function submitComplaint() {
     account: currentAccount?.username || '',
   };
   const fail = (message) => { if (alertBox) { alertBox.textContent = message; alertBox.hidden = false; } };
-  if (!payload.contact) return fail(ui('أدخل بريدك الإلكتروني أو رقم هاتفك للتواصل.', 'Enter your email or phone number for contact.'));
-  if (payload.message.length < 10) return fail(ui('اكتب وصفاً للبلاغ (10 أحرف على الأقل).', 'Describe the complaint (at least 10 characters).'));
-  if (button) { button.disabled = true; button.dataset.original = button.innerHTML; button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('جارٍ الإرسال…', 'Sending…')}</span>`; }
+  if (!payload.contact) return fail(ui('Ø£Ø¯Ø®Ù„ Ø¨Ø±ÙŠØ¯Ùƒ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ Ø£Ùˆ Ø±Ù‚Ù… Ù‡Ø§ØªÙÙƒ Ù„Ù„ØªÙˆØ§ØµÙ„.', 'Enter your email or phone number for contact.'));
+  if (payload.message.length < 10) return fail(ui('Ø§ÙƒØªØ¨ ÙˆØµÙØ§Ù‹ Ù„Ù„Ø¨Ù„Ø§Øº (10 Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„).', 'Describe the complaint (at least 10 characters).'));
+  if (button) { button.disabled = true; button.dataset.original = button.innerHTML; button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('Ø¬Ø§Ø±Ù Ø§Ù„Ø¥Ø±Ø³Ø§Ù„â€¦', 'Sendingâ€¦')}</span>`; }
   let result = null;
   try {
     const response = await authenticatedFetch('/api/complaints', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.error || ui('تعذر إرسال البلاغ؛ حاول مرة أخرى.', 'Could not send the complaint; try again.'));
+    if (!response.ok) throw new Error(data.error || ui('ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¨Ù„Ø§ØºØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.', 'Could not send the complaint; try again.'));
     result = data;
   } catch (error) {
-    fail(error.message || ui('تعذر إرسال البلاغ؛ حاول مرة أخرى.', 'Could not send the complaint; try again.'));
+    fail(error.message || ui('ØªØ¹Ø°Ø± Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¨Ù„Ø§ØºØ› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.', 'Could not send the complaint; try again.'));
     if (button) { button.disabled = false; if (button.dataset.original) button.innerHTML = button.dataset.original; }
     return;
   }
@@ -2463,17 +2463,17 @@ async function submitComplaint() {
   persist(); renderComplaintHistory();
   if (success) {
     if (result.delivered) {
-      success.innerHTML = ui(`✅ تم إرسال بلاغك إلى فريق الصيانة على ${complaintConfig.email}.`, `✅ Your complaint was sent to the maintenance team at ${complaintConfig.email}.`);
+      success.innerHTML = ui(`âœ… ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø¨Ù„Ø§ØºÙƒ Ø¥Ù„Ù‰ ÙØ±ÙŠÙ‚ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø¹Ù„Ù‰ ${complaintConfig.email}.`, `âœ… Your complaint was sent to the maintenance team at ${complaintConfig.email}.`);
     } else {
       const mailto = result.mailto || complaintMailtoFallback(payload);
-      success.innerHTML = ui('تم تجهيز بلاغك. إن لم يفتح بريدك تلقائياً فاضغط الرابط التالي، أو استخدم «مشاركة / نسخ البلاغ».', 'Your complaint is ready. If your mail app did not open automatically, use the link below, or “Share / copy complaint”.');
-      success.innerHTML += ` <a href="${mailto}">${ui('فتح البريد لإرساله', 'Open mail to send')}</a>`;
+      success.innerHTML = ui('ØªÙ… ØªØ¬Ù‡ÙŠØ² Ø¨Ù„Ø§ØºÙƒ. Ø¥Ù† Ù„Ù… ÙŠÙØªØ­ Ø¨Ø±ÙŠØ¯Ùƒ ØªÙ„Ù‚Ø§Ø¦ÙŠØ§Ù‹ ÙØ§Ø¶ØºØ· Ø§Ù„Ø±Ø§Ø¨Ø· Ø§Ù„ØªØ§Ù„ÙŠØŒ Ø£Ùˆ Ø§Ø³ØªØ®Ø¯Ù… Â«Ù…Ø´Ø§Ø±ÙƒØ© / Ù†Ø³Ø® Ø§Ù„Ø¨Ù„Ø§ØºÂ».', 'Your complaint is ready. If your mail app did not open automatically, use the link below, or â€œShare / copy complaintâ€.');
+      success.innerHTML += ` <a href="${mailto}">${ui('ÙØªØ­ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ù„Ø¥Ø±Ø³Ø§Ù„Ù‡', 'Open mail to send')}</a>`;
       openMailto(mailto);
     }
     success.hidden = false;
   }
   if (button) { button.disabled = false; if (button.dataset.original) button.innerHTML = button.dataset.original; }
-  showToast(result.delivered ? ui('تم إرسال البلاغ.', 'Complaint sent.') : ui('تم تجهيز البلاغ للإرسال.', 'Complaint prepared for sending.'));
+  showToast(result.delivered ? ui('ØªÙ… Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø¨Ù„Ø§Øº.', 'Complaint sent.') : ui('ØªÙ… ØªØ¬Ù‡ÙŠØ² Ø§Ù„Ø¨Ù„Ø§Øº Ù„Ù„Ø¥Ø±Ø³Ø§Ù„.', 'Complaint prepared for sending.'));
 }
 async function shareComplaint() {
   const payload = {
@@ -2483,31 +2483,31 @@ async function shareComplaint() {
     name: (el('complaint-name')?.value || '').trim(),
     contact: (el('complaint-contact')?.value || '').trim(),
   };
-  if (payload.message.length < 10) { const alertBox = el('complaint-alert'); if (alertBox) { alertBox.textContent = ui('اكتب وصفاً للبلاغ قبل مشاركته.', 'Describe the complaint before sharing it.'); alertBox.hidden = false; } return; }
-  const text = `${ui('بلاغ سياج', 'Siyaj complaint')} — ${complaintCategoryLabel(payload.category)}\n${payload.subject ? `${payload.subject}\n` : ''}${payload.message}\n${ui('التواصل', 'Contact')}: ${payload.contact || '—'}\n${ui('إلى', 'To')}: ${complaintConfig.email}`;
-  if (navigator.share) { try { await navigator.share({ title: ui('بلاغ سياج', 'Siyaj complaint'), text }); return; } catch { /* fall through to copy */ } }
-  try { await navigator.clipboard.writeText(text); showToast(ui('تم نسخ نص البلاغ.', 'Complaint text copied.')); }
-  catch { showToast(ui('تعذر النسخ؛ حدّد النص يدوياً.', 'Copy failed; select the text manually.')); }
+  if (payload.message.length < 10) { const alertBox = el('complaint-alert'); if (alertBox) { alertBox.textContent = ui('Ø§ÙƒØªØ¨ ÙˆØµÙØ§Ù‹ Ù„Ù„Ø¨Ù„Ø§Øº Ù‚Ø¨Ù„ Ù…Ø´Ø§Ø±ÙƒØªÙ‡.', 'Describe the complaint before sharing it.'); alertBox.hidden = false; } return; }
+  const text = `${ui('Ø¨Ù„Ø§Øº Ø³ÙŠØ§Ø¬', 'Siyaj complaint')} â€” ${complaintCategoryLabel(payload.category)}\n${payload.subject ? `${payload.subject}\n` : ''}${payload.message}\n${ui('Ø§Ù„ØªÙˆØ§ØµÙ„', 'Contact')}: ${payload.contact || 'â€”'}\n${ui('Ø¥Ù„Ù‰', 'To')}: ${complaintConfig.email}`;
+  if (navigator.share) { try { await navigator.share({ title: ui('Ø¨Ù„Ø§Øº Ø³ÙŠØ§Ø¬', 'Siyaj complaint'), text }); return; } catch { /* fall through to copy */ } }
+  try { await navigator.clipboard.writeText(text); showToast(ui('ØªÙ… Ù†Ø³Ø® Ù†Øµ Ø§Ù„Ø¨Ù„Ø§Øº.', 'Complaint text copied.')); }
+  catch { showToast(ui('ØªØ¹Ø°Ø± Ø§Ù„Ù†Ø³Ø®Ø› Ø­Ø¯Ù‘Ø¯ Ø§Ù„Ù†Øµ ÙŠØ¯ÙˆÙŠØ§Ù‹.', 'Copy failed; select the text manually.')); }
 }
 
-// ---------- تقرير النظام ----------
+// ---------- ØªÙ‚Ø±ÙŠØ± Ø§Ù„Ù†Ø¸Ø§Ù… ----------
 function reportSystemRows(f) {
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   const maintenance = maintenanceStatus();
   return [
-    [ui('اسم صاحب النظام', 'System owner'), f.name || '—'],
-    [ui('الموقع', 'Location'), f.location || ui('غير محدد', 'Not set')],
-    [ui('عدد الألواح', 'Panel count'), f.panels ? `${f.panels}` : '—'],
-    [ui('القدرة الإجمالية', 'Total capacity'), f.power ? `${f.power} ${ui('واط', 'W')}` : '—'],
-    [ui('نوع الألواح', 'Panel type'), ({ monocrystalline: ui('أحادية البلورة', 'Monocrystalline'), polycrystalline: ui('متعددة البلورات', 'Polycrystalline'), 'thin-film': ui('أغشية رقيقة', 'Thin film'), unknown: ui('غير معروف', 'Unknown') })[f.panelType] || '—'],
-    [ui('شركة الألواح', 'Panel company'), f.company || '—'],
-    [ui('المصنع', 'Manufacturer'), f.brand || '—'],
-    [ui('ميل الألواح', 'Panel tilt'), f.tilt !== '' && f.tilt !== null ? `${f.tilt}°` : '—'],
-    [ui('اتجاه الألواح', 'Panel azimuth'), f.panelAzimuth !== '' && f.panelAzimuth !== null ? `${f.panelAzimuth}°` : '—'],
-    [ui('آخر صيانة', 'Last maintenance'), maintenance ? maintenanceDateLabel(maintenance.last, locale) : ui('لم تُسجل', 'Not recorded')],
-    [ui('موعد الصيانة القادمة', 'Next maintenance'), maintenance ? `${maintenanceDateLabel(maintenance.due, locale)} · ${maintenanceRemainingLabel(maintenance)}` : ui('أضف تاريخ آخر صيانة', 'Add the last maintenance date')],
-    [ui('قيمة الفاتورة', 'Bill amount'), f.invoice ? `${f.invoice} ${ui('ر.ع', 'OMR')}` : '—'],
-    [ui('شهر الفاتورة', 'Bill month'), f.billMonth || '—'],
+    [ui('Ø§Ø³Ù… ØµØ§Ø­Ø¨ Ø§Ù„Ù†Ø¸Ø§Ù…', 'System owner'), f.name || 'â€”'],
+    [ui('Ø§Ù„Ù…ÙˆÙ‚Ø¹', 'Location'), f.location || ui('ØºÙŠØ± Ù…Ø­Ø¯Ø¯', 'Not set')],
+    [ui('Ø¹Ø¯Ø¯ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel count'), f.panels ? `${f.panels}` : 'â€”'],
+    [ui('Ø§Ù„Ù‚Ø¯Ø±Ø© Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠØ©', 'Total capacity'), f.power ? `${f.power} ${ui('ÙˆØ§Ø·', 'W')}` : 'â€”'],
+    [ui('Ù†ÙˆØ¹ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel type'), ({ monocrystalline: ui('Ø£Ø­Ø§Ø¯ÙŠØ© Ø§Ù„Ø¨Ù„ÙˆØ±Ø©', 'Monocrystalline'), polycrystalline: ui('Ù…ØªØ¹Ø¯Ø¯Ø© Ø§Ù„Ø¨Ù„ÙˆØ±Ø§Øª', 'Polycrystalline'), 'thin-film': ui('Ø£ØºØ´ÙŠØ© Ø±Ù‚ÙŠÙ‚Ø©', 'Thin film'), unknown: ui('ØºÙŠØ± Ù…Ø¹Ø±ÙˆÙ', 'Unknown') })[f.panelType] || 'â€”'],
+    [ui('Ø´Ø±ÙƒØ© Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel company'), f.company || 'â€”'],
+    [ui('Ø§Ù„Ù…ØµÙ†Ø¹', 'Manufacturer'), f.brand || 'â€”'],
+    [ui('Ù…ÙŠÙ„ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel tilt'), f.tilt !== '' && f.tilt !== null ? `${f.tilt}Â°` : 'â€”'],
+    [ui('Ø§ØªØ¬Ø§Ù‡ Ø§Ù„Ø£Ù„ÙˆØ§Ø­', 'Panel azimuth'), f.panelAzimuth !== '' && f.panelAzimuth !== null ? `${f.panelAzimuth}Â°` : 'â€”'],
+    [ui('Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©', 'Last maintenance'), maintenance ? maintenanceDateLabel(maintenance.last, locale) : ui('Ù„Ù… ØªÙØ³Ø¬Ù„', 'Not recorded')],
+    [ui('Ù…ÙˆØ¹Ø¯ Ø§Ù„ØµÙŠØ§Ù†Ø© Ø§Ù„Ù‚Ø§Ø¯Ù…Ø©', 'Next maintenance'), maintenance ? `${maintenanceDateLabel(maintenance.due, locale)} Â· ${maintenanceRemainingLabel(maintenance)}` : ui('Ø£Ø¶Ù ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø©', 'Add the last maintenance date')],
+    [ui('Ù‚ÙŠÙ…Ø© Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'Bill amount'), f.invoice ? `${f.invoice} ${ui('Ø±.Ø¹', 'OMR')}` : 'â€”'],
+    [ui('Ø´Ù‡Ø± Ø§Ù„ÙØ§ØªÙˆØ±Ø©', 'Bill month'), f.billMonth || 'â€”'],
   ];
 }
 function renderSystemReport() {
@@ -2521,68 +2521,68 @@ function renderSystemReport() {
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   const generated = new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeStyle: 'short' }).format(new Date());
   const heat = result?.heatPercent === null || result?.heatPercent === undefined ? null : Math.round(Number(result.heatPercent));
-  const dust = result?.dustPercent === null || result?.dustPercent === undefined ? '—' : `${Math.round(Number(result.dustPercent))}%`;
+  const dust = result?.dustPercent === null || result?.dustPercent === undefined ? 'â€”' : `${Math.round(Number(result.dustPercent))}%`;
   const shade = Number.isFinite(Number(result?.shadePercent)) ? `${Math.round(Number(result.shadePercent))}%` : '0%';
-  const total = Number.isFinite(Number(result?.totalPercent)) ? Number(result.totalPercent) : '—';
-  const lossDay = result && Number.isFinite(Number(result.lostKwh)) ? `${result.lostKwh.toFixed(2)} kWh` : '—';
-  const lossMoney = result && Number.isFinite(Number(result.lostMoney)) ? money(result.lostMoney) : '—';
-  const owner = state.user?.username || f.name || ui('مستخدم سياج', 'Siyaj user');
+  const total = Number.isFinite(Number(result?.totalPercent)) ? Number(result.totalPercent) : 'â€”';
+  const lossDay = result && Number.isFinite(Number(result.lostKwh)) ? `${result.lostKwh.toFixed(2)} kWh` : 'â€”';
+  const lossMoney = result && Number.isFinite(Number(result.lostMoney)) ? money(result.lostMoney) : 'â€”';
+  const owner = state.user?.username || f.name || ui('Ù…Ø³ØªØ®Ø¯Ù… Ø³ÙŠØ§Ø¬', 'Siyaj user');
   const monthlyLine = monthly && monthly.lostKwh !== null && monthly.lostKwh !== undefined
-    ? `${Number(monthly.lostKwh).toFixed(2)} kWh${monthly.lossMoney !== null && monthly.lossMoney !== undefined ? ` · ${money(monthly.lossMoney)}` : ''}`
-    : ui('غير محسوبة (أضف الإنتاج المتوقع والفعلي)', 'Not calculated (add expected and actual generation)');
+    ? `${Number(monthly.lostKwh).toFixed(2)} kWh${monthly.lossMoney !== null && monthly.lossMoney !== undefined ? ` Â· ${money(monthly.lossMoney)}` : ''}`
+    : ui('ØºÙŠØ± Ù…Ø­Ø³ÙˆØ¨Ø© (Ø£Ø¶Ù Ø§Ù„Ø¥Ù†ØªØ§Ø¬ Ø§Ù„Ù…ØªÙˆÙ‚Ø¹ ÙˆØ§Ù„ÙØ¹Ù„ÙŠ)', 'Not calculated (add expected and actual generation)');
   const weatherRows = current ? [
-    [ui('الحرارة', 'Temperature'), `${Math.round(current.temperature_2m)}°${ui('م', 'C')}`],
-    [ui('الرطوبة', 'Humidity'), `${Math.round(current.relative_humidity_2m)}%`],
-    [ui('الحالة', 'Condition'), weatherText(current.weather_code)],
-    [ui('المنطقة الزمنية', 'Time zone'), state.weather?.timezone || '—'],
-  ] : [[ui('الطقس', 'Weather'), ui('غير متاح', 'Unavailable')]];
+    [ui('Ø§Ù„Ø­Ø±Ø§Ø±Ø©', 'Temperature'), `${Math.round(current.temperature_2m)}Â°${ui('Ù…', 'C')}`],
+    [ui('Ø§Ù„Ø±Ø·ÙˆØ¨Ø©', 'Humidity'), `${Math.round(current.relative_humidity_2m)}%`],
+    [ui('Ø§Ù„Ø­Ø§Ù„Ø©', 'Condition'), weatherText(current.weather_code)],
+    [ui('Ø§Ù„Ù…Ù†Ø·Ù‚Ø© Ø§Ù„Ø²Ù…Ù†ÙŠØ©', 'Time zone'), state.weather?.timezone || 'â€”'],
+  ] : [[ui('Ø§Ù„Ø·Ù‚Ø³', 'Weather'), ui('ØºÙŠØ± Ù…ØªØ§Ø­', 'Unavailable')]];
   const advice = result && !result.heatEstimateUnavailable
     ? [
-      heat !== null && heat >= 10 ? [ui('الحرارة', 'Heat'), ui('حرارة الألواح المرتفعة تخفض الإنتاج؛ راقب التهوية ووقت التشغيل وتجنب العمل وقت الذروة.', 'High panel heat lowers output; check ventilation and avoid working at peak heat.')] : null,
-      Number(result.dustPercent) >= 15 ? [ui('الغبار', 'Dust'), ui('يظهر تراكم غبار ملحوظ؛ نظّف الألواح بأمان وكرّر الفحص.', 'Notable dust is shown; clean the panels safely and re-inspect.')] : null,
-      [ui('التوصية', 'Recommendation'), ui('حافظ على فحص دوري للطقس وسطح الألواح بعد العواصف أو فترات الغبار.', 'Keep checking weather and panel surfaces after storms or dusty periods.')],
-    ].filter(Boolean) : [[ui('التوصية', 'Recommendation'), ui('أدخل بيانات النظام وأرفق صورة للألواح للحصول على تقرير أدق.', 'Enter system data and attach a panel photo for a more accurate report.')]];
+      heat !== null && heat >= 10 ? [ui('Ø§Ù„Ø­Ø±Ø§Ø±Ø©', 'Heat'), ui('Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø§Ù„Ù…Ø±ØªÙØ¹Ø© ØªØ®ÙØ¶ Ø§Ù„Ø¥Ù†ØªØ§Ø¬Ø› Ø±Ø§Ù‚Ø¨ Ø§Ù„ØªÙ‡ÙˆÙŠØ© ÙˆÙˆÙ‚Øª Ø§Ù„ØªØ´ØºÙŠÙ„ ÙˆØªØ¬Ù†Ø¨ Ø§Ù„Ø¹Ù…Ù„ ÙˆÙ‚Øª Ø§Ù„Ø°Ø±ÙˆØ©.', 'High panel heat lowers output; check ventilation and avoid working at peak heat.')] : null,
+      Number(result.dustPercent) >= 15 ? [ui('Ø§Ù„ØºØ¨Ø§Ø±', 'Dust'), ui('ÙŠØ¸Ù‡Ø± ØªØ±Ø§ÙƒÙ… ØºØ¨Ø§Ø± Ù…Ù„Ø­ÙˆØ¸Ø› Ù†Ø¸Ù‘Ù Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø£Ù…Ø§Ù† ÙˆÙƒØ±Ù‘Ø± Ø§Ù„ÙØ­Øµ.', 'Notable dust is shown; clean the panels safely and re-inspect.')] : null,
+      [ui('Ø§Ù„ØªÙˆØµÙŠØ©', 'Recommendation'), ui('Ø­Ø§ÙØ¸ Ø¹Ù„Ù‰ ÙØ­Øµ Ø¯ÙˆØ±ÙŠ Ù„Ù„Ø·Ù‚Ø³ ÙˆØ³Ø·Ø­ Ø§Ù„Ø£Ù„ÙˆØ§Ø­ Ø¨Ø¹Ø¯ Ø§Ù„Ø¹ÙˆØ§ØµÙ Ø£Ùˆ ÙØªØ±Ø§Øª Ø§Ù„ØºØ¨Ø§Ø±.', 'Keep checking weather and panel surfaces after storms or dusty periods.')],
+    ].filter(Boolean) : [[ui('Ø§Ù„ØªÙˆØµÙŠØ©', 'Recommendation'), ui('Ø£Ø¯Ø®Ù„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù… ÙˆØ£Ø±ÙÙ‚ ØµÙˆØ±Ø© Ù„Ù„Ø£Ù„ÙˆØ§Ø­ Ù„Ù„Ø­ØµÙˆÙ„ Ø¹Ù„Ù‰ ØªÙ‚Ø±ÙŠØ± Ø£Ø¯Ù‚.', 'Enter system data and attach a panel photo for a more accurate report.')]];
   host.innerHTML = `
     <div class="report-header">
       <div>
-        <p class="eyebrow">${ui('سياج · رفيق الطاقة الشمسية', 'Siyaj · Solar companion')}</p>
-        <h2>${ui('تقرير حالة النظام الشمسي', 'Solar system status report')}</h2>
-        <p>${ui('صدر في', 'Generated on')} ${escapeHtml(generated)} · ${ui('الحساب', 'Account')}: ${escapeHtml(owner)}</p>
+        <p class="eyebrow">${ui('Ø³ÙŠØ§Ø¬ Â· Ø±ÙÙŠÙ‚ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ø´Ù…Ø³ÙŠØ©', 'Siyaj Â· Solar companion')}</p>
+        <h2>${ui('ØªÙ‚Ø±ÙŠØ± Ø­Ø§Ù„Ø© Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø´Ù…Ø³ÙŠ', 'Solar system status report')}</h2>
+        <p>${ui('ØµØ¯Ø± ÙÙŠ', 'Generated on')} ${escapeHtml(generated)} Â· ${ui('Ø§Ù„Ø­Ø³Ø§Ø¨', 'Account')}: ${escapeHtml(owner)}</p>
       </div>
       <span class="report-logo"><img src="/assets/logo.png" alt=""></span>
     </div>
     <section class="report-section">
-      <h3>${ui('ملخص الأداء', 'Performance summary')}</h3>
+      <h3>${ui('Ù…Ù„Ø®Øµ Ø§Ù„Ø£Ø¯Ø§Ø¡', 'Performance summary')}</h3>
       <div class="report-highlight">
-        <div><small>${ui('نسبة الفقد التقديرية', 'Estimated loss ratio')}</small><b>${total === '—' ? '—' : `${total}%`}</b></div>
-        <div><small>${ui('الطاقة المفقودة يومياً', 'Energy lost per day')}</small><b>${escapeHtml(lossDay)}</b></div>
-        <div><small>${ui('القيمة التقديرية', 'Estimated value')}</small><b>${escapeHtml(lossMoney)}</b></div>
+        <div><small>${ui('Ù†Ø³Ø¨Ø© Ø§Ù„ÙÙ‚Ø¯ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©', 'Estimated loss ratio')}</small><b>${total === 'â€”' ? 'â€”' : `${total}%`}</b></div>
+        <div><small>${ui('Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ù…ÙÙ‚ÙˆØ¯Ø© ÙŠÙˆÙ…ÙŠØ§Ù‹', 'Energy lost per day')}</small><b>${escapeHtml(lossDay)}</b></div>
+        <div><small>${ui('Ø§Ù„Ù‚ÙŠÙ…Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©', 'Estimated value')}</small><b>${escapeHtml(lossMoney)}</b></div>
       </div>
     </section>
     <section class="report-section">
-      <h3>${ui('أسباب الفقد', 'Loss breakdown')}</h3>
+      <h3>${ui('Ø£Ø³Ø¨Ø§Ø¨ Ø§Ù„ÙÙ‚Ø¯', 'Loss breakdown')}</h3>
       <table class="report-table">
-        <tr><th>${ui('المصدر', 'Source')}</th><th>${ui('النسبة التقديرية', 'Estimated share')}</th></tr>
-        <tr><td>${ui('الحرارة', 'Heat')}</td><td>${heat === null ? '—' : `${heat}%`}</td></tr>
-        <tr><td>${ui('الغبار', 'Dust')}</td><td>${escapeHtml(dust)}</td></tr>
-        <tr><td>${ui('الظل', 'Shade')}</td><td>${shade}</td></tr>
-        <tr><td><b>${ui('الإجمالي', 'Total')}</b></td><td><b>${total === '—' ? '—' : `${total}%`}</b></td></tr>
+        <tr><th>${ui('Ø§Ù„Ù…ØµØ¯Ø±', 'Source')}</th><th>${ui('Ø§Ù„Ù†Ø³Ø¨Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©', 'Estimated share')}</th></tr>
+        <tr><td>${ui('Ø§Ù„Ø­Ø±Ø§Ø±Ø©', 'Heat')}</td><td>${heat === null ? 'â€”' : `${heat}%`}</td></tr>
+        <tr><td>${ui('Ø§Ù„ØºØ¨Ø§Ø±', 'Dust')}</td><td>${escapeHtml(dust)}</td></tr>
+        <tr><td>${ui('Ø§Ù„Ø¸Ù„', 'Shade')}</td><td>${shade}</td></tr>
+        <tr><td><b>${ui('Ø§Ù„Ø¥Ø¬Ù…Ø§Ù„ÙŠ', 'Total')}</b></td><td><b>${total === 'â€”' ? 'â€”' : `${total}%`}</b></td></tr>
       </table>
-      <p class="report-advice-note" style="margin-top:12px">${ui('الفقد اللحظي بسبب حرارة الألواح وقت الفحص: ', 'Instantaneous loss from panel heat at inspection: ')}<b>${heat === null ? '—' : `${heat}%`}</b> · ${ui('الخسارة الشهرية (متوقع − فعلي): ', 'Monthly loss (expected − actual): ')}<b>${escapeHtml(monthlyLine)}</b></p>
+      <p class="report-advice-note" style="margin-top:12px">${ui('Ø§Ù„ÙÙ‚Ø¯ Ø§Ù„Ù„Ø­Ø¸ÙŠ Ø¨Ø³Ø¨Ø¨ Ø­Ø±Ø§Ø±Ø© Ø§Ù„Ø£Ù„ÙˆØ§Ø­ ÙˆÙ‚Øª Ø§Ù„ÙØ­Øµ: ', 'Instantaneous loss from panel heat at inspection: ')}<b>${heat === null ? 'â€”' : `${heat}%`}</b> Â· ${ui('Ø§Ù„Ø®Ø³Ø§Ø±Ø© Ø§Ù„Ø´Ù‡Ø±ÙŠØ© (Ù…ØªÙˆÙ‚Ø¹ âˆ’ ÙØ¹Ù„ÙŠ): ', 'Monthly loss (expected âˆ’ actual): ')}<b>${escapeHtml(monthlyLine)}</b></p>
     </section>
     <section class="report-section">
-      <h3>${ui('بيانات النظام', 'System details')}</h3>
+      <h3>${ui('Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù†Ø¸Ø§Ù…', 'System details')}</h3>
       <table class="report-table">${reportSystemRows(f).map(([label, value]) => `<tr><th>${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`).join('')}</table>
     </section>
     <section class="report-section">
-      <h3>${ui('الطقس وقت التقرير', 'Weather at report time')}</h3>
+      <h3>${ui('Ø§Ù„Ø·Ù‚Ø³ ÙˆÙ‚Øª Ø§Ù„ØªÙ‚Ø±ÙŠØ±', 'Weather at report time')}</h3>
       <table class="report-table">${weatherRows.map(([label, value]) => `<tr><th>${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`).join('')}</table>
     </section>
     <section class="report-section">
-      <h3>${ui('التوصية', 'Recommendation')}</h3>
-      <div class="report-advice">${advice.map(([label, text]) => `<h4>${escapeHtml(label)}</h4><p>${escapeHtml(text)}</p>`).join('')}<p class="report-advice-note">${ui('هذا التقرير تقديري ويستند إلى البيانات المدخلة ونماذج الطقس، وليس قياساً كهربائياً مباشراً. يمكن مشاركته مع شركة الصيانة.', 'This report is an estimate based on entered data and weather models, not a direct electrical measurement. It can be shared with a maintenance company.')}</p></div>
+      <h3>${ui('Ø§Ù„ØªÙˆØµÙŠØ©', 'Recommendation')}</h3>
+      <div class="report-advice">${advice.map(([label, text]) => `<h4>${escapeHtml(label)}</h4><p>${escapeHtml(text)}</p>`).join('')}<p class="report-advice-note">${ui('Ù‡Ø°Ø§ Ø§Ù„ØªÙ‚Ø±ÙŠØ± ØªÙ‚Ø¯ÙŠØ±ÙŠ ÙˆÙŠØ³ØªÙ†Ø¯ Ø¥Ù„Ù‰ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ù…Ø¯Ø®Ù„Ø© ÙˆÙ†Ù…Ø§Ø°Ø¬ Ø§Ù„Ø·Ù‚Ø³ØŒ ÙˆÙ„ÙŠØ³ Ù‚ÙŠØ§Ø³Ø§Ù‹ ÙƒÙ‡Ø±Ø¨Ø§Ø¦ÙŠØ§Ù‹ Ù…Ø¨Ø§Ø´Ø±Ø§Ù‹. ÙŠÙ…ÙƒÙ† Ù…Ø´Ø§Ø±ÙƒØªÙ‡ Ù…Ø¹ Ø´Ø±ÙƒØ© Ø§Ù„ØµÙŠØ§Ù†Ø©.', 'This report is an estimate based on entered data and weather models, not a direct electrical measurement. It can be shared with a maintenance company.')}</p></div>
     </section>
-    <div class="report-footer"><span>${ui('سياج | رفيق الطاقة الشمسية', 'Siyaj | Solar companion')}</span></div>`;
+    <div class="report-footer"><span>${ui('Ø³ÙŠØ§Ø¬ | Ø±ÙÙŠÙ‚ Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ø´Ù…Ø³ÙŠØ©', 'Siyaj | Solar companion')}</span></div>`;
   applyLanguage();
 }
 function reportPlainText() {
@@ -2591,16 +2591,16 @@ function reportPlainText() {
   ensureLossBreakdown(result);
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   const lines = [
-    ui('تقرير حالة النظام الشمسي — سياج', 'Solar system status report — Siyaj'),
-    `${ui('صدر في', 'Generated on')} ${new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeStyle: 'short' }).format(new Date())}`,
+    ui('ØªÙ‚Ø±ÙŠØ± Ø­Ø§Ù„Ø© Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø´Ù…Ø³ÙŠ â€” Ø³ÙŠØ§Ø¬', 'Solar system status report â€” Siyaj'),
+    `${ui('ØµØ¯Ø± ÙÙŠ', 'Generated on')} ${new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeStyle: 'short' }).format(new Date())}`,
     '',
-    `${ui('نسبة الفقد التقديرية', 'Estimated loss ratio')}: ${result ? `${result.percent}%` : '—'}`,
-    `${ui('الطاقة المفقودة يومياً', 'Energy lost per day')}: ${result && Number.isFinite(Number(result.lostKwh)) ? `${result.lostKwh.toFixed(2)} kWh` : '—'}`,
-    `${ui('القيمة التقديرية', 'Estimated value')}: ${result && Number.isFinite(Number(result.lostMoney)) ? money(result.lostMoney) : '—'}`,
+    `${ui('Ù†Ø³Ø¨Ø© Ø§Ù„ÙÙ‚Ø¯ Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©', 'Estimated loss ratio')}: ${result ? `${result.percent}%` : 'â€”'}`,
+    `${ui('Ø§Ù„Ø·Ø§Ù‚Ø© Ø§Ù„Ù…ÙÙ‚ÙˆØ¯Ø© ÙŠÙˆÙ…ÙŠØ§Ù‹', 'Energy lost per day')}: ${result && Number.isFinite(Number(result.lostKwh)) ? `${result.lostKwh.toFixed(2)} kWh` : 'â€”'}`,
+    `${ui('Ø§Ù„Ù‚ÙŠÙ…Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠØ±ÙŠØ©', 'Estimated value')}: ${result && Number.isFinite(Number(result.lostMoney)) ? money(result.lostMoney) : 'â€”'}`,
     '',
-    `${ui('الحرارة', 'Heat')}: ${result && result.heatPercent !== null && result.heatPercent !== undefined ? `${Math.round(result.heatPercent)}%` : '—'}`,
-    `${ui('الغبار', 'Dust')}: ${result && result.dustPercent !== null && result.dustPercent !== undefined ? `${Math.round(result.dustPercent)}%` : '—'}`,
-    `${ui('الظل', 'Shade')}: ${result && Number.isFinite(Number(result.shadePercent)) ? `${Math.round(result.shadePercent)}%` : '0%'}`,
+    `${ui('Ø§Ù„Ø­Ø±Ø§Ø±Ø©', 'Heat')}: ${result && result.heatPercent !== null && result.heatPercent !== undefined ? `${Math.round(result.heatPercent)}%` : 'â€”'}`,
+    `${ui('Ø§Ù„ØºØ¨Ø§Ø±', 'Dust')}: ${result && result.dustPercent !== null && result.dustPercent !== undefined ? `${Math.round(result.dustPercent)}%` : 'â€”'}`,
+    `${ui('Ø§Ù„Ø¸Ù„', 'Shade')}: ${result && Number.isFinite(Number(result.shadePercent)) ? `${Math.round(result.shadePercent)}%` : '0%'}`,
     '',
     ...reportSystemRows(f).map(([label, value]) => `${label}: ${value}`),
   ];
@@ -2612,21 +2612,21 @@ function downloadReport() {
   const previousTitle = document.title;
   const stamp = new Date().toISOString().slice(0, 10);
   document.body.classList.add('print-report');
-  // يستخدم المتصفح عنوان الصفحة كاسم مقترح لملف PDF عند الحفظ.
+  // ÙŠØ³ØªØ®Ø¯Ù… Ø§Ù„Ù…ØªØµÙØ­ Ø¹Ù†ÙˆØ§Ù† Ø§Ù„ØµÙØ­Ø© ÙƒØ§Ø³Ù… Ù…Ù‚ØªØ±Ø­ Ù„Ù…Ù„Ù PDF Ø¹Ù†Ø¯ Ø§Ù„Ø­ÙØ¸.
   document.title = `Siyaj-report-${stamp}`;
   const cleanup = () => {
     document.title = previousTitle;
     if (!previous) document.body.classList.remove('print-report');
   };
   window.addEventListener('afterprint', cleanup, { once: true });
-  try { window.print(); } catch { showToast(ui('تعذر فتح نافذة الطباعة.', 'Could not open the print dialog.')); }
+  try { window.print(); } catch { showToast(ui('ØªØ¹Ø°Ø± ÙØªØ­ Ù†Ø§ÙØ°Ø© Ø§Ù„Ø·Ø¨Ø§Ø¹Ø©.', 'Could not open the print dialog.')); }
   setTimeout(cleanup, 1500);
 }
 async function shareReport() {
   const text = reportPlainText();
-  if (navigator.share) { try { await navigator.share({ title: ui('تقرير حالة النظام الشمسي — سياج', 'Solar system status report — Siyaj'), text }); return; } catch { /* fall through to copy */ } }
-  try { await navigator.clipboard.writeText(text); showToast(ui('تم نسخ التقرير؛ يمكنك لصقه في البريد أو واتساب.', 'Report copied; paste it into email or WhatsApp.')); }
-  catch { showToast(ui('تعذر النسخ؛ استخدم «تنزيل PDF».', 'Copy failed; use “Download PDF”.')); }
+  if (navigator.share) { try { await navigator.share({ title: ui('ØªÙ‚Ø±ÙŠØ± Ø­Ø§Ù„Ø© Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø´Ù…Ø³ÙŠ â€” Ø³ÙŠØ§Ø¬', 'Solar system status report â€” Siyaj'), text }); return; } catch { /* fall through to copy */ } }
+  try { await navigator.clipboard.writeText(text); showToast(ui('ØªÙ… Ù†Ø³Ø® Ø§Ù„ØªÙ‚Ø±ÙŠØ±Ø› ÙŠÙ…ÙƒÙ†Ùƒ Ù„ØµÙ‚Ù‡ ÙÙŠ Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø£Ùˆ ÙˆØ§ØªØ³Ø§Ø¨.', 'Report copied; paste it into email or WhatsApp.')); }
+  catch { showToast(ui('ØªØ¹Ø°Ø± Ø§Ù„Ù†Ø³Ø®Ø› Ø§Ø³ØªØ®Ø¯Ù… Â«ØªÙ†Ø²ÙŠÙ„ PDFÂ».', 'Copy failed; use â€œDownload PDFâ€.')); }
 }
 function decodeVapidKey(value) {
   const padding = '='.repeat((4 - value.length % 4) % 4);
@@ -2650,7 +2650,7 @@ async function refreshDevicePushState() {
       body: JSON.stringify({ endpoint: subscription.endpoint }),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'تعذر التحقق من تنبيهات هذا الجهاز.');
+    if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².');
     enabled = !!data.subscribed;
   }
   if (accountId !== currentAccount?.id) return;
@@ -2658,12 +2658,12 @@ async function refreshDevicePushState() {
   if (!el('page-settings').hidden) renderSettings();
 }
 async function enablePushNotifications() {
-  if (!currentAccount?.id) throw new Error('سجّل الدخول أولاً لتفعيل التنبيهات.');
-  if (!('Notification' in window) || !('serviceWorker' in navigator)) throw new Error('هذا المتصفح لا يدعم تنبيهات Push.');
+  if (!currentAccount?.id) throw new Error('Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø£ÙˆÙ„Ø§Ù‹ Ù„ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.');
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) throw new Error('Ù‡Ø°Ø§ Ø§Ù„Ù…ØªØµÙØ­ Ù„Ø§ ÙŠØ¯Ø¹Ù… ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Push.');
   const configResponse = await fetch('/api/push/config');
   const config = await configResponse.json();
-  if (!configResponse.ok || !config.enabled || !config.publicKey) throw new Error('التنبيهات تعمل بعد إضافة مفاتيح VAPID وتشغيل الخادم.');
-  if (Notification.permission !== 'granted' && await Notification.requestPermission() !== 'granted') throw new Error('لم يتم تفعيل إذن التنبيهات.');
+  if (!configResponse.ok || !config.enabled || !config.publicKey) throw new Error('Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª ØªØ¹Ù…Ù„ Ø¨Ø¹Ø¯ Ø¥Ø¶Ø§ÙØ© Ù…ÙØ§ØªÙŠØ­ VAPID ÙˆØªØ´ØºÙŠÙ„ Ø§Ù„Ø®Ø§Ø¯Ù….');
+  if (Notification.permission !== 'granted' && await Notification.requestPermission() !== 'granted') throw new Error('Ù„Ù… ÙŠØªÙ… ØªÙØ¹ÙŠÙ„ Ø¥Ø°Ù† Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.');
   await navigator.serviceWorker.register('/sw.js');
   const registration = await navigator.serviceWorker.ready;
   let subscription = await registration.pushManager.getSubscription();
@@ -2673,7 +2673,7 @@ async function enablePushNotifications() {
     body: JSON.stringify({ subscription: subscription.toJSON() }),
   });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.error || 'تعذر حفظ الاشتراك بالتنبيهات.');
+  if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø§Ù„Ø§Ø´ØªØ±Ø§Ùƒ Ø¨Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.');
   devicePushEnabled = true; devicePushStateKnown = true;
 }
 async function disablePushNotifications() {
@@ -2684,9 +2684,9 @@ async function disablePushNotifications() {
     body: JSON.stringify({ endpoint: subscription.endpoint }),
   });
   const data = await response.json();
-  if (!response.ok) throw new Error(data.error || 'تعذر إيقاف تنبيهات هذا الجهاز.');
+  if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø¥ÙŠÙ‚Ø§Ù ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².');
   devicePushEnabled = false; devicePushStateKnown = true;
-  if (!await subscription.unsubscribe()) throw new Error('تعذر إيقاف تنبيهات هذا الجهاز.');
+  if (!await subscription.unsubscribe()) throw new Error('ØªØ¹Ø°Ø± Ø¥ÙŠÙ‚Ø§Ù ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².');
 }
 let authMode = 'login';
 const ACCOUNTS_KEY = 'siyaj.localAccounts.v1';
@@ -2727,7 +2727,7 @@ function makeUniqueUsername(value, usedNames) {
 }
 function bytesToHex(bytes) { return [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join(''); }
 async function passwordDigest(password, saltHex) {
-  if (!crypto.subtle) throw new Error('يتطلب تسجيل الحساب متصفحاً آمناً مثل localhost.');
+  if (!crypto.subtle) throw new Error('ÙŠØªØ·Ù„Ø¨ ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø­Ø³Ø§Ø¨ Ù…ØªØµÙØ­Ø§Ù‹ Ø¢Ù…Ù†Ø§Ù‹ Ù…Ø«Ù„ localhost.');
   const salt = Uint8Array.from(saltHex.match(/.{1,2}/g) || [], (byte) => parseInt(byte, 16));
   const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
   const digest = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt, iterations: 120000, hash: 'SHA-256' }, key, 256);
@@ -2758,7 +2758,7 @@ async function finishServerAuth(session, seedState = null, legacyAccountId = '')
   try { await moveLegacyMedia(legacyAccountId, session.user.id); } catch { /* keep server sign-in available if local files cannot be moved */ }
   currentAccount = session.user;
   const remoteResponse = await authenticatedFetch('/api/account/state');
-  if (!remoteResponse.ok) throw new Error((await remoteResponse.json()).error || 'تعذر تحميل بيانات الحساب.');
+  if (!remoteResponse.ok) throw new Error((await remoteResponse.json()).error || 'ØªØ¹Ø°Ø± ØªØ­Ù…ÙŠÙ„ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨.');
   const remote = await remoteResponse.json();
   state = normalizeState(remote.state || seedState);
   state.user = { ...session.user };
@@ -2783,20 +2783,20 @@ async function handleSignup(event) {
   const phoneKey = normalizedPhone(phone);
   const password = el('signup-password').value;
   const confirmPassword = el('signup-confirm').value;
-  if (!/^[\p{L}\p{N}._-]{3,24}$/u.test(username)) return showToast('اسم المستخدم من 3 إلى 24 حرفاً أو رقماً، ويمكن استخدام النقطة والشرطة السفلية فقط.');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showToast('أدخل بريداً إلكترونياً صالحاً.');
-  if (phoneKey.replace(/\D/g, '').length < 7) return showToast('أدخل رقم هاتف صالحاً.');
-  if (password.length < 8) return showToast('يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.');
-  if (password !== confirmPassword) return showToast('كلمتا المرور غير متطابقتين.');
+  if (!/^[\p{L}\p{N}._-]{3,24}$/u.test(username)) return showToast('Ø§Ø³Ù… Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… Ù…Ù† 3 Ø¥Ù„Ù‰ 24 Ø­Ø±ÙØ§Ù‹ Ø£Ùˆ Ø±Ù‚Ù…Ø§Ù‹ØŒ ÙˆÙŠÙ…ÙƒÙ† Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ù†Ù‚Ø·Ø© ÙˆØ§Ù„Ø´Ø±Ø·Ø© Ø§Ù„Ø³ÙÙ„ÙŠØ© ÙÙ‚Ø·.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showToast('Ø£Ø¯Ø®Ù„ Ø¨Ø±ÙŠØ¯Ø§Ù‹ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ§Ù‹ ØµØ§Ù„Ø­Ø§Ù‹.');
+  if (phoneKey.replace(/\D/g, '').length < 7) return showToast('Ø£Ø¯Ø®Ù„ Ø±Ù‚Ù… Ù‡Ø§ØªÙ ØµØ§Ù„Ø­Ø§Ù‹.');
+  if (password.length < 8) return showToast('ÙŠØ¬Ø¨ Ø£Ù† ØªØªÙƒÙˆÙ† ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± Ù…Ù† 8 Ø£Ø­Ø±Ù Ø¹Ù„Ù‰ Ø§Ù„Ø£Ù‚Ù„.');
+  if (password !== confirmPassword) return showToast('ÙƒÙ„Ù…ØªØ§ Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± Ù…ØªØ·Ø§Ø¨Ù‚ØªÙŠÙ†.');
   try {
     const response = await fetch('/api/auth/signup', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, phone, password }),
     });
     const session = await response.json();
-    if (!response.ok) throw new Error(session.error || 'تعذر إنشاء الحساب.');
-    await finishServerAuth(session, state); const signupDev = session?.user?.role === 'developer'; showToast(signupDev ? 'Welcome dev' : ('تم إنشاء الحساب وحفظه على الخادم.'); await continueAfterAuth();
-  } catch (error) { showToast(error.message || 'تعذر إنشاء الحساب.'); }
+    if (!response.ok) throw new Error(session.error || 'ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨.');
+    await finishServerAuth(session, state); const signupDev = session?.user?.role === 'developer'; showToast(signupDev ? 'Welcome dev' : ('ØªÙ… Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆØ­ÙØ¸Ù‡ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….')); await continueAfterAuth();
+  } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± Ø¥Ù†Ø´Ø§Ø¡ Ø§Ù„Ø­Ø³Ø§Ø¨.'); }
 }
 async function handleLogin(event) {
   event.preventDefault();
@@ -2814,20 +2814,20 @@ async function handleLogin(event) {
       const legacy = readAccounts().find((item) => item.email === identifier.toLowerCase() || item.phoneKey === normalizedPhone(identifier) || item.usernameKey === normalized);
       if (legacy?.salt && legacy?.hash) {
         const legacyHash = await passwordDigest(password, legacy.salt);
-        if (legacyHash !== legacy.hash) return showToast('كلمة المرور غير صحيحة.');
+        if (legacyHash !== legacy.hash) return showToast('ÙƒÙ„Ù…Ø© Ø§Ù„Ù…Ø±ÙˆØ± ØºÙŠØ± ØµØ­ÙŠØ­Ø©.');
         seedState = loadState(accountStorageKey(legacy.id));
         const migration = await fetch('/api/auth/signup', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: legacy.username, email: legacy.email, phone: legacy.phone, password }),
         });
         session = await migration.json();
-        if (!migration.ok) throw new Error(session.error || 'تعذر نقل الحساب إلى الخادم.');
-      } else if (legacy && !legacy.salt) return showToast('هذا الحساب مرتبط بـ Google؛ تابع باستخدام Google.');
-      else throw new Error(session.error || 'لم نعثر على الحساب. أنشئ حساباً جديداً.');
-    } else if (!response.ok) throw new Error(session.error || 'تعذر تسجيل الدخول.');
+        if (!migration.ok) throw new Error(session.error || 'ØªØ¹Ø°Ø± Ù†Ù‚Ù„ Ø§Ù„Ø­Ø³Ø§Ø¨ Ø¥Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….');
+      } else if (legacy && !legacy.salt) return showToast('Ù‡Ø°Ø§ Ø§Ù„Ø­Ø³Ø§Ø¨ Ù…Ø±ØªØ¨Ø· Ø¨Ù€ GoogleØ› ØªØ§Ø¨Ø¹ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google.');
+      else throw new Error(session.error || 'Ù„Ù… Ù†Ø¹Ø«Ø± Ø¹Ù„Ù‰ Ø§Ù„Ø­Ø³Ø§Ø¨. Ø£Ù†Ø´Ø¦ Ø­Ø³Ø§Ø¨Ø§Ù‹ Ø¬Ø¯ÙŠØ¯Ø§Ù‹.');
+    } else if (!response.ok) throw new Error(session.error || 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.');
     const legacy = readAccounts().find((item) => item.email === identifier.toLowerCase() || item.phoneKey === normalizedPhone(identifier) || item.usernameKey === normalizedUsername(identifier));
-    await finishServerAuth(session, seedState, legacy?.id); const loginDev = session?.user?.role === 'developer'; showToast(loginDev ? 'Welcome dev' : ('تم تسجيل الدخول ومزامنة بياناتك.'); await continueAfterAuth();
-  } catch (error) { showToast(error.message || 'تعذر تسجيل الدخول.'); }
+    await finishServerAuth(session, seedState, legacy?.id); const loginDev = session?.user?.role === 'developer'; showToast(loginDev ? 'Welcome dev' : 'Login successful.'); await continueAfterAuth();
+  } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„.'); }
 }
 let googleSignInReady = false;
 function renderGoogleButtons() {
@@ -2848,11 +2848,11 @@ async function handleGoogleCredential(response) {
       body: JSON.stringify({ credential: response?.credential || '' }),
     });
     const data = await verification.json();
-    if (!verification.ok) throw new Error(data.error || 'تعذر التحقق من حساب Google.');
+    if (!verification.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø§Ù„ØªØ­Ù‚Ù‚ Ù…Ù† Ø­Ø³Ø§Ø¨ Google.');
     const legacy = readAccounts().find((item) => item.email === data.user?.email);
     const seedState = legacy ? loadState(accountStorageKey(legacy.id)) : null;
-    await finishServerAuth(data, seedState, legacy?.id); showToast('تم تسجيل الدخول باستخدام Google ومزامنة بياناتك.'); await continueAfterAuth();
-  } catch (error) { showToast(error.message || 'تعذر تسجيل الدخول باستخدام Google.'); }
+    await finishServerAuth(data, seedState, legacy?.id); showToast('ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google ÙˆÙ…Ø²Ø§Ù…Ù†Ø© Ø¨ÙŠØ§Ù†Ø§ØªÙƒ.'); await continueAfterAuth();
+  } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Google.'); }
 }
 async function initializeGoogleButtons() {
   try {
@@ -2919,7 +2919,7 @@ function setupEvents() {
   el('mobile-menu').addEventListener('click', () => document.body.classList.toggle('mobile-nav-open'));
   el('language-toggle').addEventListener('click', () => {
     state.settings.language = state.settings.language === 'en' ? 'ar' : 'en'; persist();
-    renderDashboard(); renderCurrentStep(); renderHistory(); renderSettings(); renderAuth(); showToast(state.settings.language === 'en' ? 'Language changed to English.' : 'تم تغيير اللغة إلى العربية.');
+    renderDashboard(); renderCurrentStep(); renderHistory(); renderSettings(); renderAuth(); showToast(state.settings.language === 'en' ? 'Language changed to English.' : 'ØªÙ… ØªØºÙŠÙŠØ± Ø§Ù„Ù„ØºØ© Ø¥Ù„Ù‰ Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©.');
     renderGoogleButtons();
   });
   el('auth-tab-login').addEventListener('click', () => setAuthMode('login'));
@@ -2941,16 +2941,16 @@ function setupEvents() {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint }),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'تعذر تسجيل الخروج؛ حاول مرة أخرى.');
+      if (!response.ok) throw new Error(data.error || 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬Ø› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.');
       currentAccount = null; devicePushEnabled = false; devicePushStateKnown = true;
       state = loadState(`${STORAGE_KEY}.guest`); media = []; currentStep = 0; authMode = 'login';
-      applyTheme(); showPage('auth'); renderAuth(); syncHeader(); showToast('تم تسجيل الخروج.');
-    } catch (error) { showToast(error.message || 'تعذر تسجيل الخروج؛ حاول مرة أخرى.'); }
+      applyTheme(); showPage('auth'); renderAuth(); syncHeader(); showToast('ØªÙ… ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬.');
+    } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø®Ø±ÙˆØ¬Ø› Ø­Ø§ÙˆÙ„ Ù…Ø±Ø© Ø£Ø®Ø±Ù‰.'); }
     finally { button.disabled = false; }
   });
   document.querySelectorAll('[data-google-signin]').forEach((button) => {
-    button.addEventListener('click', () => { if (!googleSignInReady) showToast('تسجيل Google يحتاج إضافة GOOGLE_CLIENT_ID إلى ملف .env.'); });
-    button.addEventListener('keydown', (event) => { if (!googleSignInReady && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); showToast('تسجيل Google يحتاج إضافة GOOGLE_CLIENT_ID إلى ملف .env.'); } });
+    button.addEventListener('click', () => { if (!googleSignInReady) showToast('ØªØ³Ø¬ÙŠÙ„ Google ÙŠØ­ØªØ§Ø¬ Ø¥Ø¶Ø§ÙØ© GOOGLE_CLIENT_ID Ø¥Ù„Ù‰ Ù…Ù„Ù .env.'); });
+    button.addEventListener('keydown', (event) => { if (!googleSignInReady && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); showToast('ØªØ³Ø¬ÙŠÙ„ Google ÙŠØ­ØªØ§Ø¬ Ø¥Ø¶Ø§ÙØ© GOOGLE_CLIENT_ID Ø¥Ù„Ù‰ Ù…Ù„Ù .env.'); } });
   });
   el('start-setup').addEventListener('click', () => openWizard(0)); el('edit-data').addEventListener('click', () => openWizard(0)); el('system-edit').addEventListener('click', () => openWizard(0));
   el('step-next').addEventListener('click', nextStep); el('step-back').addEventListener('click', previousStep); el('start-setup').addEventListener('keydown', (event) => { if (event.key === 'Enter') openWizard(0); });
@@ -2964,13 +2964,13 @@ function setupEvents() {
     state.form.billMonth = month; state.monthlyLoss = null; invoiceReview = null; persist(); renderAnalysisDetails(); applyLanguage();
   });
   el('cleaned-button').addEventListener('click', async () => {
-    if (!currentAccount?.id) { showToast('سجّل الدخول أولاً.'); return; }
+    if (!currentAccount?.id) { showToast('Ø³Ø¬Ù‘Ù„ Ø§Ù„Ø¯Ø®ÙˆÙ„ Ø£ÙˆÙ„Ø§Ù‹.'); return; }
     const button = el('cleaned-button'); button.disabled = true;
     const accountId = currentAccount.id;
     try {
       const response = await authenticatedFetch('/api/panel/cleaned', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) });
       const data = await response.json();
-      if (!response.ok || !Number.isFinite(Date.parse(data.lastCleanedAt || ''))) throw new Error(data.error || 'تعذر حفظ سجل التنظيف على الخادم.');
+      if (!response.ok || !Number.isFinite(Date.parse(data.lastCleanedAt || ''))) throw new Error(data.error || 'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø³Ø¬Ù„ Ø§Ù„ØªÙ†Ø¸ÙŠÙ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….');
       if (accountId !== currentAccount?.id) return;
       state.lastCleanedAt = data.lastCleanedAt;
       state.form.dust = null; state.form.dustManual = false;
@@ -2987,8 +2987,8 @@ function setupEvents() {
         state.result.dustLossPercent = state.result.soilingPercent;
         state.result.dustLossOmr = null;
       }
-      state.updatedAt = new Date().toISOString(); persist(); renderDashboard(); showToast(ui('تم تسجيل تنظيف الألواح.', 'Panel cleaning was recorded.'));
-    } catch (error) { showToast(error.message || 'تعذر حفظ سجل التنظيف على الخادم.'); }
+      state.updatedAt = new Date().toISOString(); persist(); renderDashboard(); showToast(ui('ØªÙ… ØªØ³Ø¬ÙŠÙ„ ØªÙ†Ø¸ÙŠÙ Ø§Ù„Ø£Ù„ÙˆØ§Ø­.', 'Panel cleaning was recorded.'));
+    } catch (error) { showToast(error.message || 'ØªØ¹Ø°Ø± Ø­ÙØ¸ Ø³Ø¬Ù„ Ø§Ù„ØªÙ†Ø¸ÙŠÙ Ø¹Ù„Ù‰ Ø§Ù„Ø®Ø§Ø¯Ù….'); }
     finally { button.disabled = false; }
   });
   el('maintenance-done')?.addEventListener('click', () => {
@@ -2996,7 +2996,7 @@ function setupEvents() {
     state.updatedAt = new Date().toISOString();
     persist();
     renderDashboard();
-    showToast(ui('تم تحديث تاريخ آخر صيانة إلى اليوم.', 'Last maintenance date updated to today.'));
+    showToast(ui('ØªÙ… ØªØ­Ø¯ÙŠØ« ØªØ§Ø±ÙŠØ® Ø¢Ø®Ø± ØµÙŠØ§Ù†Ø© Ø¥Ù„Ù‰ Ø§Ù„ÙŠÙˆÙ….', 'Last maintenance date updated to today.'));
   });
   setInterval(() => { if (document.visibilityState !== 'hidden') renderMaintenance(); }, 60 * 60 * 1000);
   el('setting-dark').addEventListener('change', () => { state.settings.dark = el('setting-dark').checked; persist(); });
@@ -3008,24 +3008,24 @@ function setupEvents() {
     try {
       if (enable) { await enablePushNotifications(); state.settings.notifications = true; persist(); }
       else await disablePushNotifications();
-      showToast(enable ? 'تم تفعيل التنبيهات.' : 'تم إيقاف التنبيهات.');
+      showToast(enable ? 'ØªÙ… ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.' : 'ØªÙ… Ø¥ÙŠÙ‚Ø§Ù Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§Øª.');
     } catch (error) {
       await refreshDevicePushState().catch(() => { devicePushStateKnown = false; });
-      showToast(error.message || (enable ? 'تعذر تفعيل التنبيهات؛ تحقق من الإذن والاتصال بالخادم.' : 'تعذر إيقاف تنبيهات هذا الجهاز.'));
+      showToast(error.message || (enable ? 'ØªØ¹Ø°Ø± ØªÙØ¹ÙŠÙ„ Ø§Ù„ØªÙ†Ø¨ÙŠÙ‡Ø§ØªØ› ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„Ø¥Ø°Ù† ÙˆØ§Ù„Ø§ØªØµØ§Ù„ Ø¨Ø§Ù„Ø®Ø§Ø¯Ù….' : 'ØªØ¹Ø°Ø± Ø¥ÙŠÙ‚Ø§Ù ØªÙ†Ø¨ÙŠÙ‡Ø§Øª Ù‡Ø°Ø§ Ø§Ù„Ø¬Ù‡Ø§Ø².'));
     } finally { devicePushBusy = false; renderSettings(); }
   });
   el('reset-data').addEventListener('click', async () => {
-    if (!confirm('هل تريد مسح بيانات الحساب ومرفقاته من جميع أجهزتك؟')) return;
+    if (!confirm('Ù‡Ù„ ØªØ±ÙŠØ¯ Ù…Ø³Ø­ Ø¨ÙŠØ§Ù†Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨ ÙˆÙ…Ø±ÙÙ‚Ø§ØªÙ‡ Ù…Ù† Ø¬Ù…ÙŠØ¹ Ø£Ø¬Ù‡Ø²ØªÙƒØŸ')) return;
     resetAiRequests();
     const user = state.user; const currentKey = accountStorageKey(); const accountId = currentAccount?.id;
     localStorage.removeItem(currentKey); state = structuredClone(DEFAULT_STATE); state.user = user; media = [];
     try { if (accountId) await deleteMediaForAccount(accountId); } catch { /* database may not be available */ }
     try { if (accountId) await authenticatedFetch('/api/panel/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) }); } catch { /* local reset still completes */ }
-    persist(); renderDashboard(); renderSettings(); showToast('تم مسح بيانات حسابك.');
+    persist(); renderDashboard(); renderSettings(); showToast('ØªÙ… Ù…Ø³Ø­ Ø¨ÙŠØ§Ù†Ø§Øª Ø­Ø³Ø§Ø¨Ùƒ.');
   });
   el('export-data').addEventListener('click', () => {
     const payload = { savedAt: new Date().toISOString(), state, attachments: media.map(({ id, category, name, type }) => ({ id, category, name, type })) };
-    const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })); const link = document.createElement('a'); link.href = url; link.download = 'siyaj-data.json'; link.click(); URL.revokeObjectURL(url); showToast('تم تنزيل نسخة البيانات.');
+    const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })); const link = document.createElement('a'); link.href = url; link.download = 'siyaj-data.json'; link.click(); URL.revokeObjectURL(url); showToast('ØªÙ… ØªÙ†Ø²ÙŠÙ„ Ù†Ø³Ø®Ø© Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª.');
   });
   el('complaint-submit')?.addEventListener('click', submitComplaint);
   el('complaint-share')?.addEventListener('click', shareComplaint);
