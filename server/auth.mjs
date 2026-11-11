@@ -18,8 +18,16 @@ function adminEmails() {
   return String(process.env.SIYAJ_ADMIN_EMAILS || '')
     .split(',').map((value) => value.trim().toLowerCase()).filter(Boolean);
 }
+function developerCredentials() {
+  return {
+    email: String(process.env.SIYAJ_DEV_EMAIL || '').trim().toLowerCase(),
+    password: String(process.env.SIYAJ_DEV_PASSWORD || ''),
+  };
+}
 function roleFor(user) {
-  return adminEmails().includes(String(user.email || '').toLowerCase()) ? 'admin' : 'user';
+  if (user?.role === 'developer') return 'developer';
+  if (adminEmails().includes(String(user?.email || '').toLowerCase())) return 'admin';
+  return 'user';
 }
 function safeUser(user) {
   return { id: user.id, role: roleFor(user), username: user.username, email: user.email, phone: user.phone || '', name: user.name || user.username, picture: user.picture || '' };
@@ -57,9 +65,11 @@ export async function registerAccount(input) {
   const valid = checkNewUser(input);
   const salt = randomBytes(16).toString('hex');
   const passwordHash = (await derivePassword(String(input.password), salt)).toString('hex');
+  const dev = developerCredentials();
+  const isDeveloperAccount = Boolean(dev.email && dev.password && valid.email === dev.email && String(input.password || '') === dev.password);
   const user = {
     id: randomUUID(), ...valid, password_salt: salt, password_hash: passwordHash,
-    name: valid.username, picture: '', google_sub: '', created_at: new Date().toISOString(),
+    name: valid.username, picture: '', google_sub: '', role: isDeveloperAccount ? 'developer' : 'user', created_at: new Date().toISOString(),
   };
   await updateDatabase((db) => {
     if (Object.values(db.users).some((item) => item.username_key === user.username_key)) throw new AuthError('اسم المستخدم مستخدم بالفعل؛ اختر اسماً آخر.', 409);
