@@ -1,0 +1,27 @@
+# Render Blueprint — نشر سياج على خطة مجانية بدون بطاقة.
+# الاستخدام: Render Dashboard → Blueprints → New Blueprint Instance → اختر مستودع hussin-web.
+databases:
+  - name: siyaj-db
+    databaseName: siyaj
+    user: siyaj
+    plan: free
+    region: frankfurt
+
+services:
+  - type: web
+    name: siyaj
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    buildCommand: npm ci
+    startCommand: node server.mjs
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: siyaj-db
+          property: connectionString
