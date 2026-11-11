@@ -59,7 +59,7 @@ Brute-force lockout (LOCAL, 3001, 11 attempts on `nobody@example.com`):
 |---|---|---|
 | Dedicated DB role, not `postgres` | Render Postgres `siyaj_user` | connection string user = `siyaj_user` (secret not published) |
 | App reaches DB over the private/internal hostname | Render env `DATABASE_URL` (internal URL, no public DNS suffix) | deploy log: `Siyaj data store: Postgres is ready` |
-| No public database access | Render Postgres `ipAllowList: []`; external connection from the Internet is refused | see §5 |
+| Database requires password + TLS | TCP 5432 is reachable on the external hostname, but authentication and TLS are mandatory | see §5; the app does not use the external address |
 | Row Level Security on shared tables | `server/data-store.mjs` (`ALTER TABLE … ENABLE ROW LEVEL SECURITY`) | tables `siyaj_app_state`, `app_settings`, `panel_analyses` |
 | Browser DB roles revoked when present | `server/data-store.mjs` (`REVOKE … FROM PUBLIC, anon, authenticated` only if roles exist) | commit `397b078` |
 | Admin role derived from server-side allow-list, never from request input | `SIYAJ_ADMIN_EMAILS` → `requireRole('admin')` | test 1.3 |
@@ -111,17 +111,28 @@ Azure/GCP deployment scripts (variables, no password).
 
 ---
 
-## 5. Database exposure test (16:57 +04:00)
+## 5. Database exposure test (16:57 +04:00, corrected)
 
 Connecting to the Render Postgres **external** hostname from a normal Internet host:
 
 ```text
-Error: Connection terminated unexpectedly
+host   : dpg-dbq5rcjm8hqs739u4r7g-a.frankfurt-postgres.render.com
+tcp 5432 reachable: True
+pg client (TLS, password auth): Error: Connection terminated unexpectedly
 ```
 
-The managed database accepts only the application's internal connection (same private network),
-and `ipAllowList` is empty (no public source addresses). The application itself starts successfully
-through the internal URL (`Siyaj data store: Postgres is ready`).
+What this means, precisely:
+
+- The database **is** reachable on the provider's external hostname (Render enables external
+  access by default). TCP 5432 is open.
+- Authentication is still required: a client without the correct role/password and TLS cannot
+  query data; the unauthenticated attempt above was dropped during connection setup.
+- The application itself does **not** use the external address. It connects through the internal
+  `DATABASE_URL` on Render's private network (`Siyaj data store: Postgres is ready`), so normal
+  traffic never crosses the public database endpoint.
+- **Hardening required:** pin the Render Postgres IP allow-list to the operator's egress IP (or an
+  empty set where the plan supports it) once dashboard/API management is available. This is listed
+  as a limitation below instead of being claimed as already done.
 
 ---
 
@@ -131,6 +142,8 @@ through the internal URL (`Siyaj data store: Postgres is ready`).
   effective limit multiplies; mitigation: Nginx `limit_req` at the edge, or a shared Redis store later.
 - No WAF; Render's managed edge + CSP + strict headers are the current controls.
 - Multi-factor authentication for admins is not enabled (documented as future work).
+- Render Postgres exposes an external endpoint (TCP 5432 reachable) with password + TLS auth; the app
+  uses the internal URL, and pinning the IP allow-list is the next hardening step.
 - The Render API endpoint hung for authenticated calls during this session (provider-side incident);
   the 401-without-credentials check still completed, and no privileged action depends on it.
 
