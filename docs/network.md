@@ -133,6 +133,10 @@ Test-NetConnection <db-private-ip>  -Port 5432   # TcpTestSucceeded: False
 
 ## 6. خطوات التنفيذ (تُملأ بعد اختيار المزوّد)
 
+> التنفيذ الفعلي على **Azure** جاهز في [`deploy/azure/`](../deploy/azure/README.md):
+> `deploy.ps1` ينشئ الشبكة والتقسيم وجداول NSG وNAT وLoad Balancer وVM Scale Set
+> مع التوسّع التلقائي وPostgreSQL في شبكة فرعية مُفوَّضة.
+
 - [ ] إنشاء الشبكة والتقسيم
 - [ ] إنشاء جداول التوجيه و NAT
 - [ ] قواعد الجدار الناري

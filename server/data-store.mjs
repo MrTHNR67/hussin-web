@@ -19,8 +19,8 @@ const databasePassword = process.env.DATABASE_PASSWORD;
 const supabaseUrl = String(process.env.SUPABASE_URL || '').trim().replace(/\/$/, '');
 const supabaseSecretKey = String(process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
 const mediaBucket = String(process.env.SUPABASE_STORAGE_BUCKET || 'siyaj-media').trim();
-const remoteBackendRequested = Boolean(databaseUrl || supabaseUrl || supabaseSecretKey);
-const remoteBackendConfigured = Boolean(databaseUrl && supabaseUrl && supabaseSecretKey && mediaBucket);
+const remoteStorageRequested = Boolean(supabaseUrl || supabaseSecretKey);
+const remoteStorageConfigured = Boolean(supabaseUrl && supabaseSecretKey && mediaBucket);
 const databaseSslCa = String(process.env.DATABASE_SSL_CA || '').trim().replace(/\\n/g, '\n');
 function verifiedDatabaseConnectionString(value) {
   let url;
@@ -211,8 +211,8 @@ function normalizeDatabaseState(value = {}) {
 }
 
 function assertRemoteConfiguration() {
-  if (remoteBackendRequested && !remoteBackendConfigured) {
-    throw new Error('Set DATABASE_URL, SUPABASE_URL, and SUPABASE_SECRET_KEY together to enable persistent Supabase storage.');
+  if (remoteStorageRequested && !remoteStorageConfigured) {
+    throw new Error('Set SUPABASE_URL and SUPABASE_SECRET_KEY together to enable Supabase media storage.');
   }
 }
 
@@ -689,9 +689,11 @@ export async function initializeDataStore() {
   assertRemoteConfiguration();
   if (pool) {
     await ensurePostgres();
-    await ensureMediaBucket();
+    if (remoteStorageConfigured) await ensureMediaBucket();
     await migrateLocalStateIfRemoteIsEmpty();
-    console.log('Siyaj data store: Supabase Postgres and private Storage are ready.');
+    console.log(remoteStorageConfigured
+      ? 'Siyaj data store: Postgres and private Supabase Storage are ready.'
+      : 'Siyaj data store: Postgres is ready; media is stored on the shared filesystem.');
     return;
   }
   const db = await openDatabase();
@@ -705,7 +707,7 @@ export function getAccountMediaPath(userId, id) {
 
 export async function saveAccountMedia(userId, id, bytes, contentType) {
   assertRemoteConfiguration();
-  if (pool) {
+  if (remoteStorageConfigured) {
     await storageFetch(`object/${encodeURIComponent(mediaBucket)}/${storageObjectPath(userId, id)}`, {
       method: 'POST',
       headers: { 'Content-Type': contentType, 'x-upsert': 'true', 'cache-control': '0' },
@@ -722,7 +724,7 @@ export async function saveAccountMedia(userId, id, bytes, contentType) {
 
 export async function readAccountMedia(userId, id) {
   assertRemoteConfiguration();
-  if (pool) {
+  if (remoteStorageConfigured) {
     const response = await storageFetch(`object/${encodeURIComponent(mediaBucket)}/${storageObjectPath(userId, id)}`);
     return Buffer.from(await response.arrayBuffer());
   }
@@ -731,7 +733,7 @@ export async function readAccountMedia(userId, id) {
 
 export async function deleteAccountMedia(userId, id) {
   assertRemoteConfiguration();
-  if (pool) {
+  if (remoteStorageConfigured) {
     await storageFetch(`object/${encodeURIComponent(mediaBucket)}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
