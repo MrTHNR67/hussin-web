@@ -1958,6 +1958,7 @@ function renderDashboard(note = '') {
   } else alert.hidden = true;
   el('last-updated').textContent = state.updatedAt ? new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(new Date(state.updatedAt)) : '—';
   const systemItems = [['القدرة', f.power ? `${f.power} واط` : '—'], ['الألواح', f.panels ? `${f.panels} لوح` : '—'], ['الشركة', f.company || 'غير محددة'], ['الموقع', f.location || 'غير محدد'], ['الميل', f.tilt ? `${f.tilt}°` : 'غير محدد'], ['آخر صيانة', f.lastMaintenanceAt ? maintenanceDateLabel(parseIsoDate(f.lastMaintenanceAt), locale) : ui('لم تُسجل', 'Not recorded')]];
+  if (hasLossEstimate(result)) systemItems.push(['الخسارة اليومية', `${money(result.lostMoney)} تقريباً`]);
   el('system-summary').innerHTML = systemItems.map(([label, value]) => `<div class="system-item"><small>${label}</small><b>${escapeHtml(value)}</b></div>`).join('');
   renderWeatherStatus();
   drawChart(result); applyLanguage();
@@ -2649,5 +2650,15 @@ async function restoreGuestSession() {
     await finishServerAuth(session, seed);
     await continueAfterAuth();
   } catch { clearGuestIdentity(); }
+}
+if (typeof document !== 'undefined') {
+  document.addEventListener('click', (event) => {
+    const target = event.target && event.target.closest ? event.target.closest('.button, .icon-button, .text-button') : null;
+    if (!target) return;
+    target.classList.remove('is-popping');
+    void target.offsetWidth;
+    target.classList.add('is-popping');
+    setTimeout(() => target.classList.remove('is-popping'), 340);
+  });
 }
 init();

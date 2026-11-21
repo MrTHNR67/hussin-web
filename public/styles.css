@@ -252,6 +252,9 @@ html[dir="ltr"] .language-toggle { direction: ltr; }
   transition: transform .18s, box-shadow .18s, background .18s;
 }
 .button:hover { transform: translateY(-2px); }
+.button.is-popping, .icon-button.is-popping, .text-button.is-popping { animation: clickPop .32s cubic-bezier(.2,.8,.2,1); }
+@keyframes clickPop { 0% { transform: scale(1); } 40% { transform: scale(.92); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .button.is-popping, .icon-button.is-popping, .text-button.is-popping { animation: none; } }
 .button:disabled { opacity: .55; cursor: wait; transform: none; }
 .button-primary { background: var(--orange); color: #fffaf3; box-shadow: 0 7px 16px rgba(201, 78, 36, .17); }
 .button-primary:hover { background: #dc4e21; box-shadow: 0 9px 20px rgba(201, 78, 36, .22); }
