@@ -2424,6 +2424,19 @@ async function passwordDigest(password, saltHex) {
 }
 const GUEST_TOKEN_KEY = 'siyaj_guest_token';
 const GUEST_PROFILE_KEY = 'siyaj_guest_profile';
+const SECRET_THEME_KEY = 'siyaj_secret_theme';
+const SECRET_THEMES = { RACING01: 'theme-racing', EMERALD02: 'theme-emerald', CORAL03: 'theme-coral', STEALTH04: 'theme-stealth' };
+function applySecretTheme(code) {
+  if (typeof document === 'undefined') return;
+  const classes = Object.values(SECRET_THEMES);
+  document.body.classList.remove(...classes);
+  if (code && SECRET_THEMES[code]) {
+    document.body.classList.add(SECRET_THEMES[code]);
+    try { localStorage.setItem(SECRET_THEME_KEY, code); } catch {}
+  } else {
+    try { localStorage.removeItem(SECRET_THEME_KEY); } catch {}
+  }
+}
 function readGuestProfile() {
   try { return JSON.parse(localStorage.getItem(GUEST_PROFILE_KEY) || '{}'); } catch { return {}; }
 }
@@ -2583,9 +2596,31 @@ function setupEvents() {
     showToast(ui('تم تحديث تاريخ آخر صيانة إلى اليوم.', 'Last maintenance date updated to today.'));
   });
   setInterval(() => { if (document.visibilityState !== 'hidden') renderMaintenance(); }, 60 * 60 * 1000);
-  el('setting-dark').addEventListener('change', () => { state.settings.dark = el('setting-dark').checked; persist(); });
+  el('setting-dark').addEventListener('change', () => {
+    const checked = el('setting-dark').checked;
+    const activeSecret = localStorage.getItem(SECRET_THEME_KEY);
+    if (activeSecret) {
+      if (checked) { window.__secretResetPending = true; }
+      else if (window.__secretResetPending) { window.__secretResetPending = false; applySecretTheme(null); }
+    }
+    state.settings.dark = checked; persist(); applyTheme();
+  });
   el('setting-sound').addEventListener('change', () => { state.settings.sound = el('setting-sound').checked; persist(); });
   el('setting-language').addEventListener('change', () => { state.settings.language = el('setting-language').value === 'en' ? 'en' : 'ar'; persist(); renderDashboard(); renderCurrentStep(); renderHistory(); renderSettings(); renderAuth(); });
+  const secretInput = el('secret-code-input'); const secretSubmit = el('secret-code-submit');
+  const submitSecretCode = () => {
+    if (!secretInput) return;
+    const code = String(secretInput.value || '').trim().toUpperCase();
+    if (SECRET_THEMES[code]) {
+      applySecretTheme(code); secretInput.value = '';
+      secretInput.classList.add('secret-ok'); setTimeout(() => secretInput.classList.remove('secret-ok'), 900);
+    } else {
+      secretInput.classList.remove('secret-shake'); void secretInput.offsetWidth; secretInput.classList.add('secret-shake');
+      setTimeout(() => secretInput.classList.remove('secret-shake'), 420);
+    }
+  };
+  secretInput?.addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); submitSecretCode(); } });
+  secretSubmit?.addEventListener('click', submitSecretCode);
   el('setting-notifications').addEventListener('change', async () => {
     const enable = el('setting-notifications').checked;
     devicePushBusy = true; el('setting-notifications').disabled = true;
@@ -2621,7 +2656,7 @@ function setupEvents() {
 function init() {
   state.user = null;
   introActive = true; // keep the branding screens light until the intro finishes
-  setupEvents(); applyTheme(); el('footer-year').textContent = new Date().getFullYear();
+  setupEvents(); applyTheme(); applySecretTheme(localStorage.getItem(SECRET_THEME_KEY)); el('footer-year').textContent = new Date().getFullYear();
   window.addEventListener('pagehide', () => {
     if (!currentAccount) return;
     fetch('/api/account/state', {
