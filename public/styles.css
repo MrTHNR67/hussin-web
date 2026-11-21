@@ -1243,6 +1243,48 @@ body[class*="theme-"] .app-loading-logo img,
 body[class*="theme-"] .about-logo img,
 body[class*="theme-"] .hero-logo { display: none; }
 
+/* ---------- Per-theme component tweaks ---------- */
+/* RACING01 + STEALTH04: hide small milky icons */
+body.theme-racing .metric-icon,
+body.theme-racing .weather-icon,
+body.theme-racing .recommendation-icon,
+body.theme-stealth .metric-icon,
+body.theme-stealth .weather-icon,
+body.theme-stealth .recommendation-icon { display: none; }
+
+/* RACING01: gauge percentage color + bar chart color */
+body.theme-racing .gauge-label strong { color: #EF233C; }
+body.theme-racing .chart-bar { background: linear-gradient(0deg, #9e1226, #EF233C); }
+body.theme-racing .chart-day.is-today .chart-bar { background: linear-gradient(0deg, #EF233C, #ff6b6b); }
+body.theme-racing .chart-day.is-today .chart-value,
+body.theme-racing .chart-day.is-today .chart-label { color: #EF233C; }
+
+/* STEALTH04: gauge percentage color + bar chart color */
+body.theme-stealth .gauge-label strong { color: #C8102E; }
+body.theme-stealth .chart-bar { background: linear-gradient(0deg, #3a3a3e, #8A8D93); }
+body.theme-stealth .chart-day.is-today .chart-bar { background: linear-gradient(0deg, #8A8D93, #C8102E); }
+body.theme-stealth .chart-day.is-today .chart-value,
+body.theme-stealth .chart-day.is-today .chart-label { color: #C8102E; }
+
+/* EMERALD02: tidy status panel + bar chart color */
+body.theme-emerald .status-content { grid-template-columns: 1fr; gap: 12px; min-height: 0; }
+body.theme-emerald .gauge-wrap { max-width: 240px; height: 150px; margin: 0 auto; }
+body.theme-emerald .status-copy { text-align: center; }
+body.theme-emerald .status-copy p { margin-inline: auto; }
+body.theme-emerald .status-copy .button { margin: 0 auto; }
+body.theme-emerald .panel-foot { justify-content: center; }
+body.theme-emerald .gauge-label strong { color: #0F5C45; }
+body.theme-emerald .chart-bar { background: linear-gradient(0deg, #0F5C45, #2fa87a); }
+body.theme-emerald .chart-day.is-today .chart-bar { background: linear-gradient(0deg, #F28C28, #f5a95a); }
+body.theme-emerald .chart-day.is-today .chart-value,
+body.theme-emerald .chart-day.is-today .chart-label { color: #F28C28; }
+
+/* CORAL03: bar chart color */
+body.theme-coral .chart-bar { background: linear-gradient(0deg, #c94a40, #FF5A4E); }
+body.theme-coral .chart-day.is-today .chart-bar { background: linear-gradient(0deg, #FF5A4E, #ff8a7a); }
+body.theme-coral .chart-day.is-today .chart-value,
+body.theme-coral .chart-day.is-today .chart-label { color: #FF5A4E; }
+
 /* ---------- Secret theme layout overrides (distinct layouts) ---------- */
 body.theme-racing .dashboard-grid { grid-template-columns: 1fr; gap: 12px; }
 body.theme-racing .metrics-panel { order: -2; grid-column: 1 / -1; }
