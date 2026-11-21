@@ -1099,25 +1099,6 @@ body.dark .field label .weather-field-check, body.dark .field-label .weather-fie
   body { background: #fff !important; }
   .page-wrap { width: auto !important; max-width: none !important; min-height: 0 !important; margin: 0 !important; padding: 0 !important; box-shadow: none !important; }
   body.print-report .page { display: none !important; }
-
-/* ---------- Secret theme unlocks ---------- */
-body.theme-racing { color-scheme: dark; --paper:#111217; --white:#1a1b22; --ink:#DFE5EB; --primary-ink:#DFE5EB; --secondary-ink:#b8c0cc; --sand:#1e2028; --sand-light:#252833; --orange:#EF233C; --peach:#3a1a1f; --muted:#9aa3b0; --line:#3a3f4a; --shadow:0 18px 42px rgba(0,0,0,.45); --radius:2px; }
-body.theme-racing h1,body.theme-racing h2,body.theme-racing h3,body.theme-racing .eyebrow,body.theme-racing .status-pill,body.theme-racing .button { text-transform:uppercase; letter-spacing:.06em; font-weight:700; border-radius:2px; }
-body.theme-racing .button,body.theme-racing .panel,body.theme-racing .metric-card,body.theme-racing .system-item,body.theme-racing .field input,body.theme-racing .field select { border-radius:2px; border-color:#3a3f4a; }
-body.theme-racing .button-primary { background:#EF233C; }
-
-body.theme-emerald { color-scheme: light; --paper:#f7faf8; --white:#ffffff; --ink:#1a2e28; --primary-ink:#0F5C45; --secondary-ink:#2f5a4a; --sand:#eaf3ef; --sand-light:#f2f8f5; --orange:#F28C28; --peach:#fde9d4; --muted:#5a6b64; --line:#d6e5de; --shadow:0 14px 32px rgba(15,92,69,.08); --radius:12px; }
-body.theme-emerald .panel { padding:28px; box-shadow:0 10px 28px rgba(15,92,69,.06); }
-body.theme-emerald .button { border-radius:12px; }
-
-body.theme-coral { color-scheme: light; --paper:#F4F1EA; --white:#fffaf3; --ink:#141B2D; --primary-ink:#141B2D; --secondary-ink:#3a4258; --sand:#ece7dd; --sand-light:#f1ede4; --orange:#FF5A4E; --peach:#ffd8d3; --muted:#5a6070; --line:#d9d2c6; --shadow:0 16px 36px rgba(20,27,45,.08); --radius:16px; }
-body.theme-coral .button { border-radius:999px; }
-body.theme-coral .panel { border-radius:22px; }
-
-body.theme-stealth { color-scheme: dark; --paper:#0B0B0C; --white:#161618; --ink:#e6e6e6; --primary-ink:#e6e6e6; --secondary-ink:#8A8D93; --sand:#141416; --sand-light:#1c1c1f; --orange:#C8102E; --peach:#2a1216; --muted:#8A8D93; --line:#8A8D93; --shadow:0 18px 42px rgba(0,0,0,.6); --radius:6px; }
-body.theme-stealth .panel,body.theme-stealth .metric-card,body.theme-stealth .system-item,body.theme-stealth .field input,body.theme-stealth .field select { border:1px solid #8A8D93; background:#161618; }
-body.theme-stealth .button { border-radius:6px; }
-body.theme-stealth .metric-card b,body.theme-stealth .system-item b,body.theme-stealth .loss-value strong { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
   body.print-report #page-report { display: block !important; }
   body.print-report #page-report .page-heading { display: none !important; }
   body.print-report #system-report {
@@ -1164,3 +1145,23 @@ body.theme-stealth .metric-card b,body.theme-stealth .system-item b,body.theme-s
   .main-nav { gap: 3px; }
   .nav-link { padding: 9px 11px; font-size: 12.5px; }
 }
+
+
+/* ---------- Secret theme unlocks ---------- */
+body.theme-racing { color-scheme: dark; --paper:#111217; --white:#1a1b22; --ink:#DFE5EB; --primary-ink:#DFE5EB; --secondary-ink:#b8c0cc; --sand:#1e2028; --sand-light:#252833; --orange:#EF233C; --peach:#3a1a1f; --muted:#9aa3b0; --line:#3a3f4a; --shadow:0 18px 42px rgba(0,0,0,.45); --radius:2px; }
+body.theme-racing h1,body.theme-racing h2,body.theme-racing h3,body.theme-racing .eyebrow,body.theme-racing .status-pill,body.theme-racing .button { text-transform:uppercase; letter-spacing:.06em; font-weight:700; border-radius:2px; }
+body.theme-racing .button,body.theme-racing .panel,body.theme-racing .metric-card,body.theme-racing .system-item,body.theme-racing .field input,body.theme-racing .field select { border-radius:2px; border-color:#3a3f4a; }
+body.theme-racing .button-primary { background:#EF233C; }
+
+body.theme-emerald { color-scheme: light; --paper:#f7faf8; --white:#ffffff; --ink:#1a2e28; --primary-ink:#0F5C45; --secondary-ink:#2f5a4a; --sand:#eaf3ef; --sand-light:#f2f8f5; --orange:#F28C28; --peach:#fde9d4; --muted:#5a6b64; --line:#d6e5de; --shadow:0 14px 32px rgba(15,92,69,.08); --radius:12px; }
+body.theme-emerald .panel { padding:28px; box-shadow:0 10px 28px rgba(15,92,69,.06); }
+body.theme-emerald .button { border-radius:12px; }
+
+body.theme-coral { color-scheme: light; --paper:#F4F1EA; --white:#fffaf3; --ink:#141B2D; --primary-ink:#141B2D; --secondary-ink:#3a4258; --sand:#ece7dd; --sand-light:#f1ede4; --orange:#FF5A4E; --peach:#ffd8d3; --muted:#5a6070; --line:#d9d2c6; --shadow:0 16px 36px rgba(20,27,45,.08); --radius:16px; }
+body.theme-coral .button { border-radius:999px; }
+body.theme-coral .panel { border-radius:22px; }
+
+body.theme-stealth { color-scheme: dark; --paper:#0B0B0C; --white:#161618; --ink:#e6e6e6; --primary-ink:#e6e6e6; --secondary-ink:#8A8D93; --sand:#141416; --sand-light:#1c1c1f; --orange:#C8102E; --peach:#2a1216; --muted:#8A8D93; --line:#8A8D93; --shadow:0 18px 42px rgba(0,0,0,.6); --radius:6px; }
+body.theme-stealth .panel,body.theme-stealth .metric-card,body.theme-stealth .system-item,body.theme-stealth .field input,body.theme-stealth .field select { border:1px solid #8A8D93; background:#161618; }
+body.theme-stealth .button { border-radius:6px; }
+body.theme-stealth .metric-card b,body.theme-stealth .system-item b,body.theme-stealth .loss-value strong { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
