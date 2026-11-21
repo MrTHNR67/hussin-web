@@ -2,14 +2,14 @@ self.addEventListener('push', (event) => {
   let payload = {};
   try { payload = event.data ? event.data.json() : {}; } catch { payload = { body: event.data?.text() || '' }; }
   const options = {
-    body: payload.body || 'راجع حالة الألواح والطقس في سياج.',
+    body: payload.body || 'راجع حالة الألواح والطقس في تكنو موسى.',
     icon: '/assets/logo.png',
     badge: '/assets/logo.png',
     tag: payload.tag || `siyaj-${payload.kind || 'alert'}`,
     data: { url: payload.url || '/' },
     renotify: false,
   };
-  event.waitUntil(self.registration.showNotification(payload.title || 'تنبيه من سياج', options));
+  event.waitUntil(self.registration.showNotification(payload.title || 'تنبيه من تكنو موسى', options));
 });
 
 self.addEventListener('notificationclick', (event) => {

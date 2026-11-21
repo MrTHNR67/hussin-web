@@ -8,24 +8,27 @@ Have these windows ready: the live site, a PowerShell at the repo root, `docs/ev
 
 ## 0:00–0:15 — Intro (15 s)
 
-**Say:** "Siyaj Solar Guardian, deployed on Render at siyaj-web.onrender.com. It runs without any
-laptop being on. We'll show the app, then fail a component, scale under load, deny an unauthorized
-request, and restore from backup."
+**Say:** "Techno Musa — رفيق الطاقة الشمسية — deployed on Vercel with Neon Postgres. It runs without
+any laptop being on. We'll show guest entry, the setup journey and the panel reading, then fail a
+component, scale under load, deny an unauthorized request, and restore from backup."
 
-**Show:** browser opens `https://siyaj-web.onrender.com` over HTTPS (padlock visible).
+**Show:** browser opens `[PENDING — Vercel URL]` over HTTPS (padlock visible).
 
 ---
 
-## 0:15–0:45 — Working app and validation (30 s)
+## 0:15–0:45 — Guest entry and the setup journey (30 s)
 
-**Do:** log in with the demo account → open a panel → upload a synthetic panel image → show the
-validation/analysis result and the weather snapshot.
+**Do:** on the landing card enter any **name** and **tribe** (for example «سالم» / «البوشمي») → press
+«ابدأ التجربة» → complete the three setup steps → after the final save, let the short celebration and
+summary card appear → on the home page press «قراءة تقديرية للألواح» and let the 2.5 s progress finish.
 
-**Say:** "Uploads are capped at 25 MB and type-checked; each file is stored under the user's own
-scope, then validated before analysis. Weather comes from Open-Meteo, with an automatic MET Norway
-fallback if the primary is throttled."
+**Say:** "No account and no password — any name and tribe starts the experience, and the identity
+persists in the same browser across reloads. The panel reading is a visual simulation that runs
+locally in the browser: it uploads nothing and adds no AI backend. Uploads are capped at 25 MB and
+type-checked, and weather comes from Open-Meteo with an automatic MET Norway fallback."
 
-**Show:** the analysis status/result and the weather card.
+**Show:** the guest form, the header with the entered name, the celebration then summary card, and the
+toast «تم تجهيز القراءة التقديرية».
 
 ---
 
@@ -70,10 +73,10 @@ counter rising.
 **Terminal:**
 
 ```powershell
-curl.exe -s -o NUL -w "no session: %{http_code}`n" https://siyaj-web.onrender.com/api/admin/stats
+curl.exe -s -o NUL -w "no session: %{http_code}`n" <DEPLOY_URL>/api/admin/stats
 ```
 
-**Say:** "No session: 401. A normal logged-in user gets 403; only the allow-listed admin gets 200.
+**Say:** "No session: 401. A guest gets 403; only the server-side allow-listed admin gets 200.
 After 10 bad logins the account locks with 429. HSTS, CSP and frame-deny headers are on every
 response."
 
@@ -89,7 +92,7 @@ response."
 powershell -ExecutionPolicy Bypass -File scripts\drill-dr.ps1
 ```
 
-**Say:** "The drill deletes the database, restarts empty, proves the user can't log in, then restores
+**Say:** "The drill deletes the database, restarts empty, proves the guest session fails, then restores
 the latest verified backup. Recovery took 1.44 seconds; data written after the backup is lost — that
 is the RPO window, and backups run every five minutes."
 
@@ -103,17 +106,17 @@ is the RPO window, and backups run every five minutes."
 table.
 
 **Say:** "Health and load are sampled every two seconds: zero failed health checks at 1.7k requests
-per second. The deployed cost is zero dollars on Render's free tier, with bounded autoscaling so
+per second. The deployed cost is zero dollars on Vercel Hobby plus the Neon free tier, with bounded autoscaling so
 capacity doesn't keep running after demand falls. All evidence and scripts are in the repository."
 
-**End card:** `https://siyaj-web.onrender.com` · `github.com/MrTHNR67/hussin-web` · evidence index.
+**End card:** `[PENDING — Vercel URL]` · `github.com/MrTHNR67/hussin-web` · evidence index.
 
 ---
 
 ## Checklist before recording
 
-- [ ] Public endpoint warm (open it once, wait for the cold start to finish)
-- [ ] Demo account credentials ready
+- [ ] Vercel endpoint ready (open it once; record the real URL in the script and slides)
+- [ ] A name and tribe ready to type live (no demo account needed)
 - [ ] Terminal font ≥ 18 pt, repo root as working directory
 - [ ] Autoscaler log file open (`\.run\autoscale-demo2.log`) or run the drill live
 - [ ] Close notifications and unrelated tabs

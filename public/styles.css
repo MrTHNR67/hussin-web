@@ -576,7 +576,7 @@ html[dir="ltr"] .language-toggle { direction: ltr; }
 .about-logo { width: 65px; height: 65px; overflow: hidden; border-radius: 50%; background: #fff; }
 .about-logo img { width: 100%; height: 100%; object-fit: contain; }
 .footer { display: flex; width: min(100%, 1320px); justify-content: space-between; margin: auto; padding: 0 32px 22px; color: #938b7f; font-size: 10px; }
-/* رابط سياسة الخصوصية في التذييل: بنفس لون «سياج 2026» وبدون خط، ويكبر عند مرور الماوس */
+/* رابط سياسة الخصوصية في التذييل: بنفس لون «تكنو موسى 2026» وبدون خط، ويكبر عند مرور الماوس */
 .footer a { display: inline-block; color: inherit; text-decoration: none; transition: transform .18s ease; }
 .footer a:hover, .footer a:focus-visible { transform: scale(1.3); }
 .toast { position: fixed; z-index: 30; bottom: 25px; left: 50%; max-width: min(90vw, 520px); padding: 12px 19px; border-radius: 12px; background: #49443c; color: #fff; box-shadow: var(--shadow); font-size: 13px; opacity: 0; pointer-events: none; text-align: center; transform: translate(-50%, 20px); transition: .25s; }
@@ -589,9 +589,6 @@ html[dir="ltr"] .language-toggle { direction: ltr; }
 .auth-heading { margin: 0 0 22px; text-align: center; }
 .auth-heading h1 { margin: 4px 0 7px; font-size: clamp(27px, 4vw, 36px); }
 .auth-card { max-width: 520px; margin: auto; padding: 24px 28px; }
-.auth-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 24px; padding: 5px; border-radius: 14px; background: var(--sand-light); }
-.auth-tab { padding: 10px; border: 0; border-radius: 10px; background: transparent; color: var(--muted); font-size: 13px; }
-.auth-tab.active { background: var(--white); color: var(--orange); font-weight: 700; box-shadow: 0 2px 7px rgba(84, 65, 42, .08); }
 .auth-form { display: flex; flex-direction: column; gap: 14px; }
 .auth-form h2 { margin: 0; font-size: 22px; }
 .auth-form > .muted { margin-top: -9px; margin-bottom: 5px; font-size: 12px; }
@@ -599,20 +596,7 @@ html[dir="ltr"] .language-toggle { direction: ltr; }
 .auth-field input { width: 100%; height: 46px; padding: 0 13px; border: 1px solid var(--line); border-radius: 11px; background: var(--white); color: var(--ink); font-size: 13px; direction: ltr; text-align: left; }
 .auth-field input::placeholder { color: #a39a8c; font-weight: 400; }
 .auth-submit { width: 100%; margin-top: 4px; }
-.auth-switch { margin: 0; color: var(--muted); font-size: 12px; text-align: center; }
-.auth-switch button { padding: 0; border: 0; background: none; color: var(--orange); font-weight: 700; }
-.auth-separator { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 10px; }
-.auth-separator::before, .auth-separator::after { height: 1px; flex: 1; background: var(--line); content: ""; }
-.google-button { display: flex; min-height: 45px; align-items: center; justify-content: center; gap: 10px; overflow: hidden; border: 1px solid var(--line); border-radius: 11px; background: var(--white); color: var(--ink); font-size: 12px; font-weight: 600; cursor: pointer; }
-.google-button iframe { max-width: 100%; }
-.google-fallback { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
-.google-button:hover { background: var(--sand-light); }
-.google-mark { color: #4285f4; font-family: Arial, sans-serif; font-size: 17px; font-weight: 700; }
 .auth-local-note { margin: 18px 0 0; color: var(--muted); font-size: 10px; text-align: center; }
-.auth-profile { padding: 22px 5px; text-align: center; }
-.profile-mark { display: grid; width: 58px; height: 58px; place-items: center; margin: 0 auto 12px; border-radius: 50%; background: var(--peach); color: var(--orange); font-size: 27px; }
-.auth-profile h2 { margin: 0 0 5px; font-size: 21px; }
-.auth-profile .button { margin-top: 20px; }
 .english .rail-step:not(:last-child)::after { right: auto; left: 15px; }
 .english .field .input-suffix span { right: 13px; left: auto; }
 

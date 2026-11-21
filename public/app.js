@@ -5,7 +5,7 @@ const STEPS = [
   { title: 'بيانات البيئة والموقع', short: 'البيئة والموقع', description: 'أخبرنا عن موقع النظام والظروف المحيطة بالألواح.' },
   { title: 'بيانات الألواح', short: 'الألواح', description: 'أضف معلومات الألواح وأرفق صورة أو مقطعاً قصيراً لفحصها بصرياً.' },
   { title: 'فاتورة الكهرباء', short: 'الفاتورة', description: 'تساعدنا بيانات الفاتورة على تقدير قيمة الطاقة التي قد تفقدها.' },
-  { title: 'تأكيد البيانات', short: 'التأكيد', description: 'راجع ملخص المعلومات قبل أن يبدأ سياج بتحليل نظامك.' },
+  { title: 'تأكيد البيانات', short: 'التأكيد', description: 'راجع ملخص المعلومات قبل أن يبدأ تكنو موسى بتحليل نظامك.' },
 ];
 // Search aliases support familiar spellings; free text also accepts unlisted and legacy brands.
 const PANEL_MANUFACTURERS = [
@@ -68,7 +68,7 @@ const PANEL_MANUFACTURERS = [
   ['CW Enerji', ['CW Energy', 'سي دبليو', 'سي دبليو إنرجي']],
 ].sort(([a], [b]) => a.localeCompare(b, 'en'));
 const TRANSLATIONS = {
-  'تجربتك في سياج': 'Your journey in Siyaj',
+  'تجربتك في تكنو موسى': 'Your journey in Techno Musa',
   'أدخل اسمك وقبيلتك لتبدأ متابعة نظامك الشمسي.': 'Enter your name and tribe to start monitoring your solar system.',
   'مرحباً بك': 'Welcome',
   'لا تحتاج كلمة مرور أو تسجيل؛ اسمك وقبيلتك يكفيان للبدء.': 'No password or sign-up needed; your name and tribe are enough to begin.',
@@ -83,7 +83,7 @@ const TRANSLATIONS = {
   'تحليل الفاتورة باستخدام Ai': 'Analyze bill with Ai',
   'الغبار في الجو': 'Airborne dust', 'استخدام موقعك الحالي': 'Use your current location',
   'تمت التعبئة من الطقس': 'Filled from weather data', 'جارٍ تحديد الموقع…': 'Getting location…',
-  'تحليل الألواح باستخدام Claude': 'Panel assessment with Claude', 'تحليل الفاتورة باستخدام Claude': 'Read bill with Claude',
+  'قراءة تقديرية للألواح': 'Estimated panel reading', 'تحليل الألواح باستخدام Claude': 'Panel assessment with Claude', 'تحليل الفاتورة باستخدام Claude': 'Read bill with Claude',
   'الظل والغبار واتجاه الشمس': 'Shade, dust and sun direction', 'خسارة الطاقة وقيمتها': 'Energy deficit and its value',
   'حفظ البيانات': 'Save details',
   'عند ضغط هذا الزر، تُرسل صور الألواح ولقطات موزعة من الفيديو إلى Anthropic، حتى 8 صور في الطلب. لا يُحلل الصوت أو كل الإطارات.': 'Choosing this button sends panel photos and frames sampled across your video to Anthropic, up to 8 images per request. Audio and every frame are not assessed.',
@@ -133,7 +133,7 @@ const TRANSLATIONS = {
   'درجة الحرارة': 'Temperature', 'حرارة الجو الحالية': 'Current air temperature', 'الرطوبة': 'Humidity', 'الرطوبة النسبية': 'Relative humidity',
   'مستوى الغبار': 'Dust level', 'تقدير أولي': 'Initial estimate', 'تقدير الغبار على الألواح': 'Estimated panel dust',
   'تقديرك اليدوي للألواح': 'Your panel estimate', 'مؤشر جوي': 'air indicator', 'الخسارة اليومية': 'Daily energy loss',
-  'طاقة تقديرية': 'Estimated energy', 'تحديث الطقس والموقع': 'Refresh weather and location', 'توصية سياج': 'Siyaj recommendation',
+  'طاقة تقديرية': 'Estimated energy', 'تحديث الطقس والموقع': 'Refresh weather and location', 'توصية تكنو موسى': 'Techno Musa recommendation',
   'ابدأ بفحص ألواحك': 'Start with a panel check', 'قد يكون تنظيف الألواح مفيداً': 'Panel cleaning may help',
   'راقب أثر الحرارة على الألواح': 'Keep an eye on heat impact', 'حافظ على متابعة دورية': 'Keep checking your system regularly',
   'تم التنظيف': 'Cleaned', 'متابعة الأداء': 'Performance', 'قراءة الأسبوع': 'Weekly outlook', 'الإنتاج المتوقع': 'Estimated output',
@@ -144,16 +144,16 @@ const TRANSLATIONS = {
   'القدرة': 'Capacity', 'الألواح': 'Panels', 'الموقع': 'Location', 'الميل': 'Tilt', 'غير محدد': 'Not set',
   'النتائج التقديرية لا تستبدل فحص فني مختص.': 'Estimates do not replace an inspection by a qualified technician.',
   'خطوة بسيطة نحو طاقة أفضل': 'A few steps toward better solar performance', 'لنتعرّف على نظامك ': 'Let’s get to know your system ',
-  'أجب عن هذه الخطوات لتحصل سياج على صورة متكاملة عن ألواحك.': 'Answer these questions to help Siyaj understand your panels.',
+  'أجب عن هذه الخطوات لتحصل تكنو موسى على صورة متكاملة عن ألواحك.': 'Answer these questions to help Techno Musa understand your panels.',
   'البيئة والموقع': 'Environment & location', 'بيانات البيئة والموقع': 'Environment and location',
   'الألواح': 'Panels', 'بيانات الألواح': 'Panel details', 'الفاتورة': 'Electricity bill', 'فاتورة الكهرباء': 'Electricity bill',
   'التأكيد': 'Review', 'تأكيد البيانات': 'Review details', 'بياناتك تحفظ على حسابك وتظهر عند تسجيل الدخول من أجهزتك.': 'Your details are saved to your account and appear when you sign in on your devices.',
   'حفظ تلقائي': 'Saved automatically', 'التالي ': 'Next ', 'السابق': 'Back', 'تستغرق أقل من دقيقتين': 'Takes less than two minutes',
-  'تقديرات سياج إرشادية': 'Siyaj estimates are guidance only', 'ابدأ التحليل ': 'Analyze system ',
+  'تقديرات تكنو موسى إرشادية': 'Techno Musa estimates are guidance only', 'ابدأ التحليل ': 'Analyze system ',
   'أخبرنا عن موقع النظام والظروف المحيطة بالألواح.': 'Tell us where your system is and about the conditions around the panels.',
   'أضف معلومات الألواح وأرفق صورة أو مقطعاً قصيراً لفحصها بصرياً.': 'Add panel details and attach a photo or short video for visual inspection.',
   'تساعدنا بيانات الفاتورة على تقدير قيمة الطاقة التي قد تفقدها.': 'Bill details help estimate the value of energy you may be losing.',
-  'راجع ملخص المعلومات قبل أن يبدأ سياج بتحليل نظامك.': 'Review the details before Siyaj analyzes your system.',
+  'راجع ملخص المعلومات قبل أن يبدأ تكنو موسى بتحليل نظامك.': 'Review the details before Techno Musa analyzes your system.',
   'اسمك (اختياري)': 'Your name (optional)', 'درجة حرارة الجو': 'Air temperature', 'الرطوبة النسبية': 'Relative humidity', 'عدد الألواح': 'Number of panels',
   'تراكم الغبار على الألواح': 'Dust on the panels', 'تقدير مبدئي؛ عدّله حسب ما تراه على الألواح.': 'An initial estimate; adjust it to match what you see on the panels.',
   'موقع النظام': 'System location', 'ابحث عن مدينة أو محافظة': 'Search for a city or region', 'بحث': 'Search',
@@ -172,23 +172,23 @@ const TRANSLATIONS = {
   'شهر الفاتورة': 'Bill month', 'صورة الفاتورة (اختياري)': 'Bill photo (optional)', 'أرفق صورة الفاتورة': 'Attach a bill photo',
   'تُحفظ في حسابك ولا تُرسل للتحليل البصري': 'Saved to your account and not sent for visual analysis.',
   'راجع البيانات': 'Review your details', 'اسم صاحب النظام': 'Account name', 'لم تُضف': 'Not added', 'لوح': 'panels',
-  'ملف للألواح': 'panel file(s)', 'ملفات للألواح': 'panel files', 'سيحسب سياج فقد الطاقة التقديري من الحرارة والغبار والظل المرئي. قيمة المال تقديرية وتتغير حسب التعرفة المدخلة. ': 'Siyaj estimates energy loss from heat, dust, and visible shade. The cost estimate depends on your electricity rate. ',
+  'ملف للألواح': 'panel file(s)', 'ملفات للألواح': 'panel files', 'سيحسب تكنو موسى فقد الطاقة التقديري من الحرارة والغبار والظل المرئي. قيمة المال تقديرية وتتغير حسب التعرفة المدخلة. ': 'Techno Musa estimates energy loss from heat, dust, and visible shade. The cost estimate depends on your electricity rate. ',
   'سيتم إرسال صور الألواح فقط للتحليل الذكي.': 'Only panel images will be sent for AI analysis.', 'أضف صورة للألواح في الخطوة السابقة لتفعيل التحليل البصري.': 'Add a panel photo in the previous step to enable visual analysis.',
   'رحلتك مع الشمس': 'Your solar journey', 'سجل الفحوصات': 'Inspection history', 'كل عمليات الفحص المحفوظة في حسابك.': 'All inspections saved to your account.',
   'فحص جديد ': 'New inspection ', 'لا توجد فحوصات محفوظة بعد': 'No saved inspections yet', 'بعد إعداد نظامك سيظهر هنا سجل الفحوصات.': 'Your inspections will appear here after system setup.',
   'عرض': 'View', 'فقد الطاقة التقديري حينها: ': 'Estimated energy loss then: ', 'فقد التقديري ': 'Estimated loss ',
-  'تفضيلاتك': 'Your preferences', 'خصّص تجربة سياج بما يناسبك.': 'Personalize your Siyaj experience.', 'التنبيهات والعرض': 'Alerts and display',
+  'تفضيلاتك': 'Your preferences', 'خصّص تجربة تكنو موسى بما يناسبك.': 'Personalize your Techno Musa experience.', 'التنبيهات والعرض': 'Alerts and display',
   'تنبيهات المتصفح': 'Browser notifications', 'تنبيه عند تغير مهم في الطقس': 'Alerts for significant weather changes', 'الوضع الليلي': 'Dark mode',
   'ألوان أهدأ عند الاستخدام مساءً': 'A softer display for evening use', 'التنبيه الصوتي': 'Sound alerts', 'صوت عند التنبيهات المهمة': 'Play a sound for important alerts',
   'اللغة': 'Language', 'لغة واجهة الموقع': 'Interface language', 'العربية': 'Arabic', 'بياناتك وخصوصيتك': 'Your data and privacy',
-  'يحفظ سياج بيانات حسابك وإعداداتك وسجل الفحوصات ومرفقاتك في التخزين السحابي، وتظهر البيانات التي تمت مزامنتها على أجهزتك عند تسجيل الدخول بالحساب نفسه. عند طلب التحليل فقط، تُرسل صور الألواح ولقطات موزعة من الفيديو أو صورة الفاتورة إلى Anthropic لتحليلها باستخدام Claude. يمكنك مراجعة قراءة الفاتورة قبل استخدامها. إحداثيات GPS تُستخدم لحساب اتجاه الشمس والطقس والتنبيهات عند تفعيلها.': 'Siyaj saves account details, settings, inspection history and attachments in cloud storage and syncs them across your devices. Only when you request analysis, panel photos, sampled video frames or a bill image are sent to Anthropic for assessment by Claude. You can review extracted bill details before applying them. GPS coordinates are used for sun geometry, weather and alerts when enabled.',
+  'يحفظ تكنو موسى اسمك وقبيلتك وبيانات نظامك وسجل الفحوصات ومرفقاتك في هذا المتصفح على جهازك. تعرض قراءة الألواح تقديراً محلياً في المتصفح دون رفع الصور؛ أما قراءة الفاتورة باستخدام Claude فترسل صورة الفاتورة إلى Anthropic عند طلبها فقط، ويمكنك مراجعة القيم قبل استخدامها. إحداثيات GPS تُستخدم لحساب اتجاه الشمس والطقس والتنبيهات عند تفعيلها.': 'Techno Musa keeps your name, tribe, system details, inspection history and attachments in this browser on your device. The panel reading is a local estimate with no image upload; bill extraction with Claude sends only the bill image to Anthropic when you request it, and you can review the values first. GPS coordinates are used for sun geometry, weather and alerts when enabled.',
   'تنزيل نسخة من بياناتي': 'Download my data', 'مسح بيانات حسابي': 'Clear my account data', 'رفيقك الذكي للطاقة الشمسية · إصدار تجريبي': 'Your smart solar companion · Preview',
-  'صُنع بعناية لنعطي الشمس حقها': 'Made with care, under the sun', 'حسابك في سياج': 'Your Siyaj account', 'أهلاً': 'Welcome',
+  'صُنع بعناية لنعطي الشمس حقها': 'Made with care, under the sun', 'حسابك في تكنو موسى': 'Your Techno Musa account', 'أهلاً': 'Welcome',
   'سجّل الدخول لمتابعة نظامك الشمسي.': 'Log in to keep up with your solar system.', 'استخدم بريدك الإلكتروني أو رقم هاتفك.': 'Use your email address or phone number.',
   'البريد الإلكتروني أو رقم الهاتف': 'Email address or phone number', 'كلمة المرور': 'Password', 'أدخل كلمة المرور': 'Enter your password',
   'اسم المستخدم أو البريد الإلكتروني أو رقم الهاتف': 'Username, email or phone number',
   'دخول ': 'Log in ', 'ليس لديك حساب؟ ': 'Don’t have an account? ', 'إنشاء حساب جديد': 'Create a new account', 'أو': 'OR',
-  'المتابعة باستخدام Google': 'Continue with Google', 'سجّل بياناتك للبدء مع سياج.': 'Enter your details to get started with Siyaj.',
+  'المتابعة باستخدام Google': 'Continue with Google', 'سجّل بياناتك للبدء مع تكنو موسى.': 'Enter your details to get started with Techno Musa.',
   'البريد الإلكتروني': 'Email address', 'رقم الهاتف': 'Phone number', '8 أحرف على الأقل': 'At least 8 characters',
   'تأكيد كلمة المرور': 'Confirm password', 'أعد كتابة كلمة المرور': 'Enter your password again', 'إنشاء الحساب ': 'Create account ',
   'لديك حساب؟ ': 'Already have an account? ', 'إنشاء حساب باستخدام Google': 'Sign up with Google', 'يُحفظ الحساب والبيانات والمرفقات على الخادم وتظهر عند تسجيل الدخول من أجهزتك.': 'Your account, details, and attachments are saved on the server and appear when you sign in on your devices.',
@@ -197,12 +197,7 @@ const TRANSLATIONS = {
   'اسم المستخدم مستخدم بالفعل؛ اختر اسماً آخر.': 'That username is already taken. Choose another one.',
   'حالة الطقس الحالية': 'Current weather', 'تظهر بعد تحديد الموقع': 'Shown after setting a location',
   'تقدير مبدئي من الغبار الجوي، وليس قياساً مباشراً على سطح الألواح.': 'Initial estimate from airborne dust, not a direct measurement on the panels.',
-  'هذا الحساب مرتبط بـ Google؛ تابع باستخدام Google.': 'This account uses Google. Continue with Google.',
-  'تسجيل Google يحتاج إضافة GOOGLE_CLIENT_ID إلى ملف .env.': 'Google sign-in needs GOOGLE_CLIENT_ID added to the .env file.',
-  'تم تسجيل الدخول باستخدام Google.': 'Signed in with Google.', 'هذا البريد مرتبط بحساب Google آخر.': 'This email is linked to another Google account.',
-  'تعذر التحقق من حساب Google.': 'Could not verify the Google account.', 'لم يصل رمز تسجيل Google.': 'Google sign-in did not return a credential.',
-  'رمز Google غير صالح أو انتهت صلاحيته.': 'The Google credential is invalid or expired.',
-  'هل تريد مسح بيانات الحساب ومرفقاته من جميع أجهزتك؟': 'Delete your account data and attachments from all your devices?',
+  'هل تريد مسح بياناتك ومرفقاتك من هذا المتصفح؟': 'Delete your data and attachments from this browser?',
   'تحليل بصري': 'Visual inspection', 'تقدير أولي': 'Initial estimate', 'سماء صافية': 'Clear sky', 'غائم جزئياً': 'Partly cloudy',
   'ضباب': 'Fog', 'رذاذ': 'Drizzle', 'أمطار': 'Rain', 'ثلوج': 'Snow', 'عواصف رعدية': 'Thunderstorms', 'حالة متغيرة': 'Changing conditions',
   'لا يظهر غبار واضح': 'No obvious dust visible', 'غبار خفيف ظاهر': 'Light dust visible', 'غبار متوسط ظاهر': 'Moderate dust visible',
@@ -212,7 +207,7 @@ const TRANSLATIONS = {
   'حرارة مرتفعة': 'High temperature', 'في موقعك؛ تجنب لمس الألواح وقت الظهيرة.': 'at your location; avoid touching panels at midday.',
   'هبات رياح قوية تصل إلى ': 'Strong wind gusts up to ', ' كم/س؛ أجّل الصعود إلى السطح حتى تهدأ.': ' km/h; wait for calmer conditions before going onto the roof.',
   'احتمال هطول مرتفع (': 'High chance of rain (', '%)؛ راقب الألواح بعد انقضاء الطقس.': '%); check the panels after the weather passes.',
-  'تم تحديث تقدير الغبار بعد التنظيف.': 'Dust estimate updated after cleaning.', 'واجهة سياج متاحة حالياً بالعربية.': 'Siyaj is currently available in Arabic.',
+  'تم تحديث تقدير الغبار بعد التنظيف.': 'Dust estimate updated after cleaning.', 'واجهة تكنو موسى متاحة حالياً بالعربية.': 'Techno Musa is currently available in Arabic.',
   'تنبيهات الغبار والرياح': 'Dust and wind push alerts', 'تنبيهات الغبار والرياح عبر الإشعارات': 'Push alerts for dusty and windy weather',
   'كل ': 'Every ', ' يوماً كحد أقصى': ' days at most', 'توقعات الغبار الجوي: Open-Meteo وCAMS.': 'Air quality forecasts: Open-Meteo and CAMS.',
   'يتم إرسال تنبيه التنظيف مرة كل 14 يوماً كحد أقصى.': 'Cleaning alerts are limited to once every 14 days.',
@@ -223,7 +218,7 @@ const TRANSLATIONS = {
   'التنبيهات تعمل بعد إضافة مفاتيح VAPID وتشغيل الخادم.': 'Alerts work after adding VAPID keys and starting the server.',
   'تعذر حفظ سجل التنظيف على الخادم.': 'Could not save the cleaning record on the server.',
   'تعذر حساب تفصيل خسارة الحرارة حالياً.': 'Could not calculate the heat loss breakdown right now.',
-  'تنبيه غبار من سياج': 'Dust alert from Siyaj', 'تنبيه توقيت التنظيف من سياج': 'Cleaning time alert from Siyaj',
+  'تنبيه غبار من تكنو موسى': 'Dust alert from Techno Musa', 'تنبيه توقيت التنظيف من تكنو موسى': 'Cleaning time alert from Techno Musa',
   'لم نعثر على نتائج. جرّب كتابة الاسم بالإنجليزية.': 'No results found. Try entering the name in English.',
   'تعذر البحث. تأكد من تشغيل الخادم.': 'Search failed. Make sure the local server is running.',
   'لم يتم تفعيل إذن التنبيهات.': 'Notification permission was not granted.', 'تم تفعيل التنبيهات.': 'Notifications enabled.', 'تم إيقاف التنبيهات.': 'Notifications disabled.',
@@ -293,7 +288,7 @@ const TRANSLATIONS = {
   'بلاغاتي السابقة': 'My complaints', 'ملخص جاهز للمشاركة': 'Summary ready to share',
   'تقرير شامل يمكن تنزيله PDF أو مشاركته مع شركة الصيانة.': 'A full report you can download as PDF or share with a maintenance company.',
   'تنزيل PDF': 'Download PDF', 'طباعة': 'Print', 'مشاركة': 'Share',
-  'جارٍ تجهيز سياج…': 'Preparing Siyaj…', 'إعادة المحاولة': 'Try again',
+  'جارٍ تجهيز تكنو موسى…': 'Preparing Techno Musa…', 'إعادة المحاولة': 'Try again',
   'يتم الاتصال بالخادم وتحميل بياناتك، لحظات من فضلك.': 'Contacting the server and loading your data, just a moment.',
   'تحديث الطقس والموقع': 'Update weather and location',
   'مثال: مريم': 'e.g. Mariam', 'name@example.com أو رقم الهاتف': 'name@example.com or a phone number',
@@ -417,7 +412,7 @@ function resetAiRequests() {
   analysisController?.abort(); invoiceController?.abort();
   invoiceReview = null; invoiceBusy = false; analysisBusy = false;
   const button = el('start-setup'); if (button) { button.disabled = false; button.innerHTML = ui('إعداد النظام <span>←</span>', 'Set up system <span>←</span>'); }
-  const aiButton = el('analyze-panels'); if (aiButton) { aiButton.disabled = false; aiButton.textContent = ui('تحليل الألواح باستخدام Claude', 'Panel assessment with Claude'); }
+  const aiButton = el('analyze-panels'); if (aiButton) { aiButton.disabled = false; aiButton.textContent = ui('قراءة تقديرية للألواح', 'Estimated panel reading'); }
 }
 function analysisFingerprint() {
   return JSON.stringify({ accountId: currentAccount?.id, form: state.form, weather: { timezone: state.weather?.timezone, temperature: state.weather?.current?.temperature_2m, time: state.weather?.current?.time }, language: state.settings.language, media: mediaFor('panels').map(({ id, updatedAt }) => ({ id, updatedAt })) });
@@ -1064,7 +1059,7 @@ function renderMaintenance() {
     : 'موعد الصيانة القادمة اقترب. احجزها الآن لتبقى الألواح ضمن دورة الصيانة.';
   const onScheduleNote = english
     ? 'The panels are on schedule. The app recalculates the remaining days from the saved date every time you open it.'
-    : 'الصيانة منتظمة. يحسب سياج الأيام المتبقية من التاريخ المحفوظ في كل مرة تفتح فيها التطبيق.';
+    : 'الصيانة منتظمة. يحسب تكنو موسى الأيام المتبقية من التاريخ المحفوظ في كل مرة تفتح فيها التطبيق.';
   const note = status.overdue ? overdueNote : status.dueSoon ? dueSoonNote : onScheduleNote;
   container.innerHTML = `<div class="maintenance-grid">
       <div class="maintenance-stat"><span class="maintenance-stat-icon">📅</span><div class="maintenance-stat-body"><small>${english ? 'Last maintenance' : 'آخر صيانة'}</small><b>${escapeHtml(lastLabel)}</b><span>${escapeHtml(elapsedLabel)}</span></div></div>
@@ -1168,14 +1163,14 @@ async function runFakeAnalysis() {
     if (button) {
       button.disabled = false;
       button.removeAttribute('aria-busy');
-      button.textContent = ui('تحليل الألواح باستخدام Claude', 'Panel assessment with Claude');
+      button.textContent = ui('قراءة تقديرية للألواح', 'Estimated panel reading');
     }
   }
 }
 function syncHeader() {
   el('header-location').textContent = state.form.location || 'حدّد موقع النظام';
   const authButton = el('auth-nav');
-  if (authButton) authButton.textContent = state.user?.name || ui('الزائر');
+  if (authButton) authButton.textContent = state.user?.name || ui('الزائر', 'Guest');
   const loggedIn = !!state.user;
   document.querySelector('.main-nav').hidden = !loggedIn;
   document.querySelector('.topbar-location').hidden = !loggedIn;
@@ -1404,7 +1399,7 @@ function renderRail() {
   el('step-back').disabled = currentStep === 0;
   el('step-back').style.opacity = currentStep === 0 ? '.45' : '1';
   el('step-next').innerHTML = currentStep === STEPS.length - 1 ? 'حفظ البيانات <span>✓</span>' : 'التالي <span>←</span>';
-  el('form-hint').textContent = currentStep === 3 ? 'تقديرات سياج إرشادية' : 'تستغرق أقل من دقيقتين';
+  el('form-hint').textContent = currentStep === 3 ? 'تقديرات تكنو موسى إرشادية' : 'تستغرق أقل من دقيقتين';
   const progress = el('wizard-progress-fill');
   if (progress) progress.style.width = `${Math.round(((currentStep + 1) / STEPS.length) * 100)}%`;
 }
@@ -1458,7 +1453,7 @@ function renderCurrentStep() {
       ${field('كفاءة اللوح (اختياري)', 'efficiency', { type: 'number', suffix: '%', placeholder: '21', min: '1', max: '40', step: '.1' })}
       ${field('معامل الحرارة (اختياري)', 'coefficient', { type: 'number', suffix: '%/°م', placeholder: '-0.35', step: '.01', hint: 'غالباً بين ‎-0.25 و‎-0.50 لكل درجة.' })}
       ${field('قدرة اللوح الواحد (اختياري)', 'ratedPower', { type: 'number', suffix: 'واط', placeholder: '450', min: '1' })}
-      <div class="field full"><span class="field-label">صورة أو فيديو للألواح</span>${uploadBlock('panels', 'أضف صورة أو مقطعاً قصيراً', 'صورة واضحة أو فيديو من 5 إلى 10 ثوانٍ · حتى 6 ملفات، 25 ميغابايت للملف', 'image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm', true)}<small class="helper-text">يفحص Claude صوراً ولقطات مختارة من المقاطع، حتى 8 صور في الطلب. لا يفحص الصوت أو كل إطارات الفيديو.</small><small class="helper-text">لا يمكن قياس حرارة السطح أو زاوية الميل الدقيقة من صورة عادية؛ يعتمد الحساب على البيانات التي تدخلها والطقس.</small><small class="helper-text">تُرسل الصور واللقطات إلى Anthropic فقط عند ضغط «تحليل الألواح باستخدام Claude».</small>${claudeAvailabilityMarkup()}</div>
+      <div class="field full"><span class="field-label">صورة أو فيديو للألواح</span>${uploadBlock('panels', 'أضف صورة أو مقطعاً قصيراً', 'صورة واضحة أو فيديو من 5 إلى 10 ثوانٍ · حتى 6 ملفات، 25 ميغابايت للملف', 'image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm', true)}<small class="helper-text">قراءة تقديرية محلية في متصفحك خلال ثوانٍ، دون إرسال الصور إلى أي خدمة خارجية.</small><small class="helper-text">لا يمكن قياس حرارة السطح أو زاوية الميل الدقيقة من صورة عادية؛ يعتمد الحساب على البيانات التي تدخلها والطقس.</small><small class="helper-text">تبقى الصور واللقطات محفوظة على هذا الجهاز.</small></div>
       </div>`;
   } else if (currentStep === 2) {
     target.innerHTML = `<h2 class="step-title">${STEPS[2].title}</h2><p class="step-description">${STEPS[2].description}</p><div class="field-grid">
@@ -1476,7 +1471,7 @@ function renderCurrentStep() {
     const reviewLocale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
     const reviewMaintenance = parseIsoDate(f.lastMaintenanceAt);
     const summary = [['اسم صاحب النظام', f.name || '—'], ['الموقع', f.location || 'غير محدد'], ['عدد الألواح', f.panels ? `${f.panels} لوح` : '—'], ['القدرة الإجمالية', f.power ? `${f.power} واط` : '—'], ['النوع', ({ monocrystalline: 'أحادية البلورة', polycrystalline: 'متعددة البلورات', 'thin-film': 'أغشية رقيقة', unknown: 'غير معروف' })[f.panelType]], ['شركة الألواح', f.company || '—'], ['آخر صيانة', reviewMaintenance ? maintenanceDateLabel(reviewMaintenance, reviewLocale) : 'لم تُسجل'], ['الفاتورة الشهرية', f.invoice ? `${f.invoice} ر.ع` : 'لم تُضف'], ['شهر الفاتورة', f.billMonth || '—'], ['المرفقات', attachments ? `${attachments} ملف للألواح` : 'لا توجد صورة/فيديو']];
-    target.innerHTML = `<h2 class="step-title">${STEPS[3].title}</h2><p class="step-description">${STEPS[3].description}</p><div class="confirmation-grid">${summary.map(([label, value]) => `<div class="confirm-card"><small>${label}</small><b>${escapeHtml(value)}</b></div>`).join('')}</div><div class="confirmation-callout">${ui('حفظ البيانات يحسب تقدير الإدخالات والشهر. يمكنك بعد الحفظ طلب فحص Claude من الزر المخصص في الرئيسية. نسبة التغطية المرئية لا تساوي نسبة خسارة الطاقة؛ حساب خسارة الشهر يحتاج إنتاجاً فعلياً وخط أساس متوقعاً أو تقديراً من طقس الفترة.', 'Saving details calculates the input estimate and monthly assessment. After saving, request Claude from its button on the home page. Visible coverage is not energy loss; monthly losses need actual generation and an expected baseline or a period weather model.')} ${attachments ? 'تُرسل الصور واللقطات إلى Anthropic فقط عند ضغط «تحليل الألواح باستخدام Claude».' : 'أضف صورة للألواح في الخطوة السابقة لتفعيل التحليل البصري.'}</div>${claudeAvailabilityMarkup()}`;
+    target.innerHTML = `<h2 class="step-title">${STEPS[3].title}</h2><p class="step-description">${STEPS[3].description}</p><div class="confirmation-grid">${summary.map(([label, value]) => `<div class="confirm-card"><small>${label}</small><b>${escapeHtml(value)}</b></div>`).join('')}</div><div class="confirmation-callout">${ui('حفظ البيانات يحسب تقدير الإدخالات والشهر. يمكنك بعد الحفظ طلب قراءة تقديرية من الزر المخصص في الرئيسية، وهي تعمل محلياً في المتصفح. نسبة التغطية المرئية لا تساوي نسبة خسارة الطاقة؛ حساب خسارة الشهر يحتاج إنتاجاً فعلياً وخط أساس متوقعاً أو تقديراً من طقس الفترة.', 'Saving details calculates the input estimate and monthly assessment. After saving, use the button on the home page for an estimated panel reading that runs locally in the browser. Visible coverage is not energy loss; monthly losses need actual generation and an expected baseline or a period weather model.')} ${attachments ? 'تبقى الصور واللقطات على هذا الجهاز، ولا تُرسل إلى أي خدمة.' : 'أضف صورة للألواح في الخطوة السابقة لتفعيل القراءة التقديرية.'}</div>`;
   }
   target.querySelectorAll('[data-field]').forEach((input) => input.addEventListener('input', () => saveFormField(input)));
   target.querySelectorAll('[data-field]').forEach((input) => input.addEventListener('change', () => saveFormField(input)));
@@ -2074,12 +2069,12 @@ async function runAnalysis({ useClaude = false } = {}) {
   if (!currentAccount?.id) return;
   analysisController?.abort(); analysisController = new AbortController();
   analysisBusy = useClaude;
-  const panelButton = el('analyze-panels'); if (panelButton) panelButton.textContent = ui('تحليل الألواح باستخدام Claude', 'Panel assessment with Claude');
+  const panelButton = el('analyze-panels'); if (panelButton) panelButton.textContent = ui('قراءة تقديرية للألواح', 'Estimated panel reading');
   const sequence = ++analysisSequence; const accountId = currentAccount.id; const fingerprint = analysisFingerprint();
   const stillCurrent = () => sequence === analysisSequence && accountId === currentAccount?.id && fingerprint === analysisFingerprint();
   const button = useClaude ? el('analyze-panels') : el('start-setup'); const original = button?.innerHTML;
   if (button) { button.disabled = true; button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('يجري التحليل…', 'Assessing…')}</span>`; }
-  el('status-title').textContent = ui('سياج يراجع البيانات', 'Siyaj is reviewing your details');
+  el('status-title').textContent = ui('تكنو موسى يراجع البيانات', 'Techno Musa is reviewing your details');
   let analysisError = ''; let storedReport = null; let ai = null; let aiModel = null; let solarContext = null; let monthlyLoss = null;
   try {
     await loadAppSettings(); const config = await loadAiConfig();
@@ -2124,7 +2119,7 @@ async function runAnalysis({ useClaude = false } = {}) {
   } finally {
     if (sequence === analysisSequence && accountId === currentAccount?.id) {
       analysisBusy = false;
-      if (button) { button.disabled = false; button.innerHTML = original || (useClaude ? ui('تحليل الألواح باستخدام Claude', 'Panel assessment with Claude') : 'إعداد النظام <span>←</span>'); }
+      if (button) { button.disabled = false; button.innerHTML = original || (useClaude ? ui('قراءة تقديرية للألواح', 'Estimated panel reading') : 'إعداد النظام <span>←</span>'); }
       if (panelButton) panelButton.disabled = claudeEnabled !== true || !mediaFor('panels').length;
       if (!stillCurrent()) renderDashboard(ui('تغيرت البيانات؛ أعد التحليل إذا أردت نتيجة محدثة.', 'Details changed; run analysis again for an updated assessment.'));
     }
@@ -2189,7 +2184,7 @@ function renderAnalysisDetails(snapshot = state) {
     const missing = (ai.missingMeasurements || []).filter((value) => typeof value === 'string');
     const frames = (ai.frameFindings || []).filter((value) => value && typeof value.observation === 'string').sort((a, b) => Number(a.frameIndex || 0) - Number(b.frameIndex || 0));
     visual.innerHTML = `<p class="assessment-provider">${escapeHtml(snapshot.aiModel || 'Claude')}</p>${ai.panelDetected === false ? `<p>${ui('لم يتعرف Claude على ألواح واضحة في المرفق.', 'Claude did not identify clear panels in the attachment.')}</p>` : ''}<div class="assessment-metrics">${readings}</div><ul class="assessment-notes">${observations.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul><p class="helper-text">${ui('هذه تغطية مرئية تقديرية، وليست قياساً لخسارة الطاقة أو حرارة سطح اللوح.', 'This is estimated visible coverage, not a measurement of energy loss or panel surface temperature.')}</p>${missing.length ? `<details><summary>${ui('القياسات الناقصة', 'Missing measurements')}</summary><ul class="assessment-notes">${missing.map((value) => `<li>${escapeHtml(value)}</li>`).join('')}</ul></details>` : ''}${frames.length ? `<details><summary>${ui('ملاحظات اللقطات بالترتيب', 'Frame observations in sequence')}</summary><ol class="frame-findings">${frames.map((frame) => `<li>${frame.timestampSeconds !== null && frame.timestampSeconds !== undefined ? `<b>${assessmentValue(frame.timestampSeconds, ui(' ثانية', ' s'))}</b> · ` : ''}${escapeHtml(frame.observation)}</li>`).join('')}</ol></details>` : ''}`;
-  } else visual.innerHTML = `${claudeAvailabilityMarkup()}<p class="helper-text">${ai ? ui('النتيجة المحفوظة بلغة أخرى؛ أعد التحليل لقراءتها باللغة الحالية.', 'The saved assessment is in another language; run analysis again for the current language.') : ui('أرفق صوراً أو فيديو للألواح ثم اضغط «تحليل الألواح باستخدام Claude». تُحلل لقطات موزعة من الفيديو، وليس الصوت أو كل الإطارات.', 'Attach panel photos or a video, then choose “Panel assessment with Claude”. Frames sampled across the clip are assessed, not audio or every frame.')}</p>`;
+  } else visual.innerHTML = `${claudeAvailabilityMarkup()}<p class="helper-text">${ai ? ui('النتيجة المحفوظة بلغة أخرى؛ أعد التحليل لقراءتها باللغة الحالية.', 'The saved assessment is in another language; run analysis again for the current language.') : ui('أرفق صوراً أو فيديو للألواح ثم اضغط «قراءة تقديرية للألواح» لعرض نتيجة محلية في متصفحك خلال ثوانٍ.', 'Attach panel photos or a video, then choose “Estimated panel reading” for a local result in your browser within seconds.')}</p>`;
   const solar = el('solar-assessment-content');
   const solarMetrics = context ? [
     assessmentMetric(ui('اتجاه الشمس المحسوب', 'Calculated sun azimuth'), assessmentValue(context.sun?.azimuthDegrees, '°')),
@@ -2299,7 +2294,7 @@ function renderDashboard(note = '') {
     el('status-title').textContent = result.percent >= 30 ? 'يحتاج إلى انتباه' : result.percent >= 15 ? 'مستوى متوسط' : 'أداء مطمئن';
     el('status-pill').innerHTML = `<i></i> ${result.percent >= 30 ? 'انتباه' : result.percent >= 15 ? 'مراقبة' : 'جيد'}`;
     el('status-pill').className = `status-pill ${result.percent < 15 ? 'good' : ''}`;
-    el('status-summary').textContent = state.ai ? ui('فحص بصري باستخدام Claude', 'Visual assessment with Claude') : 'تقدير أولي لأداء النظام';
+    el('status-summary').textContent = state.ai ? ui('قراءة تقديرية للألواح', 'Estimated panel reading') : 'تقدير أولي لأداء النظام';
     const heatShare = result.heatPercent === null || result.heatPercent === undefined ? null : Math.round(result.heatPercent);
     const dustShare = result.dustPercent === null || result.dustPercent === undefined ? null : Math.round(result.dustPercent);
     const shadeShare = Number.isFinite(Number(result.shadePercent)) ? Math.round(Number(result.shadePercent)) : 0;
@@ -2484,7 +2479,7 @@ function complaintMailtoFallback(payload) {
     payload.location ? `${ui('الموقع', 'Location')}: ${payload.location}` : '',
     '', payload.message,
   ].filter((line) => line !== '');
-  return `mailto:${encodeURIComponent(complaintConfig.email)}?subject=${encodeURIComponent(payload.subject || ui('بلاغ سياج', 'Siyaj complaint'))}&body=${encodeURIComponent(lines.join('\n'))}`;
+  return `mailto:${encodeURIComponent(complaintConfig.email)}?subject=${encodeURIComponent(payload.subject || ui('بلاغ تكنو موسى', 'Techno Musa complaint'))}&body=${encodeURIComponent(lines.join('\n'))}`;
 }
 async function submitComplaint() {
   const alertBox = el('complaint-alert');
@@ -2542,8 +2537,8 @@ async function shareComplaint() {
     contact: (el('complaint-contact')?.value || '').trim(),
   };
   if (payload.message.length < 10) { const alertBox = el('complaint-alert'); if (alertBox) { alertBox.textContent = ui('اكتب وصفاً للبلاغ قبل مشاركته.', 'Describe the complaint before sharing it.'); alertBox.hidden = false; } return; }
-  const text = `${ui('بلاغ سياج', 'Siyaj complaint')} — ${complaintCategoryLabel(payload.category)}\n${payload.subject ? `${payload.subject}\n` : ''}${payload.message}\n${ui('التواصل', 'Contact')}: ${payload.contact || '—'}\n${ui('إلى', 'To')}: ${complaintConfig.email}`;
-  if (navigator.share) { try { await navigator.share({ title: ui('بلاغ سياج', 'Siyaj complaint'), text }); return; } catch { /* fall through to copy */ } }
+  const text = `${ui('بلاغ تكنو موسى', 'Techno Musa complaint')} — ${complaintCategoryLabel(payload.category)}\n${payload.subject ? `${payload.subject}\n` : ''}${payload.message}\n${ui('التواصل', 'Contact')}: ${payload.contact || '—'}\n${ui('إلى', 'To')}: ${complaintConfig.email}`;
+  if (navigator.share) { try { await navigator.share({ title: ui('بلاغ تكنو موسى', 'Techno Musa complaint'), text }); return; } catch { /* fall through to copy */ } }
   try { await navigator.clipboard.writeText(text); showToast(ui('تم نسخ نص البلاغ.', 'Complaint text copied.')); }
   catch { showToast(ui('تعذر النسخ؛ حدّد النص يدوياً.', 'Copy failed; select the text manually.')); }
 }
@@ -2584,7 +2579,7 @@ function renderSystemReport() {
   const total = Number.isFinite(Number(result?.totalPercent)) ? Number(result.totalPercent) : '—';
   const lossDay = result && Number.isFinite(Number(result.lostKwh)) ? `${result.lostKwh.toFixed(2)} kWh` : '—';
   const lossMoney = result && Number.isFinite(Number(result.lostMoney)) ? money(result.lostMoney) : '—';
-  const owner = state.user?.username || f.name || ui('مستخدم سياج', 'Siyaj user');
+  const owner = state.user?.username || f.name || ui('مستخدم تكنو موسى', 'Techno Musa user');
   const monthlyLine = monthly && monthly.lostKwh !== null && monthly.lostKwh !== undefined
     ? `${Number(monthly.lostKwh).toFixed(2)} kWh${monthly.lossMoney !== null && monthly.lossMoney !== undefined ? ` · ${money(monthly.lossMoney)}` : ''}`
     : ui('غير محسوبة (أضف الإنتاج المتوقع والفعلي)', 'Not calculated (add expected and actual generation)');
@@ -2603,7 +2598,7 @@ function renderSystemReport() {
   host.innerHTML = `
     <div class="report-header">
       <div>
-        <p class="eyebrow">${ui('سياج · رفيق الطاقة الشمسية', 'Siyaj · Solar companion')}</p>
+        <p class="eyebrow">${ui('تكنو موسى · رفيق الطاقة الشمسية', 'Techno Musa · Solar companion')}</p>
         <h2>${ui('تقرير حالة النظام الشمسي', 'Solar system status report')}</h2>
         <p>${ui('صدر في', 'Generated on')} ${escapeHtml(generated)} · ${ui('الحساب', 'Account')}: ${escapeHtml(owner)}</p>
       </div>
@@ -2640,7 +2635,7 @@ function renderSystemReport() {
       <h3>${ui('التوصية', 'Recommendation')}</h3>
       <div class="report-advice">${advice.map(([label, text]) => `<h4>${escapeHtml(label)}</h4><p>${escapeHtml(text)}</p>`).join('')}<p class="report-advice-note">${ui('هذا التقرير تقديري ويستند إلى البيانات المدخلة ونماذج الطقس، وليس قياساً كهربائياً مباشراً. يمكن مشاركته مع شركة الصيانة.', 'This report is an estimate based on entered data and weather models, not a direct electrical measurement. It can be shared with a maintenance company.')}</p></div>
     </section>
-    <div class="report-footer"><span>${ui('سياج | رفيق الطاقة الشمسية', 'Siyaj | Solar companion')}</span></div>`;
+    <div class="report-footer"><span>${ui('تكنو موسى | رفيق الطاقة الشمسية', 'Techno Musa | Solar companion')}</span></div>`;
   applyLanguage();
 }
 function reportPlainText() {
@@ -2649,7 +2644,7 @@ function reportPlainText() {
   ensureLossBreakdown(result);
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   const lines = [
-    ui('تقرير حالة النظام الشمسي — سياج', 'Solar system status report — Siyaj'),
+    ui('تقرير حالة النظام الشمسي — تكنو موسى', 'Solar system status report — Techno Musa'),
     `${ui('صدر في', 'Generated on')} ${new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeStyle: 'short' }).format(new Date())}`,
     '',
     `${ui('نسبة الفقد التقديرية', 'Estimated loss ratio')}: ${result ? `${result.percent}%` : '—'}`,
@@ -2671,7 +2666,7 @@ function downloadReport() {
   const stamp = new Date().toISOString().slice(0, 10);
   document.body.classList.add('print-report');
   // يستخدم المتصفح عنوان الصفحة كاسم مقترح لملف PDF عند الحفظ.
-  document.title = `Siyaj-report-${stamp}`;
+  document.title = `TechnoMusa-report-${stamp}`;
   const cleanup = () => {
     document.title = previousTitle;
     if (!previous) document.body.classList.remove('print-report');
@@ -2682,7 +2677,7 @@ function downloadReport() {
 }
 async function shareReport() {
   const text = reportPlainText();
-  if (navigator.share) { try { await navigator.share({ title: ui('تقرير حالة النظام الشمسي — سياج', 'Solar system status report — Siyaj'), text }); return; } catch { /* fall through to copy */ } }
+  if (navigator.share) { try { await navigator.share({ title: ui('تقرير حالة النظام الشمسي — تكنو موسى', 'Solar system status report — Techno Musa'), text }); return; } catch { /* fall through to copy */ } }
   try { await navigator.clipboard.writeText(text); showToast(ui('تم نسخ التقرير؛ يمكنك لصقه في البريد أو واتساب.', 'Report copied; paste it into email or WhatsApp.')); }
   catch { showToast(ui('تعذر النسخ؛ استخدم «تنزيل PDF».', 'Copy failed; use “Download PDF”.')); }
 }
@@ -2827,7 +2822,7 @@ async function handleGuestSubmit(event) {
     localStorage.setItem(GUEST_TOKEN_KEY, data.token || '1');
     localStorage.setItem(GUEST_PROFILE_KEY, JSON.stringify({ name, tribe }));
     await finishServerAuth(data, state);
-    showToast(`أهلاً ${name}، ${ui('بدأنا التجربة')}`);
+    showToast(`أهلاً ${name}، ${ui('بدأنا التجربة', 'the experience has started')}`);
     await continueAfterAuth();
   } catch (error) {
     showToast(error.message || 'تعذر بدء التجربة.');
@@ -2854,104 +2849,6 @@ async function continueAfterAuth() {
   renderDashboard();
   if (state.onboarded) showPage('dashboard'); else openWizard(0);
   if (state.form.latitude !== null && state.form.longitude !== null) await loadWeather();
-}
-async function handleSignup(event) {
-  event.preventDefault();
-  const username = el('signup-username').value.trim();
-  const email = el('signup-email').value.trim().toLowerCase();
-  const phone = el('signup-phone').value.trim();
-  const phoneKey = normalizedPhone(phone);
-  const password = el('signup-password').value;
-  const confirmPassword = el('signup-confirm').value;
-  if (!/^[\p{L}\p{N}._-]{3,24}$/u.test(username)) return showToast('اسم المستخدم من 3 إلى 24 حرفاً أو رقماً، ويمكن استخدام النقطة والشرطة السفلية فقط.');
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showToast('أدخل بريداً إلكترونياً صالحاً.');
-  if (phoneKey.replace(/\D/g, '').length < 7) return showToast('أدخل رقم هاتف صالحاً.');
-  if (password.length < 8) return showToast('يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.');
-  if (password !== confirmPassword) return showToast('كلمتا المرور غير متطابقتين.');
-  try {
-    const response = await fetch('/api/auth/signup', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, phone, password }),
-    });
-    const session = await response.json();
-    if (!response.ok) throw new Error(session.error || 'تعذر إنشاء الحساب.');
-    await finishServerAuth(session, state); const signupDev = session?.user?.role === 'developer'; showToast(signupDev ? 'Welcome dev' : 'تم إنشاء الحساب وحفظه على الخادم.'); await continueAfterAuth();
-  } catch (error) { showToast(error.message || 'تعذر إنشاء الحساب.'); }
-}
-async function handleLogin(event) {
-  event.preventDefault();
-  const identifier = el('login-identifier').value.trim();
-  const password = el('login-password').value;
-  try {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ identifier, password }),
-    });
-    let session = await response.json();
-    let seedState = null;
-    if (!response.ok && response.status === 401) {
-      const normalized = normalizedUsername(identifier);
-      const legacy = readAccounts().find((item) => item.email === identifier.toLowerCase() || item.phoneKey === normalizedPhone(identifier) || item.usernameKey === normalized);
-      if (legacy?.salt && legacy?.hash) {
-        const legacyHash = await passwordDigest(password, legacy.salt);
-        if (legacyHash !== legacy.hash) return showToast('كلمة المرور غير صحيحة.');
-        seedState = loadState(accountStorageKey(legacy.id));
-        const migration = await fetch('/api/auth/signup', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: legacy.username, email: legacy.email, phone: legacy.phone, password }),
-        });
-        session = await migration.json();
-        if (!migration.ok) throw new Error(session.error || 'تعذر نقل الحساب إلى الخادم.');
-      } else if (legacy && !legacy.salt) return showToast('هذا الحساب مرتبط بـ Google؛ تابع باستخدام Google.');
-      else throw new Error(session.error || 'لم نعثر على الحساب. أنشئ حساباً جديداً.');
-    } else if (!response.ok) throw new Error(session.error || 'تعذر تسجيل الدخول.');
-    const legacy = readAccounts().find((item) => item.email === identifier.toLowerCase() || item.phoneKey === normalizedPhone(identifier) || item.usernameKey === normalizedUsername(identifier));
-    await finishServerAuth(session, seedState, legacy?.id); const loginDev = session?.user?.role === 'developer'; showToast(loginDev ? 'Welcome dev' : 'تم تسجيل الدخول ومزامنة بياناتك.'); await continueAfterAuth();
-  } catch (error) { showToast(error.message || 'تعذر تسجيل الدخول.'); }
-}
-let googleSignInReady = false;
-function renderGoogleButtons() {
-  if (!googleSignInReady || !window.google?.accounts?.id) return;
-  document.querySelectorAll('[data-google-signin]').forEach((container) => {
-    container.replaceChildren();
-    const width = Math.max(220, Math.min(360, Math.floor(container.getBoundingClientRect().width || 360)));
-    window.google.accounts.id.renderButton(container, {
-      type: 'standard', theme: 'outline', size: 'large', text: 'continue_with', shape: 'rectangular',
-      width, locale: state.settings.language === 'en' ? 'en' : 'ar',
-    });
-  });
-}
-async function handleGoogleCredential(response) {
-  try {
-    const verification = await fetch('/api/auth/google', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ credential: response?.credential || '' }),
-    });
-    const data = await verification.json();
-    if (!verification.ok) throw new Error(data.error || 'تعذر التحقق من حساب Google.');
-    const legacy = readAccounts().find((item) => item.email === data.user?.email);
-    const seedState = legacy ? loadState(accountStorageKey(legacy.id)) : null;
-    await finishServerAuth(data, seedState, legacy?.id); showToast('تم تسجيل الدخول باستخدام Google ومزامنة بياناتك.'); await continueAfterAuth();
-  } catch (error) { showToast(error.message || 'تعذر تسجيل الدخول باستخدام Google.'); }
-}
-async function initializeGoogleButtons() {
-  try {
-    const config = await loadAiConfig();
-    if (!config.googleClientId) return;
-    if (!window.google?.accounts?.id) {
-      await new Promise((resolve) => {
-        const script = document.querySelector('script[src*="accounts.google.com/gsi/client"]');
-        if (!script) return resolve();
-        script.addEventListener('load', resolve, { once: true });
-        script.addEventListener('error', resolve, { once: true });
-        setTimeout(resolve, 10000);
-      });
-    }
-    if (!window.google?.accounts?.id) return;
-    window.google.accounts.id.initialize({ client_id: config.googleClientId, callback: handleGoogleCredential, auto_select: false });
-    googleSignInReady = true;
-    renderGoogleButtons();
-  } catch { /* keep the local Google button fallback visible */ }
 }
 // The intro and the loading screen are always shown in the light theme. The account's
 // saved dark/light preference is only applied once the intro has left the screen, so
@@ -2999,7 +2896,7 @@ function setupEvents() {
   el('language-toggle').addEventListener('click', () => {
     state.settings.language = state.settings.language === 'en' ? 'ar' : 'en'; persist();
     renderDashboard(); renderCurrentStep(); renderHistory(); renderSettings(); renderAuth(); showToast(state.settings.language === 'en' ? 'Language changed to English.' : 'تم تغيير اللغة إلى العربية.');
-    renderGoogleButtons();
+   
   });
   el('guest-form').addEventListener('submit', handleGuestSubmit);
   el('start-setup').addEventListener('click', () => openWizard(0)); el('edit-data').addEventListener('click', () => openWizard(0)); el('system-edit').addEventListener('click', () => openWizard(0));
@@ -3051,7 +2948,7 @@ function setupEvents() {
   setInterval(() => { if (document.visibilityState !== 'hidden') renderMaintenance(); }, 60 * 60 * 1000);
   el('setting-dark').addEventListener('change', () => { state.settings.dark = el('setting-dark').checked; persist(); });
   el('setting-sound').addEventListener('change', () => { state.settings.sound = el('setting-sound').checked; persist(); });
-  el('setting-language').addEventListener('change', () => { state.settings.language = el('setting-language').value === 'en' ? 'en' : 'ar'; persist(); renderDashboard(); renderCurrentStep(); renderHistory(); renderSettings(); renderAuth(); renderGoogleButtons(); });
+  el('setting-language').addEventListener('change', () => { state.settings.language = el('setting-language').value === 'en' ? 'en' : 'ar'; persist(); renderDashboard(); renderCurrentStep(); renderHistory(); renderSettings(); renderAuth(); });
   el('setting-notifications').addEventListener('change', async () => {
     const enable = el('setting-notifications').checked;
     devicePushBusy = true; el('setting-notifications').disabled = true;
@@ -3065,7 +2962,7 @@ function setupEvents() {
     } finally { devicePushBusy = false; renderSettings(); }
   });
   el('reset-data').addEventListener('click', async () => {
-    if (!confirm('هل تريد مسح بيانات الحساب ومرفقاته من جميع أجهزتك؟')) return;
+    if (!confirm('هل تريد مسح بياناتك ومرفقاتك من هذا المتصفح؟')) return;
     resetAiRequests();
     const user = state.user; const currentKey = accountStorageKey(); const accountId = currentAccount?.id;
     localStorage.removeItem(currentKey); state = structuredClone(DEFAULT_STATE); state.user = user; media = [];
@@ -3105,8 +3002,9 @@ async function restoreGuestSession() {
   try {
     const response = await authenticatedFetch('/api/auth/session');
     if (!response.ok) {
-      // An expired or invalid local token must return to the guest form, not a blank app.
-      if (response.status === 401) clearGuestIdentity();
+      // Any failed session probe makes the local guest marker untrustworthy;
+      // clear it and return to the guest form rather than leaving a blank app.
+      clearGuestIdentity();
       return;
     }
     const session = await response.json();

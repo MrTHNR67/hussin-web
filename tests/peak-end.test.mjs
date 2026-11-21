@@ -25,5 +25,5 @@ test('fake analysis is a 2.5 s client-only simulation', () => {
 test('peak-burst uses a 40 ms stagger under 300 ms', () => {
   assert.ok(css.includes('@keyframes peak-burst'));
   assert.ok(css.includes('animation-delay: var(--delay'), 'children need a staggered delay');
-  assert.ok(script.includes('40'), 'stagger step must be 40 ms');
+  assert.ok(script.includes('index * 40'), 'stagger step must be 40 ms');
 });

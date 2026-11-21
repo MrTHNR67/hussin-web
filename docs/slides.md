@@ -1,7 +1,7 @@
 # Final Presentation — 7 slides (5-minute pitch)
 
-**Siyaj Solar Guardian · InnovationFest secure submission platform**
-Live: https://siyaj-web.onrender.com · Code: https://github.com/MrTHNR67/hussin-web
+**تكنو موسى (Techno Musa) · InnovationFest secure submission platform**
+Live: [PENDING — Vercel URL] · Code: https://github.com/MrTHNR67/hussin-web
 
 ---
 
@@ -10,14 +10,14 @@ Live: https://siyaj-web.onrender.com · Code: https://github.com/MrTHNR67/hussin
 **InnovationFest failed at the deadline:** downtime at peak, uploads slowed the site, teams could
 open each other's documents, files were checked by hand, and peak infrastructure kept running.
 
-**Our answer:** a hardened cloud-native service built on the Siyaj application.
+**Our answer:** a hardened cloud-native service built on the Techno Musa application.
 
-- Public HTTPS endpoint on Render (free tier, no laptop required)
+- Public HTTPS endpoint on Vercel (free Hobby tier, no laptop required)
 - 3 replicas behind a load balancer + bounded autoscaling
 - Private per-user uploads with automated validation
 - Least-privilege IAM, tested backup/restore, live health metrics
 
-> Speaker note: name the provider (Render, Frankfurt, free tier) and state that every claim in the
+> Speaker note: name the provider (Vercel, global edge + Neon Postgres) and state that every claim in the
 > deck is backed by a dated file in `docs/evidence/`.
 
 ---
@@ -25,9 +25,9 @@ open each other's documents, files were checked by hand, and peak infrastructure
 ## Slide 2 — Architecture
 
 ```text
-Users → Cloudflare/Render edge (TLS 1.3, 301, DDoS)
-      → Render web service (Node/Express, Frankfurt)
-      → Render Postgres (private hostname, TLS, dedicated role)
+Users → Vercel edge (TLS 1.3, HTTP→HTTPS, DDoS)
+      → Vercel Serverless Function (api/index.js → server.mjs, Node/Express)
+      → Neon Postgres (DATABASE_URL, TLS, dedicated role)
       → egress: Open-Meteo → MET Norway fallback
 Local evidence: Nginx :8080 → Node :3001/:3002/:3003 (least_conn)
 ```
@@ -38,7 +38,7 @@ Local evidence: Nginx :8080 → Node :3001/:3002/:3003 (least_conn)
 - Background jobs: HMAC-signed, nonce + 15-minute replay window
 
 > Speaker note: point to `docs/architecture-blueprint.md`; explain the local cluster exists because
-> the free PaaS plan does not expose LB/autoscale knobs, so we demonstrate them with the same code.
+> the managed PaaS hides LB/autoscale knobs, so we demonstrate them locally with the same code.
 
 ---
 
@@ -69,7 +69,7 @@ Local evidence: Nginx :8080 → Node :3001/:3002/:3003 (least_conn)
 - DB: dedicated `siyaj_user`, RLS on shared tables, revoked browser roles
 
 > Speaker note: show the denial live or open `docs/evidence/task6-iam.md`. Mention the honest gap:
-> Render Postgres has an external endpoint protected by password + TLS; IP allow-list pinning is next.
+> Neon Postgres is reached over TLS with a dedicated role; IP allow-list pinning is the next hardening step.
 
 ---
 
@@ -81,10 +81,10 @@ Local evidence: Nginx :8080 → Node :3001/:3002/:3003 (least_conn)
 **Monitoring:** `/healthz` + `/readyz` every 2 s, Nginx stub_status, CPU/RSS per replica.
 15/15 healthy samples at ~1.7k req/s, ~13% CPU, health latency 15.9 ms avg.
 
-**Cost:** **$0/month** deployed (Render free web + free Postgres; local stack on existing hardware).
+**Cost:** **$0/month** deployed (Vercel Hobby + Neon free tier; local stack on existing hardware).
 Azure ≈ $130, GCP ≈ $80 if the IaC path is used. Decision: free tier + bounded autoscale + scale-in.
 
-> Speaker note: explain the free Postgres expires 2026-12-11 and there is a reminder + export plan.
+> Speaker note: the earlier Render free Postgres expired 2026-12-11 and was replaced by Neon; data export is available in Settings.
 
 ---
 
@@ -92,7 +92,7 @@ Azure ≈ $130, GCP ≈ $80 if the IaC path is used. Decision: free tier + bound
 
 | Rubric item | Result | Evidence |
 |---|---|---|
-| Working application | HTTPS 200, signup/login, upload validation | task1, task6 |
+| Working application | HTTPS 200, name+tribe guest entry, upload validation | task1, task6 |
 | Component failure | 30/30 requests during instance loss | task2 |
 | Traffic change | 3→5→3 observed, 0 server 5xx | task4 |
 | Recovery | 1.44 s restore, RPO proof | task5 |
@@ -106,8 +106,8 @@ Azure ≈ $130, GCP ≈ $80 if the IaC path is used. Decision: free tier + bound
 
 ## Slide 7 — Limitations and conclusion
 
-- PaaS free tier: sleeps after 15 min, autoscaling is provider-managed (IaC for Azure/GCP provided)
-- Single region; no WAF/MFA yet; DB external endpoint needs allow-list pinning
+- Managed PaaS: scaling is provider-managed; local stack demonstrates explicit LB/autoscale (IaC for Azure/GCP provided)
+- Single region; no WAF/MFA yet; Neon endpoint allow-list pinning is next
 - Local HA isolates components, not hosts; cloud templates provide zone redundancy
 - **Why this is credible:** working endpoint, reproducible scripts, measured numbers, disclosed gaps
 
@@ -115,4 +115,4 @@ Azure ≈ $130, GCP ≈ $80 if the IaC path is used. Decision: free tier + bound
 with evidence a judge can re-run.
 
 > Speaker note: close with the live URL and the evidence index; invite the judges to run
-> `scripts/verify-iam.ps1` against the public endpoint.
+> `scripts/verify-iam.ps1` against the public endpoint (or use guest entry and check admin 403).
