@@ -8,7 +8,7 @@ import { deleteAccountMedia, initializeDataStore, readAccountMedia, readDatabase
 import { buildPanelAnalysis, createPanelAnalysis, resolveAnalysisTemperature } from './server/heat-loss-report.mjs';
 import { fetchWeatherSnapshot } from './server/weather-data.mjs';
 import { getPushConfiguration, runDailyDustWindCheck, startDustWindScheduler } from './server/dust-wind-alerts.mjs';
-import { AuthError, authenticateToken, loginAccount, loginWithGoogle, registerAccount, removeSession } from './server/auth.mjs';
+import { AuthError, authenticateToken, loginAccount, loginWithGoogle, registerAccount, registerGuestAccount, removeSession } from './server/auth.mjs';
 import { analyzePanelMedia, ClaudeAnalysisError, extractElectricityInvoice, getClaudeConfiguration, validateInvoiceImages, validatePanelMedia } from './server/claude-analysis.mjs';
 import { buildSolarContext, estimateMonthlyLoss } from './server/solar-assessment.mjs';
 import { AiUsageError, reserveClaudeRequest } from './server/ai-usage.mjs';
@@ -123,6 +123,15 @@ app.post('/api/jobs/daily-alerts', async (req, res) => {
     console.error('Siyaj scheduled alert check failed:', error.message);
     res.status(503).json({ error: 'Alert check temporarily unavailable.' });
   }
+});
+
+// Passwordless entry: the only sign-in surface exposed to visitors.
+app.post('/api/auth/guest', authIpLimit, async (req, res) => {
+  try {
+    const session = await registerGuestAccount(req.body || {});
+    await recordAuthEvent({ event: 'guest', userId: session.user.id, identifier: session.user.name, req });
+    sendAuthSession(res, session);
+  } catch (error) { sendAuthError(res, error); }
 });
 
 app.post('/api/auth/signup', authIpLimit, async (req, res) => {
@@ -657,7 +666,13 @@ function shutdown(signal) {
 
 for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, () => shutdown(signal));
 
-startServer().catch((error) => {
-  console.error('Siyaj could not start:', error.message);
-  process.exit(1);
-});
+// On Vercel the exported app is invoked by the Serverless Function; in tests it
+// is started explicitly on an ephemeral port. Only a normal local run listens.
+if (!process.env.VERCEL && !process.env.SIYAJ_TEST) {
+  startServer().catch((error) => {
+    console.error('Siyaj could not start:', error.message);
+    process.exit(1);
+  });
+}
+
+export default app;

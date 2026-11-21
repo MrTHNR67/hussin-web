@@ -37,11 +37,12 @@ function isDeveloperAccount(email, password) {
 }
 function roleFor(user) {
   if (user?.role === 'developer') return 'developer';
+  if (user?.role === 'guest') return 'guest';
   if (adminEmails().includes(String(user?.email || '').toLowerCase())) return 'admin';
   return 'user';
 }
 function safeUser(user) {
-  return { id: user.id, role: roleFor(user), username: user.username, email: user.email, phone: user.phone || '', name: user.name || user.username, picture: user.picture || '' };
+  return { id: user.id, role: roleFor(user), username: user.username, email: user.email, phone: user.phone || '', name: user.name || user.username, tribe: user.tribe || '', picture: user.picture || '' };
 }
 function makeToken() { return randomBytes(32).toString('base64url'); }
 function sessionExpiry() { return new Date(Date.now() + SESSION_DAYS * 86400000).toISOString(); }
@@ -86,6 +87,33 @@ export async function registerAccount(input) {
     if (Object.values(db.users).some((item) => item.email === user.email || item.phone_key === user.phone_key)) throw new AuthError('هذا البريد أو رقم الهاتف مسجل مسبقاً.', 409);
     db.users[user.id] = user;
   });
+  return issueSession(user.id);
+}
+
+// Guest entry: no password, no email, no registration. The browser keeps the
+// name and tribe locally; the server only issues a short-lived session so the
+// existing data endpoints keep working unchanged.
+export async function registerGuestAccount(input) {
+  const clean = (value) => String(value || '').normalize('NFKC').replace(/\s+/g, ' ').trim();
+  const name = clean(input?.name);
+  const tribe = clean(input?.tribe);
+  if (!name || name.length > 40) throw new AuthError('أدخل اسماً من حرف إلى 40 حرفاً.');
+  if (!tribe || tribe.length > 40) throw new AuthError('أدخل قبيلة من حرف إلى 40 حرفاً.');
+  const username = `guest_${randomUUID().slice(0, 12)}`;
+  const user = {
+    id: randomUUID(),
+    username,
+    username_key: normalizeUsername(username),
+    // The users table has a UNIQUE email column; guests get a non-routable
+    // synthetic address so many guests can coexist without a registration flow.
+    email: `${username}@guest.siyaj.local`, phone: '', phone_key: null,
+    password_salt: '', password_hash: '',
+    name, tribe,
+    picture: '', google_sub: '',
+    role: 'guest',
+    created_at: new Date().toISOString(),
+  };
+  await updateDatabase((db) => { db.users[user.id] = user; });
   return issueSession(user.id);
 }
 
