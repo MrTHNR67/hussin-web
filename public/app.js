@@ -2551,7 +2551,7 @@ function setupEvents() {
   el('guest-form').addEventListener('submit', handleGuestSubmit);
   el('start-setup').addEventListener('click', () => openWizard(0)); el('edit-data').addEventListener('click', () => openWizard(0)); el('system-edit').addEventListener('click', () => openWizard(0));
   el('step-next').addEventListener('click', nextStep); el('step-back').addEventListener('click', previousStep); el('start-setup').addEventListener('keydown', (event) => { if (event.key === 'Enter') openWizard(0); });
-  el('refresh-weather').addEventListener('click', loadWeather); el('history-new').addEventListener('click', () => openWizard(0));
+  el('refresh-weather').addEventListener('click', () => { const icon = el('weather-icon'); if (icon) { icon.classList.remove('spinning'); void icon.offsetWidth; icon.classList.add('spinning'); setTimeout(() => icon.classList.remove('spinning'), 650); } loadWeather(); }); el('history-new').addEventListener('click', () => openWizard(0));
   el('update-monthly-loss').addEventListener('click', updateMonthlyAssessment);
   el('analyze-panels').addEventListener('click', runFakeAnalysis);
   el('dashboard-bill-month').addEventListener('change', () => {
