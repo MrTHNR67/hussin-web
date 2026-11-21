@@ -1,6 +1,6 @@
 # Final Presentation — 7 slides (5-minute pitch)
 
-**تكنو موسى (Techno Musa) · InnovationFest secure submission platform**
+**سياج (Siyaj) · InnovationFest secure submission platform**
 Live: https://siyaj-web.onrender.com · Code: https://github.com/MrTHNR67/hussin-web
 
 ---
@@ -10,7 +10,7 @@ Live: https://siyaj-web.onrender.com · Code: https://github.com/MrTHNR67/hussin
 **InnovationFest failed at the deadline:** downtime at peak, uploads slowed the site, teams could
 open each other's documents, files were checked by hand, and peak infrastructure kept running.
 
-**Our answer:** a hardened cloud-native service built on the Techno Musa application.
+**Our answer:** a hardened cloud-native service built on the Siyaj application.
 
 - Public HTTPS endpoint on Render (free tier, no laptop required)
 - 3 replicas behind a load balancer + bounded autoscaling

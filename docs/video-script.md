@@ -8,7 +8,7 @@ Have these windows ready: the live site, a PowerShell at the repo root, `docs/ev
 
 ## 0:00–0:15 — Intro (15 s)
 
-**Say:** "Techno Musa — رفيق الطاقة الشمسية — deployed on Render at siyaj-web.onrender.com. It runs without
+**Say:** "Siyaj — رفيق الطاقة الشمسية — deployed on Render at siyaj-web.onrender.com. It runs without
 any laptop being on. We'll show guest entry, the setup journey and the panel reading, then fail a
 component, scale under load, deny an unauthorized request, and restore from backup."
 

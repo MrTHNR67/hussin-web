@@ -5,7 +5,7 @@ const STEPS = [
   { title: 'بيانات البيئة والموقع', short: 'البيئة والموقع', description: 'أخبرنا عن موقع النظام والظروف المحيطة بالألواح.' },
   { title: 'بيانات الألواح', short: 'الألواح', description: 'أضف معلومات الألواح وأرفق صورة أو مقطعاً قصيراً لفحصها بصرياً.' },
   { title: 'فاتورة الكهرباء', short: 'الفاتورة', description: 'تساعدنا بيانات الفاتورة على تقدير قيمة الطاقة التي قد تفقدها.' },
-  { title: 'تأكيد البيانات', short: 'التأكيد', description: 'راجع ملخص المعلومات قبل أن يبدأ تكنو موسى بتحليل نظامك.' },
+  { title: 'تأكيد البيانات', short: 'التأكيد', description: 'راجع ملخص المعلومات قبل أن يبدأ سياج بتحليل نظامك.' },
 ];
 // Search aliases support familiar spellings; free text also accepts unlisted and legacy brands.
 const PANEL_MANUFACTURERS = [
@@ -68,7 +68,7 @@ const PANEL_MANUFACTURERS = [
   ['CW Enerji', ['CW Energy', 'سي دبليو', 'سي دبليو إنرجي']],
 ].sort(([a], [b]) => a.localeCompare(b, 'en'));
 const TRANSLATIONS = {
-  'تجربتك في تكنو موسى': 'Your journey in Techno Musa',
+  'تجربتك في سياج': 'Your journey in Siyaj',
   'أدخل اسمك وقبيلتك لتبدأ متابعة نظامك الشمسي.': 'Enter your name and tribe to start monitoring your solar system.',
   'مرحباً بك': 'Welcome',
   'لا تحتاج كلمة مرور أو تسجيل؛ اسمك وقبيلتك يكفيان للبدء.': 'No password or sign-up needed; your name and tribe are enough to begin.',
@@ -133,7 +133,7 @@ const TRANSLATIONS = {
   'درجة الحرارة': 'Temperature', 'حرارة الجو الحالية': 'Current air temperature', 'الرطوبة': 'Humidity', 'الرطوبة النسبية': 'Relative humidity',
   'مستوى الغبار': 'Dust level', 'تقدير أولي': 'Initial estimate', 'تقدير الغبار على الألواح': 'Estimated panel dust',
   'تقديرك اليدوي للألواح': 'Your panel estimate', 'مؤشر جوي': 'air indicator', 'الخسارة اليومية': 'Daily energy loss',
-  'طاقة تقديرية': 'Estimated energy', 'تحديث الطقس والموقع': 'Refresh weather and location', 'توصية تكنو موسى': 'Techno Musa recommendation',
+  'طاقة تقديرية': 'Estimated energy', 'تحديث الطقس والموقع': 'Refresh weather and location', 'توصية سياج': 'Siyaj recommendation',
   'ابدأ بفحص ألواحك': 'Start with a panel check', 'قد يكون تنظيف الألواح مفيداً': 'Panel cleaning may help',
   'راقب أثر الحرارة على الألواح': 'Keep an eye on heat impact', 'حافظ على متابعة دورية': 'Keep checking your system regularly',
   'تم التنظيف': 'Cleaned', 'متابعة الأداء': 'Performance', 'قراءة الأسبوع': 'Weekly outlook', 'الإنتاج المتوقع': 'Estimated output',
@@ -144,16 +144,16 @@ const TRANSLATIONS = {
   'القدرة': 'Capacity', 'الألواح': 'Panels', 'الموقع': 'Location', 'الميل': 'Tilt', 'غير محدد': 'Not set',
   'النتائج التقديرية لا تستبدل فحص فني مختص.': 'Estimates do not replace an inspection by a qualified technician.',
   'خطوة بسيطة نحو طاقة أفضل': 'A few steps toward better solar performance', 'لنتعرّف على نظامك ': 'Let’s get to know your system ',
-  'أجب عن هذه الخطوات لتحصل تكنو موسى على صورة متكاملة عن ألواحك.': 'Answer these questions to help Techno Musa understand your panels.',
+  'أجب عن هذه الخطوات لتحصل سياج على صورة متكاملة عن ألواحك.': 'Answer these questions to help Siyaj understand your panels.',
   'البيئة والموقع': 'Environment & location', 'بيانات البيئة والموقع': 'Environment and location',
   'الألواح': 'Panels', 'بيانات الألواح': 'Panel details', 'الفاتورة': 'Electricity bill', 'فاتورة الكهرباء': 'Electricity bill',
   'التأكيد': 'Review', 'تأكيد البيانات': 'Review details', 'بياناتك تحفظ على حسابك وتظهر عند تسجيل الدخول من أجهزتك.': 'Your details are saved to your account and appear when you sign in on your devices.',
   'حفظ تلقائي': 'Saved automatically', 'التالي ': 'Next ', 'السابق': 'Back', 'تستغرق أقل من دقيقتين': 'Takes less than two minutes',
-  'تقديرات تكنو موسى إرشادية': 'Techno Musa estimates are guidance only', 'ابدأ التحليل ': 'Analyze system ',
+  'تقديرات سياج إرشادية': 'Siyaj estimates are guidance only', 'ابدأ التحليل ': 'Analyze system ',
   'أخبرنا عن موقع النظام والظروف المحيطة بالألواح.': 'Tell us where your system is and about the conditions around the panels.',
   'أضف معلومات الألواح وأرفق صورة أو مقطعاً قصيراً لفحصها بصرياً.': 'Add panel details and attach a photo or short video for visual inspection.',
   'تساعدنا بيانات الفاتورة على تقدير قيمة الطاقة التي قد تفقدها.': 'Bill details help estimate the value of energy you may be losing.',
-  'راجع ملخص المعلومات قبل أن يبدأ تكنو موسى بتحليل نظامك.': 'Review the details before Techno Musa analyzes your system.',
+  'راجع ملخص المعلومات قبل أن يبدأ سياج بتحليل نظامك.': 'Review the details before Siyaj analyzes your system.',
   'اسمك (اختياري)': 'Your name (optional)', 'درجة حرارة الجو': 'Air temperature', 'الرطوبة النسبية': 'Relative humidity', 'عدد الألواح': 'Number of panels',
   'تراكم الغبار على الألواح': 'Dust on the panels', 'تقدير مبدئي؛ عدّله حسب ما تراه على الألواح.': 'An initial estimate; adjust it to match what you see on the panels.',
   'موقع النظام': 'System location', 'ابحث عن مدينة أو محافظة': 'Search for a city or region', 'بحث': 'Search',
@@ -172,23 +172,23 @@ const TRANSLATIONS = {
   'شهر الفاتورة': 'Bill month', 'صورة الفاتورة (اختياري)': 'Bill photo (optional)', 'أرفق صورة الفاتورة': 'Attach a bill photo',
   'تُحفظ في حسابك ولا تُرسل للتحليل البصري': 'Saved to your account and not sent for visual analysis.',
   'راجع البيانات': 'Review your details', 'اسم صاحب النظام': 'Account name', 'لم تُضف': 'Not added', 'لوح': 'panels',
-  'ملف للألواح': 'panel file(s)', 'ملفات للألواح': 'panel files', 'سيحسب تكنو موسى فقد الطاقة التقديري من الحرارة والغبار والظل المرئي. قيمة المال تقديرية وتتغير حسب التعرفة المدخلة. ': 'Techno Musa estimates energy loss from heat, dust, and visible shade. The cost estimate depends on your electricity rate. ',
+  'ملف للألواح': 'panel file(s)', 'ملفات للألواح': 'panel files', 'سيحسب سياج فقد الطاقة التقديري من الحرارة والغبار والظل المرئي. قيمة المال تقديرية وتتغير حسب التعرفة المدخلة. ': 'Siyaj estimates energy loss from heat, dust, and visible shade. The cost estimate depends on your electricity rate. ',
   'سيتم إرسال صور الألواح فقط للتحليل الذكي.': 'Only panel images will be sent for AI analysis.', 'أضف صورة للألواح في الخطوة السابقة لتفعيل التحليل البصري.': 'Add a panel photo in the previous step to enable visual analysis.',
   'رحلتك مع الشمس': 'Your solar journey', 'سجل الفحوصات': 'Inspection history', 'كل عمليات الفحص المحفوظة في حسابك.': 'All inspections saved to your account.',
   'فحص جديد ': 'New inspection ', 'لا توجد فحوصات محفوظة بعد': 'No saved inspections yet', 'بعد إعداد نظامك سيظهر هنا سجل الفحوصات.': 'Your inspections will appear here after system setup.',
   'عرض': 'View', 'فقد الطاقة التقديري حينها: ': 'Estimated energy loss then: ', 'فقد التقديري ': 'Estimated loss ',
-  'تفضيلاتك': 'Your preferences', 'خصّص تجربة تكنو موسى بما يناسبك.': 'Personalize your Techno Musa experience.', 'التنبيهات والعرض': 'Alerts and display',
+  'تفضيلاتك': 'Your preferences', 'خصّص تجربة سياج بما يناسبك.': 'Personalize your Siyaj experience.', 'التنبيهات والعرض': 'Alerts and display',
   'تنبيهات المتصفح': 'Browser notifications', 'تنبيه عند تغير مهم في الطقس': 'Alerts for significant weather changes', 'الوضع الليلي': 'Dark mode',
   'ألوان أهدأ عند الاستخدام مساءً': 'A softer display for evening use', 'التنبيه الصوتي': 'Sound alerts', 'صوت عند التنبيهات المهمة': 'Play a sound for important alerts',
   'اللغة': 'Language', 'لغة واجهة الموقع': 'Interface language', 'العربية': 'Arabic', 'بياناتك وخصوصيتك': 'Your data and privacy',
-  'يحفظ تكنو موسى اسمك وقبيلتك وبيانات نظامك وسجل الفحوصات ومرفقاتك في هذا المتصفح على جهازك. تعرض قراءة الألواح تقديراً محلياً في المتصفح دون رفع الصور؛ أما قراءة الفاتورة باستخدام Claude فترسل صورة الفاتورة إلى Anthropic عند طلبها فقط، ويمكنك مراجعة القيم قبل استخدامها. إحداثيات GPS تُستخدم لحساب اتجاه الشمس والطقس والتنبيهات عند تفعيلها.': 'Techno Musa keeps your name, tribe, system details, inspection history and attachments in this browser on your device. The panel reading is a local estimate with no image upload; bill extraction with Claude sends only the bill image to Anthropic when you request it, and you can review the values first. GPS coordinates are used for sun geometry, weather and alerts when enabled.',
+  'يحفظ سياج اسمك وقبيلتك وبيانات نظامك وسجل الفحوصات ومرفقاتك في هذا المتصفح على جهازك. تعرض قراءة الألواح تقديراً محلياً في المتصفح دون رفع الصور؛ أما قراءة الفاتورة باستخدام Claude فترسل صورة الفاتورة إلى Anthropic عند طلبها فقط، ويمكنك مراجعة القيم قبل استخدامها. إحداثيات GPS تُستخدم لحساب اتجاه الشمس والطقس والتنبيهات عند تفعيلها.': 'Siyaj keeps your name, tribe, system details, inspection history and attachments in this browser on your device. The panel reading is a local estimate with no image upload; bill extraction with Claude sends only the bill image to Anthropic when you request it, and you can review the values first. GPS coordinates are used for sun geometry, weather and alerts when enabled.',
   'تنزيل نسخة من بياناتي': 'Download my data', 'مسح بيانات حسابي': 'Clear my account data', 'رفيقك الذكي للطاقة الشمسية · إصدار تجريبي': 'Your smart solar companion · Preview',
-  'صُنع بعناية لنعطي الشمس حقها': 'Made with care, under the sun', 'حسابك في تكنو موسى': 'Your Techno Musa account', 'أهلاً': 'Welcome',
+  'صُنع بعناية لنعطي الشمس حقها': 'Made with care, under the sun', 'حسابك في سياج': 'Your Siyaj account', 'أهلاً': 'Welcome',
   'سجّل الدخول لمتابعة نظامك الشمسي.': 'Log in to keep up with your solar system.', 'استخدم بريدك الإلكتروني أو رقم هاتفك.': 'Use your email address or phone number.',
   'البريد الإلكتروني أو رقم الهاتف': 'Email address or phone number', 'كلمة المرور': 'Password', 'أدخل كلمة المرور': 'Enter your password',
   'اسم المستخدم أو البريد الإلكتروني أو رقم الهاتف': 'Username, email or phone number',
   'دخول ': 'Log in ', 'ليس لديك حساب؟ ': 'Don’t have an account? ', 'إنشاء حساب جديد': 'Create a new account', 'أو': 'OR',
-  'المتابعة باستخدام Google': 'Continue with Google', 'سجّل بياناتك للبدء مع تكنو موسى.': 'Enter your details to get started with Techno Musa.',
+  'المتابعة باستخدام Google': 'Continue with Google', 'سجّل بياناتك للبدء مع سياج.': 'Enter your details to get started with Siyaj.',
   'البريد الإلكتروني': 'Email address', 'رقم الهاتف': 'Phone number', '8 أحرف على الأقل': 'At least 8 characters',
   'تأكيد كلمة المرور': 'Confirm password', 'أعد كتابة كلمة المرور': 'Enter your password again', 'إنشاء الحساب ': 'Create account ',
   'لديك حساب؟ ': 'Already have an account? ', 'إنشاء حساب باستخدام Google': 'Sign up with Google', 'يُحفظ الحساب والبيانات والمرفقات على الخادم وتظهر عند تسجيل الدخول من أجهزتك.': 'Your account, details, and attachments are saved on the server and appear when you sign in on your devices.',
@@ -207,7 +207,7 @@ const TRANSLATIONS = {
   'حرارة مرتفعة': 'High temperature', 'في موقعك؛ تجنب لمس الألواح وقت الظهيرة.': 'at your location; avoid touching panels at midday.',
   'هبات رياح قوية تصل إلى ': 'Strong wind gusts up to ', ' كم/س؛ أجّل الصعود إلى السطح حتى تهدأ.': ' km/h; wait for calmer conditions before going onto the roof.',
   'احتمال هطول مرتفع (': 'High chance of rain (', '%)؛ راقب الألواح بعد انقضاء الطقس.': '%); check the panels after the weather passes.',
-  'تم تحديث تقدير الغبار بعد التنظيف.': 'Dust estimate updated after cleaning.', 'واجهة تكنو موسى متاحة حالياً بالعربية.': 'Techno Musa is currently available in Arabic.',
+  'تم تحديث تقدير الغبار بعد التنظيف.': 'Dust estimate updated after cleaning.', 'واجهة سياج متاحة حالياً بالعربية.': 'Siyaj is currently available in Arabic.',
   'تنبيهات الغبار والرياح': 'Dust and wind push alerts', 'تنبيهات الغبار والرياح عبر الإشعارات': 'Push alerts for dusty and windy weather',
   'كل ': 'Every ', ' يوماً كحد أقصى': ' days at most', 'توقعات الغبار الجوي: Open-Meteo وCAMS.': 'Air quality forecasts: Open-Meteo and CAMS.',
   'يتم إرسال تنبيه التنظيف مرة كل 14 يوماً كحد أقصى.': 'Cleaning alerts are limited to once every 14 days.',
@@ -218,7 +218,7 @@ const TRANSLATIONS = {
   'التنبيهات تعمل بعد إضافة مفاتيح VAPID وتشغيل الخادم.': 'Alerts work after adding VAPID keys and starting the server.',
   'تعذر حفظ سجل التنظيف على الخادم.': 'Could not save the cleaning record on the server.',
   'تعذر حساب تفصيل خسارة الحرارة حالياً.': 'Could not calculate the heat loss breakdown right now.',
-  'تنبيه غبار من تكنو موسى': 'Dust alert from Techno Musa', 'تنبيه توقيت التنظيف من تكنو موسى': 'Cleaning time alert from Techno Musa',
+  'تنبيه غبار من سياج': 'Dust alert from Siyaj', 'تنبيه توقيت التنظيف من سياج': 'Cleaning time alert from Siyaj',
   'لم نعثر على نتائج. جرّب كتابة الاسم بالإنجليزية.': 'No results found. Try entering the name in English.',
   'تعذر البحث. تأكد من تشغيل الخادم.': 'Search failed. Make sure the local server is running.',
   'لم يتم تفعيل إذن التنبيهات.': 'Notification permission was not granted.', 'تم تفعيل التنبيهات.': 'Notifications enabled.', 'تم إيقاف التنبيهات.': 'Notifications disabled.',
@@ -288,7 +288,7 @@ const TRANSLATIONS = {
   'بلاغاتي السابقة': 'My complaints', 'ملخص جاهز للمشاركة': 'Summary ready to share',
   'تقرير شامل يمكن تنزيله PDF أو مشاركته مع شركة الصيانة.': 'A full report you can download as PDF or share with a maintenance company.',
   'تنزيل PDF': 'Download PDF', 'طباعة': 'Print', 'مشاركة': 'Share',
-  'جارٍ تجهيز تكنو موسى…': 'Preparing Techno Musa…', 'إعادة المحاولة': 'Try again',
+  'جارٍ تجهيز سياج…': 'Preparing Siyaj…', 'إعادة المحاولة': 'Try again',
   'يتم الاتصال بالخادم وتحميل بياناتك، لحظات من فضلك.': 'Contacting the server and loading your data, just a moment.',
   'تحديث الطقس والموقع': 'Update weather and location',
   'مثال: مريم': 'e.g. Mariam', 'name@example.com أو رقم الهاتف': 'name@example.com or a phone number',
@@ -697,7 +697,7 @@ function renderMaintenance() {
     : 'موعد الصيانة القادمة اقترب. احجزها الآن لتبقى الألواح ضمن دورة الصيانة.';
   const onScheduleNote = english
     ? 'The panels are on schedule. The app recalculates the remaining days from the saved date every time you open it.'
-    : 'الصيانة منتظمة. يحسب تكنو موسى الأيام المتبقية من التاريخ المحفوظ في كل مرة تفتح فيها التطبيق.';
+    : 'الصيانة منتظمة. يحسب سياج الأيام المتبقية من التاريخ المحفوظ في كل مرة تفتح فيها التطبيق.';
   const note = status.overdue ? overdueNote : status.dueSoon ? dueSoonNote : onScheduleNote;
   container.innerHTML = `<div class="maintenance-grid">
       <div class="maintenance-stat"><span class="maintenance-stat-icon">📅</span><div class="maintenance-stat-body"><small>${english ? 'Last maintenance' : 'آخر صيانة'}</small><b>${escapeHtml(lastLabel)}</b><span>${escapeHtml(elapsedLabel)}</span></div></div>
@@ -1036,7 +1036,7 @@ function renderRail() {
   el('step-back').disabled = currentStep === 0;
   el('step-back').style.opacity = currentStep === 0 ? '.45' : '1';
   el('step-next').innerHTML = currentStep === STEPS.length - 1 ? 'حفظ البيانات <span>✓</span>' : 'التالي <span>←</span>';
-  el('form-hint').textContent = currentStep === 3 ? 'تقديرات تكنو موسى إرشادية' : 'تستغرق أقل من دقيقتين';
+  el('form-hint').textContent = currentStep === 3 ? 'تقديرات سياج إرشادية' : 'تستغرق أقل من دقيقتين';
   const progress = el('wizard-progress-fill');
   if (progress) progress.style.width = `${Math.round(((currentStep + 1) / STEPS.length) * 100)}%`;
 }
@@ -1711,7 +1711,7 @@ async function runAnalysis({ useClaude = false } = {}) {
   const stillCurrent = () => sequence === analysisSequence && accountId === currentAccount?.id && fingerprint === analysisFingerprint();
   const button = useClaude ? el('analyze-panels') : el('start-setup'); const original = button?.innerHTML;
   if (button) { button.disabled = true; button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('يجري التحليل…', 'Assessing…')}</span>`; }
-  el('status-title').textContent = ui('تكنو موسى يراجع البيانات', 'Techno Musa is reviewing your details');
+  el('status-title').textContent = ui('سياج يراجع البيانات', 'Siyaj is reviewing your details');
   let analysisError = ''; let storedReport = null; let ai = null; let aiModel = null; let solarContext = null; let monthlyLoss = null;
   try {
     await loadAppSettings(); const config = await loadAiConfig();
@@ -2115,7 +2115,7 @@ function complaintMailtoFallback(payload) {
     payload.location ? `${ui('الموقع', 'Location')}: ${payload.location}` : '',
     '', payload.message,
   ].filter((line) => line !== '');
-  return `mailto:${encodeURIComponent(complaintConfig.email)}?subject=${encodeURIComponent(payload.subject || ui('بلاغ تكنو موسى', 'Techno Musa complaint'))}&body=${encodeURIComponent(lines.join('\n'))}`;
+  return `mailto:${encodeURIComponent(complaintConfig.email)}?subject=${encodeURIComponent(payload.subject || ui('بلاغ سياج', 'Siyaj complaint'))}&body=${encodeURIComponent(lines.join('\n'))}`;
 }
 async function submitComplaint() {
   const alertBox = el('complaint-alert');
@@ -2173,8 +2173,8 @@ async function shareComplaint() {
     contact: (el('complaint-contact')?.value || '').trim(),
   };
   if (payload.message.length < 10) { const alertBox = el('complaint-alert'); if (alertBox) { alertBox.textContent = ui('اكتب وصفاً للبلاغ قبل مشاركته.', 'Describe the complaint before sharing it.'); alertBox.hidden = false; } return; }
-  const text = `${ui('بلاغ تكنو موسى', 'Techno Musa complaint')} — ${complaintCategoryLabel(payload.category)}\n${payload.subject ? `${payload.subject}\n` : ''}${payload.message}\n${ui('التواصل', 'Contact')}: ${payload.contact || '—'}\n${ui('إلى', 'To')}: ${complaintConfig.email}`;
-  if (navigator.share) { try { await navigator.share({ title: ui('بلاغ تكنو موسى', 'Techno Musa complaint'), text }); return; } catch { /* fall through to copy */ } }
+  const text = `${ui('بلاغ سياج', 'Siyaj complaint')} — ${complaintCategoryLabel(payload.category)}\n${payload.subject ? `${payload.subject}\n` : ''}${payload.message}\n${ui('التواصل', 'Contact')}: ${payload.contact || '—'}\n${ui('إلى', 'To')}: ${complaintConfig.email}`;
+  if (navigator.share) { try { await navigator.share({ title: ui('بلاغ سياج', 'Siyaj complaint'), text }); return; } catch { /* fall through to copy */ } }
   try { await navigator.clipboard.writeText(text); showToast(ui('تم نسخ نص البلاغ.', 'Complaint text copied.')); }
   catch { showToast(ui('تعذر النسخ؛ حدّد النص يدوياً.', 'Copy failed; select the text manually.')); }
 }
@@ -2215,7 +2215,7 @@ function renderSystemReport() {
   const total = Number.isFinite(Number(result?.totalPercent)) ? Number(result.totalPercent) : '—';
   const lossDay = result && Number.isFinite(Number(result.lostKwh)) ? `${result.lostKwh.toFixed(2)} kWh` : '—';
   const lossMoney = result && Number.isFinite(Number(result.lostMoney)) ? money(result.lostMoney) : '—';
-  const owner = state.user?.username || f.name || ui('مستخدم تكنو موسى', 'Techno Musa user');
+  const owner = state.user?.username || f.name || ui('مستخدم سياج', 'Siyaj user');
   const monthlyLine = monthly && monthly.lostKwh !== null && monthly.lostKwh !== undefined
     ? `${Number(monthly.lostKwh).toFixed(2)} kWh${monthly.lossMoney !== null && monthly.lossMoney !== undefined ? ` · ${money(monthly.lossMoney)}` : ''}`
     : ui('غير محسوبة (أضف الإنتاج المتوقع والفعلي)', 'Not calculated (add expected and actual generation)');
@@ -2234,7 +2234,7 @@ function renderSystemReport() {
   host.innerHTML = `
     <div class="report-header">
       <div>
-        <p class="eyebrow">${ui('تكنو موسى · رفيق الطاقة الشمسية', 'Techno Musa · Solar companion')}</p>
+        <p class="eyebrow">${ui('سياج · رفيق الطاقة الشمسية', 'Siyaj · Solar companion')}</p>
         <h2>${ui('تقرير حالة النظام الشمسي', 'Solar system status report')}</h2>
         <p>${ui('صدر في', 'Generated on')} ${escapeHtml(generated)} · ${ui('الحساب', 'Account')}: ${escapeHtml(owner)}</p>
       </div>
@@ -2271,7 +2271,7 @@ function renderSystemReport() {
       <h3>${ui('التوصية', 'Recommendation')}</h3>
       <div class="report-advice">${advice.map(([label, text]) => `<h4>${escapeHtml(label)}</h4><p>${escapeHtml(text)}</p>`).join('')}<p class="report-advice-note">${ui('هذا التقرير تقديري ويستند إلى البيانات المدخلة ونماذج الطقس، وليس قياساً كهربائياً مباشراً. يمكن مشاركته مع شركة الصيانة.', 'This report is an estimate based on entered data and weather models, not a direct electrical measurement. It can be shared with a maintenance company.')}</p></div>
     </section>
-    <div class="report-footer"><span>${ui('تكنو موسى | رفيق الطاقة الشمسية', 'Techno Musa | Solar companion')}</span></div>`;
+    <div class="report-footer"><span>${ui('سياج | رفيق الطاقة الشمسية', 'Siyaj | Solar companion')}</span></div>`;
   applyLanguage();
 }
 function reportPlainText() {
@@ -2280,7 +2280,7 @@ function reportPlainText() {
   ensureLossBreakdown(result);
   const locale = state.settings.language === 'en' ? 'en-OM' : 'ar-OM';
   const lines = [
-    ui('تقرير حالة النظام الشمسي — تكنو موسى', 'Solar system status report — Techno Musa'),
+    ui('تقرير حالة النظام الشمسي — سياج', 'Solar system status report — Siyaj'),
     `${ui('صدر في', 'Generated on')} ${new Intl.DateTimeFormat(locale, { dateStyle: 'full', timeStyle: 'short' }).format(new Date())}`,
     '',
     `${ui('نسبة الفقد التقديرية', 'Estimated loss ratio')}: ${result ? `${result.percent}%` : '—'}`,
@@ -2313,7 +2313,7 @@ function downloadReport() {
 }
 async function shareReport() {
   const text = reportPlainText();
-  if (navigator.share) { try { await navigator.share({ title: ui('تقرير حالة النظام الشمسي — تكنو موسى', 'Solar system status report — Techno Musa'), text }); return; } catch { /* fall through to copy */ } }
+  if (navigator.share) { try { await navigator.share({ title: ui('تقرير حالة النظام الشمسي — سياج', 'Solar system status report — Siyaj'), text }); return; } catch { /* fall through to copy */ } }
   try { await navigator.clipboard.writeText(text); showToast(ui('تم نسخ التقرير؛ يمكنك لصقه في البريد أو واتساب.', 'Report copied; paste it into email or WhatsApp.')); }
   catch { showToast(ui('تعذر النسخ؛ استخدم «تنزيل PDF».', 'Copy failed; use “Download PDF”.')); }
 }

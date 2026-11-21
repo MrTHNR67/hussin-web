@@ -1,6 +1,6 @@
 # Submission Form — Enterprise Cloud-Native Architecture Hackathon 2026
 
-**Project / site name:** تكنو موسى (Techno Musa) — رفيق الطاقة الشمسية
+**Project / site name:** سياج (Siyaj) — رفيق الطاقة الشمسية
 **Team:** فريق سياج (Siyaj Team)
 
 > Fill the remaining bracketed fields (`[...]`) before submitting: team member details, the video
@@ -38,6 +38,7 @@
 | Source branch | https://github.com/MrTHNR67/hussin-web/tree/main |
 | Evidence index | https://github.com/MrTHNR67/hussin-web/blob/main/docs/evidence/README.md |
 | Architecture blueprint | https://github.com/MrTHNR67/hussin-web/blob/main/docs/architecture-blueprint.md |
+| Project guide (idea, journey, stack, security, roadmap) | https://github.com/MrTHNR67/hussin-web/blob/main/docs/project-guide.md |
 | Render deployment guide | https://github.com/MrTHNR67/hussin-web/blob/main/docs/render-deployment.md |
 | Slides | https://github.com/MrTHNR67/hussin-web/blob/main/docs/slides.md |
 | Video | **[ADD VIDEO LINK — ≤ 3 minutes]** |

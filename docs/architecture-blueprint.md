@@ -1,7 +1,7 @@
-# Architecture Blueprint — Techno Musa on Render
+# Architecture Blueprint — Siyaj on Render
 
 **Enterprise Cloud-Native Architecture Hackathon 2026**
-**Submission:** InnovationFest secure, scalable submission platform (implemented through the Techno Musa application)
+**Submission:** InnovationFest secure, scalable submission platform (implemented through the Siyaj application)
 **Public endpoint:** https://siyaj-web.onrender.com
 **Repository:** https://github.com/MrTHNR67/hussin-web
 **Date:** 11 November 2026
@@ -14,7 +14,7 @@ InnovationFest expects 20,000 participants across 100 institutions. The previous
 the submission deadline: the site became unavailable, large uploads slowed everything, users could
 reach other teams' documents, and peak infrastructure kept running after demand fell.
 
-This submission takes a working application (Techno Musa) and hardens it into a cloud-native
+This submission takes a working application (Siyaj) and hardens it into a cloud-native
 service that answers each failure mode:
 
 | Failure in the scenario | Control in this solution | Evidence |

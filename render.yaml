@@ -1,4 +1,4 @@
-# Render Blueprint — نشر تكنو موسى على خطة مجانية بدون بطاقة.
+# Render Blueprint — نشر سياج على خطة مجانية بدون بطاقة.
 # الاستخدام: Render Dashboard → Blueprints → New Blueprint Instance → اختر مستودع hussin-web.
 databases:
   - name: siyaj-db

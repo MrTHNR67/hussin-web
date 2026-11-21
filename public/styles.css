@@ -576,7 +576,7 @@ html[dir="ltr"] .language-toggle { direction: ltr; }
 .about-logo { width: 65px; height: 65px; overflow: hidden; border-radius: 50%; background: #fff; }
 .about-logo img { width: 100%; height: 100%; object-fit: contain; }
 .footer { display: flex; width: min(100%, 1320px); justify-content: space-between; margin: auto; padding: 0 32px 22px; color: #938b7f; font-size: 10px; }
-/* رابط سياسة الخصوصية في التذييل: بنفس لون «تكنو موسى 2026» وبدون خط، ويكبر عند مرور الماوس */
+/* رابط سياسة الخصوصية في التذييل: بنفس لون «سياج 2026» وبدون خط، ويكبر عند مرور الماوس */
 .footer a { display: inline-block; color: inherit; text-decoration: none; transition: transform .18s ease; }
 .footer a:hover, .footer a:focus-visible { transform: scale(1.3); }
 .toast { position: fixed; z-index: 30; bottom: 25px; left: 50%; max-width: min(90vw, 520px); padding: 12px 19px; border-radius: 12px; background: #49443c; color: #fff; box-shadow: var(--shadow); font-size: 13px; opacity: 0; pointer-events: none; text-align: center; transform: translate(-50%, 20px); transition: .25s; }
