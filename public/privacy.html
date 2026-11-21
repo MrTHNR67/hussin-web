@@ -41,7 +41,7 @@
     <article id="policy-ar" lang="ar" dir="rtl">
       <h1>سياسة الخصوصية</h1>
       <p class="updated">تكنو موسى | رفيق الطاقة الشمسية — آخر تحديث: 21 نوفمبر 2026</p>
-      <p>توضح هذه الصفحة البيانات التي يتعامل معها تكنو موسى عند استخدام الموقع. يعمل الموقع على Vercel، والدخول فيه بالاسم والقبيلة دون حساب أو كلمة مرور.</p>
+      <p>توضح هذه الصفحة البيانات التي يتعامل معها تكنو موسى عند استخدام الموقع. يعمل الموقع على Render، والدخول فيه بالاسم والقبيلة دون حساب أو كلمة مرور.</p>
 
       <h2>البيانات التي نتعامل معها</h2>
       <ul>
@@ -52,8 +52,8 @@
 
       <h2>مزوّدو الخدمات</h2>
       <ul>
-        <li>Vercel: تستضيف واجهة الموقع وواجهة الخادم (Serverless).</li>
-        <li>Neon Postgres: قاعدة بيانات خارجية تحفظ سجلات الحسابات والجلسات وبيانات النظام على الخادم. لا تُحفظ فيها كلمات مرور لأنها غير مستخدمة.</li>
+        <li>Render: تستضيف واجهة الموقع وخادم Express على الحاوية نفسها.</li>
+        <li>Postgres على Render: قاعدة بيانات تحفظ سجلات الحسابات والجلسات وبيانات النظام على الخادم. لا تُحفظ فيها كلمات مرور لأنها غير مستخدمة.</li>
         <li>Open-Meteo وMET Norway: يرسل الخادم إحداثيات الموقع أو اسم المدينة لجلب الطقس وجودة الهواء والإشعاع. لا تُرسل إليهما صورك أو بيانات هويتك.</li>
         <li>Anthropic: تُرسل صورة الفاتورة فقط إذا طلبت قراءتها باستخدام Claude بشكل مستقل. لا تُرسل صور الألواح أو الفيديو إليها؛ قراءة الألواح محلية في متصفحك.</li>
       </ul>
@@ -70,7 +70,7 @@
     <article id="policy-en" lang="en" dir="ltr" hidden>
       <h1>Privacy Policy</h1>
       <p class="updated">Techno Musa | Solar Energy Companion — last updated: 21 November 2026</p>
-      <p>This page explains what data Techno Musa handles. The site runs on Vercel and uses guest entry by name and tribe, with no account or password.</p>
+      <p>This page explains what data Techno Musa handles. The site runs on Render and uses guest entry by name and tribe, with no account or password.</p>
 
       <h2>Data we handle</h2>
       <ul>
@@ -81,8 +81,8 @@
 
       <h2>Service providers</h2>
       <ul>
-        <li>Vercel: hosts the web interface and the serverless API.</li>
-        <li>Neon Postgres: an external database holding account and session records and system data on the server. No passwords are stored because none are used.</li>
+        <li>Render: hosts the web interface and the Express server in the same container.</li>
+        <li>Render Postgres: a database holding account and session records and system data on the server. No passwords are stored because none are used.</li>
         <li>Open-Meteo and MET Norway: the server sends location coordinates or a city name to retrieve weather, air quality and radiation data. Your photos and identity are not sent to them.</li>
         <li>Anthropic: the bill image is sent only if you separately request bill extraction with Claude. Panel photos and videos are not sent there; the panel reading runs locally in your browser.</li>
       </ul>

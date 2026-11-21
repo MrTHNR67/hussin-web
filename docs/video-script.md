@@ -8,11 +8,11 @@ Have these windows ready: the live site, a PowerShell at the repo root, `docs/ev
 
 ## 0:00–0:15 — Intro (15 s)
 
-**Say:** "Techno Musa — رفيق الطاقة الشمسية — deployed on Vercel with Neon Postgres. It runs without
+**Say:** "Techno Musa — رفيق الطاقة الشمسية — deployed on Render at siyaj-web.onrender.com. It runs without
 any laptop being on. We'll show guest entry, the setup journey and the panel reading, then fail a
 component, scale under load, deny an unauthorized request, and restore from backup."
 
-**Show:** browser opens `[PENDING — Vercel URL]` over HTTPS (padlock visible).
+**Show:** browser opens `https://siyaj-web.onrender.com` over HTTPS (padlock visible).
 
 ---
 
@@ -73,7 +73,7 @@ counter rising.
 **Terminal:**
 
 ```powershell
-curl.exe -s -o NUL -w "no session: %{http_code}`n" <DEPLOY_URL>/api/admin/stats
+curl.exe -s -o NUL -w "no session: %{http_code}`n" https://siyaj-web.onrender.com/api/admin/stats
 ```
 
 **Say:** "No session: 401. A guest gets 403; only the server-side allow-listed admin gets 200.
@@ -106,16 +106,16 @@ is the RPO window, and backups run every five minutes."
 table.
 
 **Say:** "Health and load are sampled every two seconds: zero failed health checks at 1.7k requests
-per second. The deployed cost is zero dollars on Vercel Hobby plus the Neon free tier, with bounded autoscaling so
+per second. The deployed cost is zero dollars on Render's free tier, with bounded autoscaling so
 capacity doesn't keep running after demand falls. All evidence and scripts are in the repository."
 
-**End card:** `[PENDING — Vercel URL]` · `github.com/MrTHNR67/hussin-web` · evidence index.
+**End card:** `https://siyaj-web.onrender.com` · `github.com/MrTHNR67/hussin-web` · evidence index.
 
 ---
 
 ## Checklist before recording
 
-- [ ] Vercel endpoint ready (open it once; record the real URL in the script and slides)
+- [ ] Public endpoint warm (open it once, wait for the cold start to finish)
 - [ ] A name and tribe ready to type live (no demo account needed)
 - [ ] Terminal font ≥ 18 pt, repo root as working directory
 - [ ] Autoscaler log file open (`\.run\autoscale-demo2.log`) or run the drill live

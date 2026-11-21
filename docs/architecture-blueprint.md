@@ -1,8 +1,8 @@
-# Architecture Blueprint — Techno Musa on Vercel
+# Architecture Blueprint — Techno Musa on Render
 
 **Enterprise Cloud-Native Architecture Hackathon 2026**
 **Submission:** InnovationFest secure, scalable submission platform (implemented through the Techno Musa application)
-**Public endpoint:** [PENDING — Vercel URL]
+**Public endpoint:** https://siyaj-web.onrender.com
 **Repository:** https://github.com/MrTHNR67/hussin-web
 **Date:** 11 November 2026
 
@@ -36,9 +36,9 @@ InnovationFest submission workflow.
 
 ```mermaid
 flowchart LR
-  U["Users / judges"] -->|"HTTPS 443"| E["Vercel edge<br/>TLS 1.3 · DDoS · HTTP→HTTPS"]
-  E -->|"HTTPS"| A["Vercel Serverless Function<br/>api/index.js → server.mjs<br/>Node.js + Express"]
-  A -->|"5432 over TLS"| DB[("Neon Postgres<br/>DATABASE_URL")]
+  U["Users / judges"] -->|"HTTPS 443"| E["Cloudflare + Render edge<br/>TLS 1.3 · DDoS · HTTP→301"]
+  E -->|"HTTPS"| A["Render web service<br/>siyaj-web · Frankfurt<br/>Node.js + Express"]
+  A -->|"internal 5432<br/>TLS + password"| DB[("Render Postgres<br/>siyaj-db · 1 GB")]
   A -->|"443 egress"| WX["Open-Meteo<br/>→ MET Norway fallback"]
   A -->|"443"| I["Guest identity<br/>name + tribe"]
   A -->|"JSON / media"| U
@@ -57,17 +57,17 @@ Text form:
 Internet
   │ HTTPS 443 (TLS 1.3)
   ▼
-Vercel edge ── HTTP→HTTPS, DDoS, managed certificate
+Cloudflare/Render edge ── 301 from :80, DDoS, managed certificate
   │
   ▼
-Vercel Serverless Function (api/index.js, auto-deploy from the linked repository)
+Render web service (Frankfurt, free plan, auto-deploy from main)
   ├── stateless Node.js + Express process
   ├── /healthz (liveness) and /readyz (readiness)
   ├── uploads: 25 MB limit, per-user paths, type allow-list
   └── background job endpoint: HMAC-signed /api/jobs/daily-alerts
   │ internal network (never the public DB address)
   ▼
-Neon Postgres ── TLS via DATABASE_URL, dedicated role, RLS on shared tables
+Render Postgres (siyaj-db) ── TLS, dedicated role siyaj_user, RLS on shared tables
 
 Egress (443 only): Open-Meteo (primary) → MET Norway (automatic fallback), optional Anthropic bill extraction
 ```
@@ -76,11 +76,11 @@ Egress (443 only): Open-Meteo (primary) → MET Norway (automatic fallback), opt
 
 | Layer | Choice | Rationale |
 |---|---|---|
-| Edge | Vercel edge network | free TLS 1.3, HTTP→HTTPS, DDoS absorption, no certificate operations |
+| Edge | Render-managed edge on Cloudflare | free TLS 1.3, HTTP→HTTPS, DDoS absorption, no certificate operations |
 | Runtime | Node.js 24 + Express | same stack as the app; small image, fast cold start |
-| Compute | Vercel Serverless Function (Hobby) | public HTTPS URL that runs without any laptop |
-| Database | Neon Postgres (free) | managed backups, TLS, SQL |
-| HA/LB/scale evidence | 3 Node replicas + Nginx | shows real distribution, failover and scale-out/in that the managed platform hides |
+| Compute | Render Web Service (free) | no credit card, public HTTPS URL that runs without any laptop |
+| Database | Render Postgres 16 (free) | managed backups path, TLS, private network, SQL |
+| HA/LB/scale evidence | 3 Node replicas + Nginx | shows real distribution, failover and scale-out/in that the free PaaS plan cannot expose |
 | IaC alternative | Azure VMSS/LB/Postgres, GCP MIG/LB/Cloud SQL | provider-native path with VPC/NSG/firewall rules (reviewed, not billed) |
 | Weather | Open-Meteo + MET Norway fallback | no API key; automatic failover when the shared egress IP is throttled (429) |
 
@@ -168,8 +168,8 @@ normal user, **200** only for the configured admin. Eleven bad logins produce **
 `nosniff`, `no-referrer`, HSTS in production; no `X-Powered-By`.
 
 **Credentials.** `git grep` over 62 tracked files finds no keys, tokens, private keys or passworded
-DB URLs. All secrets live in Vercel Environment Variables (`DATABASE_URL`, `NODE_ENV`, optional
-Anthropic/SMTP keys) or in the operator's environment; `.env` is ignored and never committed.
+DB URLs. All secrets live in the Render environment (`DATABASE_URL`, `NODE_ENV`, optional
+optional Supabase/Claude/SMTP keys) or in the operator's environment; `.env` is ignored and never committed.
 
 **Protected network/data.** Only 443 is public; the app uses the database's private hostname. The
 database's external IP allow-list is pinned to a non-routable RFC 5737 TEST-NET range (verified:
@@ -182,14 +182,14 @@ the fully private two-tier NSG/firewall design in the Azure/GCP IaC complete the
 ## 6. Disaster recovery (tested)
 
 - **Backups:** verified database snapshots every 5 minutes (`SiyajBackup` task), each with a SHA-256
-  recorded in `backups/backup-log.csv`; 24 copies retained. For Neon Postgres the equivalent is
+  recorded in `backups/backup-log.csv`; 24 copies retained. For Render Postgres the equivalent is
   `pg_dump --format=custom` (or platform PITR on paid plans).
 - **Drill:** marker user A created → backup → marker B created → database physically moved away
   (simulated loss) → restarted empty → login A **401** (loss is real) → restore latest backup →
   login A **200**, login B **401** (written after the backup, correctly outside the RPO window).
 - **Measured RTO:** 1.44 s automated restore (stop + copy + start + readiness) on the demo stack;
   2.2 s end-to-end outage including deliberate drill pauses.
-- **RPO:** ≤ 5 minutes (backup cadence). For the Neon Postgres path the target is ≤ 24 h on the free
+- **RPO:** ≤ 5 minutes (backup cadence). For the Render Postgres path the target is ≤ 24 h on the free
   tier (daily snapshots) or ≤ 5 min with PITR; the logical dump is the portable fallback.
 - **Cloud RTO target:** ≤ 30 minutes (restore dump + verify + repoint the service).
 
@@ -206,7 +206,7 @@ Full timeline: `docs/evidence/task5-dr.md`.
   health latency avg 15.9 ms / max 53.5 ms, 0 failed health checks.
 - Alert policy: health failures, readiness while alive, 5xx > 1%, CPU > 60% for 5 min (scale-out),
   CPU < 30% for 10 min (scale-in), stale backups.
-- Vercel dashboard provides health, logs and analytics for the public service.
+- Render dashboard provides the same health/CPU/memory/log view for the public service.
 
 ---
 
@@ -214,8 +214,8 @@ Full timeline: `docs/evidence/task5-dr.md`.
 
 | Item | Monthly |
 |---|---|
-| Vercel Hobby Serverless Function | $0 |
-| Neon Postgres free tier | $0 |
+| Render Web Service (free, 512 MB, sleeps after 15 min idle) | $0 |
+| Render Postgres (free, 1 GB, expires 2026-12-11) | $0 |
 | GitHub, DNS/TLS, Cloudflare edge | $0 |
 | Local evidence stack (existing hardware) | $0 |
 | **Deployed total** | **$0** |
@@ -236,18 +236,19 @@ used.
 
 ## 9. Limitations (disclosed)
 
-1. The managed platform does not expose custom autoscaling knobs; elasticity evidence comes from the
-   controlled local cluster + the IaC policies.
+1. Render's free plan sleeps after 15 minutes idle (~30–50 s cold start) and does not expose custom
+   autoscaling; elasticity evidence comes from the controlled local cluster + the IaC policies.
 2. The public endpoint is PaaS: VPC/NSG controls are provider-managed; the Azure/GCP templates were
    reviewed but not applied (no cloud account/card was available to the team).
-3. Neon Postgres is reached over TLS with a dedicated role; IP allow-list pinning is the next
-   hardening step (the earlier Render endpoint used a pinned TEST-NET range for its drill).
+3. Render Postgres still accepts TCP 5432 at the provider edge, but its IP allow-list is pinned to a
+   non-routable TEST-NET range and external sessions are dropped (verified). Running `pg_dump`
+   requires temporarily allow-listing the operator's IP.
 4. The local HA demo isolates components, not hosts (all three processes share one machine); host and
-   zone redundancy are delivered by the IaC designs and by the managed platform.
-5. Single database region. Multi-region was intentionally skipped: it doubles cost and earns no
+   zone redundancy are delivered by the IaC designs and by Render's platform.
+5. Single region (Frankfurt). Multi-region was intentionally skipped: it doubles cost and earns no
    extra marks.
-6. Guest media is retained in the browser; production should use object storage (the app already
-   supports a private Supabase bucket when configured).
+6. Uploaded media on Render is stored on the instance filesystem (ephemeral on redeploy); production
+   should use object storage (the app already supports a private Supabase bucket when configured).
 7. No WAF or MFA yet; rate limiting is per instance (mitigation: edge `limit_req` or shared Redis).
 
 ---

@@ -3,8 +3,8 @@
 **Project / site name:** تكنو موسى (Techno Musa) — رفيق الطاقة الشمسية
 **Team:** فريق سياج (Siyaj Team)
 
-> Fill the remaining bracketed fields (`[...]`) before submitting. Items marked **pending** must be
-> confirmed after the Vercel deployment is live.
+> Fill the remaining bracketed fields (`[...]`) before submitting: team member details, the video
+> link and the sign-off. Everything else is live and verified.
 
 ## Team
 
@@ -22,30 +22,30 @@
 
 | Field | Value |
 |---|---|
-| Cloud provider | **Vercel** (Serverless Functions + edge network) |
-| Region | Vercel default (global edge); database region chosen in Neon |
-| Public endpoint | **[PENDING — Vercel deployment URL]** |
-| Health checks | `<DEPLOY_URL>/healthz` · `<DEPLOY_URL>/readyz` |
-| Compute | Vercel Serverless Function `api/index.js` → `server.mjs`, Node.js |
-| Database | **Neon Postgres**, connected through `DATABASE_URL` |
+| Cloud provider | **Render** (managed PaaS on a Cloudflare edge) |
+| Region | **Frankfurt (EU Central)** |
+| Public endpoint | **https://siyaj-web.onrender.com** |
+| Health checks | `https://siyaj-web.onrender.com/healthz` · `/readyz` |
+| Compute | Render Web Service `siyaj-web`, free plan, Node.js |
+| Database | Render Postgres 16 `siyaj-db`, free plan, private hostname + TLS |
 | Local evidence stack | Nginx `:8080` → 3 Node replicas `:3001–3003` (HA/LB/autoscale drills) |
 
 ## Links
 
 | Deliverable | Link |
 |---|---|
-| Repository | https://github.com/MrTHNR67/hussin-web (private; judges added as collaborators) |
-| Branch used for this build | https://github.com/MrTHNR67/hussin-web/tree/vercel-guest-mode (merge to `main` before final submission) |
+| Repository | https://github.com/MrTHNR67/hussin-web (public) |
+| Source branch | https://github.com/MrTHNR67/hussin-web/tree/main |
 | Evidence index | https://github.com/MrTHNR67/hussin-web/blob/main/docs/evidence/README.md |
 | Architecture blueprint | https://github.com/MrTHNR67/hussin-web/blob/main/docs/architecture-blueprint.md |
-| Vercel deployment guide | https://github.com/MrTHNR67/hussin-web/blob/main/docs/vercel-deployment.md |
+| Render deployment guide | https://github.com/MrTHNR67/hussin-web/blob/main/docs/render-deployment.md |
 | Slides | https://github.com/MrTHNR67/hussin-web/blob/main/docs/slides.md |
 | Video | **[ADD VIDEO LINK — ≤ 3 minutes]** |
 | Submission form | https://github.com/MrTHNR67/hussin-web/blob/main/docs/submission-form.md |
 
 ## How judges can access the environment
 
-1. **Public application** — open `<DEPLOY_URL>`. HTTPS, no signup needed.
+1. **Public application** — open `https://siyaj-web.onrender.com`. HTTPS, no signup needed.
 2. **Guest entry** — enter **any name** and **any tribe** in the two fields on the landing card, then
    press «ابدأ التجربة». There is no password, no account and no admin role in the UI. The name and
    tribe are stored only in that browser (`localStorage`) and persist across reloads.
@@ -58,8 +58,8 @@
    powershell -ExecutionPolicy Bypass -File scripts\drill-dr.ps1
    ```
 
-5. **No cloud credentials are shared.** Vercel and Neon dashboard access stays with the team; judges
-   get the endpoint, private-repository access, evidence files and reproduction scripts.
+5. **No cloud credentials are shared.** Render and database dashboard access stays with the team; judges
+   get the public endpoint, repository access, evidence files and reproduction scripts.
 
 ## Originality declaration
 
@@ -73,7 +73,7 @@ No cloud passwords, access keys or confidential data are included in the reposit
 ## Teardown (after evaluation)
 
 ```bash
-# cloud (dashboard): delete the Vercel project and the Neon database
+# cloud (dashboard): delete the Render web service and Postgres database
 # local:
 powershell -ExecutionPolicy Bypass -File scripts\stop-cluster.ps1
 Unregister-ScheduledTask -TaskName 'SiyajAlwaysOn' -Confirm:$false
@@ -82,14 +82,11 @@ Unregister-ScheduledTask -TaskName 'SiyajBackup'   -Confirm:$false
 Remove-Item -Recurse -Force .run, backups, data\siyaj.sqlite*
 ```
 
-Also revoke the retired Render API key that was used during the earlier hosting attempt.
-
 ## Known limitations (also in the blueprint)
 
-- The Vercel project and the Neon database are new; the previous Render free Postgres expired
-  **2026-12-11** and its service is retired.
+- The Render free Postgres expires **2026-12-11**; a reminder and an export plan are documented.
 - The «قراءة تقديرية للألواح» button is a 2.5 s visual simulation in the browser; it adds no AI
   backend and uploads no images. Bill extraction with Claude remains optional and server-side.
-- Local HA/LB, autoscaling and DR evidence comes from the on-premise Nginx + Node stack; the Vercel
-  deployment relies on the platform's managed scaling instead.
+- Local HA/LB, autoscaling and DR evidence comes from the on-premise Nginx + Node stack; the public
+  Render service relies on the platform's managed scaling instead.
 - No WAF/MFA yet; guest account rows are not garbage-collected automatically.

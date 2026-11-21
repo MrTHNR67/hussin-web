@@ -668,7 +668,7 @@ function shutdown(signal) {
 
 for (const signal of ['SIGTERM', 'SIGINT']) process.on(signal, () => shutdown(signal));
 
-// On Vercel the exported app is invoked by the Serverless Function; in tests it
+// A hosted platform invokes the exported app directly; in tests it
 // is started explicitly on an ephemeral port. Only a normal local run listens.
 if (!process.env.VERCEL && !process.env.SIYAJ_TEST) {
   startServer().catch((error) => {
