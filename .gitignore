@@ -6,3 +6,6 @@ data/
 *.log
 nginx/logs/
 backups/
+.superpowers/
+.worktrees/
+
