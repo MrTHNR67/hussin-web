@@ -1459,6 +1459,7 @@ function openWizard(step = 0) {
 function showPage(page) {
   if (!state.user && page !== 'auth') page = 'auth';
   ['dashboard', 'wizard', 'history', 'reports', 'report', 'settings', 'auth'].forEach((name) => { const section = el(`page-${name}`); if (section) section.hidden = name !== page; });
+  if (window.SiyajMotion) window.SiyajMotion.playPageTransition(el(`page-${page}`));
   document.querySelectorAll('.nav-link').forEach((button) => button.classList.toggle('active', button.dataset.page === page));
   document.body.classList.remove('mobile-nav-open');
   document.body.classList.toggle('print-report', page === 'report');
