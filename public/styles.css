@@ -1148,10 +1148,30 @@ body.dark .field label .weather-field-check, body.dark .field-label .weather-fie
 
 
 /* ---------- Secret theme unlocks ---------- */
-body.theme-racing { color-scheme: dark; --paper:#111217; --white:#1a1b22; --ink:#DFE5EB; --primary-ink:#DFE5EB; --secondary-ink:#b8c0cc; --sand:#1e2028; --sand-light:#252833; --orange:#EF233C; --peach:#3a1a1f; --muted:#9aa3b0; --line:#3a3f4a; --shadow:0 18px 42px rgba(0,0,0,.45); --radius:2px; }
-body.theme-racing h1,body.theme-racing h2,body.theme-racing h3,body.theme-racing .eyebrow,body.theme-racing .status-pill,body.theme-racing .button { text-transform:uppercase; letter-spacing:.06em; font-weight:700; border-radius:2px; }
-body.theme-racing .button,body.theme-racing .panel,body.theme-racing .metric-card,body.theme-racing .system-item,body.theme-racing .field input,body.theme-racing .field select { border-radius:2px; border-color:#3a3f4a; }
-body.theme-racing .button-primary { background:#EF233C; }
+body.theme-racing { color-scheme: dark; --paper:#111217; --white:#1a1b22; --ink:#DFE5EB; --primary-ink:#DFE5EB; --secondary-ink:#b8c0cc; --sand:#16181f; --sand-light:#1e2129; --orange:#EF233C; --peach:#2a1418; --muted:#9aa3b0; --line:#DFE5EB; --shadow:0 22px 50px rgba(0,0,0,.55); --radius:2px; font-family:"Segoe UI",Tahoma,Arial,sans-serif; }
+body.theme-racing { background: radial-gradient(ellipse at 80% 10%, rgba(239,35,60,.12), transparent 40%), radial-gradient(ellipse at 10% 60%, rgba(223,229,235,.06), transparent 45%), #111217; }
+body.theme-racing::before { content:""; position:fixed; inset:0; pointer-events:none; z-index:0; background: repeating-linear-gradient(0deg, rgba(239,35,60,.04) 0 1px, transparent 1px 3px); mix-blend-mode: screen; }
+body.theme-racing h1,body.theme-racing h2,body.theme-racing h3,body.theme-racing .eyebrow,body.theme-racing .status-pill,body.theme-racing .button,body.theme-racing .panel h2 { text-transform:uppercase; letter-spacing:.08em; font-weight:800; color:#DFE5EB; }
+body.theme-racing .button,body.theme-racing .panel,body.theme-racing .metric-card,body.theme-racing .system-item,body.theme-racing .field input,body.theme-racing .field select,body.theme-racing .upload-zone { border-radius:2px; border:1px solid #DFE5EB; background:#1a1b22; color:#DFE5EB; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+body.theme-racing .button:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 10px 24px rgba(239,35,60,.25); border-color:#EF233C; }
+body.theme-racing .button-primary { background:#EF233C; color:#111217; border-color:#EF233C; }
+body.theme-racing .button-primary:hover { background:#ff3a55; box-shadow:0 12px 28px rgba(239,35,60,.35); }
+body.theme-racing .panel { background:#16171d; border-color:#DFE5EB; box-shadow:0 14px 36px rgba(0,0,0,.5); }
+body.theme-racing .metric-card { background:#16171d; border-color:#DFE5EB; }
+body.theme-racing .metric-card:hover { transform:translateY(-4px); border-color:#EF233C; }
+body.theme-racing .system-item { background:#1a1b22; border-color:#DFE5EB; }
+body.theme-racing .field input,body.theme-racing .field select { background:#0f1014; color:#DFE5EB; border-color:#DFE5EB; }
+body.theme-racing .field input:focus,body.theme-racing .field select:focus { border-color:#EF233C; box-shadow:0 0 0 2px rgba(239,35,60,.25); }
+body.theme-racing .topbar,.theme-racing .site-header { border-color:#EF233C; }
+body.theme-racing .brand span { color:#EF233C; text-transform:uppercase; letter-spacing:.12em; }
+body.theme-racing .status-pill.good { background:#1a2a1f; color:#6ee7a0; }
+body.theme-racing .status-pill.warn { background:#2a2210; color:#fbbf24; }
+body.theme-racing .status-pill.alert { background:#2a1214; color:#ff6b6b; }
+body.theme-racing .loss-bar { background:linear-gradient(90deg,#1a3a22 0%,#3a2e10 55%,#3a1416 100%); }
+body.theme-racing .loss-bar span { background:linear-gradient(90deg,#EF233C,#ff6b6b); }
+body.theme-racing .loss-bar b { background:#EF233C; border-color:#111217; }
+body.theme-racing a { color:#DFE5EB; }
+body.theme-racing a:hover { color:#EF233C; }
 
 body.theme-emerald { color-scheme: light; --paper:#f7faf8; --white:#ffffff; --ink:#1a2e28; --primary-ink:#0F5C45; --secondary-ink:#2f5a4a; --sand:#eaf3ef; --sand-light:#f2f8f5; --orange:#F28C28; --peach:#fde9d4; --muted:#5a6b64; --line:#d6e5de; --shadow:0 14px 32px rgba(15,92,69,.08); --radius:12px; }
 body.theme-emerald .panel { padding:28px; box-shadow:0 10px 28px rgba(15,92,69,.06); }
