@@ -68,6 +68,14 @@ const PANEL_MANUFACTURERS = [
   ['CW Enerji', ['CW Energy', 'سي دبليو', 'سي دبليو إنرجي']],
 ].sort(([a], [b]) => a.localeCompare(b, 'en'));
 const TRANSLATIONS = {
+  'تجربتك في سياج': 'Your journey in Siyaj',
+  'أدخل اسمك وقبيلتك لتبدأ متابعة نظامك الشمسي.': 'Enter your name and tribe to start monitoring your solar system.',
+  'مرحباً بك': 'Welcome',
+  'لا تحتاج كلمة مرور أو تسجيل؛ اسمك وقبيلتك يكفيان للبدء.': 'No password or sign-up needed; your name and tribe are enough to begin.',
+  'الاسم': 'Name', 'القبيلة': 'Tribe',
+  'اكتب اسمك': 'Your name', 'اكتب قبيلتك': 'Your tribe',
+  'ابدأ التجربة': 'Start the experience', 'بدأنا التجربة': 'the experience has started',
+  'أدخل الاسم والقبيلة.': 'Enter your name and tribe.', 'الزائر': 'Guest',
   'ابحث عن الشركة المصنّعة': 'Search for a manufacturer',
   'عرض الشركات المصنّعة': 'Show manufacturers', 'الشركات المصنّعة': 'Manufacturers',
   'ابحث بالعربية أو الإنجليزية، أو اكتب اسم الشركة. يمكنك اختيار «غير معروف».': 'Search in Arabic or English, or enter the company name. You can choose “Unknown”.',
@@ -496,6 +504,10 @@ function airDustHint() {
 function clearVisualAssessment() { state.ai = null; state.aiLanguage = null; state.aiModel = null; }
 async function authenticatedFetch(url, options = {}) {
   const headers = { ...(options.headers || {}) };
+  // The guest token is kept in this browser so a session still works when
+  // cookies are blocked. The HttpOnly cookie remains the primary mechanism.
+  const guestToken = localStorage.getItem('siyaj_guest_token');
+  if (guestToken && guestToken !== '1' && !headers.Authorization) headers.Authorization = `Bearer ${guestToken}`;
   return fetch(url, { ...options, headers, credentials: 'same-origin' });
 }
 function accountStorageKey(accountId = currentAccount?.id) {
@@ -1118,7 +1130,7 @@ function showToast(message) {
 function syncHeader() {
   el('header-location').textContent = state.form.location || 'حدّد موقع النظام';
   const authButton = el('auth-nav');
-  if (authButton) authButton.textContent = state.user?.username || 'تسجيل الدخول';
+  if (authButton) authButton.textContent = state.user?.name || ui('الزائر');
   const loggedIn = !!state.user;
   document.querySelector('.main-nav').hidden = !loggedIn;
   document.querySelector('.topbar-location').hidden = !loggedIn;
@@ -2688,7 +2700,6 @@ async function disablePushNotifications() {
   devicePushEnabled = false; devicePushStateKnown = true;
   if (!await subscription.unsubscribe()) throw new Error('تعذر إيقاف تنبيهات هذا الجهاز.');
 }
-let authMode = 'login';
 const ACCOUNTS_KEY = 'siyaj.localAccounts.v1';
 function readAccounts() {
   let accounts;
@@ -2733,25 +2744,48 @@ async function passwordDigest(password, saltHex) {
   const digest = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt, iterations: 120000, hash: 'SHA-256' }, key, 256);
   return bytesToHex(new Uint8Array(digest));
 }
-function setAuthMode(mode) {
-  authMode = mode;
-  el('login-form').hidden = mode !== 'login' || !!state.user;
-  el('signup-form').hidden = mode !== 'signup' || !!state.user;
-  el('auth-tab-login').classList.toggle('active', mode === 'login');
-  el('auth-tab-signup').classList.toggle('active', mode === 'signup');
-  applyLanguage();
+const GUEST_TOKEN_KEY = 'siyaj_guest_token';
+const GUEST_PROFILE_KEY = 'siyaj_guest_profile';
+function readGuestProfile() {
+  try { return JSON.parse(localStorage.getItem(GUEST_PROFILE_KEY) || '{}'); } catch { return {}; }
+}
+function clearGuestIdentity() {
+  localStorage.removeItem(GUEST_TOKEN_KEY);
+  localStorage.removeItem(GUEST_PROFILE_KEY);
+  state.user = null;
+  currentAccount = null;
+  renderAuth(); syncHeader(); showPage('auth');
 }
 function renderAuth() {
-  const loggedIn = !!state.user;
-  el('auth-profile').hidden = !loggedIn;
-  el('auth-tabs').hidden = loggedIn;
-  el('login-form').hidden = loggedIn || authMode !== 'login';
-  el('signup-form').hidden = loggedIn || authMode !== 'signup';
-  if (loggedIn) {
-    el('profile-name').textContent = state.user.username || state.user.name || state.user.email;
-    el('profile-email').textContent = state.user.email;
+  const profile = readGuestProfile();
+  if (el('guest-name') && !state.user) {
+    el('guest-name').value = profile.name || '';
+    el('guest-tribe').value = profile.tribe || '';
   }
   applyLanguage();
+}
+async function handleGuestSubmit(event) {
+  event.preventDefault();
+  const name = el('guest-name').value.trim();
+  const tribe = el('guest-tribe').value.trim();
+  if (!name || !tribe) return showToast('أدخل الاسم والقبيلة.');
+  const button = el('guest-form').querySelector('button[type="submit"]');
+  button.disabled = true;
+  try {
+    const response = await fetch('/api/auth/guest', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, tribe }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'تعذر بدء التجربة.');
+    localStorage.setItem(GUEST_TOKEN_KEY, data.token || '1');
+    localStorage.setItem(GUEST_PROFILE_KEY, JSON.stringify({ name, tribe }));
+    await finishServerAuth(data, state);
+    showToast(`أهلاً ${name}، ${ui('بدأنا التجربة')}`);
+    await continueAfterAuth();
+  } catch (error) {
+    showToast(error.message || 'تعذر بدء التجربة.');
+  } finally { button.disabled = false; }
 }
 async function finishServerAuth(session, seedState = null, legacyAccountId = '') {
   resetAiRequests();
@@ -2894,7 +2928,6 @@ function playIntro() {
   const start = logo.getBoundingClientRect();
   el('app-shell').hidden = false; el('app-shell').style.animation = 'none';
   showPage('auth'); renderAuth(); syncHeader();
-  initializeGoogleButtons();
   setTimeout(() => {
     window.scrollTo(0, 0);
     intro.classList.add('transitioning');
@@ -2922,36 +2955,7 @@ function setupEvents() {
     renderDashboard(); renderCurrentStep(); renderHistory(); renderSettings(); renderAuth(); showToast(state.settings.language === 'en' ? 'Language changed to English.' : 'تم تغيير اللغة إلى العربية.');
     renderGoogleButtons();
   });
-  el('auth-tab-login').addEventListener('click', () => setAuthMode('login'));
-  el('auth-tab-signup').addEventListener('click', () => setAuthMode('signup'));
-  el('show-signup').addEventListener('click', () => setAuthMode('signup'));
-  el('show-login').addEventListener('click', () => setAuthMode('login'));
-  el('login-form').addEventListener('submit', handleLogin);
-  el('signup-form').addEventListener('submit', handleSignup);
-  el('logout-button').addEventListener('click', async () => {
-    resetAiRequests();
-    const button = el('logout-button'); button.disabled = true;
-    try {
-      persist(); clearTimeout(panelSyncTimer); clearTimeout(accountSyncTimer);
-      await syncAccountState();
-      await syncPanelData();
-      const endpoint = (await getDevicePushSubscription())?.endpoint || '';
-      await disablePushNotifications();
-      const response = await authenticatedFetch('/api/auth/logout', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'تعذر تسجيل الخروج؛ حاول مرة أخرى.');
-      currentAccount = null; devicePushEnabled = false; devicePushStateKnown = true;
-      state = loadState(`${STORAGE_KEY}.guest`); media = []; currentStep = 0; authMode = 'login';
-      applyTheme(); showPage('auth'); renderAuth(); syncHeader(); showToast('تم تسجيل الخروج.');
-    } catch (error) { showToast(error.message || 'تعذر تسجيل الخروج؛ حاول مرة أخرى.'); }
-    finally { button.disabled = false; }
-  });
-  document.querySelectorAll('[data-google-signin]').forEach((button) => {
-    button.addEventListener('click', () => { if (!googleSignInReady) showToast('تسجيل Google يحتاج إضافة GOOGLE_CLIENT_ID إلى ملف .env.'); });
-    button.addEventListener('keydown', (event) => { if (!googleSignInReady && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); showToast('تسجيل Google يحتاج إضافة GOOGLE_CLIENT_ID إلى ملف .env.'); } });
-  });
+  el('guest-form').addEventListener('submit', handleGuestSubmit);
   el('start-setup').addEventListener('click', () => openWizard(0)); el('edit-data').addEventListener('click', () => openWizard(0)); el('system-edit').addEventListener('click', () => openWizard(0));
   el('step-next').addEventListener('click', nextStep); el('step-back').addEventListener('click', previousStep); el('start-setup').addEventListener('keydown', (event) => { if (event.key === 'Enter') openWizard(0); });
   el('refresh-weather').addEventListener('click', loadWeather); el('history-new').addEventListener('click', () => openWizard(0));
@@ -3046,16 +3050,24 @@ function init() {
     }).catch(() => {});
   });
   el('app-shell').hidden = true; el('intro').hidden = false; applyLanguage(); renderAuth(); playIntro(); loadAppSettings();
-  restoreExistingSession().catch(() => {}).finally(() => { bootstrapSettled = true; hideLoadingScreen(); });
+  restoreGuestSession().catch(() => {}).finally(() => { bootstrapSettled = true; hideLoadingScreen(); });
 }
-async function restoreExistingSession() {
+async function restoreGuestSession() {
+  // No local guest marker means this is a first visit; skip the session probe
+  // so a normal first load produces no failed request in the browser console.
+  if (!localStorage.getItem(GUEST_TOKEN_KEY)) { renderAuth(); return; }
   try {
     const response = await authenticatedFetch('/api/auth/session');
-    if (!response.ok) return;
+    if (!response.ok) {
+      // An expired or invalid local token must return to the guest form, not a blank app.
+      if (response.status === 401) clearGuestIdentity();
+      return;
+    }
     const session = await response.json();
+    if (session.user?.role !== 'guest' && session.user?.role !== 'user') return clearGuestIdentity();
     const seed = localStorage.getItem(accountStorageKey(session.user.id)) ? loadState(accountStorageKey(session.user.id)) : null;
     await finishServerAuth(session, seed);
     await continueAfterAuth();
-  } catch { /* show sign-in if the server cannot restore the session */ }
+  } catch { clearGuestIdentity(); }
 }
 init();

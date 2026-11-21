@@ -49,6 +49,7 @@ test('POST /api/auth/guest creates a guest session with name and tribe', async (
   assert.equal(body.user.name, 'سالم');
   assert.equal(body.user.tribe, 'البوشمي');
   assert.ok(body.user.id);
+  assert.ok(body.token, 'guest response must include the locally stored token');
   assert.match(String(response.headers.get('set-cookie')), /siyaj_session=/);
 });
 

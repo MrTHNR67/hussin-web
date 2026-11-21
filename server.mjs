@@ -74,10 +74,10 @@ function sendAuthError(res, error) {
   res.status(status).json({ error: error.message || 'تعذر إكمال تسجيل الدخول.' });
 }
 
-function sendAuthSession(res, session, status = 200) {
+function sendAuthSession(res, session, status = 200, includeToken = false) {
   const secure = process.env.NODE_ENV === 'production' ? '; Secure' : '';
   res.setHeader('Set-Cookie', `${authCookieName}=${encodeURIComponent(session.token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000${secure}`);
-  res.status(status).json({ user: session.user });
+  res.status(status).json(includeToken ? { user: session.user, token: session.token } : { user: session.user });
 }
 
 function clearAuthCookie(res) {
@@ -130,7 +130,9 @@ app.post('/api/auth/guest', authIpLimit, async (req, res) => {
   try {
     const session = await registerGuestAccount(req.body || {});
     await recordAuthEvent({ event: 'guest', userId: session.user.id, identifier: session.user.name, req });
-    sendAuthSession(res, session);
+    // The token is returned only to the guest flow so the browser can keep a
+    // local copy; it grants guest access only and never an admin role.
+    sendAuthSession(res, session, 200, true);
   } catch (error) { sendAuthError(res, error); }
 });
 

@@ -13,7 +13,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script defer src="/app.js"></script>
   <style>
     .public-about { max-width: 560px; margin: 0 auto 18px; color: var(--muted); font-size: 13px; line-height: 1.9; text-align: center; }
@@ -50,7 +49,7 @@
         <button class="nav-link" data-page="report">تقرير النظام</button>
         <button class="nav-link" data-page="settings">الإعدادات</button>
       </nav>
-      <button class="nav-link auth-nav" id="auth-nav" data-page="auth">تسجيل الدخول</button>
+      <span class="nav-link auth-nav" id="auth-nav">الزائر</span>
       <button class="language-toggle" id="language-toggle" type="button" aria-label="Change language">EN</button>
       <button class="icon-button mobile-menu" id="mobile-menu" aria-label="القائمة">☰</button>
     </header>
@@ -166,37 +165,20 @@
 
       <section class="page auth-page" id="page-auth" hidden>
         <div class="auth-layout">
-          <div class="auth-heading"><p class="eyebrow">حسابك في سياج</p><h1>أهلاً</h1><p class="muted">سجّل الدخول لمتابعة نظامك الشمسي.</p></div>
+          <div class="auth-heading"><p class="eyebrow">تجربتك في سياج</p><h1>أهلاً</h1><p class="muted">أدخل اسمك وقبيلتك لتبدأ متابعة نظامك الشمسي.</p></div>
           <div class="public-about">
-            <p class="public-copy-ar">سياج يساعدك على متابعة نظامك الشمسي: أدخل بيانات الألواح وموقعها لعرض الطقس، وتقدير أثر الحرارة والغبار والخسارة في الطاقة، وحفظ سجل الفحوصات. النتائج تقديرية. تُحفظ بيانات الحساب والمرفقات في التخزين السحابي، وتظهر البيانات التي تمت مزامنتها على أجهزتك عند تسجيل الدخول بالحساب نفسه.</p>
-            <p class="public-copy-en" lang="en">Siyaj helps you monitor your solar system. Enter panel details and a location to view weather, estimate the effect of heat and dust on energy losses, and keep inspection records. Results are estimates. Account data and attachments are saved in cloud storage. Synced data appears on your devices when you sign in with the same account.</p>
+            <p class="public-copy-ar">سياج يساعدك على متابعة نظامك الشمسي: أدخل بيانات الألواح وموقعها لعرض الطقس، وتقدير أثر الحرارة والغبار والخسارة في الطاقة، وحفظ سجل الفحوصات. النتائج تقديرية. يُحفظ اسمك وقبيلتك في هذا المتصفح فقط، وتبقى بياناتك على الجهاز نفسه.</p>
+            <p class="public-copy-en" lang="en">Siyaj helps you monitor your solar system. Enter panel details and a location to view weather, estimate the effect of heat and dust on energy losses, and keep inspection records. Results are estimates. Your name and tribe are saved in this browser only, and your data stays on the same device.</p>
             <a class="public-privacy" href="/privacy.html"><span class="public-copy-ar">سياسة الخصوصية</span><span class="public-copy-en" lang="en">Privacy Policy</span></a>
           </div>
           <article class="panel auth-card">
-            <div class="auth-tabs" id="auth-tabs"><button class="auth-tab active" id="auth-tab-login" type="button">تسجيل الدخول</button><button class="auth-tab" id="auth-tab-signup" type="button">إنشاء حساب</button></div>
-            <div id="auth-profile" class="auth-profile" hidden><div class="profile-mark">☼</div><h2 id="profile-name"></h2><p id="profile-email" class="muted"></p><button class="button button-outline" id="logout-button" type="button">تسجيل الخروج</button></div>
-            <form id="login-form" class="auth-form">
-              <h2>تسجيل الدخول</h2><p class="muted">استخدم بريدك الإلكتروني أو رقم هاتفك.</p>
-              <label class="auth-field"><span>اسم المستخدم أو البريد الإلكتروني أو رقم الهاتف</span><input id="login-identifier" required autocomplete="username" placeholder="name@example.com أو رقم الهاتف"></label>
-              <label class="auth-field"><span>كلمة المرور</span><input id="login-password" type="password" required autocomplete="current-password" placeholder="أدخل كلمة المرور"></label>
-              <button class="button button-primary auth-submit" type="submit">دخول <span>←</span></button>
-              <p class="auth-switch">ليس لديك حساب؟ <button id="show-signup" type="button">إنشاء حساب جديد</button></p>
-              <div class="auth-separator"><span>أو</span></div>
-              <div class="google-button" data-google-signin role="button" tabindex="0" aria-label="المتابعة باستخدام Google"><span class="google-fallback"><span class="google-mark">G</span> المتابعة باستخدام Google</span></div>
+            <form id="guest-form" class="auth-form">
+              <h2>مرحباً بك</h2><p class="muted">لا تحتاج كلمة مرور أو تسجيل؛ اسمك وقبيلتك يكفيان للبدء.</p>
+              <label class="auth-field"><span>الاسم</span><input id="guest-name" required maxlength="40" autocomplete="given-name" placeholder="اكتب اسمك"></label>
+              <label class="auth-field"><span>القبيلة</span><input id="guest-tribe" required maxlength="40" autocomplete="organization" placeholder="اكتب قبيلتك"></label>
+              <button class="button button-primary auth-submit" type="submit">ابدأ التجربة <span>←</span></button>
             </form>
-            <form id="signup-form" class="auth-form" hidden>
-              <h2>إنشاء حساب</h2><p class="muted">سجّل بياناتك للبدء مع سياج.</p>
-              <label class="auth-field"><span>اسم المستخدم</span><input id="signup-username" required minlength="3" maxlength="24" autocomplete="username" placeholder="مثال: maryam_1"></label>
-              <label class="auth-field"><span>البريد الإلكتروني</span><input id="signup-email" type="email" required autocomplete="email" placeholder="name@example.com"></label>
-              <label class="auth-field"><span>رقم الهاتف</span><input id="signup-phone" type="tel" required autocomplete="tel" placeholder="+968 9XXX XXXX"></label>
-              <label class="auth-field"><span>كلمة المرور</span><input id="signup-password" type="password" required minlength="8" autocomplete="new-password" placeholder="8 أحرف على الأقل"></label>
-              <label class="auth-field"><span>تأكيد كلمة المرور</span><input id="signup-confirm" type="password" required minlength="8" autocomplete="new-password" placeholder="أعد كتابة كلمة المرور"></label>
-              <button class="button button-primary auth-submit" type="submit">إنشاء الحساب <span>←</span></button>
-              <p class="auth-switch">لديك حساب؟ <button id="show-login" type="button">تسجيل الدخول</button></p>
-              <div class="auth-separator"><span>أو</span></div>
-              <div class="google-button" data-google-signin role="button" tabindex="0" aria-label="إنشاء حساب باستخدام Google"><span class="google-fallback"><span class="google-mark">G</span> إنشاء حساب باستخدام Google</span></div>
-            </form>
-            <p class="auth-local-note">يُحفظ الحساب والبيانات والمرفقات على الخادم وتظهر عند تسجيل الدخول من أجهزتك.</p>
+            <p class="auth-local-note">تُحفظ هذه المعلومات في هذا المتصفح فقط. لا يوجد حساب أو كلمة مرور.</p>
           </article>
         </div>
       </section>
