@@ -1235,3 +1235,10 @@ body.theme-stealth .loss-bar b { background:#C8102E; border-color:#0B0B0C; }
 body.theme-stealth a { color:#8A8D93; }
 body.theme-stealth a:hover { color:#C8102E; }
 body.theme-stealth .metric-card b,body.theme-stealth .system-item b,body.theme-stealth .loss-value strong { font-family:ui-monospace,monospace; }
+
+/* Hide milky/cream brand images in all secret themes (normal theme keeps them). */
+body[class*="theme-"] .brand img,
+body[class*="theme-"] .intro-logo,
+body[class*="theme-"] .app-loading-logo img,
+body[class*="theme-"] .about-logo img,
+body[class*="theme-"] .hero-logo { display: none; }
