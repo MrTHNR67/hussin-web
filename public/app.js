@@ -76,6 +76,7 @@ const TRANSLATIONS = {
   'اكتب اسمك': 'Your name', 'اكتب قبيلتك': 'Your tribe',
   'ابدأ التجربة': 'Start the experience', 'بدأنا التجربة': 'the experience has started',
   'أدخل الاسم والقبيلة.': 'Enter your name and tribe.', 'الزائر': 'Guest',
+  'تم تجهيز القراءة التقديرية': 'The estimated reading is ready',
   'ابحث عن الشركة المصنّعة': 'Search for a manufacturer',
   'عرض الشركات المصنّعة': 'Show manufacturers', 'الشركات المصنّعة': 'Manufacturers',
   'ابحث بالعربية أو الإنجليزية، أو اكتب اسم الشركة. يمكنك اختيار «غير معروف».': 'Search in Arabic or English, or enter the company name. You can choose “Unknown”.',
@@ -416,7 +417,7 @@ function resetAiRequests() {
   analysisController?.abort(); invoiceController?.abort();
   invoiceReview = null; invoiceBusy = false; analysisBusy = false;
   const button = el('start-setup'); if (button) { button.disabled = false; button.innerHTML = ui('إعداد النظام <span>←</span>', 'Set up system <span>←</span>'); }
-  const aiButton = el('analyze-panels'); if (aiButton) { aiButton.disabled = true; aiButton.textContent = ui('تحليل الألواح باستخدام Claude', 'Panel assessment with Claude'); }
+  const aiButton = el('analyze-panels'); if (aiButton) { aiButton.disabled = false; aiButton.textContent = ui('تحليل الألواح باستخدام Claude', 'Panel assessment with Claude'); }
 }
 function analysisFingerprint() {
   return JSON.stringify({ accountId: currentAccount?.id, form: state.form, weather: { timezone: state.weather?.timezone, temperature: state.weather?.current?.temperature_2m, time: state.weather?.current?.time }, language: state.settings.language, media: mediaFor('panels').map(({ id, updatedAt }) => ({ id, updatedAt })) });
@@ -435,7 +436,8 @@ async function loadAiConfig() {
     complaintConfig = { email: config.complaintEmail || 'shathaalbaraa67@gmail.com', delivery: !!config.complaintEmailDelivery };
     document.querySelectorAll('.ai-availability').forEach((node) => { node.outerHTML = claudeAvailabilityMarkup(); });
     const billButton = el('analyze-invoice'); if (billButton) billButton.disabled = invoiceBusy || !claudeEnabled || !mediaFor('bill').length;
-    const panelButton = el('analyze-panels'); if (panelButton) panelButton.disabled = analysisBusy || !claudeEnabled || !currentAccount?.id || !mediaFor('panels').length;
+    // The panel button is now a local simulation, so it does not depend on AI configuration.
+    const panelButton = el('analyze-panels'); if (panelButton) panelButton.disabled = analysisBusy;
     return config;
   } catch { claudeEnabled = null; aiConfigurationChecked = true; document.querySelectorAll('.ai-availability').forEach((node) => { node.outerHTML = claudeAvailabilityMarkup(); }); return {}; }
 }
@@ -1127,6 +1129,49 @@ function showToast(message) {
   const toast = el('toast'); toast.textContent = state.settings.language === 'en' ? translateText(message) : message; toast.classList.add('show');
   clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 3100);
 }
+
+// Peak-End: a brief, quiet celebration right after the last panel-data step is
+// saved. It never delays the summary and is skipped for reduced-motion users.
+function playPeakEnd() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const overlay = document.createElement('div');
+  overlay.className = 'peak-burst';
+  overlay.setAttribute('aria-hidden', 'true');
+  for (let index = 0; index < 8; index += 1) {
+    const dot = document.createElement('span');
+    const angle = (index / 8) * Math.PI * 2;
+    dot.style.setProperty('--dx', `${Math.round(Math.cos(angle) * 70)}px`);
+    dot.style.setProperty('--dy', `${Math.round(Math.sin(angle) * 70)}px`);
+    dot.style.setProperty('--delay', `${index * 40}ms`);
+    overlay.appendChild(dot);
+  }
+  document.body.appendChild(overlay);
+  setTimeout(() => overlay.remove(), 700);
+}
+
+// Visual-only simulation of the analysis button. No request, no AI backend,
+// no new endpoint: just the existing spinner and a neutral result message.
+async function runFakeAnalysis() {
+  if (analysisBusy) return;
+  analysisBusy = true;
+  const button = el('analyze-panels');
+  if (button) {
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+    button.innerHTML = `<span class="loading-inline"><i class="spinner"></i> ${ui('يجري التحليل…', 'Assessing…')}</span>`;
+  }
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 2500));
+    showToast(ui('تم تجهيز القراءة التقديرية', 'The estimated reading is ready'));
+  } finally {
+    analysisBusy = false;
+    if (button) {
+      button.disabled = false;
+      button.removeAttribute('aria-busy');
+      button.textContent = ui('تحليل الألواح باستخدام Claude', 'Panel assessment with Claude');
+    }
+  }
+}
 function syncHeader() {
   el('header-location').textContent = state.form.location || 'حدّد موقع النظام';
   const authButton = el('auth-nav');
@@ -1540,7 +1585,7 @@ function nextStep() {
     }
     currentStep += 1; persist(); renderCurrentStep(); window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  else { state.onboarded = true; state.updatedAt = new Date().toISOString(); persist(); showPage('dashboard'); renderDashboard(); runAnalysis({ useClaude: false }); }
+  else { state.onboarded = true; state.updatedAt = new Date().toISOString(); persist(); playPeakEnd(); showPage('dashboard'); renderDashboard(); runAnalysis({ useClaude: false }); }
 }
 function previousStep() { if (currentStep > 0) { currentStep -= 1; renderCurrentStep(); } }
 async function handleUploads(category, files) {
@@ -2134,7 +2179,7 @@ function assessmentNote(key) {
 function renderAnalysisDetails(snapshot = state) {
   const ai = snapshot.ai; const context = snapshot.solarContext; const monthly = snapshot.monthlyLoss;
   const visual = el('visual-assessment-content');
-  const panelButton = el('analyze-panels'); panelButton.disabled = analysisBusy || claudeEnabled !== true || !currentAccount?.id || !mediaFor('panels').length;
+  const panelButton = el('analyze-panels'); panelButton.disabled = analysisBusy;
   if (ai && snapshot.aiLanguage === state.settings.language) {
     const readings = [
       assessmentMetric(ui('تغطية الغبار المرئية', 'Visible dust coverage'), assessmentValue(ai.dustCoveragePercent, '%'), `${ui('الثقة', 'Confidence')}: ${confidenceText(ai.dustConfidence)}`),
@@ -2961,7 +3006,7 @@ function setupEvents() {
   el('step-next').addEventListener('click', nextStep); el('step-back').addEventListener('click', previousStep); el('start-setup').addEventListener('keydown', (event) => { if (event.key === 'Enter') openWizard(0); });
   el('refresh-weather').addEventListener('click', loadWeather); el('history-new').addEventListener('click', () => openWizard(0));
   el('update-monthly-loss').addEventListener('click', updateMonthlyAssessment);
-  el('analyze-panels').addEventListener('click', () => runAnalysis({ useClaude: true }));
+  el('analyze-panels').addEventListener('click', runFakeAnalysis);
   el('dashboard-bill-month').addEventListener('change', () => {
     const month = el('dashboard-bill-month').value;
     if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(month)) return;

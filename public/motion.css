@@ -75,6 +75,8 @@
   background: var(--orange, #eb5b24);
   opacity: 0;
   animation: peak-burst 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  /* 8 dots x 40 ms stagger = 280 ms cascade, under the 300 ms budget. */
+  animation-delay: var(--delay, 0ms);
 }
 
 @keyframes peak-burst {
