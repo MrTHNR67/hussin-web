@@ -187,3 +187,28 @@ powershell -ExecutionPolicy Bypass -File scripts\stop-cluster.ps1
 ```
 
 نقاط الفحص بعد التشغيل: `GET /healthz` · `GET /readyz` · `GET /api/auth/events` (بعد تسجيل الدخول) · `GET /api/admin/stats` (لبريد مُدرج في `SIYAJ_ADMIN_EMAILS`).
+## الأمان (Security)
+
+- **جلسات HttpOnly + SameSite** — رمز الجلسة يُحفظ في cookie (HttpOnly, SameSite) وليس في localStorage.
+- **تحديد المعدل (Rate Limiting)** — `server/rate-limit.mjs`: حدود لكل IP/مستخدم، قفل حساب بعد محاولات فاشلة.
+- **رؤوس الأمان (Security Headers)** — `server/security.mjs`: CSP, HSTS, إخفاء `X-Powered-By`, trust proxy.
+- **Row-Level Security (RLS)** — عزل بيانات كل مستخدم في Postgres/Supabase.
+- **تدقيق المصادقة (Auth Audit)** — `server/audit.mjs`: تسجيل أحداث login/logout/guest محدودة بالحجم.
+- **تشفير كلمات المرور** — scrypt + timingSafeEqual في `server/auth.mjs`.
+- **التحقق من المدخلات** — normalize/sanitize في auth, complaints, settings.
+- **حدود حجم الطلب** — 25MB للمرفقات، 18MB JSON.
+- **بيئة آمنة** — `.env` غير مُتتبَّع؛ secret keys في Render env vars.
+
+## ما أنجزناه للهاكثون (Hackathon)
+
+- نشر على **Render** (https://siyaj-web.onrender.com) مع صحة `/healthz`, `/readyz`.
+- **Supabase** (Postgres + Storage) لبيانات الحسابات والمرفقات.
+- **الدخول بالاسم والقبيلة** (guest session) بدون كلمة مرور — بديل تسجيل الدخول.
+- **تحليل Claude (Vision)** لصور الألواح وفواتير الكهرباء.
+- **تنبيهات Push (Web Push + VAPID)** للغبار/الرياح/الحرارة.
+- **تقييم طاقة شمسية** (solar assessment) مع بيانات Open-Meteo/MET Norway.
+- **مكتبة شواهد (Evidence)** في `docs/evidence/` (HA, LB, autoscaling, DR, IAM).
+- **مخطط معماري (Architecture Blueprint)** وخطة إثبات في `docs/`.
+- **واجهة PWA** (service worker, manifest) + حركات (motion.css/motion.js).
+- **اختبارات** (`tests/`) — 15/15 ناجحة.
+- **توثيق كامل** — `docs/STRUCTURE.md`, `docs/FILE-INVENTORY.md`, `docs/project-guide.md`.
