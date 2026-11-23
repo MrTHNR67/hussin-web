@@ -418,7 +418,7 @@ function analysisFingerprint() {
   return JSON.stringify({ accountId: currentAccount?.id, form: state.form, weather: { timezone: state.weather?.timezone, temperature: state.weather?.current?.temperature_2m, time: state.weather?.current?.time }, language: state.settings.language, media: mediaFor('panels').map(({ id, updatedAt }) => ({ id, updatedAt })) });
 }
 function claudeAvailabilityMarkup() {
-  const message = claudeEnabled === true ? ui('التحليل باستخدام Ai', 'Analysis with Ai') : claudeEnabled === false ? ui('التحليل باستخدام Ai غير مفعّل بعد.', 'Ai analysis is not enabled yet.') : aiConfigurationChecked ? ui('تعذر معرفة حالة التحليل باستخدام Ai؛ حاول مرة أخرى.', 'Could not check Ai analysis availability; try again.') : ui('جارٍ التحقق من خدمة Ai…', 'Checking Ai analysis…');
+  const message = claudeEnabled === true ? ui('التحليل باستخدام Ai', 'Analysis with Ai') : claudeEnabled === false ? ui('التحليل باستخدام Ai غير مفعّل بعد.', 'Ai analysis is not enabled yet.') : aiConfigurationChecked ? ui('تعذر معرفة حالة التحليل باستخدام Ai؛ حاول مرة أخرى.', 'Could not check Ai analysis availability; try again.') : ui('يتم التحقق باستخدام AI…', 'Verifying using AI…');
   return `<p class="ai-availability" role="status">${escapeHtml(message)}</p>`;
 }
 async function loadAiConfig() {
@@ -1897,6 +1897,14 @@ function renderLossBreakdown(result) {
   const note = el('loss-breakdown-note');
   if (note) note.textContent = ui('النسب أعلاه تقديرية: الحرارة من النموذج الحراري، والغبار والظل من التغطية المرئية أو المؤشر الجوي، وليست قياساً كهربائياً مباشراً.', 'The percentages above are estimates: heat from the heat model, dust and shade from visible coverage or the air index, not direct electrical measurements.');
 }
+function loadDemoData() {
+  state.form = { ...state.form, name: state.form.name || 'سالم', location: 'السيب', ambientTemp: 35, humidity: 45, panels: 12, airDustPercent: 30, power: 5000, company: 'سياج', tilt: 20, panelAzimuth: 180, captureAt: '', panelType: 'monocrystalline', efficiency: 21, coefficient: -0.35, ratedPower: 450, invoice: 15, consumption: 320, tariff: 0.12, billMonth: '2025-01', expectedMonthlyKwh: 210, actualMonthlyKwh: 210 };
+  state.onboarded = true;
+  state.updatedAt = new Date().toISOString();
+  persist();
+  renderDashboard();
+  showToast('تم تحميل البيانات التجريبية (فاتورة 15.000 ر.ع، استهلاك 320 kWh، إنتاج 210 kWh).');
+}
 function renderDashboard(note = '') {
   const f = state.form; const result = state.result || (f.power ? calculateLoss() : null); const current = state.weather?.current;
   ensureLossBreakdown(result);
@@ -2496,6 +2504,7 @@ async function finishServerAuth(session, seedState = null, legacyAccountId = '')
 }
 async function continueAfterAuth() {
   await loadMedia();
+  if (!state.onboarded && !state.form?.panels) loadDemoData();
   renderDashboard();
   if (state.onboarded) showPage('dashboard'); else openWizard(0);
   if (state.form.latitude !== null && state.form.longitude !== null) await loadWeather();
@@ -2549,7 +2558,7 @@ function setupEvents() {
    
   });
   el('guest-form').addEventListener('submit', handleGuestSubmit);
-  el('start-setup').addEventListener('click', () => openWizard(0)); el('edit-data').addEventListener('click', () => openWizard(0)); el('system-edit').addEventListener('click', () => openWizard(0));
+  el('start-setup').addEventListener('click', () => openWizard(0)); el('edit-data').addEventListener('click', () => openWizard(0)); el('system-edit').addEventListener('click', () => openWizard(0)); el('load-demo-data')?.addEventListener('click', loadDemoData);
   el('step-next').addEventListener('click', nextStep); el('step-back').addEventListener('click', previousStep); el('start-setup').addEventListener('keydown', (event) => { if (event.key === 'Enter') openWizard(0); });
   el('refresh-weather').addEventListener('click', () => { const icon = el('weather-icon'); if (icon) { icon.classList.remove('spinning'); void icon.offsetWidth; icon.classList.add('spinning'); setTimeout(() => icon.classList.remove('spinning'), 650); } loadWeather(); }); el('history-new').addEventListener('click', () => openWizard(0));
   el('update-monthly-loss').addEventListener('click', updateMonthlyAssessment);
