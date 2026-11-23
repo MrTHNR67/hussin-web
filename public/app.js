@@ -418,7 +418,7 @@ function analysisFingerprint() {
   return JSON.stringify({ accountId: currentAccount?.id, form: state.form, weather: { timezone: state.weather?.timezone, temperature: state.weather?.current?.temperature_2m, time: state.weather?.current?.time }, language: state.settings.language, media: mediaFor('panels').map(({ id, updatedAt }) => ({ id, updatedAt })) });
 }
 function claudeAvailabilityMarkup() {
-  const message = claudeEnabled === true ? ui('التحليل باستخدام Ai', 'Analysis with Ai') : claudeEnabled === false ? ui('التحليل باستخدام Ai غير مفعّل بعد.', 'Ai analysis is not enabled yet.') : aiConfigurationChecked ? ui('تعذر معرفة حالة التحليل باستخدام Ai؛ حاول مرة أخرى.', 'Could not check Ai analysis availability; try again.') : ui('يتم التحقق باستخدام AI…', 'Verifying using AI…');
+  const message = claudeEnabled === true ? ui('التحليل باستخدام Ai', 'Analysis with Ai') : claudeEnabled === false ? ui('التحليل (وضع تجريبي): بيانات فاتورة نموذجية.', 'Analysis (demo mode): sample bill data.') : aiConfigurationChecked ? ui('تعذر معرفة حالة التحليل باستخدام Ai؛ حاول مرة أخرى.', 'Could not check Ai analysis availability; try again.') : ui('يتم التحقق باستخدام AI…', 'Verifying using AI…');
   return `<p class="ai-availability" role="status">${escapeHtml(message)}</p>`;
 }
 async function loadAiConfig() {
@@ -430,7 +430,7 @@ async function loadAiConfig() {
     claudeEnabled = !!config.claudeEnabled;
     complaintConfig = { email: config.complaintEmail || 'shathaalbaraa67@gmail.com', delivery: !!config.complaintEmailDelivery };
     document.querySelectorAll('.ai-availability').forEach((node) => { node.outerHTML = claudeAvailabilityMarkup(); });
-    const billButton = el('analyze-invoice'); if (billButton) billButton.disabled = invoiceBusy || !claudeEnabled || !mediaFor('bill').length;
+    const billButton = el('analyze-invoice'); if (billButton) billButton.disabled = invoiceBusy || !mediaFor('bill').length;
     // The panel button is now a local simulation, so it does not depend on AI configuration.
     const panelButton = el('analyze-panels'); if (panelButton) panelButton.disabled = analysisBusy;
     return config;
@@ -1101,7 +1101,7 @@ function renderCurrentStep() {
       ${field('إنتاج متوقع للشهر (اختياري)', 'expectedMonthlyKwh', { type: 'number', suffix: 'kWh', min: '0', step: '.1', hint: 'استخدم خط أساس موثوقاً للنظام. يجب أن يغطي الإنتاج المتوقع والفعلي الفترة نفسها.' })}
       ${field('إنتاج فعلي للشهر (اختياري)', 'actualMonthlyKwh', { type: 'number', suffix: 'kWh', min: '0', step: '.1', hint: 'قراءة عدّاد الإنتاج أو العاكس؛ استهلاك الفاتورة ليس إنتاج الألواح.' })}
       <p class="helper-text field full">${ui('للشهر الحالي: أدخل الإنتاج حتى نهاية أمس في الحقلين. للأشهر الماضية: أدخل إجمالي الشهر الكامل.', 'For the current month, enter generation through the end of yesterday in both fields. For past months, enter full-month totals.')}</p>
-      <div class="field full"><span class="field-label">صورة الفاتورة (اختياري)</span>${uploadBlock('bill', 'أرفق صورة الفاتورة', ui('JPG أو PNG أو WEBP · حتى 25 ميغابايت', 'JPG, PNG or WEBP · up to 25 MB'), 'image/jpeg,image/png,image/webp')}<p class="helper-text">قد تتضمن الفاتورة بيانات شخصية؛ احجب ما لا يلزم. لن تُرسل إلى Anthropic إلا عند ضغط زر تحليل الفاتورة.</p>${claudeAvailabilityMarkup()}<button class="button button-outline invoice-ai-button" type="button" id="analyze-invoice" aria-busy="${invoiceBusy}" ${invoiceBusy || claudeEnabled !== true || !mediaFor('bill').length ? 'disabled' : ''}>${invoiceBusy ? 'جارٍ قراءة الفاتورة…' : 'تحليل الفاتورة باستخدام Ai'}</button>${invoiceReviewMarkup()}</div>
+      <div class="field full"><span class="field-label">صورة الفاتورة (اختياري)</span>${uploadBlock('bill', 'أرفق صورة الفاتورة', ui('JPG أو PNG أو WEBP · حتى 25 ميغابايت', 'JPG, PNG or WEBP · up to 25 MB'), 'image/jpeg,image/png,image/webp')}<p class="helper-text">قد تتضمن الفاتورة بيانات شخصية؛ احجب ما لا يلزم. لن تُرسل إلى Anthropic إلا عند ضغط زر تحليل الفاتورة.</p>${claudeAvailabilityMarkup()}<button class="button button-outline invoice-ai-button" type="button" id="analyze-invoice" aria-busy="${invoiceBusy}" ${invoiceBusy || !mediaFor('bill').length ? 'disabled' : ''}>${invoiceBusy ? 'جارٍ قراءة الفاتورة…' : 'تحليل الفاتورة باستخدام Ai'}</button>${invoiceReviewMarkup()}</div>
       </div>`;
   } else {
     const f = state.form; const attachments = mediaFor('panels').length;
@@ -1280,8 +1280,10 @@ async function analyzeInvoice() {
   const config = await loadAiConfig();
   if (accountId !== currentAccount?.id || mediaFor('bill')[0]?.id !== item.id) return;
   if (!config.claudeEnabled) {
-    invoiceBusy = false; renderCurrentStep();
-    return showToast(claudeEnabled === false ? 'Claude غير مفعّل بعد. يستطيع مسؤول الموقع تفعيله بمفتاح Anthropic.' : 'تعذر معرفة حالة Claude؛ حاول مرة أخرى.');
+    invoiceBusy = false;
+    invoiceReview = { accountId, mediaId: item.id, month: state.form.billMonth || '2025-01', invoice: { currency: 'OMR', billingMonth: '2025-01', totalAmount: 15, consumptionKwh: 320, energyTariffPerKwh: 0.12 }, model: 'demo' };
+    renderCurrentStep();
+    return showToast('تم استخدام بيانات فاتورة تجريبية (15.000 ر.ع).');
   }
   invoiceController?.abort(); invoiceController = new AbortController();
   const sequence = ++invoiceSequence;
